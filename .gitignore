@@ -1,0 +1,5 @@
+/target/
+.kaptaind/
+ferret.db
+*.db-shm
+*.db-wal

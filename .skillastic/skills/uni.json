@@ -1,0 +1,33 @@
+{
+  "name": "uni",
+  "skill_version": "1.0.0",
+  "compatible_apps": [
+    ">=0.1.0, <0.2.0"
+  ],
+  "created": "2026-08-22T12:14:19.982610263Z",
+  "last_verified": "2026-08-22",
+  "confidence": 0.95,
+  "status": "active",
+  "verified_app_version": "0.1.0",
+  "mutation_history": [],
+  "context": {
+    "frameworks": [
+      "tokio"
+    ],
+    "toolchains": [],
+    "directories": [
+      "src"
+    ],
+    "dependencies": {
+      "chrono": "0.4",
+      "clap": "4",
+      "ingauge-gate": "",
+      "serde": "1",
+      "serde_json": "1",
+      "tokio": "1",
+      "tracing": "0.1",
+      "tracing-subscriber": "0.3"
+    }
+  },
+  "body_path": "uni.md"
+}
