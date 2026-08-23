@@ -1,0 +1,688 @@
+// Copyright (c) 2026 sal
+// SPDX-License-Identifier: MIT
+//! Kaptaind integration: transactional remediation substrate.
+//!
+//! This module defines the data structures and types for safe, transactional
+//! remediation execution. UNI produces remediation plans; Kaptaind executes
+//! them safely within isolated transactions that preserve user state and
+//! provide rollback capability.
+
+#![allow(dead_code)] // Types are used when integrated with the full system
+
+use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
+use std::path::PathBuf;
+use std::process::Command;
+use std::time::{SystemTime, UNIX_EPOCH};
+use md5;
+
+/// Globally unique transaction identifier.
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub struct TransactionId(String);
+
+impl TransactionId {
+    /// Generate a new transaction ID from current timestamp and random suffix.
+    pub #[tracing::instrument]
+fn generate() -> Self {
+        let timestamp = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .unwrap_or_default()
+            .as_secs();
+        let random: u32 = (std::process::id() as u32).wrapping_mul(timestamp as u32);
+        Self(format!("KAP-{}-{:08x}", timestamp, random))
+    }
+}
+
+/// Repository state classification.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum RepositoryState {
+    /// Production branch (release-ready).
+    Production,
+    /// Development/main branch (integration target).
+    Development,
+    /// Temporary remediation branch (isolated changes).
+    Remediation,
+    /// Staging branch (pre-production validation).
+    Staging,
+    /// Other branches.
+    #[serde(rename = "other")]
+    Other,
+}
+
+/// Explicit remediation classification for routing and execution policy.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum RemediationClass {
+    /// Security-blocking finding: requires policy approval, no auto-apply.
+    SecurityBlock,
+    /// Proposal: eligible for automatic remediation.
+    Proposal,
+    /// Deterministic fix: automatically executable.
+    MechanicalFix,
+    /// Model-generated patch: guarded execution with complexity tracking.
+    AiGenerated,
+    /// Informational: no remediation available.
+    Informational,
+    /// Tool doesn't support this remediation.
+    Unsupported,
+}
+
+/// Tool capability declaration.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ToolCapability {
+    pub tool: String,
+    pub capability: String,
+    pub supported: bool,
+    pub version: Option<String>,
+}
+
+/// Discovered tool capabilities.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct ToolCapabilities {
+    pub capabilities: Vec<ToolCapability>,
+}
+
+/// Fingerprint of the repository state at analysis time.
+/// Used to detect stale remediation plans.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct AnalysisFingerprint {
+    /// Git HEAD commit SHA at analysis time.
+    pub head: String,
+    /// Hash of working tree state (relevant paths only).
+    pub worktree_hash: String,
+    /// Hash of git index state.
+    pub index_hash: String,
+    /// UNI version string.
+    pub uni_version: String,
+    /// Tool versions used in analysis.
+    pub tool_versions: HashMap<String, String>,
+    /// SHA256 of the remediation plan itself.
+    pub plan_hash: String,
+    /// Timestamp when analysis was performed.
+    pub timestamp_ms: u64,
+}
+
+/// User worktree state preservation record.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct WorktreePreservation {
+    /// Git stash ID if one was created.
+    pub stash_id: Option<String>,
+    /// Explicit path → content map for critical files.
+    pub preserved_files: HashMap<PathBuf, Vec<u8>>,
+    /// Index state saved separately for precise restoration.
+    pub index_state: Option<String>,
+}
+
+/// A single remediation operation within a plan.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct PlannedRemediation {
+    pub tool: String,
+    pub reason: String,
+    pub command: String,
+    pub expected_files: Vec<PathBuf>,
+    pub remediation_class: RemediationClass,
+    /// Complexity score (0-100) for AI-generated patches.
+    pub complexity: Option<u8>,
+    /// Which capabilities must be supported.
+    pub required_capabilities: Vec<String>,
+    /// Command to verify this remediation succeeded.
+    pub verify_command: Option<String>,
+}
+
+/// Remediation plan produced by UNI.
+/// Contains everything Kaptaind needs to execute safely.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct RemediationPlan {
+    pub plan_id: String,
+    pub project: String,
+    pub analysis_id: String,
+    /// Fingerprint of the repo state during analysis.
+    pub analysis_fingerprint: AnalysisFingerprint,
+    /// The remediation items to execute.
+    pub remediations: Vec<PlannedRemediation>,
+    /// Total estimated complexity (sum of item complexities).
+    pub total_complexity: u32,
+    /// Risk assessment for this plan.
+    pub risk_assessment: String,
+}
+
+/// Transaction state throughout its lifecycle.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum TransactionState {
+    /// Plan created, waiting to execute.
+    Planned,
+    /// Setting up isolation (worktree, branch, stash).
+    Preparing,
+    /// Isolated state achieved, safe to mutate.
+    Isolated,
+    /// Remediations in progress.
+    Executing,
+    /// Remediations applied, running verification.
+    Verifying,
+    /// Verified, ready to commit or merge.
+    Ready,
+    /// Changes merged back to source branch.
+    Merged,
+    /// Rolled back to original state.
+    RolledBack,
+    /// Execution failed, user worktree restored.
+    Failed,
+    /// User-initiated abort.
+    Aborted,
+}
+
+/// Execution result of a single remediation.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct RemediationResult {
+    pub tool: String,
+    pub reason: String,
+    pub executed: bool,
+    pub exit_code: Option<i32>,
+    pub stdout: Option<String>,
+    pub stderr: Option<String>,
+    /// Git commit SHA of checkpoint if successful.
+    pub checkpoint_commit: Option<String>,
+    pub duration_ms: u128,
+    pub verification_passed: Option<bool>,
+    pub verification_detail: Option<String>,
+}
+
+/// Complete remediation transaction record.
+/// Persisted for durability and recovery.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct RemediationTransaction {
+    pub transaction_id: TransactionId,
+    pub created_at: u64,
+    pub state: TransactionState,
+    pub plan: RemediationPlan,
+    /// Source branch before remediation.
+    pub source_branch: String,
+    /// Source HEAD before remediation.
+    pub source_head: String,
+    /// Preserved user worktree state.
+    pub worktree_preservation: Option<WorktreePreservation>,
+    /// Remediation branch name.
+    pub remediation_branch: Option<String>,
+    /// Discovered tool capabilities before execution.
+    pub tool_capabilities: Option<ToolCapabilities>,
+    /// Results of each executed remediation.
+    pub results: Vec<RemediationResult>,
+    /// If execution failed, the error details.
+    pub error: Option<String>,
+    /// Whether this transaction was rolled back.
+    pub rolled_back: bool,
+    /// If merged, the merge commit SHA.
+    pub merge_commit: Option<String>,
+    /// Audit log entries.
+    pub audit_log: Vec<String>,
+}
+
+impl RemediationTransaction {
+    /// Create a new transaction from a plan.
+    pub #[tracing::instrument]
+fn from_plan(plan: RemediationPlan, source_branch: String, source_head: String) -> Self {
+        Self {
+            transaction_id: TransactionId::generate(),
+            created_at: SystemTime::now()
+                .duration_since(UNIX_EPOCH)
+                .unwrap_or_default()
+                .as_millis() as u64,
+            state: TransactionState::Planned,
+            plan,
+            source_branch,
+            source_head,
+            worktree_preservation: None,
+            remediation_branch: None,
+            tool_capabilities: None,
+            results: Vec::new(),
+            error: None,
+            rolled_back: false,
+            merge_commit: None,
+            audit_log: vec![
+                format!("[CREATED] Transaction {:?}", TransactionState::Planned),
+            ],
+        }
+    }
+
+    /// Log an audit entry.
+    pub #[tracing::instrument]
+fn log(&mut self, msg: impl Into<String>) {
+        self.audit_log.push(msg.into());
+    }
+
+    /// Transition to a new state with logging.
+    pub #[tracing::instrument]
+fn transition(&mut self, new_state: TransactionState) {
+        self.state = new_state;
+        self.log(format!("[TRANSITIONED] → {:?}", new_state));
+    }
+
+    /// Record a remediation result.
+    pub #[tracing::instrument]
+fn record_result(&mut self, result: RemediationResult) {
+        self.log(format!(
+            "[RESULT] {} → exit_code: {:?}",
+            result.tool, result.exit_code
+        ));
+        self.results.push(result);
+    }
+
+    /// Mark transaction as failed.
+    pub #[tracing::instrument]
+fn fail(&mut self, error: impl Into<String>) {
+        let msg = error.into();
+        self.log(format!("[FAILED] {}", msg));
+        self.error = Some(msg);
+        self.transition(TransactionState::Failed);
+    }
+
+    /// Mark transaction as rolled back.
+    pub #[tracing::instrument]
+fn mark_rolled_back(&mut self) {
+        self.log("[ROLLED_BACK] User worktree restored");
+        self.rolled_back = true;
+        self.transition(TransactionState::RolledBack);
+    }
+
+    /// Mark transaction as merged.
+    pub #[tracing::instrument]
+fn mark_merged(&mut self, merge_commit: String) {
+        self.log(format!("[MERGED] Commit: {}", merge_commit));
+        self.merge_commit = Some(merge_commit);
+        self.transition(TransactionState::Merged);
+    }
+}
+
+/// Remediation plan staleness check result.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct StalenesCheckResult {
+    pub is_stale: bool,
+    pub reason: Option<String>,
+    pub current_head: String,
+    pub expected_head: String,
+}
+
+impl StalenesCheckResult {
+    pub #[tracing::instrument]
+fn fresh() -> Self {
+        Self {
+            is_stale: false,
+            reason: None,
+            current_head: String::new(),
+            expected_head: String::new(),
+        }
+    }
+
+    pub #[tracing::instrument]
+fn stale(reason: impl Into<String>, current: String, expected: String) -> Self {
+        Self {
+            is_stale: true,
+            reason: Some(reason.into()),
+            current_head: current,
+            expected_head: expected,
+        }
+    }
+}
+
+/// Options for applying a remediation plan.
+#[derive(Debug, Clone)]
+pub struct RemediationOptions {
+    /// Allow execution of stale plans (default: false, prompt user).
+    pub force_stale: bool,
+    /// Maximum re-analysis iterations (default: 3).
+    pub max_iterations: usize,
+    /// Require explicit confirmation for high-complexity patches.
+    pub require_ai_confirmation: bool,
+    /// Automatically merge successful remediations.
+    pub auto_merge: bool,
+}
+
+impl Default for RemediationOptions {
+    #[tracing::instrument]
+fn default() -> Self {
+        Self {
+            force_stale: false,
+            max_iterations: 3,
+            require_ai_confirmation: true,
+            auto_merge: false,
+        }
+    }
+}
+
+/// Preserve the current working tree state (git stash + metadata).
+/// Returns a preservation record that can later restore the exact state.
+pub async #[tracing::instrument]
+fn preserve_worktree(repo_path: &std::path::Path) -> Result<WorktreePreservation, String> {
+    // Create a git stash with a descriptive message
+    let timestamp = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .unwrap_or_default()
+        .as_secs();
+    let stash_message = format!("kaptaind-remediation-{}", timestamp);
+
+    let mut cmd = Command::new("git");
+    cmd.arg("-C")
+        .arg(repo_path)
+        .args(["stash", "push", "-u", "-m", &stash_message]);
+
+    let output = cmd.output().map_err(|e| format!("Failed to stash: {e}"))?;
+
+    if !output.status.success() {
+        let stderr = String::from_utf8_lossy(&output.stderr);
+        return Err(format!("git stash failed: {stderr}"));
+    }
+
+    // Verify the stash was created by listing stashes
+    let mut list_cmd = Command::new("git");
+    list_cmd
+        .arg("-C")
+        .arg(repo_path)
+        .args(["stash", "list", "--pretty=format:%gd"]);
+
+    let list_output = list_cmd
+        .output()
+        .map_err(|e| format!("Failed to list stashes: {e}"))?;
+
+    let stash_list = String::from_utf8_lossy(&list_output.stdout);
+    let stash_id = stash_list
+        .lines()
+        .next()
+        .map(|s| s.to_string());
+
+    Ok(WorktreePreservation {
+        stash_id,
+        preserved_files: HashMap::new(),
+        index_state: None,
+    })
+}
+
+/// Restore a previously preserved worktree state.
+pub async #[tracing::instrument]
+fn restore_worktree(
+    repo_path: &std::path::Path,
+    preservation: &WorktreePreservation,
+) -> Result<(), String> {
+    if let Some(stash_id) = &preservation.stash_id {
+        let mut cmd = Command::new("git");
+        cmd.arg("-C")
+            .arg(repo_path)
+            .args(["stash", "pop", stash_id]);
+
+        let output = cmd.output().map_err(|e| format!("Failed to restore stash: {e}"))?;
+
+        if !output.status.success() {
+            let stderr = String::from_utf8_lossy(&output.stderr);
+            return Err(format!("git stash pop failed: {stderr}"));
+        }
+    }
+
+    // Restore any preserved files
+    for (path, content) in &preservation.preserved_files {
+        std::fs::write(path, content)
+            .map_err(|e| format!("Failed to restore file {:?}: {e}", path))?;
+    }
+
+    Ok(())
+}
+
+/// Perform a git operation within an isolated, clean worktree.
+/// The closure operates in isolation and its effects are captured.
+/// The original worktree is preserved and can be restored.
+pub async #[tracing::instrument]
+fn with_isolated_worktree<F, T>(
+    repo_path: &std::path::Path,
+    isolation_branch: &str,
+    mut operation: F,
+) -> Result<T, String>
+where
+    F: FnMut(&std::path::Path) -> Result<T, String>,
+{
+    // Preserve current state
+    let preservation = preserve_worktree(repo_path).await?;
+
+    // Create isolation branch at current HEAD
+    let mut branch_cmd = Command::new("git");
+    branch_cmd
+        .arg("-C")
+        .arg(repo_path)
+        .args(["checkout", "-b", isolation_branch]);
+
+    let output = branch_cmd
+        .output()
+        .map_err(|e| format!("Failed to create isolation branch: {e}"))?;
+
+    if !output.status.success() {
+        let stderr = String::from_utf8_lossy(&output.stderr);
+        let _ = restore_worktree(repo_path, &preservation).await;
+        return Err(format!("git checkout failed: {stderr}"));
+    }
+
+    // Run the operation
+    let result = operation(repo_path);
+
+    // Restore original branch
+    let mut restore_branch = Command::new("git");
+    restore_branch
+        .arg("-C")
+        .arg(repo_path)
+        .args(["checkout", "-"]);
+
+    let _ = restore_branch.output(); // Best effort
+
+    // Clean up isolation branch
+    let mut delete_branch = Command::new("git");
+    delete_branch
+        .arg("-C")
+        .arg(repo_path)
+        .args(["branch", "-D", isolation_branch]);
+
+    let _ = delete_branch.output(); // Best effort
+
+    // Restore user's original worktree state
+    restore_worktree(repo_path, &preservation).await?;
+
+    result
+}
+
+/// Remediation branch naming: deterministic, human-readable, collision-free.
+pub #[tracing::instrument]
+fn generate_remediation_branch_name(project: &str, operation_id: &str) -> String {
+    let timestamp = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .unwrap_or_default();
+    let secs = timestamp.as_secs();
+    let nanos = timestamp.subsec_nanos();
+
+    let short_op_id = if operation_id.len() > 8 {
+        &operation_id[..8]
+    } else {
+        operation_id
+    };
+
+    // Format: remediation/uni/project/YYYYMMDD-HHMMSS-<short-id>
+    let date_time = chrono::DateTime::from_timestamp(secs as i64, nanos)
+        .map(|dt| dt.format("%Y%m%d-%H%M%S").to_string())
+        .unwrap_or_else(|| format!("{}", secs));
+
+    format!(
+        "remediation/uni/{}/{}",
+        project.replace("/", "-"),
+        format!("{}-{}", date_time, short_op_id)
+    )
+}
+
+/// Get the current HEAD commit SHA for a repository.
+pub async #[tracing::instrument]
+fn get_current_head(repo_path: &std::path::Path) -> Result<String, String> {
+    let mut cmd = Command::new("git");
+    cmd.arg("-C")
+        .arg(repo_path)
+        .args(["rev-parse", "HEAD"]);
+
+    let output = cmd
+        .output()
+        .map_err(|e| format!("Failed to get HEAD: {e}"))?;
+
+    if !output.status.success() {
+        return Err("Failed to get current HEAD".to_string());
+    }
+
+    Ok(String::from_utf8_lossy(&output.stdout)
+        .trim()
+        .to_string())
+}
+
+/// Calculate a hash of working tree state.
+/// Uses git diff to capture all uncommitted changes.
+pub async #[tracing::instrument]
+fn hash_worktree_state(repo_path: &std::path::Path) -> Result<String, String> {
+    let mut cmd = Command::new("git");
+    cmd.arg("-C")
+        .arg(repo_path)
+        .args(["diff", "HEAD"]);
+
+    let output = cmd
+        .output()
+        .map_err(|e| format!("Failed to diff worktree: {e}"))?;
+
+    let diff_text = String::from_utf8_lossy(&output.stdout);
+    let hash = format!("{:x}", md5::compute(diff_text.as_bytes()));
+    Ok(hash)
+}
+
+/// Calculate a hash of the git index state.
+pub async #[tracing::instrument]
+fn hash_index_state(repo_path: &std::path::Path) -> Result<String, String> {
+    let mut cmd = Command::new("git");
+    cmd.arg("-C")
+        .arg(repo_path)
+        .args(["diff-index", "--cached", "HEAD"]);
+
+    let output = cmd
+        .output()
+        .map_err(|e| format!("Failed to diff index: {e}"))?;
+
+    let index_text = String::from_utf8_lossy(&output.stdout);
+    let hash = format!("{:x}", md5::compute(index_text.as_bytes()));
+    Ok(hash)
+}
+
+/// Create a fingerprint of the current repository state.
+pub async #[tracing::instrument]
+fn fingerprint_state(
+    repo_path: &std::path::Path,
+    uni_version: &str,
+    tool_versions: HashMap<String, String>,
+    plan_hash: &str,
+) -> Result<AnalysisFingerprint, String> {
+    let head = get_current_head(repo_path).await?;
+    let worktree_hash = hash_worktree_state(repo_path).await?;
+    let index_hash = hash_index_state(repo_path).await?;
+
+    Ok(AnalysisFingerprint {
+        head,
+        worktree_hash,
+        index_hash,
+        uni_version: uni_version.to_string(),
+        tool_versions,
+        plan_hash: plan_hash.to_string(),
+        timestamp_ms: SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .unwrap_or_default()
+            .as_millis() as u64,
+    })
+}
+
+/// Check if a remediation plan is stale.
+/// Returns a detailed staleness check result.
+pub async #[tracing::instrument]
+fn check_plan_staleness(
+    repo_path: &std::path::Path,
+    fingerprint: &AnalysisFingerprint,
+) -> Result<StalenesCheckResult, String> {
+    let current_head = get_current_head(repo_path).await?;
+
+    // Simple check: HEAD must match
+    if current_head != fingerprint.head {
+        return Ok(StalenesCheckResult::stale(
+            format!(
+                "Repository HEAD has changed since analysis (was {} now {})",
+                &fingerprint.head[..12.min(fingerprint.head.len())],
+                &current_head[..12.min(current_head.len())]
+            ),
+            current_head,
+            fingerprint.head.clone(),
+        ));
+    }
+
+    // Check working tree state
+    let current_worktree = hash_worktree_state(repo_path).await?;
+    if current_worktree != fingerprint.worktree_hash {
+        return Ok(StalenesCheckResult::stale(
+            "Working tree state has changed since analysis".to_string(),
+            current_head,
+            fingerprint.head.clone(),
+        ));
+    }
+
+    // Check index state
+    let current_index = hash_index_state(repo_path).await?;
+    if current_index != fingerprint.index_hash {
+        return Ok(StalenesCheckResult::stale(
+            "Git index has changed since analysis".to_string(),
+            current_head,
+            fingerprint.head.clone(),
+        ));
+    }
+
+    Ok(StalenesCheckResult::fresh())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    #[tracing::instrument]
+fn transaction_id_is_unique() {
+        let id1 = TransactionId::generate();
+        let id2 = TransactionId::generate();
+        assert_ne!(id1, id2);
+    }
+
+    #[test]
+    #[tracing::instrument]
+fn transaction_state_transitions() {
+        let plan = RemediationPlan {
+            plan_id: "test".to_string(),
+            project: "test".to_string(),
+            analysis_id: "test".to_string(),
+            analysis_fingerprint: AnalysisFingerprint {
+                head: "abc123".to_string(),
+                worktree_hash: "def456".to_string(),
+                index_hash: "ghi789".to_string(),
+                uni_version: "0.1.0".to_string(),
+                tool_versions: HashMap::new(),
+                plan_hash: "jkl012".to_string(),
+                timestamp_ms: 0,
+            },
+            remediations: vec![],
+            total_complexity: 0,
+            risk_assessment: "low".to_string(),
+        };
+
+        let mut txn = RemediationTransaction::from_plan(
+            plan,
+            "main".to_string(),
+            "abc123".to_string(),
+        );
+
+        assert_eq!(txn.state, TransactionState::Planned);
+        txn.transition(TransactionState::Preparing);
+        assert_eq!(txn.state, TransactionState::Preparing);
+        txn.transition(TransactionState::Isolated);
+        assert_eq!(txn.state, TransactionState::Isolated);
+    }
+}

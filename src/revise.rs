@@ -20,7 +20,7 @@
 //!     `amber_<crate>_redux` files, never touches `Cargo.toml` or source).
 //!   - isopod `harden --apply` — creates missing compliance evidence
 //!     files.
-//!   - lwoodz `--generate` — writes a missing `LICENSE`/`NOTICE`/etc. Only
+//!   - lwoodz `remedy` — writes a missing `LICENSE`/`NOTICE`/etc. Only
 //!     offered when the diagnosis shows no license file at all; it has no
 //!     fix for header coverage or compatibility warnings.
 //!   - tempcheq `--fix --yes` — rewrites high-confidence temperature
@@ -66,7 +66,7 @@
 //!    as an explicit `Unavailable` instead of a cryptic `Failed`.
 //! 2. Where there's a real side-effect-free preview — every native item's
 //!    own `summary`, or a legacy tool's own dry-run mode (lwoodz
-//!    `--generate --dry-run`, tempcheq `--fix` without `--yes`) — uni
+//!    `remedy --dry-run`, tempcheq `--fix` without `--yes`) — uni
 //!    captures it and shows it, even in dry-run mode, instead of asking
 //!    the operator to trust a doc comment about what a command writes.
 //! 3. Every planned remediation carries a [`RiskTier`], named by the
@@ -730,18 +730,17 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
             format!("{} (no fix for header coverage/compatibility warnings — only the missing license file is addressable)", t.summary)
         },
         program: "lwoodz",
-        args: |_target| vec!["--generate".to_string()],
+        args: |_target| vec!["remedy".to_string()],
         cwd: |target| Some(target.to_path_buf()),
-        probe_token: "--generate",
+        probe_token: "remedy",
         // Only offered when has_license_file is false, i.e. there's
         // nothing there yet to overwrite: creates LICENSE/NOTICE/etc,
         // never rewrites a tracked file.
         risk: RiskTier::NewFilesOnly,
         preview_args: Some(|_target| {
             vec![
-                "--generate".to_string(),
+                "remedy".to_string(),
                 "--dry-run".to_string(),
-                "--json".to_string(),
             ]
         }),
     },
@@ -979,7 +978,7 @@ fn supports_token(help_text: &str, token: &str) -> bool {
 /// instead of a cryptic `Failed` from the underlying process. Generalizes
 /// `run::ferret_hunt_subcommand`'s help-probe approach from "does this
 /// subcommand exist" to "does --help mention this token", so it also
-/// covers flag-based remediations (amber `--propose`, lwoodz `--generate`,
+/// covers flag-based remediations (amber `--propose`, lwoodz `remedy`,
 /// tempcheq `--fix`) and not just isopod's subcommand.
 async fn probe_capability(bin: &Path, token: &str) -> bool {
     let mut cmd = tokio::process::Command::new(bin);
@@ -1212,7 +1211,7 @@ async fn check_worktree(target: &Path) -> WorktreeStatus {
 }
 
 /// Runs a remediation's own side-effect-free preview invocation (where the
-/// tool offers one — lwoodz `--generate --dry-run`, tempcheq `--fix`
+/// tool offers one — lwoodz `remedy --dry-run`, tempcheq `--fix`
 /// without `--yes`) and captures its output, so `uni revise` can show what
 /// a remediation would actually change before `--apply` is ever passed.
 async fn capture_preview(
@@ -1747,7 +1746,7 @@ mod tests {
         let d = diagnosis(vec![tool_report("lwoodz", Status::Fail, Some(raw))]);
         let plan = build_plan(&d, Path::new("/proj"), allow_all);
         assert_eq!(plan.len(), 1);
-        assert_eq!(plan[0].probe_token, Some("--generate"));
+        assert_eq!(plan[0].probe_token, Some("remedy"));
     }
 
     #[test]

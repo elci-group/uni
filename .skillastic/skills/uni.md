@@ -112,12 +112,12 @@ uni --only lwoodz,tempcheq .
 ```bash
 uni revise .            # see the plan: which tools are flagged, what each would run
 uni revise --apply .    # actually invoke amber --propose / isopod harden /
-                         # lwoodz --generate / tempcheq --fix, etc.
+                         # lwoodz remedy / tempcheq --fix, etc.
 ```
 
 Each underlying fix command keeps its own safety defaults (e.g. `amber
---propose` never touches source on its own, `isopod harden` and `lwoodz
---generate` need their own `--apply`, `tempcheq --fix` needs `--yes`) — `uni
+--propose` never touches source on its own, `isopod harden` needs its own
+`--apply`, `tempcheq --fix` needs `--yes`) — `uni
 revise --apply` only unlocks uni's own dry-run gate, not each tool's.
 
 ### Missing applications

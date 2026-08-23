@@ -1,6 +1,7 @@
 // Copyright (c) 2026 sal
 // SPDX-License-Identifier: MIT
 mod cli;
+mod kaptaind;
 mod parsers;
 mod render;
 mod report;

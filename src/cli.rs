@@ -70,7 +70,7 @@ pub enum Command {
     Analyze(AnalyzeArgs),
 
     /// Diagnose issues, then run each flagged tool's own fix/remediation
-    /// command (amber --propose, isopod harden, lwoodz --generate,
+    /// command (amber --propose, isopod harden, lwoodz remedy,
     /// tempcheq --fix). Dry-run by default; pass --apply to actually
     /// mutate the project.
     Revise(ReviseArgs),
@@ -122,8 +122,8 @@ pub struct ReviseArgs {
     /// Actually run each tool's fix command. Without this, uni only shows
     /// what it would run (every underlying fix command is itself dry-run
     /// or plan-only by default: amber --propose never touches your source,
-    /// isopod harden and lwoodz --generate need their own --apply, and
-    /// tempcheq --fix needs --yes — uni passes those through only here).
+    /// isopod harden needs its own --apply, and tempcheq --fix needs --yes —
+    /// uni passes those through only here).
     #[arg(long)]
     pub apply: bool,
 
@@ -152,7 +152,7 @@ pub struct ReviseArgs {
     /// that rewrites the contents of files already tracked in the target
     /// (currently: tempcheq --fix, traci trace --apply). Remediations that
     /// only ever create new files (amber --propose, isopod harden, lwoodz
-    /// --generate) don't need this — --apply alone is enough for those.
+    /// remedy) don't need this — --apply alone is enough for those.
     #[arg(long)]
     pub confirm_source_rewrite: bool,
 
