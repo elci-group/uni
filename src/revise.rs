@@ -27,7 +27,7 @@
 //!     deviations in place.
 //!   - traci, chakra, and fract are **delegates**: `binary_tool` differs
 //!     from `tool` (see `PlannedRemediation::binary_tool`). All three are
-//!     handed to `traci trace --goal <text> --apply`, a benchmarked,
+//!     handed to `traci enforce --goal <text>`, a benchmarked,
 //!     model-generated-patch engine that verifies its own patch against a
 //!     complexity/diagnostic-regression budget before merging it — traci
 //!     uses it on its own findings, chakra/fract's findings (architecture
@@ -37,7 +37,7 @@
 //!     tool (chakra/fract), independent of whatever traci itself checked.
 //!
 //!   ami, bart, ferret, jeenome, and vamos have no entry here. isopod's
-//!   unmet controls are deliberately *not* delegated to `traci trace`
+//!   unmet controls are deliberately *not* delegated to `traci enforce`
 //!   either, despite chakra/fract being: they're organizational/policy
 //!   findings (security testing procedure, backup policy,
 //!   outsourced-development agreements), not something a code-patching
@@ -77,7 +77,7 @@
 //! 4. `--apply` refuses to run against a dirty git worktree — scoped to
 //!    the target directory, so a monorepo with unrelated dirty siblings
 //!    doesn't block a revise it has nothing to do with — the same
-//!    precondition `traci trace --apply` enforces. Every path uni takes
+//!    precondition `traci enforce` enforces. Every path uni takes
 //!    against the target from here on (status, add, commit, checkout,
 //!    clean) is pathspec-scoped to the target for the same reason: never
 //!    touch a sibling project sharing the same repository root.
@@ -151,8 +151,8 @@ pub enum RiskTier {
     /// Rewrites the contents of files already tracked in the target,
     /// deterministically — no model involved.
     RewritesSource,
-    /// Rewrites source via a model-generated patch (`traci trace
-    /// --apply`), even one the delegate itself already verified against a
+    /// Rewrites source via a model-generated patch (`traci enforce`),
+    /// even one the delegate itself already verified against a
     /// benchmark and a complexity/diagnostic-regression budget before
     /// merging it. Requires `--confirm-source-rewrite` (it does rewrite
     /// source) *and* `--confirm-ai-patch` — two separate trust
@@ -625,7 +625,7 @@ struct PlannedRemediation {
     /// every remediation that fixes its own findings (the common case).
     /// Different from `tool` only for a delegate: a tool with no
     /// mechanical fix of its own, routed through another tool's binary
-    /// (currently: chakra/fract findings handed to `traci trace`, since
+    /// (currently: chakra/fract findings handed to `traci enforce`, since
     /// `traci` provides verified, benchmarked, model-generated patches
     /// against any goal text — see `LEGACY_CATALOG`'s chakra/fract
     /// entries).
@@ -781,18 +781,17 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
         program: "traci",
         args: |target| {
             vec![
-                "trace".to_string(),
+                "enforce".to_string(),
                 target.display().to_string(),
                 "--goal".to_string(),
-                TRACI_TRACE_GOAL.to_string(),
-                "--apply".to_string(),
+                TRACI_ENFORCE_GOAL.to_string(),
             ]
         },
         cwd: |_target| None,
         // `traci --help`'s own usage synopsis names the subcommand this
-        // way (`traci trace [PATH...] --goal TEXT [--apply] [OPTIONS]`).
-        probe_token: "traci trace",
-        // A delegate, not a direct rewrite: `traci trace --apply`
+        // way (`traci enforce [PATH...] --goal TEXT [OPTIONS]`).
+        probe_token: "traci enforce",
+        // A delegate, not a direct rewrite: `traci enforce`
         // generates a patch via its own configured model provider,
         // benchmarks it (`cargo test --all-targets` by default) and
         // checks it against a complexity/diagnostic-regression budget,
@@ -801,16 +800,16 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
         // --confirm-source-rewrite (it rewrites source) *and*
         // --confirm-ai-patch (a model wrote the patch).
         risk: RiskTier::AiGenerated,
-        // Without --apply, `traci trace` prints its plan (goal, estimated
+        // `traci enforce` without any apply flag prints its plan (goal, estimated
         // complexity, target branch) and creates nothing — confirmed
         // side-effect-free (no branch, no commit) in the local
         // development of this integration.
         preview_args: Some(|target| {
             vec![
-                "trace".to_string(),
+                "enforce".to_string(),
                 target.display().to_string(),
                 "--goal".to_string(),
-                TRACI_TRACE_GOAL.to_string(),
+                TRACI_ENFORCE_GOAL.to_string(),
             ]
         }),
     },
@@ -818,13 +817,13 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
     // findings (architecture coverage, module entropy/cohesion) are
     // genuinely open-ended, with no single deterministic fix. Both are
     // still code-shaped, verifiable findings, so both are delegated to
-    // `traci trace`, the same benchmarked model-generated-patch engine
+    // `traci enforce`, the same benchmarked model-generated-patch engine
     // traci uses on its own findings above, just pointed at a different
     // goal. isopod's unmet controls (security testing procedure, backup
     // policy, outsourced-development agreements) are deliberately *not*
     // delegated here: they're organizational/policy findings, not
     // something a code-patching engine can meaningfully address — routing
-    // them through `traci trace` would just be a goal string it can't act
+    // them through `traci enforce` would just be a goal string it can't act
     // on, not a real remediation tier.
     LegacyEntry {
         tool: ToolId::Chakra,
@@ -834,19 +833,18 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
         program: "traci",
         args: |target| {
             vec![
-                "trace".to_string(),
+                "enforce".to_string(),
                 target.display().to_string(),
                 "--goal".to_string(),
                 CHAKRA_TRACE_GOAL.to_string(),
-                "--apply".to_string(),
             ]
         },
         cwd: |_target| None,
-        probe_token: "traci trace",
+        probe_token: "traci enforce",
         risk: RiskTier::AiGenerated,
         preview_args: Some(|target| {
             vec![
-                "trace".to_string(),
+                "enforce".to_string(),
                 target.display().to_string(),
                 "--goal".to_string(),
                 CHAKRA_TRACE_GOAL.to_string(),
@@ -861,19 +859,18 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
         program: "traci",
         args: |target| {
             vec![
-                "trace".to_string(),
+                "enforce".to_string(),
                 target.display().to_string(),
                 "--goal".to_string(),
                 FRACT_TRACE_GOAL.to_string(),
-                "--apply".to_string(),
             ]
         },
         cwd: |_target| None,
-        probe_token: "traci trace",
+        probe_token: "traci enforce",
         risk: RiskTier::AiGenerated,
         preview_args: Some(|target| {
             vec![
-                "trace".to_string(),
+                "enforce".to_string(),
                 target.display().to_string(),
                 "--goal".to_string(),
                 FRACT_TRACE_GOAL.to_string(),
@@ -882,20 +879,20 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
     },
 ];
 
-/// The goal `uni` hands to `traci trace` on its own findings' behalf.
-/// Deliberately generic — `traci trace` already runs `traci check`
+/// The goal `uni` hands to `traci enforce` on its own findings' behalf.
+/// Deliberately generic — `traci enforce` already runs `traci check`
 /// internally to know exactly what's flagged; this just names the rule
 /// families in `src/parsers/traci.rs`'s own findings so the goal reads as
 /// something a human asked for, not a placeholder.
-const TRACI_TRACE_GOAL: &str = "resolve traci's own flagged findings: untraced error paths, swallowed results, opaque panics, and detached async trace context";
+const TRACI_ENFORCE_GOAL: &str = "resolve traci's own flagged findings: untraced error paths, swallowed results, opaque panics, and detached async trace context";
 
-/// The goal handed to `traci trace` on chakra's behalf (see the
-/// `ToolId::Chakra` `LEGACY_CATALOG` entry, a delegate to `traci trace`
+/// The goal handed to `traci enforce` on chakra's behalf (see the
+/// `ToolId::Chakra` `LEGACY_CATALOG` entry, a delegate to `traci enforce`
 /// since chakra has no remediation command of its own).
 const CHAKRA_TRACE_GOAL: &str = "improve chakra's architecture data-flow map coverage: analyze more of the currently-untouched files and add explicit data-flow evidence so a higher fraction of the codebase is represented in the map";
 
-/// The goal handed to `traci trace` on fract's behalf (see the
-/// `ToolId::Fract` `LEGACY_CATALOG` entry, a delegate to `traci trace`
+/// The goal handed to `traci enforce` on fract's behalf (see the
+/// `ToolId::Fract` `LEGACY_CATALOG` entry, a delegate to `traci enforce`
 /// since fract has no remediation command of its own).
 const FRACT_TRACE_GOAL: &str = "resolve fract's flagged module entropy/cohesion warnings: reduce entropy and improve cohesion in the modules fract scored as warning or critical";
 
@@ -1280,8 +1277,8 @@ async fn commit_checkpoint(target: &Path, message: &str) -> Option<String> {
             // Exit 1 with "nothing to commit" covers two legitimate
             // shapes: the remediation wrote nothing at all (e.g. amber
             // proposing 0 replacements), or it already committed its own
-            // work (a native item, or a delegate like `traci trace
-            // --apply` that manages its own git history end to end).
+            // work (a native item, or a delegate like `traci enforce`
+            // that manages its own git history end to end).
             // Either way HEAD itself is still a meaningful checkpoint to
             // report — just not one uni made itself just now.
             eprintln!(
@@ -1812,9 +1809,9 @@ mod tests {
         let chakra = plan.iter().find(|p| p.tool.key() == "chakra").unwrap();
         assert_eq!(chakra.binary_tool.key(), "traci");
         assert_eq!(chakra.program, "traci");
-        assert_eq!(chakra.probe_token, Some("traci trace"));
+        assert_eq!(chakra.probe_token, Some("traci enforce"));
         assert_eq!(chakra.risk, RiskTier::AiGenerated);
-        assert_eq!(chakra.args[0], "trace");
+        assert_eq!(chakra.args[0], "enforce");
         assert!(chakra.args.contains(&CHAKRA_TRACE_GOAL.to_string()));
 
         let fract = plan.iter().find(|p| p.tool.key() == "fract").unwrap();
@@ -1836,21 +1833,19 @@ mod tests {
         let plan = build_plan(&d, Path::new("/proj"), allow_all);
         assert_eq!(plan.len(), 1);
         assert_eq!(plan[0].program, "traci");
-        assert_eq!(plan[0].probe_token, Some("traci trace"));
+        assert_eq!(plan[0].probe_token, Some("traci enforce"));
         assert_eq!(plan[0].risk, RiskTier::AiGenerated);
-        // Real argv shape: `traci trace <path> --goal <text> --apply` —
-        // asserted on the exact vec, not just "contains --apply somewhere",
-        // since a missing/misplaced `trace` subcommand compiles fine but
+        // Real argv shape: `traci enforce <path> --goal <text>` —
+        // asserted on the exact vec, not just "contains enforce somewhere",
+        // since a missing/misplaced `enforce` subcommand compiles fine but
         // fails at runtime with "unknown command '<path>'" (caught live
         // against the real traci binary, not by a looser assertion here).
-        assert_eq!(plan[0].args[0], "trace");
+        assert_eq!(plan[0].args[0], "enforce");
         assert_eq!(plan[0].args[1], "/proj");
         assert_eq!(plan[0].args[2], "--goal");
-        assert_eq!(plan[0].args[4], "--apply");
         let preview_args = plan[0].preview_args.as_ref().unwrap();
-        assert_eq!(preview_args[0], "trace");
+        assert_eq!(preview_args[0], "enforce");
         assert_eq!(preview_args[1], "/proj");
-        assert!(!preview_args.contains(&"--apply".to_string()));
     }
 
     #[test]
@@ -1888,7 +1883,7 @@ mod tests {
         Remediation {
             tool: "traci",
             reason: "test".to_string(),
-            command: "traci trace".to_string(),
+            command: "traci enforce".to_string(),
             risk: RiskTier::AiGenerated,
             outcome,
             detail: None,
@@ -2371,7 +2366,7 @@ exit 1
 
     #[tokio::test]
     async fn checkpoint_reports_a_tool_own_commit_it_didnt_make_itself() {
-        // Simulates a remediation (like `traci trace --apply`) that
+        // Simulates a remediation (like `traci enforce`) that
         // commits its own work directly, leaving nothing for uni's own
         // `git add -A` to stage. The checkpoint must still report the
         // resulting HEAD, not None — the change genuinely happened and is

@@ -22,8 +22,7 @@ pub struct TransactionId(String);
 
 impl TransactionId {
     /// Generate a new transaction ID from current timestamp and random suffix.
-    pub #[tracing::instrument]
-fn generate() -> Self {
+    pub fn generate() -> Self {
         let timestamp = SystemTime::now()
             .duration_since(UNIX_EPOCH)
             .unwrap_or_default()
@@ -221,8 +220,7 @@ pub struct RemediationTransaction {
 
 impl RemediationTransaction {
     /// Create a new transaction from a plan.
-    pub #[tracing::instrument]
-fn from_plan(plan: RemediationPlan, source_branch: String, source_head: String) -> Self {
+    pub fn from_plan(plan: RemediationPlan, source_branch: String, source_head: String) -> Self {
         Self {
             transaction_id: TransactionId::generate(),
             created_at: SystemTime::now()
@@ -247,21 +245,18 @@ fn from_plan(plan: RemediationPlan, source_branch: String, source_head: String) 
     }
 
     /// Log an audit entry.
-    pub #[tracing::instrument]
-fn log(&mut self, msg: impl Into<String>) {
+    pub fn log(&mut self, msg: impl Into<String>) {
         self.audit_log.push(msg.into());
     }
 
     /// Transition to a new state with logging.
-    pub #[tracing::instrument]
-fn transition(&mut self, new_state: TransactionState) {
+    pub fn transition(&mut self, new_state: TransactionState) {
         self.state = new_state;
         self.log(format!("[TRANSITIONED] → {:?}", new_state));
     }
 
     /// Record a remediation result.
-    pub #[tracing::instrument]
-fn record_result(&mut self, result: RemediationResult) {
+    pub fn record_result(&mut self, result: RemediationResult) {
         self.log(format!(
             "[RESULT] {} → exit_code: {:?}",
             result.tool, result.exit_code
@@ -270,8 +265,7 @@ fn record_result(&mut self, result: RemediationResult) {
     }
 
     /// Mark transaction as failed.
-    pub #[tracing::instrument]
-fn fail(&mut self, error: impl Into<String>) {
+    pub fn fail(&mut self, error: impl Into<String>) {
         let msg = error.into();
         self.log(format!("[FAILED] {}", msg));
         self.error = Some(msg);
@@ -279,16 +273,14 @@ fn fail(&mut self, error: impl Into<String>) {
     }
 
     /// Mark transaction as rolled back.
-    pub #[tracing::instrument]
-fn mark_rolled_back(&mut self) {
+    pub fn mark_rolled_back(&mut self) {
         self.log("[ROLLED_BACK] User worktree restored");
         self.rolled_back = true;
         self.transition(TransactionState::RolledBack);
     }
 
     /// Mark transaction as merged.
-    pub #[tracing::instrument]
-fn mark_merged(&mut self, merge_commit: String) {
+    pub fn mark_merged(&mut self, merge_commit: String) {
         self.log(format!("[MERGED] Commit: {}", merge_commit));
         self.merge_commit = Some(merge_commit);
         self.transition(TransactionState::Merged);
@@ -305,8 +297,7 @@ pub struct StalenesCheckResult {
 }
 
 impl StalenesCheckResult {
-    pub #[tracing::instrument]
-fn fresh() -> Self {
+    pub fn fresh() -> Self {
         Self {
             is_stale: false,
             reason: None,
@@ -315,8 +306,7 @@ fn fresh() -> Self {
         }
     }
 
-    pub #[tracing::instrument]
-fn stale(reason: impl Into<String>, current: String, expected: String) -> Self {
+    pub fn stale(reason: impl Into<String>, current: String, expected: String) -> Self {
         Self {
             is_stale: true,
             reason: Some(reason.into()),
@@ -340,7 +330,6 @@ pub struct RemediationOptions {
 }
 
 impl Default for RemediationOptions {
-    #[tracing::instrument]
 fn default() -> Self {
         Self {
             force_stale: false,
@@ -353,8 +342,7 @@ fn default() -> Self {
 
 /// Preserve the current working tree state (git stash + metadata).
 /// Returns a preservation record that can later restore the exact state.
-pub async #[tracing::instrument]
-fn preserve_worktree(repo_path: &std::path::Path) -> Result<WorktreePreservation, String> {
+pub async fn preserve_worktree(repo_path: &std::path::Path) -> Result<WorktreePreservation, String> {
     // Create a git stash with a descriptive message
     let timestamp = SystemTime::now()
         .duration_since(UNIX_EPOCH)
@@ -399,8 +387,7 @@ fn preserve_worktree(repo_path: &std::path::Path) -> Result<WorktreePreservation
 }
 
 /// Restore a previously preserved worktree state.
-pub async #[tracing::instrument]
-fn restore_worktree(
+pub async fn restore_worktree(
     repo_path: &std::path::Path,
     preservation: &WorktreePreservation,
 ) -> Result<(), String> {
@@ -430,8 +417,7 @@ fn restore_worktree(
 /// Perform a git operation within an isolated, clean worktree.
 /// The closure operates in isolation and its effects are captured.
 /// The original worktree is preserved and can be restored.
-pub async #[tracing::instrument]
-fn with_isolated_worktree<F, T>(
+pub async fn with_isolated_worktree<F, T>(
     repo_path: &std::path::Path,
     isolation_branch: &str,
     mut operation: F,
@@ -487,8 +473,7 @@ where
 }
 
 /// Remediation branch naming: deterministic, human-readable, collision-free.
-pub #[tracing::instrument]
-fn generate_remediation_branch_name(project: &str, operation_id: &str) -> String {
+pub fn generate_remediation_branch_name(project: &str, operation_id: &str) -> String {
     let timestamp = SystemTime::now()
         .duration_since(UNIX_EPOCH)
         .unwrap_or_default();
@@ -514,8 +499,7 @@ fn generate_remediation_branch_name(project: &str, operation_id: &str) -> String
 }
 
 /// Get the current HEAD commit SHA for a repository.
-pub async #[tracing::instrument]
-fn get_current_head(repo_path: &std::path::Path) -> Result<String, String> {
+pub async fn get_current_head(repo_path: &std::path::Path) -> Result<String, String> {
     let mut cmd = Command::new("git");
     cmd.arg("-C")
         .arg(repo_path)
@@ -536,8 +520,7 @@ fn get_current_head(repo_path: &std::path::Path) -> Result<String, String> {
 
 /// Calculate a hash of working tree state.
 /// Uses git diff to capture all uncommitted changes.
-pub async #[tracing::instrument]
-fn hash_worktree_state(repo_path: &std::path::Path) -> Result<String, String> {
+pub async fn hash_worktree_state(repo_path: &std::path::Path) -> Result<String, String> {
     let mut cmd = Command::new("git");
     cmd.arg("-C")
         .arg(repo_path)
@@ -553,8 +536,7 @@ fn hash_worktree_state(repo_path: &std::path::Path) -> Result<String, String> {
 }
 
 /// Calculate a hash of the git index state.
-pub async #[tracing::instrument]
-fn hash_index_state(repo_path: &std::path::Path) -> Result<String, String> {
+pub async fn hash_index_state(repo_path: &std::path::Path) -> Result<String, String> {
     let mut cmd = Command::new("git");
     cmd.arg("-C")
         .arg(repo_path)
@@ -570,8 +552,7 @@ fn hash_index_state(repo_path: &std::path::Path) -> Result<String, String> {
 }
 
 /// Create a fingerprint of the current repository state.
-pub async #[tracing::instrument]
-fn fingerprint_state(
+pub async fn fingerprint_state(
     repo_path: &std::path::Path,
     uni_version: &str,
     tool_versions: HashMap<String, String>,
@@ -597,8 +578,7 @@ fn fingerprint_state(
 
 /// Check if a remediation plan is stale.
 /// Returns a detailed staleness check result.
-pub async #[tracing::instrument]
-fn check_plan_staleness(
+pub async fn check_plan_staleness(
     repo_path: &std::path::Path,
     fingerprint: &AnalysisFingerprint,
 ) -> Result<StalenesCheckResult, String> {
@@ -640,12 +620,127 @@ fn check_plan_staleness(
     Ok(StalenesCheckResult::fresh())
 }
 
+/// Probe a tool binary for capability support via --help output.
+pub async fn probe_tool_capability(
+    tool_name: &str,
+    tool_path: &std::path::Path,
+    capability: &str,
+) -> Result<bool, String> {
+    let mut cmd = Command::new(tool_path);
+    cmd.arg("--help");
+
+    let output = cmd
+        .output()
+        .map_err(|e| format!("Failed to run {}: {e}", tool_name))?;
+
+    let help_text = String::from_utf8_lossy(&output.stdout);
+    let stderr = String::from_utf8_lossy(&output.stderr);
+    let combined = format!("{}\n{}", help_text, stderr);
+
+    // Check if the capability string appears in the help output
+    Ok(combined.contains(capability))
+}
+
+/// Discover all capabilities supported by a tool.
+pub async fn discover_tool_capabilities(
+    tool_name: &str,
+    tool_path: &std::path::Path,
+) -> Result<ToolCapabilities, String> {
+    // Get version information
+    let version = get_tool_version(tool_path).await.ok();
+
+    // Known capability probes per tool
+    let probes = match tool_name {
+        "isopod" => vec![
+            ("harden", "harden"),
+            ("remediate", "remediate"),
+        ],
+        "amber" => vec![
+            ("propose", "propose"),
+            ("remediate", "remediate"),
+        ],
+        "tempcheq" => vec![
+            ("fix", "fix"),
+            ("remediate", "remediate"),
+        ],
+        "traci" => vec![
+            ("trace", "trace"),
+            ("apply", "apply"),
+        ],
+        "lwoodz" => vec![
+            ("generate", "generate"),
+        ],
+        _ => vec![], // Unknown tool
+    };
+
+    let mut capabilities = Vec::new();
+
+    for (name, probe_string) in probes {
+        let supported = probe_tool_capability(tool_name, tool_path, probe_string)
+            .await
+            .unwrap_or(false);
+
+        capabilities.push(ToolCapability {
+            tool: tool_name.to_string(),
+            capability: name.to_string(),
+            supported,
+            version: version.clone(),
+        });
+    }
+
+    Ok(ToolCapabilities { capabilities })
+}
+
+/// Get the version of a tool.
+async fn get_tool_version(tool_path: &std::path::Path) -> Result<String, String> {
+    let mut cmd = Command::new(tool_path);
+    cmd.arg("--version");
+
+    let output = cmd
+        .output()
+        .map_err(|e| format!("Failed to get version: {e}"))?;
+
+    Ok(String::from_utf8_lossy(&output.stdout)
+        .trim()
+        .to_string())
+}
+
+/// Check if a tool can execute a specific remediation.
+pub async fn can_remediate(
+    tool_path: &std::path::Path,
+    required_capabilities: &[String],
+) -> Result<bool, String> {
+    if required_capabilities.is_empty() {
+        return Ok(true);
+    }
+
+    // Probe the tool's --help for capability strings
+    let mut cmd = Command::new(tool_path);
+    cmd.arg("--help");
+
+    let output = cmd
+        .output()
+        .map_err(|e| format!("Failed to probe tool: {e}"))?;
+
+    let help_text = String::from_utf8_lossy(&output.stdout);
+    let stderr = String::from_utf8_lossy(&output.stderr);
+    let combined = format!("{}\n{}", help_text, stderr);
+
+    // All required capabilities must be present
+    for cap in required_capabilities {
+        if !combined.contains(cap) {
+            return Ok(false);
+        }
+    }
+
+    Ok(true)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
-    #[tracing::instrument]
 fn transaction_id_is_unique() {
         let id1 = TransactionId::generate();
         let id2 = TransactionId::generate();
@@ -653,7 +748,6 @@ fn transaction_id_is_unique() {
     }
 
     #[test]
-    #[tracing::instrument]
 fn transaction_state_transitions() {
         let plan = RemediationPlan {
             plan_id: "test".to_string(),
