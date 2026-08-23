@@ -619,6 +619,94 @@ pub async fn execute(args: &ReviseArgs) -> Result<ReviseReport, String> {
     })
 }
 
+/// Build a Kaptaind RemediationPlan from a revise analysis.
+/// This bridges UNI (analysis) to Kaptaind (execution).
+pub async fn build_kaptaind_plan(
+    diagnosis: &Report,
+    target: &Path,
+    remediations: &[Remediation],
+) -> Result<crate::kaptaind::RemediationPlan, String> {
+    use std::collections::HashMap;
+    use uuid::Uuid;
+
+    let plan_id = Uuid::new_v4().to_string();
+    let analysis_id = format!("uni-{}", Uuid::new_v4().to_string());
+
+    // Extract tool versions from diagnosis
+    // Note: Tool versions are not available in ToolReport yet
+    let tool_versions = HashMap::new();
+
+    // Create analysis fingerprint
+    let fingerprint = crate::kaptaind::fingerprint_state(
+        target,
+        env!("CARGO_PKG_VERSION"),
+        tool_versions,
+        &plan_id,
+    )
+    .await?;
+
+    // Convert UNI remediations to Kaptaind PlannedRemediations
+    let mut planned = Vec::new();
+    for rem in remediations {
+        if matches!(rem.outcome, Outcome::Unavailable) {
+            // Skip unavailable remediations
+            continue;
+        }
+
+        let remediation_class = match rem.risk {
+            RiskTier::NewFilesOnly => crate::kaptaind::RemediationClass::Proposal,
+            RiskTier::RewritesSource => crate::kaptaind::RemediationClass::MechanicalFix,
+            RiskTier::AiGenerated => crate::kaptaind::RemediationClass::AiGenerated,
+        };
+
+        planned.push(crate::kaptaind::PlannedRemediation {
+            tool: rem.tool.to_string(),
+            reason: rem.reason.clone(),
+            command: rem.command.clone(),
+            expected_files: Vec::new(), // TODO: extract from tool output
+            remediation_class,
+            complexity: None, // TODO: extract from AI patch metadata
+            required_capabilities: Vec::new(), // TODO: populate based on tool
+            verify_command: None, // TODO: tool-specific verification
+        });
+    }
+
+    // Calculate total complexity
+    let total_complexity = planned
+        .iter()
+        .filter_map(|p| p.complexity)
+        .map(|c| c as u32)
+        .sum();
+
+    // Risk assessment summary
+    let risk_assessment = if planned.iter().any(|p| p.remediation_class == crate::kaptaind::RemediationClass::AiGenerated) {
+        "high".to_string()
+    } else if planned.iter().any(|p| p.remediation_class == crate::kaptaind::RemediationClass::MechanicalFix) {
+        "medium".to_string()
+    } else {
+        "low".to_string()
+    };
+
+    Ok(crate::kaptaind::RemediationPlan {
+        plan_id,
+        project: diagnosis.target.clone(),
+        analysis_id,
+        analysis_fingerprint: fingerprint,
+        remediations: planned,
+        total_complexity,
+        risk_assessment,
+    })
+}
+
+/// Check if remediation plan is stale and needs re-analysis.
+pub async fn check_plan_staleness(
+    target: &Path,
+    plan: &crate::kaptaind::RemediationPlan,
+) -> Result<bool, String> {
+    let staleness = crate::kaptaind::check_plan_staleness(target, &plan.analysis_fingerprint).await?;
+    Ok(staleness.is_stale)
+}
+
 struct PlannedRemediation {
     tool: ToolId,
     /// Which binary to actually resolve and spawn. Equal to `tool` for
