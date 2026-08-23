@@ -30,6 +30,11 @@ impl TransactionId {
         let random: u32 = (std::process::id() as u32).wrapping_mul(timestamp as u32);
         Self(format!("KAP-{}-{:08x}", timestamp, random))
     }
+
+    /// Get the transaction ID as a string reference.
+    pub fn as_str(&self) -> &str {
+        &self.0
+    }
 }
 
 /// Repository state classification.
@@ -734,6 +739,75 @@ pub async fn can_remediate(
     }
 
     Ok(true)
+}
+
+/// Persistence layer for remediation transactions.
+pub mod persistence {
+    use super::*;
+    use std::fs;
+
+    /// Save a transaction to disk for durability and recovery.
+    pub async fn save_transaction(
+        txn: &RemediationTransaction,
+        repo_path: &std::path::Path,
+    ) -> Result<(), String> {
+        let txn_dir = repo_path.join(".kaptaind").join("transactions");
+        fs::create_dir_all(&txn_dir)
+            .map_err(|e| format!("Failed to create transaction directory: {e}"))?;
+
+        let txn_file = txn_dir.join(format!("{}.json", txn.transaction_id.0));
+        let json = serde_json::to_string_pretty(txn)
+            .map_err(|e| format!("Failed to serialize transaction: {e}"))?;
+
+        fs::write(&txn_file, json)
+            .map_err(|e| format!("Failed to write transaction file: {e}"))?;
+
+        Ok(())
+    }
+
+    /// Load a previously saved transaction from disk.
+    pub async fn load_transaction(
+        txn_id: &TransactionId,
+        repo_path: &std::path::Path,
+    ) -> Result<RemediationTransaction, String> {
+        let txn_file = repo_path
+            .join(".kaptaind")
+            .join("transactions")
+            .join(format!("{}.json", txn_id.0));
+
+        let json = fs::read_to_string(&txn_file)
+            .map_err(|e| format!("Failed to read transaction file: {e}"))?;
+
+        serde_json::from_str(&json)
+            .map_err(|e| format!("Failed to parse transaction: {e}"))
+    }
+
+    /// List all saved transactions in a repository.
+    pub async fn list_transactions(
+        repo_path: &std::path::Path,
+    ) -> Result<Vec<TransactionId>, String> {
+        let txn_dir = repo_path.join(".kaptaind").join("transactions");
+
+        if !txn_dir.exists() {
+            return Ok(Vec::new());
+        }
+
+        let mut txns = Vec::new();
+        let entries = fs::read_dir(&txn_dir)
+            .map_err(|e| format!("Failed to read transactions directory: {e}"))?;
+
+        for entry in entries {
+            let entry = entry.map_err(|e| format!("Failed to read directory entry: {e}"))?;
+            let path = entry.path();
+            if path.extension().and_then(|s| s.to_str()) == Some("json") {
+                if let Some(filename) = path.file_stem().and_then(|s| s.to_str()) {
+                    txns.push(TransactionId(filename.to_string()));
+                }
+            }
+        }
+
+        Ok(txns)
+    }
 }
 
 #[cfg(test)]

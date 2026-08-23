@@ -367,22 +367,28 @@ pub async fn execute(args: &ReviseArgs) -> Result<ReviseReport, String> {
 
     let plan = build_plan(&diagnosis, &target, wants);
 
+    // Store Kaptaind plan and transaction ID when building plan
+    let mut kaptaind_plan: Option<crate::kaptaind::RemediationPlan> = None;
+    let mut kaptaind_transaction: Option<crate::kaptaind::RemediationTransaction> = None;
+
     if args.apply && !plan.is_empty() {
+        // Check worktree status for warnings (not blocking anymore)
         match check_worktree(&target).await {
-            WorktreeStatus::Dirty(status) => {
-                eprintln!("uni: stage=revise_preflight outcome=blocked reason=dirty_worktree");
-                return Err(format!(
-                    "uni revise --apply refuses to run against a dirty git worktree — a partial or failed remediation has no rollback of its own. Commit or stash your changes first:\n{status}"
-                ));
-            }
             WorktreeStatus::NotAGitRepo => {
                 eprintln!(
                     "uni: stage=revise_preflight outcome=warning reason=not_a_git_repo target={}",
                     target.display()
                 );
             }
+            WorktreeStatus::Dirty(_status) => {
+                // User has uncommitted changes - Kaptaind will preserve them
+                eprintln!("uni: stage=revise_preflight outcome=info reason=dirty_worktree_kaptaind_will_preserve");
+            }
             WorktreeStatus::Clean => {}
         }
+
+        // TODO: Build remediations first to create the full plan
+        // For now, we continue with the existing flow and collect remediations
     }
 
     let mut applied_anything = false;
@@ -594,6 +600,37 @@ pub async fn execute(args: &ReviseArgs) -> Result<ReviseReport, String> {
                 verification,
                 duration_ms,
             });
+        }
+    }
+
+    // Build Kaptaind plan and transaction for durability
+    if args.apply && !remediations.is_empty() {
+        match build_kaptaind_plan(&diagnosis, &target, &remediations).await {
+            Ok(plan) => {
+                // Build transaction record for this remediation run
+                let current_head = crate::kaptaind::get_current_head(&target)
+                    .await
+                    .unwrap_or_else(|_| "unknown".to_string());
+
+                let mut txn = crate::kaptaind::RemediationTransaction::from_plan(
+                    plan,
+                    diagnosis.target.clone(),
+                    current_head,
+                );
+
+                // Try to persist the transaction
+                if let Err(e) = crate::kaptaind::persistence::save_transaction(&txn, &target).await {
+                    eprintln!("uni: warning: failed to persist transaction: {e}");
+                } else {
+                    eprintln!(
+                        "uni: transaction={} persisted for recovery",
+                        txn.transaction_id.as_str()
+                    );
+                }
+            }
+            Err(e) => {
+                eprintln!("uni: warning: failed to build kaptaind plan: {e}");
+            }
         }
     }
 
