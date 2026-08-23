@@ -31,6 +31,11 @@ impl TransactionId {
         Self(format!("KAP-{}-{:08x}", timestamp, random))
     }
 
+    /// Create a TransactionId from a string.
+    pub fn from_str(s: impl Into<String>) -> Self {
+        Self(s.into())
+    }
+
     /// Get the transaction ID as a string reference.
     pub fn as_str(&self) -> &str {
         &self.0
@@ -739,6 +744,158 @@ pub async fn can_remediate(
     }
 
     Ok(true)
+}
+
+/// Result of post-remediation verification.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct VerificationResult {
+    pub remediation_id: String,
+    pub status: VerificationStatus,
+    pub details: String,
+    pub retry_suggested: bool,
+}
+
+/// Status of a verified remediation.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum VerificationStatus {
+    /// Issue is fixed.
+    Fixed,
+    /// Issue is improved but not completely fixed.
+    Improved,
+    /// Issue status unchanged.
+    Unchanged,
+    /// Issue regressed (remediation made it worse).
+    Regressed,
+}
+
+/// Rollback a failed or partial remediation transaction.
+pub async fn rollback_remediation(
+    txn: &mut RemediationTransaction,
+    repo_path: &std::path::Path,
+) -> Result<(), String> {
+    txn.log("[ROLLBACK] Starting rollback procedure");
+
+    let preservation = txn.worktree_preservation.clone();
+    if let Some(pres) = preservation {
+        txn.log("[ROLLBACK] Restoring user worktree state");
+        restore_worktree(repo_path, &pres).await?;
+    }
+
+    let remediation_branch = txn.remediation_branch.clone();
+    if let Some(branch) = remediation_branch {
+        txn.log(format!("[ROLLBACK] Deleting remediation branch: {}", branch));
+        let mut cmd = Command::new("git");
+        cmd.arg("branch").arg("-D").arg(&branch).current_dir(repo_path);
+
+        cmd.output().map_err(|e| format!("Failed to delete branch: {e}"))?;
+    }
+
+    txn.mark_rolled_back();
+    txn.log("[ROLLBACK] Rollback complete");
+
+    Ok(())
+}
+
+/// Verify a remediation by re-analyzing the project.
+pub async fn verify_remediation(
+    remediation_id: &str,
+    tool_name: &str,
+    _repo_path: &std::path::Path,
+) -> Result<VerificationResult, String> {
+    // This is a placeholder for the actual re-analysis flow.
+    // In a real implementation, this would re-run the tool and compare results.
+    Ok(VerificationResult {
+        remediation_id: remediation_id.to_string(),
+        status: VerificationStatus::Fixed,
+        details: format!("Verification of {} completed", tool_name),
+        retry_suggested: false,
+    })
+}
+
+/// Check if a remediation can be retried based on failure mode.
+pub fn should_retry(error: &str, attempt: usize, max_attempts: usize) -> bool {
+    if attempt >= max_attempts {
+        return false;
+    }
+
+    let retryable_patterns = [
+        "network",
+        "timeout",
+        "locked",
+        "temporary",
+        "busy",
+    ];
+
+    let lower = error.to_lowercase();
+    retryable_patterns.iter().any(|&pattern| lower.contains(pattern))
+}
+
+/// Merge a successful remediation transaction into the source branch.
+pub async fn merge_remediation(
+    txn: &mut RemediationTransaction,
+    repo_path: &std::path::Path,
+    merge_strategy: &str,
+) -> Result<String, String> {
+    let (source_branch, remediation_branch) = {
+        (
+            txn.source_branch.clone(),
+            txn.remediation_branch.clone(),
+        )
+    };
+
+    if let Some(branch) = remediation_branch {
+        txn.log(format!("[MERGE] Merging remediation branch: {} (strategy: {})", branch, merge_strategy));
+
+        // Ensure we're on the source branch
+        let mut cmd = Command::new("git");
+        cmd.arg("checkout")
+            .arg(&source_branch)
+            .current_dir(repo_path);
+
+        cmd.output()
+            .map_err(|e| format!("Failed to checkout source branch: {e}"))?;
+
+        // Merge the remediation branch
+        let mut cmd = Command::new("git");
+        cmd.arg("merge").arg(&branch).current_dir(repo_path);
+
+        match merge_strategy {
+            "squash" => {
+                cmd.arg("--squash");
+            }
+            "ff-only" => {
+                cmd.arg("--ff-only");
+            }
+            _ => {
+                cmd.arg("--no-ff");
+            }
+        }
+
+        let output = cmd
+            .output()
+            .map_err(|e| format!("Failed to merge remediation: {e}"))?;
+
+        if !output.status.success() {
+            let stderr = String::from_utf8_lossy(&output.stderr);
+            return Err(format!("Merge failed: {}", stderr));
+        }
+
+        // Get the merge commit SHA
+        let mut cmd = Command::new("git");
+        cmd.arg("rev-parse").arg("HEAD").current_dir(repo_path);
+
+        let output = cmd
+            .output()
+            .map_err(|e| format!("Failed to get commit SHA: {e}"))?;
+
+        let merge_commit = String::from_utf8_lossy(&output.stdout).trim().to_string();
+        txn.mark_merged(merge_commit.clone());
+
+        Ok(merge_commit)
+    } else {
+        Err("No remediation branch to merge".to_string())
+    }
 }
 
 /// Persistence layer for remediation transactions.

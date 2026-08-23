@@ -59,3 +59,31 @@ execution = "trusted"
 # instance_id = "kaptaind-a"   # stable identifier for this instance
 # upgrade_handoff_timeout_ms = 30000
 # mode = "auto"                # "auto", "leader", "standby", or "observer"
+
+[remediation]
+# Kaptaind remediation transaction configuration
+enabled = true
+default_merge_strategy = "no-ff"
+max_verification_iterations = 3
+require_ai_confirmation = true
+auto_merge = false
+
+[remediation.transaction]
+retention_days = 30
+auto_cleanup = true
+transaction_dir = ".kaptaind/transactions"
+audit_logging = true
+
+[remediation.worktree]
+preserve_user_changes = true
+stash_prefix = "kaptaind-preserved"
+
+[remediation.classification]
+security_block_min_severity = "high"
+ai_confirmation_required_complexity = 50
+
+[remediation.logging]
+level = "info"
+log_git_commands = true
+log_tool_output = true
+log_remediation_details = true

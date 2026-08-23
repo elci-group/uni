@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 mod cli;
 mod kaptaind;
+mod kaptaind_cli;
 mod parsers;
 mod render;
 mod report;
