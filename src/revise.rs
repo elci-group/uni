@@ -1436,47 +1436,79 @@ async fn verify_remediation(
 
 pub fn human(report: &ReviseReport) -> String {
     let mut out = String::new();
-    out.push_str(&format!("uni revise — {}\n", report.target));
-    out.push_str(if report.apply {
-        "mode: apply\n\n"
-    } else {
-        "mode: dry-run (pass --apply to actually run these)\n\n"
-    });
+
+    // Header with styling
+    out.push_str("╔═══════════════════════════════════════════════════════════════════════════════╗\n");
+    out.push_str(&format!("║ 🔧 UNI REVISE — Automated Remediation Engine  \n"));
+    out.push_str("╠═══════════════════════════════════════════════════════════════════════════════╣\n");
+    out.push_str(&format!("║ 📍 Target: {} \n", report.target));
+    out.push_str(&format!(
+        "║ 🎯 Mode: {:<62}\n",
+        if report.apply {
+            "🚀 APPLY (live remediation active)"
+        } else {
+            "🏁 DRY-RUN (pass --apply to execute)"
+        }
+    ));
+    out.push_str("╚═══════════════════════════════════════════════════════════════════════════════╝\n\n");
 
     if report.remediations.is_empty() {
-        out.push_str("nothing to revise — every tool with a remediation command is clean.\n");
-        out.push_str(&format!("outcome: {}\n", run_outcome_word(report.outcome)));
+        out.push_str("✨ No remediations needed — every tool with remediation support is clean!\n\n");
+        out.push_str(&format!("🎊 Final Outcome: {}\n", run_outcome_emoji_word(report.outcome)));
         return out;
     }
 
-    for r in &report.remediations {
+    out.push_str(&format!(
+        "🔍 Found {} remediation(s) across tool suite:\n",
+        report.remediations.len()
+    ));
+    out.push_str("═══════════════════════════════════════════════════════════════════════════════════\n\n");
+
+    for (idx, r) in report.remediations.iter().enumerate() {
+        let outcome_emoji = outcome_emoji(r.outcome);
+        let risk_emoji = risk_emoji(r.risk);
+
         out.push_str(&format!(
-            "{} [{}] ({})\n",
+            "{} [{:2}] {:<15} {} [{}] {}\n",
+            outcome_emoji,
+            idx + 1,
             r.tool,
             outcome_word(r.outcome),
+            risk_emoji,
             risk_word(r.risk)
         ));
-        out.push_str(&format!("  reason: {}\n", r.reason));
-        out.push_str(&format!("  command: {}\n", r.command));
+
+        out.push_str(&format!("     📌 Reason: {}\n", r.reason));
+        out.push_str(&format!("     💻 Command: {}\n", r.command));
+
         if let Some(detail) = &r.detail {
-            out.push_str(&format!("  detail: {detail}\n"));
+            out.push_str(&format!("     ℹ️  Detail: {}\n", detail));
         }
+
         if let Some(preview) = &r.preview {
-            out.push_str(&format!("  preview: {preview}\n"));
+            out.push_str(&format!("     👁️  Preview:\n"));
+            for line in preview.lines() {
+                out.push_str(&format!("        {}\n", line));
+            }
         }
+
         if let Some(checkpoint) = &r.checkpoint {
-            out.push_str(&format!("  checkpoint: {checkpoint}\n"));
+            out.push_str(&format!("     ✓ Checkpoint: {}\n", checkpoint));
         }
+
         if r.rolled_back {
-            out.push_str("  rolled back: yes\n");
+            out.push_str("     ⏮️  Rolled back: yes (due to failure or verification issue)\n");
         }
+
         if let Some(v) = &r.verification {
+            let verify_emoji = verify_emoji(v.result);
             out.push_str(&format!(
-                "  verified: {:?} {:?} -> {:?} {:?} ({})\n",
-                v.before_status,
-                v.before_score,
-                v.after_status,
-                v.after_score,
+                "     {} Verified: {} {} → {} {} ({})\n",
+                verify_emoji,
+                crate::render::status_word(v.before_status),
+                v.before_score.map(|s| format!("{:.1}", s)).unwrap_or_default(),
+                crate::render::status_word(v.after_status),
+                v.after_score.map(|s| format!("{:.1}", s)).unwrap_or_default(),
                 verify_word(v.result)
             ));
         }
@@ -1484,22 +1516,39 @@ pub fn human(report: &ReviseReport) -> String {
     }
 
     if let Some(post) = &report.post {
-        out.push_str("--- post-revise snapshot ---\n");
+        out.push_str("═══════════════════════════════════════════════════════════════════════════════════\n");
+        out.push_str("📊 POST-REMEDIATION SNAPSHOT:\n");
+        out.push_str("═══════════════════════════════════════════════════════════════════════════════════\n");
         out.push_str(&crate::render::human(post));
         out.push('\n');
     }
 
-    out.push_str(&format!("outcome: {}\n", run_outcome_word(report.outcome)));
+    out.push_str("═══════════════════════════════════════════════════════════════════════════════════\n");
+    out.push_str(&format!(
+        "🎯 FINAL OUTCOME: {}\n",
+        run_outcome_emoji_word(report.outcome)
+    ));
+
     out
 }
 
-fn run_outcome_word(o: RunOutcome) -> &'static str {
+fn run_outcome_emoji_word(o: RunOutcome) -> String {
     match o {
-        RunOutcome::Clean => "clean — nothing to revise",
-        RunOutcome::Planned => "planned — dry run found remediations to apply",
-        RunOutcome::FixedCleanly => "fixed cleanly",
-        RunOutcome::Partial => "partial — see remediations above",
-        RunOutcome::Regressed => "regressed — see remediations above",
+        RunOutcome::Clean => "✨ Clean — nothing to revise".to_string(),
+        RunOutcome::Planned => "📋 Planned — dry run found remediations to apply".to_string(),
+        RunOutcome::FixedCleanly => "🎉 Fixed Cleanly — all remediations applied successfully!".to_string(),
+        RunOutcome::Partial => "⚠️  Partial — some remediations applied, see details above".to_string(),
+        RunOutcome::Regressed => "🔴 Regressed — some remediations failed or worsened the situation".to_string(),
+    }
+}
+
+fn outcome_emoji(o: Outcome) -> &'static str {
+    match o {
+        Outcome::Planned => "📋",
+        Outcome::RequiresConfirmation => "🔐",
+        Outcome::Applied => "✅",
+        Outcome::Failed => "❌",
+        Outcome::Unavailable => "🚫",
     }
 }
 
@@ -1513,11 +1562,28 @@ fn outcome_word(o: Outcome) -> &'static str {
     }
 }
 
+fn risk_emoji(r: RiskTier) -> &'static str {
+    match r {
+        RiskTier::NewFilesOnly => "📄",
+        RiskTier::RewritesSource => "⚠️",
+        RiskTier::AiGenerated => "🤖",
+    }
+}
+
 fn risk_word(r: RiskTier) -> &'static str {
     match r {
         RiskTier::NewFilesOnly => "new files only",
         RiskTier::RewritesSource => "rewrites source",
         RiskTier::AiGenerated => "AI-generated patch",
+    }
+}
+
+fn verify_emoji(v: VerifyResult) -> &'static str {
+    match v {
+        VerifyResult::Fixed => "✅",
+        VerifyResult::Improved => "📈",
+        VerifyResult::Unchanged => "➡️",
+        VerifyResult::Regressed => "📉",
     }
 }
 
