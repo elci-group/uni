@@ -34,6 +34,9 @@ required = true
 [trust]
 execution = "trusted"
 
+[operation]
+mode = "actuate"
+
 # [staging]
 # mode = "cluster"    # "cluster" (default, only observed changes), "pattern",
 #                     # or "all" (git add -A; warns at startup, aborts on

@@ -55,6 +55,13 @@ health. A project grade is provisional whenever analysis integrity is degraded.
 In an interactive terminal, a successful Fract detail section uses Fract's
 deterministic wave reveal. CI, redirected output, `TERM=dumb`, and JSON output
 remain static, so machine-readable and captured reports are byte-stable.
+Interactive human reports also preserve each source tool's native terminal
+palette instead of imposing a Uni-wide status scheme: for example Bart keeps
+its blue/cyan depth colors, Chakra its mauve brand accent, Ferret its
+cyan-plus-severity treatment, Fract its 256-color glass palette, and Traci its
+cyan framing with native severity colors. Tools whose own human renderer is
+plain, including Lwoodz and Vamos, remain uncolored. `NO_COLOR` disables all
+ANSI styling.
 Not-applicable and zero-observation results are ungraded; unknown Isopod
 controls reduce coverage rather than counting as failures, and compliance is
 not graded below 80% assessment coverage. See

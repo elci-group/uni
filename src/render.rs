@@ -1,8 +1,156 @@
 // Copyright (c) 2026 sal
 // SPDX-License-Identifier: MIT
+use std::io::{self, IsTerminal};
 use std::ops::Range;
 
-use crate::report::{Execution, IntegrityStatus, Report, Status};
+use crate::report::{Execution, IntegrityStatus, Report, Status, ToolReport};
+
+#[derive(Clone, Copy)]
+struct Style {
+    color: bool,
+}
+
+impl Style {
+    fn stdout() -> Self {
+        Self {
+            color: io::stdout().is_terminal()
+                && std::env::var_os("NO_COLOR").is_none()
+                && !matches!(std::env::var("TERM").as_deref(), Ok("dumb")),
+        }
+    }
+
+    fn paint(self, code: Option<&str>, text: impl AsRef<str>) -> String {
+        let text = text.as_ref();
+        match (self.color, code) {
+            (true, Some(code)) => format!("\x1b[{code}m{text}\x1b[0m"),
+            _ => text.to_string(),
+        }
+    }
+
+    fn tool_name(self, tool: &str, text: impl AsRef<str>) -> String {
+        self.paint(tool_accent(tool), text)
+    }
+
+    fn status(self, tool: &ToolReport, text: impl AsRef<str>) -> String {
+        self.paint(tool_status_code(tool), text)
+    }
+
+    fn finding(self, tool: &ToolReport, finding: &str, index: usize) -> String {
+        self.paint(finding_code(tool, finding, index), finding)
+    }
+}
+
+fn tool_accent(tool: &str) -> Option<&'static str> {
+    match tool {
+        "amber" => Some("1;36"),
+        "ami" => Some("1;36"),
+        "bart" => Some("1;34"),
+        "chakra" => Some("1;38;2;203;166;247"),
+        "ferret" => Some("1;36"),
+        "fract" => Some("1;38;5;147"),
+        "isopod" => Some("1;36"),
+        "jeenome" => Some("36"),
+        "traci" => Some("36"),
+        // These tools intentionally have no native ANSI presentation.
+        "lwoodz" | "tempcheq" | "vamos" => None,
+        _ => None,
+    }
+}
+
+fn tool_status_code(tool: &ToolReport) -> Option<&'static str> {
+    if matches!(tool.tool, "lwoodz" | "vamos") {
+        return None;
+    }
+    match tool.tool {
+        "bart" if tool.status == Status::Ok => Some("1;34"),
+        "chakra" if tool.status == Status::Ok => Some("1;38;2;203;166;247"),
+        "ferret" => match tool.status {
+            Status::Fail | Status::Error => Some("1;31"),
+            Status::Warn => Some("1;33"),
+            Status::Ok | Status::Skipped | Status::NotApplicable | Status::NoData => Some("2"),
+            Status::Unavailable => Some("1;31"),
+        },
+        "fract" => match tool.status {
+            Status::Ok => Some("38;5;76"),
+            Status::Warn => Some("38;5;208"),
+            Status::Fail | Status::Error | Status::Unavailable => Some("1;38;5;196"),
+            Status::Skipped | Status::NotApplicable | Status::NoData => Some("38;5;245"),
+        },
+        "traci" => traci_status_code(tool),
+        _ => match tool.status {
+            Status::Ok => Some("1;32"),
+            Status::Warn => Some("1;33"),
+            Status::Fail | Status::Error | Status::Unavailable => Some("1;31"),
+            Status::Skipped | Status::NotApplicable | Status::NoData => Some("2"),
+        },
+    }
+}
+
+fn traci_status_code(tool: &ToolReport) -> Option<&'static str> {
+    let details = format!("{} {}", tool.summary, tool.findings.join(" ")).to_lowercase();
+    if details.contains("critical") {
+        Some("1;35")
+    } else if details.contains("error") || matches!(tool.status, Status::Fail | Status::Error) {
+        Some("1;31")
+    } else if details.contains("warning") || tool.status == Status::Warn {
+        Some("1;33")
+    } else if details.contains("info") {
+        Some("1;34")
+    } else if tool.status == Status::Ok {
+        Some("1;32")
+    } else {
+        Some("2")
+    }
+}
+
+fn finding_code(tool: &ToolReport, finding: &str, index: usize) -> Option<&'static str> {
+    let finding = finding.to_lowercase();
+    match tool.tool {
+        "amber" if finding.contains("security_block") || finding.contains("block") => Some("1;31"),
+        "amber" if finding.contains("propose") || finding.contains("review") => Some("33"),
+        "amber" if finding.contains("proceed") => Some("32"),
+        "amber" => Some("93"),
+        "ami" => Some("34"),
+        "bart" => Some(["34", "36", "32", "33", "35"][index % 5]),
+        "chakra" if finding.contains("observed") => Some("1;32"),
+        "chakra" if finding.contains("derived") => Some("1;36"),
+        "chakra" if finding.contains("inferred") => Some("1;35"),
+        "chakra" if finding.contains("projected") => Some("1;34"),
+        "chakra" => Some("1;33"),
+        "ferret" if finding.contains("[critical]") || finding.contains("[major]") => Some("1;31"),
+        "ferret" if finding.contains("[minor]") => Some("1;33"),
+        "ferret" if finding.contains("[info]") => Some("2"),
+        "ferret" => Some("36"),
+        "fract" if finding.contains("critical") => Some("1;38;5;196"),
+        "fract" if finding.contains("warning") => Some("38;5;208"),
+        "fract" => Some("38;5;153"),
+        "isopod" if finding.contains("pass") => Some("32"),
+        "isopod" if finding.contains("fail") => Some("31"),
+        "isopod" if finding.contains("warn") => Some("33"),
+        "isopod" if finding.contains("unknown") => Some("2"),
+        "jeenome" if finding.contains("filesystem") => Some("34"),
+        "jeenome" if finding.contains("network") => Some("32"),
+        "jeenome" if finding.contains("process") => Some("35"),
+        "jeenome" if finding.contains("memory") => Some("33"),
+        "jeenome" if finding.contains("signal") || finding.contains("error") => Some("31"),
+        "jeenome" if finding.contains("timing") => Some("36"),
+        "tempcheq" => tool_status_code(tool),
+        "traci" if finding.contains("critical") => Some("1;35"),
+        "traci" if finding.contains("error") => Some("1;31"),
+        "traci" if finding.contains("warning") => Some("1;33"),
+        "traci" if finding.contains("info") => Some("1;34"),
+        "lwoodz" | "vamos" => None,
+        _ => tool_status_code(tool),
+    }
+}
+
+fn pad_right(text: &str, width: usize) -> String {
+    format!("{text:<width$}")
+}
+
+fn pad_left(text: &str, width: usize) -> String {
+    format!("{text:>width$}")
+}
 
 pub struct HumanReport {
     pub text: String,
@@ -14,6 +162,10 @@ pub fn human(report: &Report) -> String {
 }
 
 pub fn human_report(report: &Report) -> HumanReport {
+    human_report_styled(report, Style::stdout())
+}
+
+fn human_report_styled(report: &Report, style: Style) -> HumanReport {
     let mut out = String::new();
     let mut fract_section = None;
 
@@ -119,15 +271,20 @@ pub fn human_report(report: &Report) -> HumanReport {
     for t in &report.tools {
         let status_icon = status_emoji(t.status);
         let status_text = status_word(t.status);
+        let tool_cell = style.tool_name(t.tool, pad_right(t.tool, 10));
+        let status_cell = style.status(t, pad_right(&format!("{status_icon} {status_text}"), 12));
+        let grade_cell = style.status(t, pad_right(t.grade.unwrap_or("—"), 5));
+        let score = t
+            .score
+            .map(|s| format!("{s:.1}"))
+            .unwrap_or_else(|| "—".to_string());
+        let score_cell = style.status(t, pad_left(&score, 7));
         out.push_str(&format!(
-            "│ {:<10} │ {} {:<9} │ {:<5} │ {:>7} │ {:<31} │\n",
-            t.tool,
-            status_icon,
-            status_text,
-            t.grade.unwrap_or("—"),
-            t.score
-                .map(|s| format!("{s:.1}"))
-                .unwrap_or_else(|| "—".to_string()),
+            "│ {} │ {} │ {} │ {} │ {:<31} │\n",
+            tool_cell,
+            status_cell,
+            grade_cell,
+            score_cell,
             t.purpose.chars().take(31).collect::<String>()
         ));
     }
@@ -145,17 +302,27 @@ pub fn human_report(report: &Report) -> HumanReport {
         let section_start = out.len();
         if matches!(t.status, Status::Skipped | Status::Unavailable) {
             if let Some(note) = &t.note {
-                out.push_str(&format!("  ⊘ {}: {note}\n", t.tool));
+                out.push_str(&format!(
+                    "  {} {}: {}\n",
+                    style.status(t, "⊘"),
+                    style.tool_name(t.tool, t.tool),
+                    style.status(t, note)
+                ));
             }
             continue;
         }
 
         let tool_icon = status_emoji(t.status);
-        out.push_str(&format!("  {} {}: {}\n", tool_icon, t.tool, t.summary));
+        out.push_str(&format!(
+            "  {} {}: {}\n",
+            style.status(t, tool_icon),
+            style.tool_name(t.tool, t.tool),
+            style.status(t, &t.summary)
+        ));
 
         if !t.findings.is_empty() {
-            for f in &t.findings {
-                out.push_str(&format!("      • {}\n", f));
+            for (index, f) in t.findings.iter().enumerate() {
+                out.push_str(&format!("      • {}\n", style.finding(t, f, index)));
             }
         }
 
@@ -268,4 +435,78 @@ fn progress_bar(ratio: f64) -> String {
         ratio * 100.0
     );
     bar
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::report::{Availability, Evidence};
+
+    fn tool_report(tool: &'static str, status: Status, findings: Vec<String>) -> ToolReport {
+        ToolReport {
+            tool,
+            purpose: "test",
+            status,
+            availability: Availability::Installed,
+            execution: Execution::Succeeded,
+            evidence: Evidence {
+                coverage: None,
+                confidence: None,
+                observations: None,
+            },
+            binary: None,
+            score: None,
+            grade: None,
+            exit_code: Some(0),
+            duration_ms: Some(1),
+            summary: "summary".to_string(),
+            findings,
+            note: None,
+            raw: None,
+        }
+    }
+
+    #[test]
+    fn native_brand_accents_are_distinct() {
+        let style = Style { color: true };
+        assert_eq!(style.tool_name("bart", "bart"), "\x1b[1;34mbart\x1b[0m");
+        assert_eq!(
+            style.tool_name("chakra", "chakra"),
+            "\x1b[1;38;2;203;166;247mchakra\x1b[0m"
+        );
+        assert_eq!(
+            style.tool_name("fract", "fract"),
+            "\x1b[1;38;5;147mfract\x1b[0m"
+        );
+    }
+
+    #[test]
+    fn findings_use_the_source_tools_severity_palettes() {
+        let style = Style { color: true };
+        let amber = tool_report("amber", Status::Warn, vec![]);
+        let ferret = tool_report("ferret", Status::Fail, vec![]);
+        let traci = tool_report("traci", Status::Warn, vec![]);
+        assert_eq!(
+            style.finding(&amber, "serde: security_block", 0),
+            "\x1b[1;31mserde: security_block\x1b[0m"
+        );
+        assert_eq!(
+            style.finding(&ferret, "[Minor] large hunk", 0),
+            "\x1b[1;33m[Minor] large hunk\x1b[0m"
+        );
+        assert_eq!(
+            style.finding(&traci, "[observability/error] TRC001", 0),
+            "\x1b[1;31m[observability/error] TRC001\x1b[0m"
+        );
+    }
+
+    #[test]
+    fn plain_native_tools_and_disabled_color_emit_no_ansi() {
+        let lwoodz = tool_report("lwoodz", Status::Error, vec![]);
+        assert_eq!(Style { color: true }.status(&lwoodz, "error"), "error");
+        assert_eq!(
+            Style { color: false }.tool_name("chakra", "chakra"),
+            "chakra"
+        );
+    }
 }
