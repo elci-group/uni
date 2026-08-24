@@ -318,4 +318,29 @@ mod tests {
         report.evidence.coverage = Some(0.35);
         assert!(Report::compute_overall(&[report]).provisional);
     }
+
+    #[test]
+    fn integrity_distinguishes_findings_from_execution_defects() {
+        let mut finding = tool_report("ferret", Some(73.0));
+        finding.status = Status::Fail;
+        let tools = vec![finding];
+        let suite = Report::compute_suite(&tools);
+        let integrity = Report::compute_integrity(&tools, &suite);
+        assert_eq!(integrity.status, IntegrityStatus::Healthy);
+        assert!(integrity.defects.is_empty());
+    }
+
+    #[test]
+    fn incompatible_tool_degrades_integrity_without_scoring_the_project() {
+        let mut tool = tool_report("ami", None);
+        tool.status = Status::Unavailable;
+        tool.availability = Availability::Incompatible;
+        tool.execution = Execution::NotRun;
+        let tools = vec![tool];
+        let suite = Report::compute_suite(&tools);
+        let integrity = Report::compute_integrity(&tools, &suite);
+        assert_eq!(integrity.status, IntegrityStatus::Failed);
+        assert_eq!(integrity.score, 0.0);
+        assert_eq!(integrity.defects.len(), 1);
+    }
 }
