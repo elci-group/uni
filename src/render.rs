@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 use std::ops::Range;
 
-use crate::report::{Execution, Report, Status};
+use crate::report::{Execution, IntegrityStatus, Report, Status};
 
 pub struct HumanReport {
     pub text: String,
@@ -54,6 +54,13 @@ pub fn human_report(report: &Report) -> HumanReport {
             .unwrap_or_else(|| "ungraded".to_string()),
         provisional
     ));
+    out.push_str(&format!(
+        "{} ANALYSIS INTEGRITY: {} {} ({:.1}/100)\n",
+        integrity_emoji(report.integrity.status),
+        integrity_word(report.integrity.status),
+        report.integrity.grade,
+        report.integrity.score
+    ));
 
     out.push_str(&format!(
         "  📦 Tool Availability:     {}/{} available ({}%)\n",
@@ -84,6 +91,14 @@ pub fn human_report(report: &Report) -> HumanReport {
         "  🎯 Confidence Level:      {}\n\n",
         percent(report.suite.confidence)
     ));
+
+    if !report.integrity.defects.is_empty() {
+        out.push_str("  ANALYSIS DEFECTS (not project findings):\n");
+        for defect in &report.integrity.defects {
+            out.push_str(&format!("      • {defect}\n"));
+        }
+        out.push('\n');
+    }
 
     // Tools table with emojis
     out.push_str(
@@ -187,7 +202,7 @@ fn status_emoji(s: Status) -> &'static str {
     match s {
         Status::Ok => "✅",
         Status::Warn => "⚠️",
-        Status::Fail => "❌",
+        Status::Fail => "🔎",
         Status::Error => "💥",
         Status::Skipped => "⊘",
         Status::Unavailable => "🚫",
@@ -200,12 +215,28 @@ pub fn status_word(s: Status) -> &'static str {
     match s {
         Status::Ok => "ok",
         Status::Warn => "warn",
-        Status::Fail => "fail",
+        Status::Fail => "findings",
         Status::Error => "error",
         Status::Skipped => "skipped",
         Status::Unavailable => "unavailable",
         Status::NotApplicable => "n/a",
         Status::NoData => "no_data",
+    }
+}
+
+fn integrity_emoji(status: IntegrityStatus) -> &'static str {
+    match status {
+        IntegrityStatus::Healthy => "🟢",
+        IntegrityStatus::Degraded => "🟠",
+        IntegrityStatus::Failed => "🔴",
+    }
+}
+
+fn integrity_word(status: IntegrityStatus) -> &'static str {
+    match status {
+        IntegrityStatus::Healthy => "HEALTHY",
+        IntegrityStatus::Degraded => "DEGRADED",
+        IntegrityStatus::Failed => "FAILED",
     }
 }
 

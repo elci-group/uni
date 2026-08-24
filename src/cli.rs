@@ -8,8 +8,8 @@ use clap::{Parser, Subcommand};
 #[command(
     name = "uni",
     version,
-    about = "Unified analysis snapshot: runs amber, ami, bart, chakra, ferret hunt, fract, isopod, lwoodz, tempcheq, traci, and vamos (plus jeenome, opt-in) concurrently against a project and compiles one deterministic, graded report.",
-    long_about = "uni points amber, ami, bart, chakra, ferret hunt (`ferret hunt`, with `ferret track` compatibility), fract, isopod, lwoodz, tempcheq, traci, and vamos at a project concurrently, load-balances the two that call an LLM (jeenome, lwoodz) through the local ingauge admission gate so they don't saturate shared quota, and compiles the results into a single deterministic report with separate suite-execution and project-health evidence. Missing applications are classified without mutation by default; pass --install-missing to opt into validated, serialized installation through Baby. jeenome is opt-in (--jeenome) since it audits an strace trace, not a project path."
+    about = "Unified analysis snapshot with separate project-health and analysis-integrity verdicts.",
+    long_about = "uni runs amber, bart, chakra, ferret hunt (`ferret hunt`, with `ferret track` compatibility), fract, isopod, lwoodz, tempcheq, traci, and vamos concurrently, then reports project findings separately from analyzer defects. AMI is opt-in via --only ami because profile completeness is not code health and requires a JSON-capable build. Jeenome is opt-in (--jeenome) because it audits an strace trace. Missing public applications are classified without mutation by default; pass --install-missing to opt into validated, serialized installation through Baby."
 )]
 pub struct Cli {
     #[command(subcommand)]

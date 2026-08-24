@@ -85,8 +85,8 @@ impl ToolId {
     }
 
     /// Canonical source repository used to bootstrap an absent application.
-    pub fn repo_url(self) -> &'static str {
-        match self {
+    pub fn repo_url(self) -> Option<&'static str> {
+        Some(match self {
             ToolId::Amber => "https://github.com/elci-group/amber.git",
             ToolId::Ami => "https://github.com/elci-group/ami.git",
             ToolId::Bart => "https://github.com/elci-group/bart.git",
@@ -98,14 +98,14 @@ impl ToolId {
             ToolId::Lwoodz => "https://github.com/elci-group/lwoodz.git",
             ToolId::Tempcheq => "https://github.com/elci-group/tempcheq.git",
             ToolId::Traci => "https://github.com/elci-group/traci.git",
-            ToolId::Vamos => "https://github.com/elci-group/vamos.git",
-        }
+            ToolId::Vamos => return None,
+        })
     }
 
     /// Tools not run by default (need extra input/setup beyond a project
     /// path). Only jeenome today: it audits an strace log, not a project.
     pub fn enabled_by_default(self) -> bool {
-        !matches!(self, ToolId::Jeenome)
+        !matches!(self, ToolId::Ami | ToolId::Jeenome)
     }
 
     /// Tools that make a live LLM call and so should be admitted through
@@ -209,12 +209,14 @@ mod tests {
     use super::*;
 
     #[test]
-    fn every_tool_has_its_associated_elci_group_repo() {
+    fn public_tools_have_their_associated_elci_group_repo() {
         for tool in ToolId::ALL {
-            assert_eq!(
-                tool.repo_url(),
-                format!("https://github.com/elci-group/{}.git", tool.repo_dir())
-            );
+            let expected = format!("https://github.com/elci-group/{}.git", tool.repo_dir());
+            if tool == ToolId::Vamos {
+                assert_eq!(tool.repo_url(), None);
+            } else {
+                assert_eq!(tool.repo_url(), Some(expected.as_str()));
+            }
         }
     }
 }

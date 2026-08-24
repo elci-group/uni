@@ -42,7 +42,7 @@ pub fn parse(stdout: &str, exit_code: Option<i32>) -> ParseOutcome {
     let minor = count_severity(stdout, "Minor");
     let info = count_severity(stdout, "Info");
     let score = clamp_score(
-        100.0 - critical as f64 * 25.0 - major as f64 * 15.0 - minor as f64 * 5.0 - info as f64,
+        100.0 - critical as f64 * 20.0 - major as f64 * 8.0 - minor as f64 - info as f64 * 0.25,
     );
     let status = if critical > 0 || major > 0 {
         Status::Fail
@@ -67,7 +67,7 @@ pub fn parse(stdout: &str, exit_code: Option<i32>) -> ParseOutcome {
         summary,
         findings,
         note: Some(
-            "score deducts 25/15/5/1 points per critical/major/minor/info finding".to_string(),
+            "score deducts 20/8/1/0.25 points per critical/major/minor/info finding; findings describe project health, not analyzer execution failure".to_string(),
         ),
         raw: None,
     }
@@ -143,7 +143,7 @@ mod tests {
     fn findings_are_weighted_and_extracted() {
         let out = parse(FINDINGS, Some(0));
         assert_eq!(out.status, Status::Fail);
-        assert_eq!(out.score, Some(79.0));
+        assert_eq!(out.score, Some(90.75));
         assert_eq!(out.findings.len(), 3);
         assert!(out.findings[0].contains("Avoid panic"));
     }

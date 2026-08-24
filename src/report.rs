@@ -109,6 +109,22 @@ pub struct SuiteHealth {
     pub confidence: Option<f64>,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum IntegrityStatus {
+    Healthy,
+    Degraded,
+    Failed,
+}
+
+#[derive(Debug, Serialize)]
+pub struct AnalysisIntegrity {
+    pub status: IntegrityStatus,
+    pub score: f64,
+    pub grade: &'static str,
+    pub defects: Vec<String>,
+}
+
 #[derive(Debug, Serialize)]
 pub struct Report {
     pub schema: &'static str,
@@ -118,6 +134,7 @@ pub struct Report {
     pub tools: Vec<ToolReport>,
     pub overall: Overall,
     pub suite: SuiteHealth,
+    pub integrity: AnalysisIntegrity,
 }
 
 impl Report {
@@ -196,6 +213,39 @@ impl Report {
                     .filter_map(|t| t.evidence.confidence)
                     .collect(),
             ),
+        }
+    }
+
+    pub fn compute_integrity(tools: &[ToolReport], suite: &SuiteHealth) -> AnalysisIntegrity {
+        let defects: Vec<String> = tools
+            .iter()
+            .filter(|tool| {
+                !matches!(tool.availability, Availability::NotChecked)
+                    && (matches!(
+                        tool.availability,
+                        Availability::Incompatible | Availability::Unavailable
+                    ) || matches!(tool.execution, Execution::Failed)
+                        || matches!(tool.status, Status::Error))
+            })
+            .map(|tool| format!("{}: {}", tool.tool, tool.summary))
+            .collect();
+        let score = if suite.required_tools == 0 {
+            100.0
+        } else {
+            suite.valid_results as f64 / suite.required_tools as f64 * 100.0
+        };
+        let status = if defects.is_empty() && score >= 99.95 {
+            IntegrityStatus::Healthy
+        } else if score >= 80.0 {
+            IntegrityStatus::Degraded
+        } else {
+            IntegrityStatus::Failed
+        };
+        AnalysisIntegrity {
+            status,
+            score,
+            grade: letter_for(score),
+            defects,
         }
     }
 }

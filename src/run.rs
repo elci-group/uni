@@ -64,6 +64,8 @@ pub async fn execute(opts: &AnalyzeOptions) -> Result<Report, String> {
         if !selected(tool) {
             let note = if tool == ToolId::Jeenome && !opts.jeenome {
                 "jeenome is opt-in (needs an strace trace, not just a project path); pass --jeenome to include it".to_string()
+            } else if tool == ToolId::Ami {
+                "ami is opt-in because project profiling is not code health; use `--only ami` when its installed build exposes JSON output".to_string()
             } else {
                 "excluded via --only/--skip".to_string()
             };
@@ -102,7 +104,7 @@ pub async fn execute(opts: &AnalyzeOptions) -> Result<Report, String> {
                     tool,
                     format!(
                         "known repository {}; installation was not attempted (pass --install-missing)",
-                        tool.repo_url()
+                        tool.repo_url().unwrap_or("no public acquisition source")
                     ),
                 ),
             );
@@ -149,17 +151,20 @@ pub async fn execute(opts: &AnalyzeOptions) -> Result<Report, String> {
         })
         .collect();
 
-    let overall: Overall = Report::compute_overall(&tools);
     let suite = Report::compute_suite(&tools);
+    let integrity = Report::compute_integrity(&tools, &suite);
+    let mut overall: Overall = Report::compute_overall(&tools);
+    overall.provisional |= integrity.status != crate::report::IntegrityStatus::Healthy;
 
     Ok(Report {
-        schema: "uni.report/v2",
+        schema: "uni.report/v3",
         target: target.display().to_string(),
         generated_at: chrono::Utc::now().to_rfc3339(),
         tools_dir: tools_dir.display().to_string(),
         tools,
         overall,
         suite,
+        integrity,
     })
 }
 
@@ -200,7 +205,12 @@ async fn ensure_binary(tool: ToolId, tools_dir: &Path) -> Result<PathBuf, String
                 return Err("git is not installed".to_string());
             }
         };
-        let url = tool.repo_url();
+        let Some(url) = tool.repo_url() else {
+            return Err(format!(
+                "{} has no public acquisition source; install it explicitly and rerun uni",
+                tool.key()
+            ));
+        };
         let mut cmd = tokio::process::Command::new(git);
         cmd.args(["clone", "--depth", "1", url])
             .arg(&repo)
@@ -622,6 +632,30 @@ async fn run_one(
             .arg(&target);
         cmd.env("NO_COLOR", "1");
         cmd
+    } else if tool == ToolId::Ami {
+        let Some(args) = ami_machine_args(&bin, &target).await else {
+            return incompatible_report(
+                tool,
+                &bin,
+                "installed ami has no JSON show-project interface; human-rendered ANSI tables are not a stable analyzer contract"
+                    .to_string(),
+            );
+        };
+        let mut cmd = tokio::process::Command::new(&bin);
+        cmd.args(args);
+        cmd
+    } else if tool == ToolId::Lwoodz {
+        let Some(args) = lwoodz_audit_args(&bin).await else {
+            return incompatible_report(
+                tool,
+                &bin,
+                "installed lwoodz supports neither `lwoodz --json audit` nor the legacy `lwoodz --audit --json` interface"
+                    .to_string(),
+            );
+        };
+        let mut cmd = tokio::process::Command::new(&bin);
+        cmd.current_dir(&target).args(args);
+        cmd
     } else {
         build_command(tool, &bin, &target)
     };
@@ -703,6 +737,61 @@ async fn run_one(
         note: parsed.note,
         raw: parsed.raw,
     }
+}
+
+async fn help_output(bin: &Path, args: &[&str]) -> Option<String> {
+    let mut cmd = tokio::process::Command::new(bin);
+    cmd.args(args).stdin(Stdio::null());
+    let output = match tokio::time::timeout(Duration::from_secs(5), cmd.output()).await {
+        Ok(Ok(output)) => output,
+        Ok(Err(error)) => {
+            tracing::debug!(binary = %bin.display(), %error, "capability help probe could not start");
+            return None;
+        }
+        Err(_) => {
+            tracing::debug!(binary = %bin.display(), timeout_s = 5, "capability help probe timed out");
+            return None;
+        }
+    };
+    output.status.success().then(|| {
+        format!(
+            "{}{}",
+            String::from_utf8_lossy(&output.stdout),
+            String::from_utf8_lossy(&output.stderr)
+        )
+    })
+}
+
+async fn ami_machine_args(bin: &Path, target: &Path) -> Option<Vec<String>> {
+    let help = help_output(bin, &["show-project", "--help"]).await?;
+    let target = target.display().to_string();
+    if help.contains("--format") {
+        Some(vec![
+            "show-project".into(),
+            "--path".into(),
+            target,
+            "--format".into(),
+            "json".into(),
+        ])
+    } else if help.contains("--json") {
+        Some(vec![
+            "show-project".into(),
+            "--path".into(),
+            target,
+            "--json".into(),
+        ])
+    } else {
+        None
+    }
+}
+
+async fn lwoodz_audit_args(bin: &Path) -> Option<Vec<String>> {
+    if help_output(bin, &["audit", "--help"]).await.is_some() {
+        return Some(vec!["--json".into(), "audit".into()]);
+    }
+    let help = help_output(bin, &["--help"]).await?;
+    help.contains("--audit")
+        .then(|| vec!["--audit".into(), "--json".into()])
 }
 
 /// Ferret has shipped the project-wide review under both names: prefer the

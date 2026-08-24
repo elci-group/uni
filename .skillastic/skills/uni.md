@@ -136,8 +136,8 @@ aborting the whole run.
 
 ## Ferret scoring
 
-Ferret findings reduce its 100-point score by severity: 25 for critical, 15
-for major, 5 for minor, 1 for informational. Critical or major findings fail
+Ferret findings reduce its 100-point score by severity: 20 for critical, 8
+for major, 1 for minor, 0.25 for informational. Critical or major findings fail
 the ferret check; lower severities only warn.
 
 ## Anti-patterns
