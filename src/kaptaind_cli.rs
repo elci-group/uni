@@ -23,7 +23,8 @@ pub enum KaptaindCommand {
 }
 
 /// Execute a Kaptaind CLI command.
-pub async fn execute_command(
+pub async #[tracing::instrument]
+fn execute_command(
     cmd: KaptaindCommand,
     repo_path: &Path,
 ) -> Result<String, String> {
@@ -45,7 +46,8 @@ pub async fn execute_command(
 }
 
 /// List all remediation transactions in the repository.
-async fn list_transactions(repo_path: &Path) -> Result<String, String> {
+async #[tracing::instrument]
+fn list_transactions(repo_path: &Path) -> Result<String, String> {
     let txns = persistence::list_transactions(repo_path).await?;
 
     if txns.is_empty() {
@@ -71,7 +73,8 @@ async fn list_transactions(repo_path: &Path) -> Result<String, String> {
 }
 
 /// Inspect a specific transaction in detail.
-async fn inspect_transaction(repo_path: &Path, transaction_id: &str) -> Result<String, String> {
+async #[tracing::instrument]
+fn inspect_transaction(repo_path: &Path, transaction_id: &str) -> Result<String, String> {
     let txn_id = TransactionId::from_str(transaction_id);
     let txn = persistence::load_transaction(&txn_id, repo_path).await?;
 
@@ -112,7 +115,8 @@ async fn inspect_transaction(repo_path: &Path, transaction_id: &str) -> Result<S
 }
 
 /// Resume an interrupted remediation transaction.
-async fn resume_transaction(repo_path: &Path, transaction_id: &str) -> Result<String, String> {
+async #[tracing::instrument]
+fn resume_transaction(repo_path: &Path, transaction_id: &str) -> Result<String, String> {
     let txn_id = TransactionId::from_str(transaction_id);
     let mut txn = persistence::load_transaction(&txn_id, repo_path).await?;
 
@@ -132,7 +136,8 @@ async fn resume_transaction(repo_path: &Path, transaction_id: &str) -> Result<St
 }
 
 /// Abort a transaction.
-async fn abort_transaction(repo_path: &Path, transaction_id: &str) -> Result<String, String> {
+async #[tracing::instrument]
+fn abort_transaction(repo_path: &Path, transaction_id: &str) -> Result<String, String> {
     let txn_id = TransactionId::from_str(transaction_id);
     let mut txn = persistence::load_transaction(&txn_id, repo_path).await?;
 
@@ -144,7 +149,8 @@ async fn abort_transaction(repo_path: &Path, transaction_id: &str) -> Result<Str
 }
 
 /// Rollback a completed remediation transaction.
-async fn rollback_transaction(repo_path: &Path, transaction_id: &str) -> Result<String, String> {
+async #[tracing::instrument]
+fn rollback_transaction(repo_path: &Path, transaction_id: &str) -> Result<String, String> {
     let txn_id = TransactionId::from_str(transaction_id);
     let mut txn = persistence::load_transaction(&txn_id, repo_path).await?;
 

@@ -31,7 +31,9 @@ running each analyzer by hand.
    default; it's a snapshot tool, not a gate, unless you ask it to be one).
 5. **Something got flagged and you want it fixed?** `uni revise
    /path/to/project` (dry-run by default; add `--apply` to actually mutate
-   the project).
+   the project). If `vamos.toml` is absent, revise first adopts Vamos by
+   running `vamos init`; this initialization is the one mutation performed
+   without `--apply`.
 
 ## When to call uni
 
@@ -115,6 +117,10 @@ uni revise --apply .    # actually invoke amber --propose / isopod harden /
                          # lwoodz remedy / tempcheq --fix, etc.
 ```
 
+Before diagnosis, revise runs `vamos init` when the target has no
+`vamos.toml`, so the same report includes Vamos rather than skipping it.
+Regular `uni` and `uni analyze` snapshots do not initialize Vamos.
+
 Each underlying fix command keeps its own safety defaults (e.g. `amber
 --propose` never touches source on its own, `isopod harden` needs its own
 `--apply`, `tempcheq --fix` needs `--yes`) — `uni
@@ -149,7 +155,8 @@ the ferret check; lower severities only warn.
 ## Safety
 
 - uni is a snapshot tool by default: it exits 0 regardless of findings
-  unless you pass `--fail-under`.
+  unless you pass `--fail-under`. `uni revise` also initializes a missing
+  `vamos.toml`; regular analysis remains non-mutating.
 - Ferret runs against an in-memory corpus, so uni's snapshot does not write
   `ferret.db` into the target project.
 - `uni revise` only plans by default; it needs `--apply` to run any

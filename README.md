@@ -16,10 +16,17 @@ cargo run -- /path/to/project
 cargo run -- --json --only ferret,tempcheq /path/to/project
 cargo run -- analyze --fail-under 80 /path/to/project
 cargo run -- analyze --install-missing /path/to/project
+cargo run -- revise /path/to/project
+cargo run -- revise --apply /path/to/project
 ```
 
 Use `--skip` to exclude applications and `--tools-dir` to choose where sibling
 application repositories live.
+
+`uni revise` initializes Vamos with `vamos init` when the target has no
+`vamos.toml`, then includes Vamos in its diagnostic pass. Lwoodz analysis uses
+`lwoodz --json audit`; a flagged missing license is previewed and repaired with
+`lwoodz remedy` (`--apply` is still required for the repair itself).
 
 ## Missing applications
 
@@ -42,6 +49,9 @@ Uni does not persist or transmit it, and JSON report data on stdout stays clean.
 The `uni.report/v2` JSON contract separates availability, execution, evidence
 coverage/confidence/observation count, and analytical score. The human report
 likewise presents suite execution health separately from project health.
+In an interactive terminal, a successful Fract detail section uses Fract's
+deterministic wave reveal. CI, redirected output, `TERM=dumb`, and JSON output
+remain static, so machine-readable and captured reports are byte-stable.
 Not-applicable and zero-observation results are ungraded; unknown Isopod
 controls reduce coverage rather than counting as failures, and compliance is
 not graded below 80% assessment coverage. See

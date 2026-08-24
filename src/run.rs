@@ -579,7 +579,7 @@ fn build_command(tool: ToolId, bin: &Path, target: &Path) -> tokio::process::Com
         }
         ToolId::Lwoodz => {
             cmd.current_dir(target);
-            cmd.args(["--audit", "--json"]);
+            cmd.args(["--json", "audit"]);
         }
         ToolId::Tempcheq => {
             cmd.arg(target).arg("--report");
@@ -1182,6 +1182,18 @@ fn evidence_for(tool: ToolId, raw: Option<&serde_json::Value>) -> Evidence {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn lwoodz_analysis_uses_the_audit_subcommand() {
+        let cmd = build_command(
+            ToolId::Lwoodz,
+            Path::new("/bin/lwoodz"),
+            Path::new("/project"),
+        );
+        let args: Vec<_> = cmd.as_std().get_args().collect();
+        assert_eq!(args, ["--json", "audit"]);
+        assert_eq!(cmd.as_std().get_current_dir(), Some(Path::new("/project")));
+    }
 
     #[test]
     fn bootstrap_telemetry_is_explicit_and_local_only() {

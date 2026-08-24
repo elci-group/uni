@@ -1,16 +1,34 @@
 // Copyright (c) 2026 sal
 // SPDX-License-Identifier: MIT
-use crate::report::{Report, Status};
+use std::ops::Range;
+
+use crate::report::{Execution, Report, Status};
+
+pub struct HumanReport {
+    pub text: String,
+    pub fract_section: Option<Range<usize>>,
+}
 
 pub fn human(report: &Report) -> String {
+    human_report(report).text
+}
+
+pub fn human_report(report: &Report) -> HumanReport {
     let mut out = String::new();
+    let mut fract_section = None;
 
     // Header with emoji and styling
-    out.push_str("╔═══════════════════════════════════════════════════════════════════════════════╗\n");
+    out.push_str(
+        "╔═══════════════════════════════════════════════════════════════════════════════╗\n",
+    );
     out.push_str(&format!("║ 📊 UNI ANALYSIS REPORT — {} \n", report.target));
-    out.push_str("╠═══════════════════════════════════════════════════════════════════════════════╣\n");
+    out.push_str(
+        "╠═══════════════════════════════════════════════════════════════════════════════╣\n",
+    );
     out.push_str(&format!("║ 🕐 Generated: {:<66}\n", report.generated_at));
-    out.push_str("╚═══════════════════════════════════════════════════════════════════════════════╝\n\n");
+    out.push_str(
+        "╚═══════════════════════════════════════════════════════════════════════════════╝\n\n",
+    );
 
     let provisional = if report.overall.provisional {
         " ⚠️ PROVISIONAL"
@@ -19,12 +37,7 @@ pub fn human(report: &Report) -> String {
     };
 
     // Overall health indicator
-    let health_emoji = match report
-        .overall
-        .score
-        .map(|s| s)
-        .unwrap_or(0.0)
-    {
+    let health_emoji = match report.overall.score.map(|s| s).unwrap_or(0.0) {
         s if s >= 90.0 => "🟢",
         s if s >= 70.0 => "🟡",
         s if s >= 50.0 => "🟠",
@@ -46,19 +59,22 @@ pub fn human(report: &Report) -> String {
         "  📦 Tool Availability:     {}/{} available ({}%)\n",
         report.suite.available_tools,
         report.suite.required_tools,
-        ((report.suite.available_tools as f64 / report.suite.required_tools as f64) * 100.0).floor() as i32
+        ((report.suite.available_tools as f64 / report.suite.required_tools as f64) * 100.0).floor()
+            as i32
     ));
     out.push_str(&format!(
         "  ⚙️  Tool Execution:        {}/{} executed ({}%)\n",
         report.suite.executed_tools,
         report.suite.required_tools,
-        ((report.suite.executed_tools as f64 / report.suite.required_tools as f64) * 100.0).floor() as i32
+        ((report.suite.executed_tools as f64 / report.suite.required_tools as f64) * 100.0).floor()
+            as i32
     ));
     out.push_str(&format!(
         "  ✅ Valid Results:         {}/{} valid ({}%)\n",
         report.suite.valid_results,
         report.suite.required_tools,
-        ((report.suite.valid_results as f64 / report.suite.required_tools as f64) * 100.0).floor() as i32
+        ((report.suite.valid_results as f64 / report.suite.required_tools as f64) * 100.0).floor()
+            as i32
     ));
     out.push_str(&format!(
         "  🔍 Analysis Coverage:     {}\n",
@@ -70,14 +86,20 @@ pub fn human(report: &Report) -> String {
     ));
 
     // Tools table with emojis
-    out.push_str("┌─────────────────────────────────────────────────────────────────────────────────┐\n");
+    out.push_str(
+        "┌─────────────────────────────────────────────────────────────────────────────────┐\n",
+    );
     out.push_str("│ 🔧 ANALYSIS TOOLS SUMMARY\n");
-    out.push_str("├────────────┬──────────────┬───────┬─────────┬─────────────────────────────────┤\n");
+    out.push_str(
+        "├────────────┬──────────────┬───────┬─────────┬─────────────────────────────────┤\n",
+    );
     out.push_str(&format!(
         "│ {:10} │ {:12} │ {:5} │ {:7} │ {:31} │\n",
         "TOOL", "STATUS", "GRADE", "SCORE", "PURPOSE"
     ));
-    out.push_str("├────────────┼──────────────┼───────┼─────────┼─────────────────────────────────┤\n");
+    out.push_str(
+        "├────────────┼──────────────┼───────┼─────────┼─────────────────────────────────┤\n",
+    );
 
     for t in &report.tools {
         let status_icon = status_emoji(t.status);
@@ -94,13 +116,18 @@ pub fn human(report: &Report) -> String {
             t.purpose.chars().take(31).collect::<String>()
         ));
     }
-    out.push_str("└────────────┴──────────────┴───────┴─────────┴─────────────────────────────────┘\n\n");
+    out.push_str(
+        "└────────────┴──────────────┴───────┴─────────┴─────────────────────────────────┘\n\n",
+    );
 
     // Detailed findings for each tool
     out.push_str("📝 DETAILED FINDINGS BY TOOL:\n");
-    out.push_str("═══════════════════════════════════════════════════════════════════════════════════\n\n");
+    out.push_str(
+        "═══════════════════════════════════════════════════════════════════════════════════\n\n",
+    );
 
     for t in &report.tools {
+        let section_start = out.len();
         if matches!(t.status, Status::Skipped | Status::Unavailable) {
             if let Some(note) = &t.note {
                 out.push_str(&format!("  ⊘ {}: {note}\n", t.tool));
@@ -121,10 +148,16 @@ pub fn human(report: &Report) -> String {
             out.push_str(&format!("      ℹ️  Note: {}\n", note));
         }
         out.push('\n');
+
+        if t.tool == "fract" && t.execution == Execution::Succeeded {
+            fract_section = Some(section_start..out.len());
+        }
     }
 
     // Overall summary with progress bar
-    out.push_str("═══════════════════════════════════════════════════════════════════════════════════\n");
+    out.push_str(
+        "═══════════════════════════════════════════════════════════════════════════════════\n",
+    );
     match report.overall.score {
         Some(score) => {
             let bar = progress_bar(score / 100.0);
@@ -144,7 +177,10 @@ pub fn human(report: &Report) -> String {
     }
 
     out.push('\n');
-    out
+    HumanReport {
+        text: out,
+        fract_section,
+    }
 }
 
 fn status_emoji(s: Status) -> &'static str {

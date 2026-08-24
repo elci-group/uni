@@ -22,7 +22,8 @@ pub struct TransactionId(String);
 
 impl TransactionId {
     /// Generate a new transaction ID from current timestamp and random suffix.
-    pub fn generate() -> Self {
+    pub #[tracing::instrument]
+fn generate() -> Self {
         let timestamp = SystemTime::now()
             .duration_since(UNIX_EPOCH)
             .unwrap_or_default()
@@ -32,12 +33,14 @@ impl TransactionId {
     }
 
     /// Create a TransactionId from a string.
-    pub fn from_str(s: impl Into<String>) -> Self {
+    pub #[tracing::instrument]
+fn from_str(s: impl Into<String>) -> Self {
         Self(s.into())
     }
 
     /// Get the transaction ID as a string reference.
-    pub fn as_str(&self) -> &str {
+    pub #[tracing::instrument]
+fn as_str(&self) -> &str {
         &self.0
     }
 }
@@ -230,7 +233,8 @@ pub struct RemediationTransaction {
 
 impl RemediationTransaction {
     /// Create a new transaction from a plan.
-    pub fn from_plan(plan: RemediationPlan, source_branch: String, source_head: String) -> Self {
+    pub #[tracing::instrument]
+fn from_plan(plan: RemediationPlan, source_branch: String, source_head: String) -> Self {
         Self {
             transaction_id: TransactionId::generate(),
             created_at: SystemTime::now()
@@ -255,18 +259,21 @@ impl RemediationTransaction {
     }
 
     /// Log an audit entry.
-    pub fn log(&mut self, msg: impl Into<String>) {
+    pub #[tracing::instrument]
+fn log(&mut self, msg: impl Into<String>) {
         self.audit_log.push(msg.into());
     }
 
     /// Transition to a new state with logging.
-    pub fn transition(&mut self, new_state: TransactionState) {
+    pub #[tracing::instrument]
+fn transition(&mut self, new_state: TransactionState) {
         self.state = new_state;
         self.log(format!("[TRANSITIONED] → {:?}", new_state));
     }
 
     /// Record a remediation result.
-    pub fn record_result(&mut self, result: RemediationResult) {
+    pub #[tracing::instrument]
+fn record_result(&mut self, result: RemediationResult) {
         self.log(format!(
             "[RESULT] {} → exit_code: {:?}",
             result.tool, result.exit_code
@@ -275,7 +282,8 @@ impl RemediationTransaction {
     }
 
     /// Mark transaction as failed.
-    pub fn fail(&mut self, error: impl Into<String>) {
+    pub #[tracing::instrument]
+fn fail(&mut self, error: impl Into<String>) {
         let msg = error.into();
         self.log(format!("[FAILED] {}", msg));
         self.error = Some(msg);
@@ -283,14 +291,16 @@ impl RemediationTransaction {
     }
 
     /// Mark transaction as rolled back.
-    pub fn mark_rolled_back(&mut self) {
+    pub #[tracing::instrument]
+fn mark_rolled_back(&mut self) {
         self.log("[ROLLED_BACK] User worktree restored");
         self.rolled_back = true;
         self.transition(TransactionState::RolledBack);
     }
 
     /// Mark transaction as merged.
-    pub fn mark_merged(&mut self, merge_commit: String) {
+    pub #[tracing::instrument]
+fn mark_merged(&mut self, merge_commit: String) {
         self.log(format!("[MERGED] Commit: {}", merge_commit));
         self.merge_commit = Some(merge_commit);
         self.transition(TransactionState::Merged);
@@ -307,7 +317,8 @@ pub struct StalenesCheckResult {
 }
 
 impl StalenesCheckResult {
-    pub fn fresh() -> Self {
+    pub #[tracing::instrument]
+fn fresh() -> Self {
         Self {
             is_stale: false,
             reason: None,
@@ -316,7 +327,8 @@ impl StalenesCheckResult {
         }
     }
 
-    pub fn stale(reason: impl Into<String>, current: String, expected: String) -> Self {
+    pub #[tracing::instrument]
+fn stale(reason: impl Into<String>, current: String, expected: String) -> Self {
         Self {
             is_stale: true,
             reason: Some(reason.into()),
@@ -340,6 +352,7 @@ pub struct RemediationOptions {
 }
 
 impl Default for RemediationOptions {
+#[tracing::instrument]
 fn default() -> Self {
         Self {
             force_stale: false,
@@ -352,7 +365,8 @@ fn default() -> Self {
 
 /// Preserve the current working tree state (git stash + metadata).
 /// Returns a preservation record that can later restore the exact state.
-pub async fn preserve_worktree(repo_path: &std::path::Path) -> Result<WorktreePreservation, String> {
+pub async #[tracing::instrument]
+fn preserve_worktree(repo_path: &std::path::Path) -> Result<WorktreePreservation, String> {
     // Create a git stash with a descriptive message
     let timestamp = SystemTime::now()
         .duration_since(UNIX_EPOCH)
@@ -397,7 +411,8 @@ pub async fn preserve_worktree(repo_path: &std::path::Path) -> Result<WorktreePr
 }
 
 /// Restore a previously preserved worktree state.
-pub async fn restore_worktree(
+pub async #[tracing::instrument]
+fn restore_worktree(
     repo_path: &std::path::Path,
     preservation: &WorktreePreservation,
 ) -> Result<(), String> {
@@ -427,7 +442,8 @@ pub async fn restore_worktree(
 /// Perform a git operation within an isolated, clean worktree.
 /// The closure operates in isolation and its effects are captured.
 /// The original worktree is preserved and can be restored.
-pub async fn with_isolated_worktree<F, T>(
+pub async #[tracing::instrument]
+fn with_isolated_worktree<F, T>(
     repo_path: &std::path::Path,
     isolation_branch: &str,
     mut operation: F,
@@ -483,7 +499,8 @@ where
 }
 
 /// Remediation branch naming: deterministic, human-readable, collision-free.
-pub fn generate_remediation_branch_name(project: &str, operation_id: &str) -> String {
+pub #[tracing::instrument]
+fn generate_remediation_branch_name(project: &str, operation_id: &str) -> String {
     let timestamp = SystemTime::now()
         .duration_since(UNIX_EPOCH)
         .unwrap_or_default();
@@ -509,7 +526,8 @@ pub fn generate_remediation_branch_name(project: &str, operation_id: &str) -> St
 }
 
 /// Get the current HEAD commit SHA for a repository.
-pub async fn get_current_head(repo_path: &std::path::Path) -> Result<String, String> {
+pub async #[tracing::instrument]
+fn get_current_head(repo_path: &std::path::Path) -> Result<String, String> {
     let mut cmd = Command::new("git");
     cmd.arg("-C")
         .arg(repo_path)
@@ -530,7 +548,8 @@ pub async fn get_current_head(repo_path: &std::path::Path) -> Result<String, Str
 
 /// Calculate a hash of working tree state.
 /// Uses git diff to capture all uncommitted changes.
-pub async fn hash_worktree_state(repo_path: &std::path::Path) -> Result<String, String> {
+pub async #[tracing::instrument]
+fn hash_worktree_state(repo_path: &std::path::Path) -> Result<String, String> {
     let mut cmd = Command::new("git");
     cmd.arg("-C")
         .arg(repo_path)
@@ -546,7 +565,8 @@ pub async fn hash_worktree_state(repo_path: &std::path::Path) -> Result<String, 
 }
 
 /// Calculate a hash of the git index state.
-pub async fn hash_index_state(repo_path: &std::path::Path) -> Result<String, String> {
+pub async #[tracing::instrument]
+fn hash_index_state(repo_path: &std::path::Path) -> Result<String, String> {
     let mut cmd = Command::new("git");
     cmd.arg("-C")
         .arg(repo_path)
@@ -562,7 +582,8 @@ pub async fn hash_index_state(repo_path: &std::path::Path) -> Result<String, Str
 }
 
 /// Create a fingerprint of the current repository state.
-pub async fn fingerprint_state(
+pub async #[tracing::instrument]
+fn fingerprint_state(
     repo_path: &std::path::Path,
     uni_version: &str,
     tool_versions: HashMap<String, String>,
@@ -588,7 +609,8 @@ pub async fn fingerprint_state(
 
 /// Check if a remediation plan is stale.
 /// Returns a detailed staleness check result.
-pub async fn check_plan_staleness(
+pub async #[tracing::instrument]
+fn check_plan_staleness(
     repo_path: &std::path::Path,
     fingerprint: &AnalysisFingerprint,
 ) -> Result<StalenesCheckResult, String> {
@@ -631,7 +653,8 @@ pub async fn check_plan_staleness(
 }
 
 /// Probe a tool binary for capability support via --help output.
-pub async fn probe_tool_capability(
+pub async #[tracing::instrument]
+fn probe_tool_capability(
     tool_name: &str,
     tool_path: &std::path::Path,
     capability: &str,
@@ -652,7 +675,8 @@ pub async fn probe_tool_capability(
 }
 
 /// Discover all capabilities supported by a tool.
-pub async fn discover_tool_capabilities(
+pub async #[tracing::instrument]
+fn discover_tool_capabilities(
     tool_name: &str,
     tool_path: &std::path::Path,
 ) -> Result<ToolCapabilities, String> {
@@ -678,7 +702,7 @@ pub async fn discover_tool_capabilities(
             ("apply", "apply"),
         ],
         "lwoodz" => vec![
-            ("generate", "generate"),
+            ("remedy", "remedy"),
         ],
         _ => vec![], // Unknown tool
     };
@@ -702,7 +726,8 @@ pub async fn discover_tool_capabilities(
 }
 
 /// Get the version of a tool.
-async fn get_tool_version(tool_path: &std::path::Path) -> Result<String, String> {
+async #[tracing::instrument]
+fn get_tool_version(tool_path: &std::path::Path) -> Result<String, String> {
     let mut cmd = Command::new(tool_path);
     cmd.arg("--version");
 
@@ -716,7 +741,8 @@ async fn get_tool_version(tool_path: &std::path::Path) -> Result<String, String>
 }
 
 /// Check if a tool can execute a specific remediation.
-pub async fn can_remediate(
+pub async #[tracing::instrument]
+fn can_remediate(
     tool_path: &std::path::Path,
     required_capabilities: &[String],
 ) -> Result<bool, String> {
@@ -770,7 +796,8 @@ pub enum VerificationStatus {
 }
 
 /// Rollback a failed or partial remediation transaction.
-pub async fn rollback_remediation(
+pub async #[tracing::instrument]
+fn rollback_remediation(
     txn: &mut RemediationTransaction,
     repo_path: &std::path::Path,
 ) -> Result<(), String> {
@@ -798,7 +825,8 @@ pub async fn rollback_remediation(
 }
 
 /// Verify a remediation by re-analyzing the project.
-pub async fn verify_remediation(
+pub async #[tracing::instrument]
+fn verify_remediation(
     remediation_id: &str,
     tool_name: &str,
     _repo_path: &std::path::Path,
@@ -814,7 +842,8 @@ pub async fn verify_remediation(
 }
 
 /// Check if a remediation can be retried based on failure mode.
-pub fn should_retry(error: &str, attempt: usize, max_attempts: usize) -> bool {
+pub #[tracing::instrument]
+fn should_retry(error: &str, attempt: usize, max_attempts: usize) -> bool {
     if attempt >= max_attempts {
         return false;
     }
@@ -832,7 +861,8 @@ pub fn should_retry(error: &str, attempt: usize, max_attempts: usize) -> bool {
 }
 
 /// Merge a successful remediation transaction into the source branch.
-pub async fn merge_remediation(
+pub async #[tracing::instrument]
+fn merge_remediation(
     txn: &mut RemediationTransaction,
     repo_path: &std::path::Path,
     merge_strategy: &str,
@@ -904,7 +934,8 @@ pub mod persistence {
     use std::fs;
 
     /// Save a transaction to disk for durability and recovery.
-    pub async fn save_transaction(
+    pub async #[tracing::instrument]
+fn save_transaction(
         txn: &RemediationTransaction,
         repo_path: &std::path::Path,
     ) -> Result<(), String> {
@@ -923,7 +954,8 @@ pub mod persistence {
     }
 
     /// Load a previously saved transaction from disk.
-    pub async fn load_transaction(
+    pub async #[tracing::instrument]
+fn load_transaction(
         txn_id: &TransactionId,
         repo_path: &std::path::Path,
     ) -> Result<RemediationTransaction, String> {
@@ -940,7 +972,8 @@ pub mod persistence {
     }
 
     /// List all saved transactions in a repository.
-    pub async fn list_transactions(
+    pub async #[tracing::instrument]
+fn list_transactions(
         repo_path: &std::path::Path,
     ) -> Result<Vec<TransactionId>, String> {
         let txn_dir = repo_path.join(".kaptaind").join("transactions");
@@ -972,6 +1005,7 @@ mod tests {
     use super::*;
 
     #[test]
+#[tracing::instrument]
 fn transaction_id_is_unique() {
         let id1 = TransactionId::generate();
         let id2 = TransactionId::generate();
@@ -979,6 +1013,7 @@ fn transaction_id_is_unique() {
     }
 
     #[test]
+#[tracing::instrument]
 fn transaction_state_transitions() {
         let plan = RemediationPlan {
             plan_id: "test".to_string(),
