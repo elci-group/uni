@@ -8,8 +8,8 @@ use clap::{Parser, Subcommand};
 #[command(
     name = "uni",
     version,
-    about = "Unified analysis snapshot: runs amber, ami, bart, chakra, ferret hunt, fract, isopod, lwoodz, tempcheq, traci, and vamos (plus jeenome, opt-in) concurrently against a project and compiles one deterministic, graded report.",
-    long_about = "uni points amber, ami, bart, chakra, ferret hunt (`ferret hunt`, with `ferret track` compatibility), fract, isopod, lwoodz, tempcheq, traci, and vamos at a project concurrently, load-balances the two that call an LLM (jeenome, lwoodz) through the local ingauge admission gate so they don't saturate shared quota, and compiles the results into a single deterministic report with separate suite-execution and project-health evidence. Missing applications are classified without mutation by default; pass --install-missing to opt into validated, serialized installation through Baby. jeenome is opt-in (--jeenome) since it audits an strace trace, not a project path."
+    about = "Unified analysis snapshot with separate project-health and analysis-integrity verdicts.",
+    long_about = "uni runs amber, bart, chakra, ferret hunt (`ferret hunt`, with `ferret track` compatibility), fract, isopod, lwoodz, tempcheq, traci, and vamos concurrently, then reports project findings separately from analyzer defects. AMI is opt-in via --only ami because profile completeness is not code health and requires a JSON-capable build. Jeenome is opt-in (--jeenome) because it audits an strace trace. Missing public applications are classified without mutation by default; pass --install-missing to opt into validated, serialized installation through Baby."
 )]
 pub struct Cli {
     #[command(subcommand)]
@@ -70,7 +70,7 @@ pub enum Command {
     Analyze(AnalyzeArgs),
 
     /// Diagnose issues, then run each flagged tool's own fix/remediation
-    /// command (amber --propose, isopod harden, lwoodz --generate,
+    /// command (amber --propose, isopod harden, lwoodz remedy,
     /// tempcheq --fix). Dry-run by default; pass --apply to actually
     /// mutate the project.
     Revise(ReviseArgs),
@@ -122,8 +122,8 @@ pub struct ReviseArgs {
     /// Actually run each tool's fix command. Without this, uni only shows
     /// what it would run (every underlying fix command is itself dry-run
     /// or plan-only by default: amber --propose never touches your source,
-    /// isopod harden and lwoodz --generate need their own --apply, and
-    /// tempcheq --fix needs --yes — uni passes those through only here).
+    /// isopod harden needs its own --apply, and tempcheq --fix needs --yes —
+    /// uni passes those through only here).
     #[arg(long)]
     pub apply: bool,
 
@@ -152,7 +152,7 @@ pub struct ReviseArgs {
     /// that rewrites the contents of files already tracked in the target
     /// (currently: tempcheq --fix, traci trace --apply). Remediations that
     /// only ever create new files (amber --propose, isopod harden, lwoodz
-    /// --generate) don't need this — --apply alone is enough for those.
+    /// remedy) don't need this — --apply alone is enough for those.
     #[arg(long)]
     pub confirm_source_rewrite: bool,
 

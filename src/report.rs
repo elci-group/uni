@@ -109,6 +109,22 @@ pub struct SuiteHealth {
     pub confidence: Option<f64>,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum IntegrityStatus {
+    Healthy,
+    Degraded,
+    Failed,
+}
+
+#[derive(Debug, Serialize)]
+pub struct AnalysisIntegrity {
+    pub status: IntegrityStatus,
+    pub score: f64,
+    pub grade: &'static str,
+    pub defects: Vec<String>,
+}
+
 #[derive(Debug, Serialize)]
 pub struct Report {
     pub schema: &'static str,
@@ -118,6 +134,7 @@ pub struct Report {
     pub tools: Vec<ToolReport>,
     pub overall: Overall,
     pub suite: SuiteHealth,
+    pub integrity: AnalysisIntegrity,
 }
 
 impl Report {
@@ -198,6 +215,39 @@ impl Report {
             ),
         }
     }
+
+    pub fn compute_integrity(tools: &[ToolReport], suite: &SuiteHealth) -> AnalysisIntegrity {
+        let defects: Vec<String> = tools
+            .iter()
+            .filter(|tool| {
+                !matches!(tool.availability, Availability::NotChecked)
+                    && (matches!(
+                        tool.availability,
+                        Availability::Incompatible | Availability::Unavailable
+                    ) || matches!(tool.execution, Execution::Failed)
+                        || matches!(tool.status, Status::Error))
+            })
+            .map(|tool| format!("{}: {}", tool.tool, tool.summary))
+            .collect();
+        let score = if suite.required_tools == 0 {
+            100.0
+        } else {
+            suite.valid_results as f64 / suite.required_tools as f64 * 100.0
+        };
+        let status = if defects.is_empty() && score >= 99.95 {
+            IntegrityStatus::Healthy
+        } else if score >= 80.0 {
+            IntegrityStatus::Degraded
+        } else {
+            IntegrityStatus::Failed
+        };
+        AnalysisIntegrity {
+            status,
+            score,
+            grade: letter_for(score),
+            defects,
+        }
+    }
 }
 
 #[cfg(test)]
@@ -267,5 +317,30 @@ mod tests {
         let mut report = tool_report("isopod", None);
         report.evidence.coverage = Some(0.35);
         assert!(Report::compute_overall(&[report]).provisional);
+    }
+
+    #[test]
+    fn integrity_distinguishes_findings_from_execution_defects() {
+        let mut finding = tool_report("ferret", Some(73.0));
+        finding.status = Status::Fail;
+        let tools = vec![finding];
+        let suite = Report::compute_suite(&tools);
+        let integrity = Report::compute_integrity(&tools, &suite);
+        assert_eq!(integrity.status, IntegrityStatus::Healthy);
+        assert!(integrity.defects.is_empty());
+    }
+
+    #[test]
+    fn incompatible_tool_degrades_integrity_without_scoring_the_project() {
+        let mut tool = tool_report("ami", None);
+        tool.status = Status::Unavailable;
+        tool.availability = Availability::Incompatible;
+        tool.execution = Execution::NotRun;
+        let tools = vec![tool];
+        let suite = Report::compute_suite(&tools);
+        let integrity = Report::compute_integrity(&tools, &suite);
+        assert_eq!(integrity.status, IntegrityStatus::Failed);
+        assert_eq!(integrity.score, 0.0);
+        assert_eq!(integrity.defects.len(), 1);
     }
 }

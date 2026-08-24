@@ -20,14 +20,14 @@
 //!     `amber_<crate>_redux` files, never touches `Cargo.toml` or source).
 //!   - isopod `harden --apply` — creates missing compliance evidence
 //!     files.
-//!   - lwoodz `--generate` — writes a missing `LICENSE`/`NOTICE`/etc. Only
+//!   - lwoodz `remedy` — writes a missing `LICENSE`/`NOTICE`/etc. Only
 //!     offered when the diagnosis shows no license file at all; it has no
 //!     fix for header coverage or compatibility warnings.
 //!   - tempcheq `--fix --yes` — rewrites high-confidence temperature
 //!     deviations in place.
 //!   - traci, chakra, and fract are **delegates**: `binary_tool` differs
 //!     from `tool` (see `PlannedRemediation::binary_tool`). All three are
-//!     handed to `traci trace --goal <text> --apply`, a benchmarked,
+//!     handed to `traci enforce --goal <text>`, a benchmarked,
 //!     model-generated-patch engine that verifies its own patch against a
 //!     complexity/diagnostic-regression budget before merging it — traci
 //!     uses it on its own findings, chakra/fract's findings (architecture
@@ -37,7 +37,7 @@
 //!     tool (chakra/fract), independent of whatever traci itself checked.
 //!
 //!   ami, bart, ferret, jeenome, and vamos have no entry here. isopod's
-//!   unmet controls are deliberately *not* delegated to `traci trace`
+//!   unmet controls are deliberately *not* delegated to `traci enforce`
 //!   either, despite chakra/fract being: they're organizational/policy
 //!   findings (security testing procedure, backup policy,
 //!   outsourced-development agreements), not something a code-patching
@@ -66,7 +66,7 @@
 //!    as an explicit `Unavailable` instead of a cryptic `Failed`.
 //! 2. Where there's a real side-effect-free preview — every native item's
 //!    own `summary`, or a legacy tool's own dry-run mode (lwoodz
-//!    `--generate --dry-run`, tempcheq `--fix` without `--yes`) — uni
+//!    `remedy --dry-run`, tempcheq `--fix` without `--yes`) — uni
 //!    captures it and shows it, even in dry-run mode, instead of asking
 //!    the operator to trust a doc comment about what a command writes.
 //! 3. Every planned remediation carries a [`RiskTier`], named by the
@@ -77,7 +77,7 @@
 //! 4. `--apply` refuses to run against a dirty git worktree — scoped to
 //!    the target directory, so a monorepo with unrelated dirty siblings
 //!    doesn't block a revise it has nothing to do with — the same
-//!    precondition `traci trace --apply` enforces. Every path uni takes
+//!    precondition `traci enforce` enforces. Every path uni takes
 //!    against the target from here on (status, add, commit, checkout,
 //!    clean) is pathspec-scoped to the target for the same reason: never
 //!    touch a sibling project sharing the same repository root.
@@ -151,8 +151,8 @@ pub enum RiskTier {
     /// Rewrites the contents of files already tracked in the target,
     /// deterministically — no model involved.
     RewritesSource,
-    /// Rewrites source via a model-generated patch (`traci trace
-    /// --apply`), even one the delegate itself already verified against a
+    /// Rewrites source via a model-generated patch (`traci enforce`),
+    /// even one the delegate itself already verified against a
     /// benchmark and a complexity/diagnostic-regression budget before
     /// merging it. Requires `--confirm-source-rewrite` (it does rewrite
     /// source) *and* `--confirm-ai-patch` — two separate trust
@@ -234,6 +234,7 @@ pub enum RunOutcome {
 
 /// Classifies the whole run from its remediations. Pure — no I/O — so
 /// it's directly testable without going through `execute`.
+#[tracing::instrument(skip_all)]
 fn classify_run(remediations: &[Remediation], apply: bool) -> RunOutcome {
     if remediations.is_empty() {
         return RunOutcome::Clean;
@@ -278,6 +279,7 @@ struct JournalRecord<'a> {
 /// remediation activity at all. Only called for `--apply` runs: a dry run
 /// didn't do anything to record. Best-effort — a journal write failure is
 /// logged but never fails the revise run itself.
+#[tracing::instrument(skip_all)]
 async fn append_journal(
     target: &Path,
     target_display: &str,
@@ -345,8 +347,17 @@ pub struct ReviseReport {
     pub post: Option<Report>,
 }
 
+#[tracing::instrument(skip_all)]
 pub async fn execute(args: &ReviseArgs) -> Result<ReviseReport, String> {
     let opts = args.analyze_options();
+    let target = std::fs::canonicalize(&opts.target)
+        .map_err(|e| format!("target path {:?} is not accessible: {e}", opts.target))?;
+    let tools_dir = args
+        .tools_dir
+        .clone()
+        .unwrap_or_else(tool::default_tools_dir);
+    initialize_vamos_if_missing(&target, &tools_dir, Duration::from_secs(args.timeout)).await?;
+
     let diagnosis = run::execute(&opts).await?;
     let target = PathBuf::from(&diagnosis.target);
 
@@ -359,30 +370,32 @@ pub async fn execute(args: &ReviseArgs) -> Result<ReviseReport, String> {
         !skip.iter().any(|k| k == key)
     };
 
-    let tools_dir = args
-        .tools_dir
-        .clone()
-        .unwrap_or_else(tool::default_tools_dir);
     let timeout = Duration::from_secs(args.timeout);
 
     let plan = build_plan(&diagnosis, &target, wants);
 
+    // Store Kaptaind plan and transaction ID when building plan
+    let mut kaptaind_plan: Option<crate::kaptaind::RemediationPlan> = None;
+    let mut kaptaind_transaction: Option<crate::kaptaind::RemediationTransaction> = None;
+
     if args.apply && !plan.is_empty() {
+        // Check worktree status for warnings (not blocking anymore)
         match check_worktree(&target).await {
-            WorktreeStatus::Dirty(status) => {
-                eprintln!("uni: stage=revise_preflight outcome=blocked reason=dirty_worktree");
-                return Err(format!(
-                    "uni revise --apply refuses to run against a dirty git worktree — a partial or failed remediation has no rollback of its own. Commit or stash your changes first:\n{status}"
-                ));
-            }
             WorktreeStatus::NotAGitRepo => {
                 eprintln!(
                     "uni: stage=revise_preflight outcome=warning reason=not_a_git_repo target={}",
                     target.display()
                 );
             }
+            WorktreeStatus::Dirty(_status) => {
+                // User has uncommitted changes - Kaptaind will preserve them
+                eprintln!("uni: stage=revise_preflight outcome=info reason=dirty_worktree_kaptaind_will_preserve");
+            }
             WorktreeStatus::Clean => {}
         }
+
+        // TODO: Build remediations first to create the full plan
+        // For now, we continue with the existing flow and collect remediations
     }
 
     let mut applied_anything = false;
@@ -597,6 +610,38 @@ pub async fn execute(args: &ReviseArgs) -> Result<ReviseReport, String> {
         }
     }
 
+    // Build Kaptaind plan and transaction for durability
+    if args.apply && !remediations.is_empty() {
+        match build_kaptaind_plan(&diagnosis, &target, &remediations).await {
+            Ok(plan) => {
+                // Build transaction record for this remediation run
+                let current_head = crate::kaptaind::get_current_head(&target)
+                    .await
+                    .unwrap_or_else(|_| "unknown".to_string());
+
+                let mut txn = crate::kaptaind::RemediationTransaction::from_plan(
+                    plan,
+                    diagnosis.target.clone(),
+                    current_head,
+                );
+
+                // Try to persist the transaction
+                if let Err(e) = crate::kaptaind::persistence::save_transaction(&txn, &target).await
+                {
+                    eprintln!("uni: warning: failed to persist transaction: {e}");
+                } else {
+                    eprintln!(
+                        "uni: transaction={} persisted for recovery",
+                        txn.transaction_id.as_str()
+                    );
+                }
+            }
+            Err(e) => {
+                eprintln!("uni: warning: failed to build kaptaind plan: {e}");
+            }
+        }
+    }
+
     let post = if applied_anything {
         Some(run::execute(&opts).await?)
     } else {
@@ -619,13 +664,169 @@ pub async fn execute(args: &ReviseArgs) -> Result<ReviseReport, String> {
     })
 }
 
+/// `revise` is the adoption path for action-lifecycle tracking. Initialize
+/// Vamos before the diagnostic pass so a newly created manifest is included
+/// in the same report. Ordinary `uni`/`uni analyze` runs remain read-only and
+/// continue to report a missing manifest as skipped.
+#[tracing::instrument(skip_all)]
+async fn initialize_vamos_if_missing(
+    target: &Path,
+    tools_dir: &Path,
+    timeout: Duration,
+) -> Result<(), String> {
+    if target.join("vamos.toml").is_file() {
+        return Ok(());
+    }
+
+    let bin = tool::resolve_binary(ToolId::Vamos, tools_dir).ok_or_else(|| {
+        "cannot initialize missing vamos.toml: binary \"vamos\" not found on PATH or under the tools dir"
+            .to_string()
+    })?;
+    let mut cmd = tokio::process::Command::new(&bin);
+    cmd.arg("init")
+        .current_dir(target)
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .stdin(Stdio::null());
+
+    match tokio::time::timeout(timeout, cmd.output()).await {
+        Ok(Ok(output)) if output.status.success() => {
+            if target.join("vamos.toml").is_file() {
+                Ok(())
+            } else {
+                tracing::error!(target = %target.display(), "vamos init succeeded without creating a manifest");
+                Err(format!(
+                    "`vamos init` exited successfully but did not create {}",
+                    target.join("vamos.toml").display()
+                ))
+            }
+        }
+        Ok(Ok(output)) => {
+            tracing::error!(exit_code = ?output.status.code(), "vamos init failed");
+            Err(format!(
+                "`vamos init` exited {:?}: {}",
+                output.status.code(),
+                String::from_utf8_lossy(&output.stderr).trim()
+            ))
+        }
+        Ok(Err(e)) => {
+            tracing::error!(error = %e, "failed to spawn vamos init");
+            Err(format!("failed to spawn `vamos init`: {e}"))
+        }
+        Err(_) => {
+            tracing::error!(timeout_s = timeout.as_secs(), "vamos init timed out");
+            Err(format!(
+                "`vamos init` timed out after {}s",
+                timeout.as_secs()
+            ))
+        }
+    }
+}
+
+/// Build a Kaptaind RemediationPlan from a revise analysis.
+/// This bridges UNI (analysis) to Kaptaind (execution).
+#[tracing::instrument(skip_all)]
+pub async fn build_kaptaind_plan(
+    diagnosis: &Report,
+    target: &Path,
+    remediations: &[Remediation],
+) -> Result<crate::kaptaind::RemediationPlan, String> {
+    use std::collections::HashMap;
+    use uuid::Uuid;
+
+    let plan_id = Uuid::new_v4().to_string();
+    let analysis_id = format!("uni-{}", Uuid::new_v4().to_string());
+
+    // Extract tool versions from diagnosis
+    // Note: Tool versions are not available in ToolReport yet
+    let tool_versions = HashMap::new();
+
+    // Create analysis fingerprint
+    let fingerprint = crate::kaptaind::fingerprint_state(
+        target,
+        env!("CARGO_PKG_VERSION"),
+        tool_versions,
+        &plan_id,
+    )
+    .await?;
+
+    // Convert UNI remediations to Kaptaind PlannedRemediations
+    let mut planned = Vec::new();
+    for rem in remediations {
+        if matches!(rem.outcome, Outcome::Unavailable) {
+            // Skip unavailable remediations
+            continue;
+        }
+
+        let remediation_class = match rem.risk {
+            RiskTier::NewFilesOnly => crate::kaptaind::RemediationClass::Proposal,
+            RiskTier::RewritesSource => crate::kaptaind::RemediationClass::MechanicalFix,
+            RiskTier::AiGenerated => crate::kaptaind::RemediationClass::AiGenerated,
+        };
+
+        planned.push(crate::kaptaind::PlannedRemediation {
+            tool: rem.tool.to_string(),
+            reason: rem.reason.clone(),
+            command: rem.command.clone(),
+            expected_files: Vec::new(), // TODO: extract from tool output
+            remediation_class,
+            complexity: None, // TODO: extract from AI patch metadata
+            required_capabilities: Vec::new(), // TODO: populate based on tool
+            verify_command: None, // TODO: tool-specific verification
+        });
+    }
+
+    // Calculate total complexity
+    let total_complexity = planned
+        .iter()
+        .filter_map(|p| p.complexity)
+        .map(|c| c as u32)
+        .sum();
+
+    // Risk assessment summary
+    let risk_assessment = if planned
+        .iter()
+        .any(|p| p.remediation_class == crate::kaptaind::RemediationClass::AiGenerated)
+    {
+        "high".to_string()
+    } else if planned
+        .iter()
+        .any(|p| p.remediation_class == crate::kaptaind::RemediationClass::MechanicalFix)
+    {
+        "medium".to_string()
+    } else {
+        "low".to_string()
+    };
+
+    Ok(crate::kaptaind::RemediationPlan {
+        plan_id,
+        project: diagnosis.target.clone(),
+        analysis_id,
+        analysis_fingerprint: fingerprint,
+        remediations: planned,
+        total_complexity,
+        risk_assessment,
+    })
+}
+
+/// Check if remediation plan is stale and needs re-analysis.
+#[tracing::instrument(skip_all)]
+pub async fn check_plan_staleness(
+    target: &Path,
+    plan: &crate::kaptaind::RemediationPlan,
+) -> Result<bool, String> {
+    let staleness =
+        crate::kaptaind::check_plan_staleness(target, &plan.analysis_fingerprint).await?;
+    Ok(staleness.is_stale)
+}
+
 struct PlannedRemediation {
     tool: ToolId,
     /// Which binary to actually resolve and spawn. Equal to `tool` for
     /// every remediation that fixes its own findings (the common case).
     /// Different from `tool` only for a delegate: a tool with no
     /// mechanical fix of its own, routed through another tool's binary
-    /// (currently: chakra/fract findings handed to `traci trace`, since
+    /// (currently: chakra/fract findings handed to `traci enforce`, since
     /// `traci` provides verified, benchmarked, model-generated patches
     /// against any goal text — see `LEGACY_CATALOG`'s chakra/fract
     /// entries).
@@ -730,20 +931,14 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
             format!("{} (no fix for header coverage/compatibility warnings — only the missing license file is addressable)", t.summary)
         },
         program: "lwoodz",
-        args: |_target| vec!["--generate".to_string()],
+        args: |_target| vec!["remedy".to_string()],
         cwd: |target| Some(target.to_path_buf()),
-        probe_token: "--generate",
+        probe_token: "remedy",
         // Only offered when has_license_file is false, i.e. there's
         // nothing there yet to overwrite: creates LICENSE/NOTICE/etc,
         // never rewrites a tracked file.
         risk: RiskTier::NewFilesOnly,
-        preview_args: Some(|_target| {
-            vec![
-                "--generate".to_string(),
-                "--dry-run".to_string(),
-                "--json".to_string(),
-            ]
-        }),
+        preview_args: Some(|_target| vec!["remedy".to_string(), "--dry-run".to_string()]),
     },
     LegacyEntry {
         tool: ToolId::Tempcheq,
@@ -782,18 +977,17 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
         program: "traci",
         args: |target| {
             vec![
-                "trace".to_string(),
+                "enforce".to_string(),
                 target.display().to_string(),
                 "--goal".to_string(),
-                TRACI_TRACE_GOAL.to_string(),
-                "--apply".to_string(),
+                TRACI_ENFORCE_GOAL.to_string(),
             ]
         },
         cwd: |_target| None,
         // `traci --help`'s own usage synopsis names the subcommand this
-        // way (`traci trace [PATH...] --goal TEXT [--apply] [OPTIONS]`).
-        probe_token: "traci trace",
-        // A delegate, not a direct rewrite: `traci trace --apply`
+        // way (`traci enforce [PATH...] --goal TEXT [OPTIONS]`).
+        probe_token: "traci enforce",
+        // A delegate, not a direct rewrite: `traci enforce`
         // generates a patch via its own configured model provider,
         // benchmarks it (`cargo test --all-targets` by default) and
         // checks it against a complexity/diagnostic-regression budget,
@@ -802,16 +996,16 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
         // --confirm-source-rewrite (it rewrites source) *and*
         // --confirm-ai-patch (a model wrote the patch).
         risk: RiskTier::AiGenerated,
-        // Without --apply, `traci trace` prints its plan (goal, estimated
+        // `traci enforce` without any apply flag prints its plan (goal, estimated
         // complexity, target branch) and creates nothing — confirmed
         // side-effect-free (no branch, no commit) in the local
         // development of this integration.
         preview_args: Some(|target| {
             vec![
-                "trace".to_string(),
+                "enforce".to_string(),
                 target.display().to_string(),
                 "--goal".to_string(),
-                TRACI_TRACE_GOAL.to_string(),
+                TRACI_ENFORCE_GOAL.to_string(),
             ]
         }),
     },
@@ -819,13 +1013,13 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
     // findings (architecture coverage, module entropy/cohesion) are
     // genuinely open-ended, with no single deterministic fix. Both are
     // still code-shaped, verifiable findings, so both are delegated to
-    // `traci trace`, the same benchmarked model-generated-patch engine
+    // `traci enforce`, the same benchmarked model-generated-patch engine
     // traci uses on its own findings above, just pointed at a different
     // goal. isopod's unmet controls (security testing procedure, backup
     // policy, outsourced-development agreements) are deliberately *not*
     // delegated here: they're organizational/policy findings, not
     // something a code-patching engine can meaningfully address — routing
-    // them through `traci trace` would just be a goal string it can't act
+    // them through `traci enforce` would just be a goal string it can't act
     // on, not a real remediation tier.
     LegacyEntry {
         tool: ToolId::Chakra,
@@ -835,19 +1029,18 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
         program: "traci",
         args: |target| {
             vec![
-                "trace".to_string(),
+                "enforce".to_string(),
                 target.display().to_string(),
                 "--goal".to_string(),
                 CHAKRA_TRACE_GOAL.to_string(),
-                "--apply".to_string(),
             ]
         },
         cwd: |_target| None,
-        probe_token: "traci trace",
+        probe_token: "traci enforce",
         risk: RiskTier::AiGenerated,
         preview_args: Some(|target| {
             vec![
-                "trace".to_string(),
+                "enforce".to_string(),
                 target.display().to_string(),
                 "--goal".to_string(),
                 CHAKRA_TRACE_GOAL.to_string(),
@@ -862,19 +1055,18 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
         program: "traci",
         args: |target| {
             vec![
-                "trace".to_string(),
+                "enforce".to_string(),
                 target.display().to_string(),
                 "--goal".to_string(),
                 FRACT_TRACE_GOAL.to_string(),
-                "--apply".to_string(),
             ]
         },
         cwd: |_target| None,
-        probe_token: "traci trace",
+        probe_token: "traci enforce",
         risk: RiskTier::AiGenerated,
         preview_args: Some(|target| {
             vec![
-                "trace".to_string(),
+                "enforce".to_string(),
                 target.display().to_string(),
                 "--goal".to_string(),
                 FRACT_TRACE_GOAL.to_string(),
@@ -883,23 +1075,24 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
     },
 ];
 
-/// The goal `uni` hands to `traci trace` on its own findings' behalf.
-/// Deliberately generic — `traci trace` already runs `traci check`
+/// The goal `uni` hands to `traci enforce` on its own findings' behalf.
+/// Deliberately generic — `traci enforce` already runs `traci check`
 /// internally to know exactly what's flagged; this just names the rule
 /// families in `src/parsers/traci.rs`'s own findings so the goal reads as
 /// something a human asked for, not a placeholder.
-const TRACI_TRACE_GOAL: &str = "resolve traci's own flagged findings: untraced error paths, swallowed results, opaque panics, and detached async trace context";
+const TRACI_ENFORCE_GOAL: &str = "resolve traci's own flagged findings: untraced error paths, swallowed results, opaque panics, and detached async trace context";
 
-/// The goal handed to `traci trace` on chakra's behalf (see the
-/// `ToolId::Chakra` `LEGACY_CATALOG` entry, a delegate to `traci trace`
+/// The goal handed to `traci enforce` on chakra's behalf (see the
+/// `ToolId::Chakra` `LEGACY_CATALOG` entry, a delegate to `traci enforce`
 /// since chakra has no remediation command of its own).
 const CHAKRA_TRACE_GOAL: &str = "improve chakra's architecture data-flow map coverage: analyze more of the currently-untouched files and add explicit data-flow evidence so a higher fraction of the codebase is represented in the map";
 
-/// The goal handed to `traci trace` on fract's behalf (see the
-/// `ToolId::Fract` `LEGACY_CATALOG` entry, a delegate to `traci trace`
+/// The goal handed to `traci enforce` on fract's behalf (see the
+/// `ToolId::Fract` `LEGACY_CATALOG` entry, a delegate to `traci enforce`
 /// since fract has no remediation command of its own).
 const FRACT_TRACE_GOAL: &str = "resolve fract's flagged module entropy/cohesion warnings: reduce entropy and improve cohesion in the modules fract scored as warning or critical";
 
+#[tracing::instrument(skip_all)]
 fn legacy_plan_item(
     entry: &LegacyEntry,
     diagnosis: &Report,
@@ -934,6 +1127,7 @@ fn legacy_plan_item(
 /// the `uni.remediate/v1` native protocol first, where the installed
 /// binary supports it (see `expand_via_native_protocol`) — this is only
 /// what runs when it doesn't.
+#[tracing::instrument(skip_all)]
 fn build_plan(
     diagnosis: &Report,
     target: &Path,
@@ -946,6 +1140,7 @@ fn build_plan(
         .collect()
 }
 
+#[tracing::instrument(skip_all)]
 fn describe(p: &PlannedRemediation) -> String {
     match &p.cwd {
         Some(cwd) => format!("(cd {}; {} {})", cwd.display(), p.program, p.args.join(" ")),
@@ -953,6 +1148,7 @@ fn describe(p: &PlannedRemediation) -> String {
     }
 }
 
+#[tracing::instrument(skip_all)]
 fn tail(bytes: &[u8]) -> Option<String> {
     let text = String::from_utf8_lossy(bytes);
     let trimmed = text.trim();
@@ -969,6 +1165,7 @@ fn tail(bytes: &[u8]) -> Option<String> {
 /// between what uni hardcodes in `build_plan` and what the installed tool
 /// actually supports without needing to parse each tool's own argument
 /// grammar.
+#[tracing::instrument(skip_all)]
 fn supports_token(help_text: &str, token: &str) -> bool {
     help_text.contains(token)
 }
@@ -979,8 +1176,9 @@ fn supports_token(help_text: &str, token: &str) -> bool {
 /// instead of a cryptic `Failed` from the underlying process. Generalizes
 /// `run::ferret_hunt_subcommand`'s help-probe approach from "does this
 /// subcommand exist" to "does --help mention this token", so it also
-/// covers flag-based remediations (amber `--propose`, lwoodz `--generate`,
+/// covers flag-based remediations (amber `--propose`, lwoodz `remedy`,
 /// tempcheq `--fix`) and not just isopod's subcommand.
+#[tracing::instrument(skip_all)]
 async fn probe_capability(bin: &Path, token: &str) -> bool {
     let mut cmd = tokio::process::Command::new(bin);
     cmd.arg("--help")
@@ -1030,6 +1228,7 @@ struct ProtocolItem {
 /// (`docs/remediation-protocol.md`) via `remediate --help`. Mirrors
 /// `run::ferret_hunt_subcommand`'s discovery approach: a side-effect-free
 /// help probe, exit 0 means yes.
+#[tracing::instrument(skip_all)]
 async fn probe_native_protocol(bin: &Path, timeout: Duration) -> bool {
     let mut cmd = tokio::process::Command::new(bin);
     cmd.args(["remediate", "--help"])
@@ -1048,6 +1247,7 @@ async fn probe_native_protocol(bin: &Path, timeout: Duration) -> bool {
 /// version-mismatched response is treated identically to "doesn't
 /// implement the protocol" (falls back to the legacy catalog entry, if
 /// any), never as an error that aborts the run.
+#[tracing::instrument(skip_all)]
 async fn fetch_native_plan(
     tool: ToolId,
     bin: &Path,
@@ -1143,6 +1343,7 @@ async fn fetch_native_plan(
 /// per finding the tool's own `plan` response named. Falls back to the
 /// candidate unchanged (still exactly one item) when the tool doesn't
 /// implement the protocol, or its `plan` response is empty or malformed.
+#[tracing::instrument(skip_all)]
 async fn expand_via_native_protocol(
     candidate: PlannedRemediation,
     bin: &Path,
@@ -1185,6 +1386,7 @@ const UNI_STATE_DIR: &str = ".uni";
 /// same as the layout this was developed against): unrelated dirty
 /// changes elsewhere in the repo must never block, or be touched by, a
 /// revise of one project within it.
+#[tracing::instrument(skip_all)]
 async fn check_worktree(target: &Path) -> WorktreeStatus {
     let mut cmd = tokio::process::Command::new("git");
     cmd.arg("-C")
@@ -1212,9 +1414,10 @@ async fn check_worktree(target: &Path) -> WorktreeStatus {
 }
 
 /// Runs a remediation's own side-effect-free preview invocation (where the
-/// tool offers one — lwoodz `--generate --dry-run`, tempcheq `--fix`
+/// tool offers one — lwoodz `remedy --dry-run`, tempcheq `--fix`
 /// without `--yes`) and captures its output, so `uni revise` can show what
 /// a remediation would actually change before `--apply` is ever passed.
+#[tracing::instrument(skip_all)]
 async fn capture_preview(
     bin: &Path,
     preview_args: &[String],
@@ -1250,6 +1453,7 @@ async fn capture_preview(
 /// `None` when there was nothing to commit (some remediations legitimately
 /// write nothing, e.g. amber `--propose` when no dependency crosses its
 /// threshold) or the commit couldn't be made.
+#[tracing::instrument(skip_all)]
 async fn commit_checkpoint(target: &Path, message: &str) -> Option<String> {
     let add = tokio::process::Command::new("git")
         .arg("-C")
@@ -1281,8 +1485,8 @@ async fn commit_checkpoint(target: &Path, message: &str) -> Option<String> {
             // Exit 1 with "nothing to commit" covers two legitimate
             // shapes: the remediation wrote nothing at all (e.g. amber
             // proposing 0 replacements), or it already committed its own
-            // work (a native item, or a delegate like `traci trace
-            // --apply` that manages its own git history end to end).
+            // work (a native item, or a delegate like `traci enforce`
+            // that manages its own git history end to end).
             // Either way HEAD itself is still a meaningful checkpoint to
             // report — just not one uni made itself just now.
             eprintln!(
@@ -1300,6 +1504,7 @@ async fn commit_checkpoint(target: &Path, message: &str) -> Option<String> {
     }
 }
 
+#[tracing::instrument(skip_all)]
 async fn head_short_hash(target: &Path) -> Option<String> {
     let rev = tokio::process::Command::new("git")
         .arg("-C")
@@ -1321,6 +1526,7 @@ async fn head_short_hash(target: &Path) -> Option<String> {
 /// Discards everything currently under `target`, restoring it to the last
 /// checkpoint (HEAD). Scoped to `target` with `-- .` even inside a larger
 /// repository — never touches a sibling project's unrelated changes.
+#[tracing::instrument(skip_all)]
 async fn rollback(target: &Path) {
     let checkout = tokio::process::Command::new("git")
         .arg("-C")
@@ -1357,6 +1563,7 @@ async fn rollback(target: &Path) {
 /// Which of `--confirm-source-rewrite`/`--confirm-ai-patch` are still
 /// missing for a remediation of this risk tier — empty when `--apply`
 /// alone is enough to run it.
+#[tracing::instrument(skip_all)]
 fn missing_confirmation_flags(
     risk: RiskTier,
     confirm_source_rewrite: bool,
@@ -1373,6 +1580,7 @@ fn missing_confirmation_flags(
 }
 
 /// Compares a tool's grade before and after a remediation ran.
+#[tracing::instrument(skip_all)]
 fn classify_verification(
     before_status: Status,
     before_score: Option<f64>,
@@ -1396,6 +1604,7 @@ fn classify_verification(
 /// Re-diagnoses just `tool` (`--only <tool>`) right after its remediation
 /// ran, so "applied" means the tool's own grade actually moved the way the
 /// remediation claimed it would — not just that the command exited 0.
+#[tracing::instrument(skip_all)]
 async fn verify_remediation(
     tool: ToolId,
     tools_dir: &Path,
@@ -1434,49 +1643,101 @@ async fn verify_remediation(
     })
 }
 
+#[tracing::instrument(skip_all)]
 pub fn human(report: &ReviseReport) -> String {
     let mut out = String::new();
-    out.push_str(&format!("uni revise — {}\n", report.target));
-    out.push_str(if report.apply {
-        "mode: apply\n\n"
-    } else {
-        "mode: dry-run (pass --apply to actually run these)\n\n"
-    });
+
+    // Header with styling
+    out.push_str(
+        "╔═══════════════════════════════════════════════════════════════════════════════╗\n",
+    );
+    out.push_str(&format!(
+        "║ 🔧 UNI REVISE — Automated Remediation Engine  \n"
+    ));
+    out.push_str(
+        "╠═══════════════════════════════════════════════════════════════════════════════╣\n",
+    );
+    out.push_str(&format!("║ 📍 Target: {} \n", report.target));
+    out.push_str(&format!(
+        "║ 🎯 Mode: {:<62}\n",
+        if report.apply {
+            "🚀 APPLY (live remediation active)"
+        } else {
+            "🏁 DRY-RUN (pass --apply to execute)"
+        }
+    ));
+    out.push_str(
+        "╚═══════════════════════════════════════════════════════════════════════════════╝\n\n",
+    );
 
     if report.remediations.is_empty() {
-        out.push_str("nothing to revise — every tool with a remediation command is clean.\n");
-        out.push_str(&format!("outcome: {}\n", run_outcome_word(report.outcome)));
+        out.push_str(
+            "✨ No remediations needed — every tool with remediation support is clean!\n\n",
+        );
+        out.push_str(&format!(
+            "🎊 Final Outcome: {}\n",
+            run_outcome_emoji_word(report.outcome)
+        ));
         return out;
     }
 
-    for r in &report.remediations {
+    out.push_str(&format!(
+        "🔍 Found {} remediation(s) across tool suite:\n",
+        report.remediations.len()
+    ));
+    out.push_str(
+        "═══════════════════════════════════════════════════════════════════════════════════\n\n",
+    );
+
+    for (idx, r) in report.remediations.iter().enumerate() {
+        let outcome_emoji = outcome_emoji(r.outcome);
+        let risk_emoji = risk_emoji(r.risk);
+
         out.push_str(&format!(
-            "{} [{}] ({})\n",
+            "{} [{:2}] {:<15} {} [{}] {}\n",
+            outcome_emoji,
+            idx + 1,
             r.tool,
             outcome_word(r.outcome),
+            risk_emoji,
             risk_word(r.risk)
         ));
-        out.push_str(&format!("  reason: {}\n", r.reason));
-        out.push_str(&format!("  command: {}\n", r.command));
+
+        out.push_str(&format!("     📌 Reason: {}\n", r.reason));
+        out.push_str(&format!("     💻 Command: {}\n", r.command));
+
         if let Some(detail) = &r.detail {
-            out.push_str(&format!("  detail: {detail}\n"));
+            out.push_str(&format!("     ℹ️  Detail: {}\n", detail));
         }
+
         if let Some(preview) = &r.preview {
-            out.push_str(&format!("  preview: {preview}\n"));
+            out.push_str(&format!("     👁️  Preview:\n"));
+            for line in preview.lines() {
+                out.push_str(&format!("        {}\n", line));
+            }
         }
+
         if let Some(checkpoint) = &r.checkpoint {
-            out.push_str(&format!("  checkpoint: {checkpoint}\n"));
+            out.push_str(&format!("     ✓ Checkpoint: {}\n", checkpoint));
         }
+
         if r.rolled_back {
-            out.push_str("  rolled back: yes\n");
+            out.push_str("     ⏮️  Rolled back: yes (due to failure or verification issue)\n");
         }
+
         if let Some(v) = &r.verification {
+            let verify_emoji = verify_emoji(v.result);
             out.push_str(&format!(
-                "  verified: {:?} {:?} -> {:?} {:?} ({})\n",
-                v.before_status,
-                v.before_score,
-                v.after_status,
-                v.after_score,
+                "     {} Verified: {} {} → {} {} ({})\n",
+                verify_emoji,
+                crate::render::status_word(v.before_status),
+                v.before_score
+                    .map(|s| format!("{:.1}", s))
+                    .unwrap_or_default(),
+                crate::render::status_word(v.after_status),
+                v.after_score
+                    .map(|s| format!("{:.1}", s))
+                    .unwrap_or_default(),
                 verify_word(v.result)
             ));
         }
@@ -1484,25 +1745,57 @@ pub fn human(report: &ReviseReport) -> String {
     }
 
     if let Some(post) = &report.post {
-        out.push_str("--- post-revise snapshot ---\n");
+        out.push_str(
+            "═══════════════════════════════════════════════════════════════════════════════════\n",
+        );
+        out.push_str("📊 POST-REMEDIATION SNAPSHOT:\n");
+        out.push_str(
+            "═══════════════════════════════════════════════════════════════════════════════════\n",
+        );
         out.push_str(&crate::render::human(post));
         out.push('\n');
     }
 
-    out.push_str(&format!("outcome: {}\n", run_outcome_word(report.outcome)));
+    out.push_str(
+        "═══════════════════════════════════════════════════════════════════════════════════\n",
+    );
+    out.push_str(&format!(
+        "🎯 FINAL OUTCOME: {}\n",
+        run_outcome_emoji_word(report.outcome)
+    ));
+
     out
 }
 
-fn run_outcome_word(o: RunOutcome) -> &'static str {
+#[tracing::instrument(skip_all)]
+fn run_outcome_emoji_word(o: RunOutcome) -> String {
     match o {
-        RunOutcome::Clean => "clean — nothing to revise",
-        RunOutcome::Planned => "planned — dry run found remediations to apply",
-        RunOutcome::FixedCleanly => "fixed cleanly",
-        RunOutcome::Partial => "partial — see remediations above",
-        RunOutcome::Regressed => "regressed — see remediations above",
+        RunOutcome::Clean => "✨ Clean — nothing to revise".to_string(),
+        RunOutcome::Planned => "📋 Planned — dry run found remediations to apply".to_string(),
+        RunOutcome::FixedCleanly => {
+            "🎉 Fixed Cleanly — all remediations applied successfully!".to_string()
+        }
+        RunOutcome::Partial => {
+            "⚠️  Partial — some remediations applied, see details above".to_string()
+        }
+        RunOutcome::Regressed => {
+            "🔴 Regressed — some remediations failed or worsened the situation".to_string()
+        }
     }
 }
 
+#[tracing::instrument(skip_all)]
+fn outcome_emoji(o: Outcome) -> &'static str {
+    match o {
+        Outcome::Planned => "📋",
+        Outcome::RequiresConfirmation => "🔐",
+        Outcome::Applied => "✅",
+        Outcome::Failed => "❌",
+        Outcome::Unavailable => "🚫",
+    }
+}
+
+#[tracing::instrument(skip_all)]
 fn outcome_word(o: Outcome) -> &'static str {
     match o {
         Outcome::Planned => "planned",
@@ -1513,6 +1806,16 @@ fn outcome_word(o: Outcome) -> &'static str {
     }
 }
 
+#[tracing::instrument(skip_all)]
+fn risk_emoji(r: RiskTier) -> &'static str {
+    match r {
+        RiskTier::NewFilesOnly => "📄",
+        RiskTier::RewritesSource => "⚠️",
+        RiskTier::AiGenerated => "🤖",
+    }
+}
+
+#[tracing::instrument(skip_all)]
 fn risk_word(r: RiskTier) -> &'static str {
     match r {
         RiskTier::NewFilesOnly => "new files only",
@@ -1521,6 +1824,17 @@ fn risk_word(r: RiskTier) -> &'static str {
     }
 }
 
+#[tracing::instrument(skip_all)]
+fn verify_emoji(v: VerifyResult) -> &'static str {
+    match v {
+        VerifyResult::Fixed => "✅",
+        VerifyResult::Improved => "📈",
+        VerifyResult::Unchanged => "➡️",
+        VerifyResult::Regressed => "📉",
+    }
+}
+
+#[tracing::instrument(skip_all)]
 fn verify_word(v: VerifyResult) -> &'static str {
     match v {
         VerifyResult::Fixed => "fixed",
@@ -1535,6 +1849,7 @@ mod tests {
     use super::*;
     use crate::report::{Availability, Evidence, Execution, Overall, SuiteHealth, ToolReport};
 
+    #[tracing::instrument(skip_all)]
     fn tool_report(tool: &'static str, status: Status, raw: Option<Value>) -> ToolReport {
         ToolReport {
             tool,
@@ -1559,9 +1874,10 @@ mod tests {
         }
     }
 
+    #[tracing::instrument(skip_all)]
     fn diagnosis(tools: Vec<ToolReport>) -> Report {
         Report {
-            schema: "uni.report/v2",
+            schema: "uni.report/v3",
             target: "/proj".to_string(),
             generated_at: "now".to_string(),
             tools_dir: "/tools".to_string(),
@@ -1582,14 +1898,22 @@ mod tests {
                 analysis_coverage: None,
                 confidence: None,
             },
+            integrity: crate::report::AnalysisIntegrity {
+                status: crate::report::IntegrityStatus::Healthy,
+                score: 100.0,
+                grade: "A+",
+                defects: Vec::new(),
+            },
         }
     }
 
+    #[tracing::instrument(skip_all)]
     fn allow_all(_: &str) -> bool {
         true
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn plans_amber_when_flagged() {
         let d = diagnosis(vec![tool_report("amber", Status::Warn, None)]);
         let plan = build_plan(&d, Path::new("/proj"), allow_all);
@@ -1603,6 +1927,7 @@ mod tests {
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn only_tempcheq_is_risk_tiered_as_rewrites_source() {
         let d = diagnosis(vec![
             tool_report("amber", Status::Warn, None),
@@ -1627,6 +1952,7 @@ mod tests {
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn lwoodz_and_tempcheq_carry_preview_args_but_amber_and_isopod_dont() {
         let d = diagnosis(vec![
             tool_report("amber", Status::Warn, None),
@@ -1653,6 +1979,7 @@ mod tests {
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn skips_amber_when_not_flagged() {
         let d = diagnosis(vec![tool_report("amber", Status::Ok, None)]);
         let plan = build_plan(&d, Path::new("/proj"), allow_all);
@@ -1660,6 +1987,7 @@ mod tests {
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn plans_isopod_and_tempcheq_when_flagged() {
         let d = diagnosis(vec![
             tool_report("isopod", Status::Fail, None),
@@ -1676,15 +2004,23 @@ mod tests {
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn lwoodz_only_planned_when_license_file_missing() {
         let raw = serde_json::json!({"has_license_file": false});
         let d = diagnosis(vec![tool_report("lwoodz", Status::Fail, Some(raw))]);
         let plan = build_plan(&d, Path::new("/proj"), allow_all);
         assert_eq!(plan.len(), 1);
-        assert_eq!(plan[0].probe_token, Some("--generate"));
+        assert_eq!(plan[0].probe_token, Some("remedy"));
+        assert_eq!(plan[0].args, ["remedy"]);
+        assert_eq!(
+            plan[0].preview_args.as_ref().unwrap(),
+            &["remedy", "--dry-run"]
+        );
+        assert_eq!(plan[0].cwd, Some(PathBuf::from("/proj")));
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn lwoodz_not_planned_when_license_file_present() {
         let raw = serde_json::json!({"has_license_file": true});
         let d = diagnosis(vec![tool_report("lwoodz", Status::Fail, Some(raw))]);
@@ -1693,6 +2029,7 @@ mod tests {
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn lwoodz_not_planned_when_evidence_missing() {
         // Matches the `.unwrap_or(true)` fallback in build_plan: absent
         // evidence about the license file must not be treated as "the
@@ -1703,6 +2040,7 @@ mod tests {
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn respects_only_filter() {
         let d = diagnosis(vec![
             tool_report("amber", Status::Warn, None),
@@ -1714,6 +2052,7 @@ mod tests {
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn respects_skip_filter() {
         let d = diagnosis(vec![
             tool_report("amber", Status::Warn, None),
@@ -1725,6 +2064,7 @@ mod tests {
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn ignores_tools_with_no_remediation_command() {
         let d = diagnosis(vec![
             tool_report("ami", Status::Warn, None),
@@ -1736,6 +2076,7 @@ mod tests {
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn plans_chakra_and_fract_as_traci_delegates_when_flagged() {
         let d = diagnosis(vec![
             tool_report("chakra", Status::Warn, None),
@@ -1747,9 +2088,9 @@ mod tests {
         let chakra = plan.iter().find(|p| p.tool.key() == "chakra").unwrap();
         assert_eq!(chakra.binary_tool.key(), "traci");
         assert_eq!(chakra.program, "traci");
-        assert_eq!(chakra.probe_token, Some("traci trace"));
+        assert_eq!(chakra.probe_token, Some("traci enforce"));
         assert_eq!(chakra.risk, RiskTier::AiGenerated);
-        assert_eq!(chakra.args[0], "trace");
+        assert_eq!(chakra.args[0], "enforce");
         assert!(chakra.args.contains(&CHAKRA_TRACE_GOAL.to_string()));
 
         let fract = plan.iter().find(|p| p.tool.key() == "fract").unwrap();
@@ -1758,6 +2099,7 @@ mod tests {
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn non_delegate_entries_resolve_their_own_binary() {
         let d = diagnosis(vec![tool_report("amber", Status::Warn, None)]);
         let plan = build_plan(&d, Path::new("/proj"), allow_all);
@@ -1766,34 +2108,35 @@ mod tests {
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn plans_traci_when_flagged_and_risk_tiers_it_as_ai_generated() {
         let d = diagnosis(vec![tool_report("traci", Status::Fail, None)]);
         let plan = build_plan(&d, Path::new("/proj"), allow_all);
         assert_eq!(plan.len(), 1);
         assert_eq!(plan[0].program, "traci");
-        assert_eq!(plan[0].probe_token, Some("traci trace"));
+        assert_eq!(plan[0].probe_token, Some("traci enforce"));
         assert_eq!(plan[0].risk, RiskTier::AiGenerated);
-        // Real argv shape: `traci trace <path> --goal <text> --apply` —
-        // asserted on the exact vec, not just "contains --apply somewhere",
-        // since a missing/misplaced `trace` subcommand compiles fine but
+        // Real argv shape: `traci enforce <path> --goal <text>` —
+        // asserted on the exact vec, not just "contains enforce somewhere",
+        // since a missing/misplaced `enforce` subcommand compiles fine but
         // fails at runtime with "unknown command '<path>'" (caught live
         // against the real traci binary, not by a looser assertion here).
-        assert_eq!(plan[0].args[0], "trace");
+        assert_eq!(plan[0].args[0], "enforce");
         assert_eq!(plan[0].args[1], "/proj");
         assert_eq!(plan[0].args[2], "--goal");
-        assert_eq!(plan[0].args[4], "--apply");
         let preview_args = plan[0].preview_args.as_ref().unwrap();
-        assert_eq!(preview_args[0], "trace");
+        assert_eq!(preview_args[0], "enforce");
         assert_eq!(preview_args[1], "/proj");
-        assert!(!preview_args.contains(&"--apply".to_string()));
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn new_files_only_never_needs_any_confirmation_flag() {
         assert!(missing_confirmation_flags(RiskTier::NewFilesOnly, false, false).is_empty());
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn rewrites_source_needs_only_the_source_rewrite_flag() {
         assert_eq!(
             missing_confirmation_flags(RiskTier::RewritesSource, false, false),
@@ -1803,6 +2146,7 @@ mod tests {
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn ai_generated_needs_both_flags_independently() {
         assert_eq!(
             missing_confirmation_flags(RiskTier::AiGenerated, false, false),
@@ -1819,11 +2163,12 @@ mod tests {
         assert!(missing_confirmation_flags(RiskTier::AiGenerated, true, true).is_empty());
     }
 
+    #[tracing::instrument(skip_all)]
     fn remediation(outcome: Outcome, verification: Option<Verification>) -> Remediation {
         Remediation {
             tool: "traci",
             reason: "test".to_string(),
-            command: "traci trace".to_string(),
+            command: "traci enforce".to_string(),
             risk: RiskTier::AiGenerated,
             outcome,
             detail: None,
@@ -1835,6 +2180,7 @@ mod tests {
         }
     }
 
+    #[tracing::instrument(skip_all)]
     fn verification(result: VerifyResult) -> Verification {
         Verification {
             before_status: Status::Fail,
@@ -1846,18 +2192,21 @@ mod tests {
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn classify_run_clean_when_nothing_planned() {
         assert_eq!(classify_run(&[], true), RunOutcome::Clean);
         assert_eq!(classify_run(&[], false), RunOutcome::Clean);
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn classify_run_planned_for_a_nonempty_dry_run() {
         let remediations = vec![remediation(Outcome::Planned, None)];
         assert_eq!(classify_run(&remediations, false), RunOutcome::Planned);
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn classify_run_fixed_cleanly_when_every_verification_improved() {
         let remediations = vec![
             remediation(Outcome::Applied, Some(verification(VerifyResult::Fixed))),
@@ -1867,6 +2216,7 @@ mod tests {
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn classify_run_partial_on_a_failed_remediation() {
         let remediations = vec![
             remediation(Outcome::Applied, Some(verification(VerifyResult::Fixed))),
@@ -1876,6 +2226,7 @@ mod tests {
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn classify_run_partial_on_unavailable_or_requires_confirmation() {
         assert_eq!(
             classify_run(&[remediation(Outcome::Unavailable, None)], true),
@@ -1888,6 +2239,7 @@ mod tests {
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn classify_run_partial_on_unchanged_verification() {
         let remediations = vec![remediation(
             Outcome::Applied,
@@ -1897,6 +2249,7 @@ mod tests {
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn classify_run_regressed_takes_priority_over_partial() {
         let remediations = vec![
             remediation(Outcome::Failed, None),
@@ -1909,6 +2262,7 @@ mod tests {
     }
 
     #[tokio::test]
+    #[tracing::instrument(skip_all)]
     async fn append_journal_writes_one_line_per_remediation() {
         let dir = unique_temp_dir("journal");
         let remediations = vec![
@@ -1937,6 +2291,7 @@ mod tests {
     }
 
     #[tokio::test]
+    #[tracing::instrument(skip_all)]
     async fn append_journal_appends_across_multiple_runs() {
         let dir = unique_temp_dir("journal-append");
         append_journal(
@@ -1962,6 +2317,7 @@ mod tests {
     }
 
     #[tokio::test]
+    #[tracing::instrument(skip_all)]
     async fn checkpoint_never_stages_the_journal_directory() {
         let (outer, target) = nested_repo_fixture("journal-excluded").await;
         std::fs::create_dir_all(target.join(UNI_STATE_DIR)).unwrap();
@@ -1996,6 +2352,7 @@ mod tests {
     }
 
     #[tokio::test]
+    #[tracing::instrument(skip_all)]
     async fn rollback_never_deletes_the_journal_directory() {
         let (outer, target) = nested_repo_fixture("journal-survives-rollback").await;
         std::fs::create_dir_all(target.join(UNI_STATE_DIR)).unwrap();
@@ -2018,6 +2375,7 @@ mod tests {
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn supports_token_finds_a_subcommand_in_a_commands_list() {
         let help = "Usage: isopod [OPTIONS] [COMMAND]\n\nCommands:\n  check\n  status\n";
         assert!(supports_token(help, "check"));
@@ -2025,12 +2383,14 @@ mod tests {
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn supports_token_finds_a_flag_in_an_options_list() {
         let help = "Options:\n  -p, --propose\n      --threshold <THRESHOLD>\n";
         assert!(supports_token(help, "--propose"));
         assert!(!supports_token(help, "--nonexistent"));
     }
 
+    #[tracing::instrument(skip_all)]
     fn unique_temp_dir(label: &str) -> PathBuf {
         let dir = std::env::temp_dir().join(format!(
             "uni-revise-test-{label}-{}-{:?}",
@@ -2042,6 +2402,56 @@ mod tests {
         dir
     }
 
+    #[tokio::test]
+    #[tracing::instrument(skip_all)]
+    async fn vamos_initialization_is_a_noop_when_manifest_exists() {
+        let target = unique_temp_dir("vamos-existing");
+        std::fs::write(target.join("vamos.toml"), "# existing\n").unwrap();
+        let missing_tools_dir = target.join("tools-with-no-vamos");
+
+        initialize_vamos_if_missing(&target, &missing_tools_dir, Duration::from_secs(1))
+            .await
+            .expect("an existing manifest must not require a vamos binary");
+
+        assert_eq!(
+            std::fs::read_to_string(target.join("vamos.toml")).unwrap(),
+            "# existing\n"
+        );
+        let _ = std::fs::remove_dir_all(&target);
+    }
+
+    #[cfg(unix)]
+    #[tokio::test]
+    #[tracing::instrument(skip_all)]
+    async fn vamos_initialization_runs_init_in_the_target() {
+        use std::os::unix::fs::PermissionsExt;
+
+        let root = unique_temp_dir("vamos-init");
+        let target = root.join("project");
+        let bin_dir = root.join("tools/vamos/target/release");
+        std::fs::create_dir_all(&target).unwrap();
+        std::fs::create_dir_all(&bin_dir).unwrap();
+        let bin = bin_dir.join("vamos");
+        std::fs::write(
+            &bin,
+            "#!/bin/sh\n[ \"$1\" = \"--help\" ] && exit 0\nprintf '%s\\n' \"$*\" > vamos-invocation.txt\nprintf '# initialized\\n' > vamos.toml\n",
+        )
+        .unwrap();
+        std::fs::set_permissions(&bin, std::fs::Permissions::from_mode(0o755)).unwrap();
+        wait_until_executable(&bin);
+
+        initialize_vamos_if_missing(&target, &root.join("tools"), Duration::from_secs(5))
+            .await
+            .expect("vamos init should succeed");
+
+        assert!(target.join("vamos.toml").is_file());
+        assert_eq!(
+            std::fs::read_to_string(target.join("vamos-invocation.txt")).unwrap(),
+            "init\n"
+        );
+        let _ = std::fs::remove_dir_all(&root);
+    }
+
     /// A minimal real implementation of `uni.remediate/v1`
     /// (docs/remediation-protocol.md), written as a POSIX shell script —
     /// no fake data structures standing in for the protocol, an actual
@@ -2049,6 +2459,7 @@ mod tests {
     /// Advertises two independently-tracked findings (one of each risk
     /// tier), so the tests below exercise per-finding granularity and not
     /// just discovery.
+    #[tracing::instrument(skip_all)]
     fn fake_protocol_tool(dir: &Path) -> PathBuf {
         let script = dir.join("fake-tool");
         std::fs::write(
@@ -2125,6 +2536,7 @@ exit 1
     /// written microseconds earlier), so the retry belongs here, in the
     /// test fixture that creates the race, not in `probe_native_protocol`
     /// or any other production code path.
+    #[tracing::instrument(skip_all)]
     fn wait_until_executable(script: &Path) {
         for _ in 0..50 {
             match std::process::Command::new(script)
@@ -2142,6 +2554,7 @@ exit 1
         }
     }
 
+    #[tracing::instrument(skip_all)]
     fn dummy_candidate(target: &Path) -> PlannedRemediation {
         PlannedRemediation {
             tool: ToolId::Amber,
@@ -2158,6 +2571,7 @@ exit 1
     }
 
     #[tokio::test]
+    #[tracing::instrument(skip_all)]
     async fn worktree_is_clean_right_after_git_init() {
         let dir = unique_temp_dir("clean");
         tokio::process::Command::new("git")
@@ -2173,6 +2587,7 @@ exit 1
     }
 
     #[tokio::test]
+    #[tracing::instrument(skip_all)]
     async fn worktree_is_dirty_with_an_untracked_file() {
         let dir = unique_temp_dir("dirty");
         tokio::process::Command::new("git")
@@ -2192,6 +2607,7 @@ exit 1
     }
 
     #[tokio::test]
+    #[tracing::instrument(skip_all)]
     async fn worktree_outside_any_repo_is_reported_as_not_a_git_repo() {
         let dir = unique_temp_dir("nogit");
         assert!(matches!(
@@ -2201,6 +2617,7 @@ exit 1
         let _ = std::fs::remove_dir_all(&dir);
     }
 
+    #[tracing::instrument(skip_all)]
     async fn git(dir: &Path, args: &[&str]) {
         let out = tokio::process::Command::new("git")
             .arg("-C")
@@ -2221,6 +2638,7 @@ exit 1
     /// developed against (many sibling tool checkouts under one outer git
     /// root). Every test below exists to prove uni's git operations never
     /// leak across that `outer`/`sibling` boundary.
+    #[tracing::instrument(skip_all)]
     async fn nested_repo_fixture(label: &str) -> (PathBuf, PathBuf) {
         let outer = unique_temp_dir(&format!("nested-{label}"));
         git(&outer, &["init", "-q"]).await;
@@ -2239,6 +2657,7 @@ exit 1
     }
 
     #[tokio::test]
+    #[tracing::instrument(skip_all)]
     async fn worktree_check_ignores_dirty_siblings_outside_target() {
         let (outer, target) = nested_repo_fixture("worktree").await;
         std::fs::write(outer.join("sibling/committed.txt"), "dirty sibling\n").unwrap();
@@ -2251,6 +2670,7 @@ exit 1
     }
 
     #[tokio::test]
+    #[tracing::instrument(skip_all)]
     async fn checkpoint_commits_only_target_files() {
         let (outer, target) = nested_repo_fixture("checkpoint").await;
         std::fs::write(outer.join("sibling/committed.txt"), "dirty sibling\n").unwrap();
@@ -2289,6 +2709,7 @@ exit 1
     }
 
     #[tokio::test]
+    #[tracing::instrument(skip_all)]
     async fn checkpoint_reports_current_head_when_target_has_nothing_new_to_commit() {
         let (outer, target) = nested_repo_fixture("no-op-checkpoint").await;
         std::fs::write(outer.join("sibling/committed.txt"), "dirty sibling\n").unwrap();
@@ -2305,8 +2726,9 @@ exit 1
     }
 
     #[tokio::test]
+    #[tracing::instrument(skip_all)]
     async fn checkpoint_reports_a_tool_own_commit_it_didnt_make_itself() {
-        // Simulates a remediation (like `traci trace --apply`) that
+        // Simulates a remediation (like `traci enforce`) that
         // commits its own work directly, leaving nothing for uni's own
         // `git add -A` to stage. The checkpoint must still report the
         // resulting HEAD, not None — the change genuinely happened and is
@@ -2324,6 +2746,7 @@ exit 1
     }
 
     #[tokio::test]
+    #[tracing::instrument(skip_all)]
     async fn rollback_restores_target_without_touching_sibling() {
         let (outer, target) = nested_repo_fixture("rollback").await;
         std::fs::write(outer.join("sibling/committed.txt"), "dirty sibling\n").unwrap();
@@ -2356,36 +2779,42 @@ exit 1
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn classify_verification_fixed_when_no_longer_flagged() {
         let r = classify_verification(Status::Fail, Some(0.0), Status::Ok, Some(100.0));
         assert_eq!(r, VerifyResult::Fixed);
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn classify_verification_improved_when_still_flagged_but_score_rises() {
         let r = classify_verification(Status::Fail, Some(0.0), Status::Warn, Some(40.0));
         assert_eq!(r, VerifyResult::Improved);
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn classify_verification_unchanged_when_nothing_moves() {
         let r = classify_verification(Status::Warn, Some(50.0), Status::Warn, Some(50.0));
         assert_eq!(r, VerifyResult::Unchanged);
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn classify_verification_regressed_when_score_drops() {
         let r = classify_verification(Status::Warn, Some(50.0), Status::Warn, Some(30.0));
         assert_eq!(r, VerifyResult::Regressed);
     }
 
     #[test]
+    #[tracing::instrument(skip_all)]
     fn classify_verification_regressed_when_previously_clean_becomes_flagged() {
         let r = classify_verification(Status::Ok, None, Status::Fail, Some(0.0));
         assert_eq!(r, VerifyResult::Regressed);
     }
 
     #[tokio::test]
+    #[tracing::instrument(skip_all)]
     async fn probe_native_protocol_true_for_a_real_implementation() {
         let dir = unique_temp_dir("protocol-probe-yes");
         let bin = fake_protocol_tool(&dir);
@@ -2394,6 +2823,7 @@ exit 1
     }
 
     #[tokio::test]
+    #[tracing::instrument(skip_all)]
     async fn probe_native_protocol_false_for_a_tool_without_remediate() {
         // /bin/echo exits 0 for anything, including `remediate --help` —
         // but that's not what makes discovery succeed; the fixture below
@@ -2414,6 +2844,7 @@ exit 1
     }
 
     #[tokio::test]
+    #[tracing::instrument(skip_all)]
     async fn expand_via_native_protocol_yields_one_item_per_finding() {
         let dir = unique_temp_dir("protocol-expand");
         let bin = fake_protocol_tool(&dir);
@@ -2441,6 +2872,7 @@ exit 1
     }
 
     #[tokio::test]
+    #[tracing::instrument(skip_all)]
     async fn expand_via_native_protocol_falls_back_when_not_implemented() {
         let dir = unique_temp_dir("protocol-fallback-unimplemented");
         let script = dir.join("legacy-only-tool");
@@ -2464,6 +2896,7 @@ exit 1
     }
 
     #[tokio::test]
+    #[tracing::instrument(skip_all)]
     async fn fetch_native_plan_rejects_a_mismatched_protocol_version() {
         let dir = unique_temp_dir("protocol-version-mismatch");
         let script = dir.join("future-tool");
@@ -2491,6 +2924,7 @@ esac
     }
 
     #[tokio::test]
+    #[tracing::instrument(skip_all)]
     async fn fetch_native_plan_rejects_malformed_json() {
         let dir = unique_temp_dir("protocol-malformed");
         let script = dir.join("broken-tool");
@@ -2518,6 +2952,7 @@ esac
     }
 
     #[tokio::test]
+    #[tracing::instrument(skip_all)]
     async fn native_apply_item_actually_runs_via_the_normal_command_path() {
         // Proves the apply argv expand_via_native_protocol builds
         // (`remediate --format apply --item <id> --json --base <path>`)

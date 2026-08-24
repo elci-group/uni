@@ -15,7 +15,7 @@ and checks that a remediation flag still exists before trusting it (see
 
 Tools that don't implement this fall back to `uni`'s existing hardcoded
 per-tool table (`amber --propose`, `isopod harden --apply`, `lwoodz
---generate`, `tempcheq --fix --yes`) exactly as before — this protocol is
+remedy`, `tempcheq --fix --yes`) exactly as before — this protocol is
 additive, not a breaking change to any existing integration.
 
 ## Discovery

@@ -1,6 +1,9 @@
 // Copyright (c) 2026 sal
 // SPDX-License-Identifier: MIT
+mod animation;
 mod cli;
+mod kaptaind;
+mod kaptaind_cli;
 mod parsers;
 mod render;
 mod report;
@@ -64,7 +67,11 @@ async fn run_analyze(
     if json {
         println!("{json_text}");
     } else {
-        print!("{}", render::human(&report));
+        let rendered = render::human_report(&report);
+        if let Err(e) = animation::present(&rendered).await {
+            eprintln!("uni: failed to write human report: {e}");
+            std::process::exit(2);
+        }
     }
 
     if let Some(threshold) = fail_under {

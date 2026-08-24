@@ -64,7 +64,15 @@ pub fn parse(stdout: &str, exit_code: Option<i32>) -> ParseOutcome {
     }
     penalty += (1.0 - header_ratio) * 15.0;
     penalty += incompatible as f64 * 20.0;
-    penalty += warnings as f64 * 3.0;
+    let warning_ratio = if total_deps > 0 {
+        warnings as f64 / total_deps as f64
+    } else {
+        0.0
+    };
+    // Advisory dependency-license warnings scale with the dependency set.
+    // A large tree containing many attribution notices must not look worse
+    // than a missing project license or an actual incompatibility.
+    penalty += warning_ratio * 20.0;
     let score = clamp_score(100.0 - penalty);
 
     let status = if exit_code == Some(2) || incompatible > 0 || !has_license {
@@ -96,7 +104,10 @@ pub fn parse(stdout: &str, exit_code: Option<i32>) -> ParseOutcome {
         score: Some(score),
         summary,
         findings,
-        note: None,
+        note: Some(
+            "advisory warning deductions are proportional to dependency count; missing licenses and incompatible dependencies remain hard findings"
+                .to_string(),
+        ),
         raw: Some(root),
     }
 }

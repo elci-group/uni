@@ -1,4 +1,4 @@
-# The `uni.report/v2` result protocol
+# The `uni.report/v3` result protocol
 
 Uni separates the state of the analysis machinery from evidence about the
 target project. A tool result contains these independent dimensions:
@@ -15,8 +15,21 @@ target project. A tool result contains these independent dimensions:
 
 The top-level `suite` object reports availability, execution, valid-result,
 coverage, and confidence measures independently of `overall`, which contains
-only project-health scores. `overall.provisional` is true when an unavailable
-tool or execution/protocol error prevents a complete snapshot.
+only project-health scores. The `integrity` object grades the analysis pipeline
+from its valid-result rate and lists compatibility, availability, and execution
+defects. `overall.provisional` is true whenever integrity is not `healthy` or
+when project evidence is materially incomplete.
+
+`status: fail` means the analyzer ran successfully and found project issues;
+it does not mean execution failed. Human reports render that state as
+`findings`. Analyzer failures are identified by `execution: failed`,
+`availability: incompatible|unavailable`, or `status: error`, and appear in a
+separate **ANALYSIS DEFECTS** block.
+
+Before invoking version-sensitive interfaces, Uni probes capabilities instead
+of trusting a checkout name or version string. Lwoodz supports both its current
+subcommand contract and its legacy flag contract. AMI is executed only when
+`show-project --help` advertises JSON; decorated human output is never parsed.
 
 Machine-readable integrations must emit JSON only on stdout. Human logs,
 banners, progress indicators, ANSI control sequences, and diagnostics belong

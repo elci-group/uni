@@ -1,0 +1,32 @@
+project_root = "/home/sal/uni"
+mode = "passive"
+entropy_threshold = 0.82
+confidence_threshold = 0.9
+quiet_period_secs = 120
+watch_patterns = [
+    "src/**/*.rs",
+    "**/*.py",
+    "**/*.ts",
+    "**/*.js",
+]
+ignore_patterns = [
+    "target/**",
+    ".git/**",
+    ".fract/**",
+    "node_modules/**",
+    ".venv/**",
+    "dist/**",
+]
+bind = "127.0.0.1:7345"
+
+[output]
+format = "human"
+color = "auto"
+verbosity = "normal"
+log_format = "pretty"
+max_findings = 0
+
+[llm]
+provider = ""
+model = ""
+max_tokens = 0
