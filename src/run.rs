@@ -371,11 +371,16 @@ async fn run_poka_command(
         Ok(Ok(output)) => {
             let exit_code = output.status.code();
             let detail = diagnostic(&output);
-            tracing::error!(stage, ?exit_code, %detail, "Poka command failed");
+            tracing::error!(
+                stage = stage,
+                exit_code = ?exit_code,
+                detail = %detail,
+                "Poka command failed"
+            );
             Err(format!("{stage} exited {exit_code:?}: {detail}"))
         }
         Ok(Err(error)) => {
-            tracing::error!(stage, %error, "Poka command could not start");
+            tracing::error!(stage = stage, error = %error, "Poka command could not start");
             Err(format!("failed to start {stage}: {error}"))
         }
         Err(_) => {
