@@ -65,6 +65,7 @@ pub async fn execute(opts: &AnalyzeOptions) -> Result<Report, String> {
         &selected_tools,
         timeout,
         tool::resolve_binary_by_name("poka"),
+        &tools_dir,
     )
     .await;
 
@@ -194,6 +195,7 @@ async fn prepare_missing_inputs_with_poka(
     selected: &[ToolId],
     timeout: Duration,
     poka_bin: Option<PathBuf>,
+    tools_dir: &Path,
 ) -> BTreeMap<ToolId, String> {
     let missing: Vec<(ToolId, &'static str)> = selected
         .iter()
@@ -240,7 +242,35 @@ async fn prepare_missing_inputs_with_poka(
 
     let apply = run_poka_apply(&poka_bin, target, timeout).await;
     for (tool, path) in missing {
+        let mut compatibility_fallback = false;
+        if !target.join(path).is_file()
+            && apply
+                .as_ref()
+                .err()
+                .is_some_and(|error| error.contains("unexpected argument '--init'"))
+        {
+            if let Some(binary) = tool::resolve_binary(tool, tools_dir) {
+                match run_native_input_init(tool, &binary, target, timeout).await {
+                    Ok(()) if target.join(path).is_file() => compatibility_fallback = true,
+                    Ok(()) => tracing::error!(
+                        tool = tool.key(),
+                        input = path,
+                        "native Poka compatibility initializer exited successfully without creating its input"
+                    ),
+                    Err(error) => tracing::error!(
+                        tool = tool.key(),
+                        input = path,
+                        %error,
+                        "native Poka compatibility initializer failed"
+                    ),
+                }
+            }
+        }
         let note = match &apply {
+            _ if compatibility_fallback => format!(
+                "Poka's stale generator was repaired with the current native `{}` initializer; created {path}",
+                tool.key()
+            ),
             Ok(()) if target.join(path).is_file() => {
                 format!("Poka created {path} before the assessment")
             }
@@ -260,6 +290,71 @@ async fn prepare_missing_inputs_with_poka(
         notes.insert(tool, note);
     }
     notes
+}
+
+fn native_input_init_args(tool: ToolId) -> Option<&'static [&'static str]> {
+    match tool {
+        ToolId::Lwoodz => Some(&["init"]),
+        ToolId::Traci => Some(&["init", "--force"]),
+        _ => None,
+    }
+}
+
+async fn run_native_input_init(
+    tool: ToolId,
+    binary: &Path,
+    target: &Path,
+    timeout: Duration,
+) -> Result<(), String> {
+    let Some(args) = native_input_init_args(tool) else {
+        tracing::error!(
+            tool = tool.key(),
+            "no native Poka compatibility initializer is registered"
+        );
+        return Err(format!(
+            "no native initializer is registered for {}",
+            tool.key()
+        ));
+    };
+    let mut command = tokio::process::Command::new(binary);
+    command
+        .current_dir(target)
+        .args(args)
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .stdin(Stdio::null());
+    match tokio::time::timeout(timeout, command.output()).await {
+        Ok(Ok(output)) if output.status.success() => Ok(()),
+        Ok(Ok(output)) => {
+            let exit_code = output.status.code();
+            let detail = compact_diagnostic(&output);
+            tracing::error!(
+                tool = tool.key(),
+                ?exit_code,
+                detail = %detail,
+                "native Poka compatibility initializer failed"
+            );
+            Err(format!(
+                "{} initializer exited {exit_code:?}: {detail}",
+                tool.key()
+            ))
+        }
+        Ok(Err(error)) => {
+            tracing::error!(tool = tool.key(), %error, "native Poka compatibility initializer could not start");
+            Err(format!(
+                "failed to start {} initializer: {error}",
+                tool.key()
+            ))
+        }
+        Err(_) => {
+            tracing::error!(
+                tool = tool.key(),
+                timeout_s = timeout.as_secs(),
+                "native Poka compatibility initializer timed out"
+            );
+            Err(format!("{} initializer timed out", tool.key()))
+        }
+    }
 }
 
 fn poka_managed_input(tool: ToolId) -> Option<&'static str> {
@@ -1555,6 +1650,7 @@ mod tests {
             &[ToolId::Lwoodz, ToolId::Traci],
             Duration::from_secs(5),
             Some(poka),
+            &root,
         )
         .await;
 
@@ -1576,6 +1672,7 @@ mod tests {
             &[ToolId::Lwoodz],
             Duration::from_secs(1),
             None,
+            &root,
         )
         .await;
         assert!(notes.is_empty());
@@ -1592,6 +1689,19 @@ mod tests {
         let args: Vec<_> = cmd.as_std().get_args().collect();
         assert_eq!(args, ["--json", "audit"]);
         assert_eq!(cmd.as_std().get_current_dir(), Some(Path::new("/project")));
+    }
+
+    #[test]
+    fn native_poka_compatibility_initializers_follow_current_tool_clis() {
+        assert_eq!(
+            native_input_init_args(ToolId::Lwoodz),
+            Some(["init"].as_slice())
+        );
+        assert_eq!(
+            native_input_init_args(ToolId::Traci),
+            Some(["init", "--force"].as_slice())
+        );
+        assert_eq!(native_input_init_args(ToolId::Vamos), None);
     }
 
     #[test]
