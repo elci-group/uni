@@ -318,6 +318,7 @@ fn poka_manifest_with_tools(source: &str, tools: &[&str]) -> String {
             for tool in &additions {
                 output.push_str(&format!("{tool} = true\n"));
             }
+            output.push('\n');
         }
         output.push_str(line);
         output.push('\n');
@@ -370,7 +371,7 @@ async fn run_poka_command(
         Ok(Ok(output)) if output.status.success() => Ok(()),
         Ok(Ok(output)) => {
             let exit_code = output.status.code();
-            let detail = diagnostic(&output);
+            let detail = compact_diagnostic(&output);
             tracing::error!(
                 stage = stage,
                 exit_code = ?exit_code,
@@ -715,6 +716,16 @@ fn diagnostic(output: &Output) -> String {
         .chars()
         .take(400)
         .collect::<String>()
+}
+
+fn compact_diagnostic(output: &Output) -> String {
+    diagnostic(output)
+        .split_whitespace()
+        .collect::<Vec<_>>()
+        .join(" ")
+        .chars()
+        .take(240)
+        .collect()
 }
 
 /// Run one visible bootstrap stage. Interactive terminals get a compact
