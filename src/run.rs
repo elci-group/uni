@@ -247,9 +247,9 @@ async fn prepare_missing_inputs_with_poka(
             Ok(()) => format!(
                 "{path} was missing and remained absent after `poka apply`; assessment still ran"
             ),
-            Err(error) => format!(
-                "{path} was missing; `poka apply` failed ({error}); assessment still ran"
-            ),
+            Err(error) => {
+                format!("{path} was missing; `poka apply` failed ({error}); assessment still ran")
+            }
         };
         notes.insert(tool, note);
     }
@@ -345,11 +345,7 @@ async fn run_poka_init(
     run_poka_command(command, "poka init", timeout).await
 }
 
-async fn run_poka_apply(
-    poka_bin: &Path,
-    target: &Path,
-    timeout: Duration,
-) -> Result<(), String> {
+async fn run_poka_apply(poka_bin: &Path, target: &Path, timeout: Duration) -> Result<(), String> {
     let mut command = tokio::process::Command::new(poka_bin);
     command.current_dir(target).arg("apply");
     run_poka_command(command, "poka apply", timeout).await
@@ -366,7 +362,11 @@ async fn run_poka_command(
         .stdin(Stdio::null());
     match tokio::time::timeout(timeout, command.output()).await {
         Ok(Ok(output)) if output.status.success() => Ok(()),
-        Ok(Ok(output)) => Err(format!("{stage} exited {:?}: {}", output.status.code(), diagnostic(&output))),
+        Ok(Ok(output)) => Err(format!(
+            "{stage} exited {:?}: {}",
+            output.status.code(),
+            diagnostic(&output)
+        )),
         Ok(Err(error)) => Err(format!("failed to start {stage}: {error}")),
         Err(_) => Err(format!("{stage} timed out after {}s", timeout.as_secs())),
     }
@@ -1482,6 +1482,72 @@ fn evidence_for(tool: ToolId, raw: Option<&serde_json::Value>) -> Evidence {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn poka_manifest_adds_missing_analyzers_without_replacing_existing_tools() {
+        let source =
+            "[project]\nname = \"demo\"\n\n[tools]\ncodex = true\n\n[rules]\ntesting = true\n";
+        let updated = poka_manifest_with_tools(source, &["lwoodz", "traci"]);
+        assert!(updated.contains("codex = true\n"));
+        assert!(updated.contains("lwoodz = true\n"));
+        assert!(updated.contains("traci = true\n"));
+        assert!(updated.find("traci = true").unwrap() < updated.find("[rules]").unwrap());
+    }
+
+    #[test]
+    fn poka_manifest_preserves_explicitly_disabled_tools() {
+        let source = "[tools]\ntraci = false\n";
+        assert_eq!(poka_manifest_with_tools(source, &["traci"]), source);
+    }
+
+    #[tokio::test]
+    #[cfg(unix)]
+    async fn poka_materializes_missing_inputs_before_assessment() {
+        use std::os::unix::fs::PermissionsExt;
+
+        let root = std::env::temp_dir().join(format!("uni-poka-test-{}", uuid::Uuid::new_v4()));
+        std::fs::create_dir_all(&root).unwrap();
+        let poka = root.join("poka");
+        std::fs::write(
+            &poka,
+            "#!/bin/sh\ncase \"$1\" in\n  init) printf '[project]\\nname = \"fixture\"\\n\\n[tools]\\nlwoodz = true\\ntraci = true\\n' > poka.toml ;;\n  apply) printf '# generated\\n' > lwoodz.toml; printf '# generated\\n' > traci.toml ;;\n  *) exit 2 ;;\nesac\n",
+        )
+        .unwrap();
+        let mut permissions = std::fs::metadata(&poka).unwrap().permissions();
+        permissions.set_mode(0o755);
+        std::fs::set_permissions(&poka, permissions).unwrap();
+
+        let notes = prepare_missing_inputs_with_poka(
+            &root,
+            &[ToolId::Lwoodz, ToolId::Traci],
+            Duration::from_secs(5),
+            Some(poka),
+        )
+        .await;
+
+        assert!(root.join("poka.toml").is_file());
+        assert!(root.join("lwoodz.toml").is_file());
+        assert!(root.join("traci.toml").is_file());
+        assert!(notes[&ToolId::Lwoodz].contains("Poka created lwoodz.toml"));
+        assert!(notes[&ToolId::Traci].contains("Poka created traci.toml"));
+        std::fs::remove_dir_all(root).unwrap();
+    }
+
+    #[tokio::test]
+    async fn poka_is_not_required_when_inputs_already_exist() {
+        let root = std::env::temp_dir().join(format!("uni-poka-test-{}", uuid::Uuid::new_v4()));
+        std::fs::create_dir_all(&root).unwrap();
+        std::fs::write(root.join("lwoodz.toml"), "# existing\n").unwrap();
+        let notes = prepare_missing_inputs_with_poka(
+            &root,
+            &[ToolId::Lwoodz],
+            Duration::from_secs(1),
+            None,
+        )
+        .await;
+        assert!(notes.is_empty());
+        std::fs::remove_dir_all(root).unwrap();
+    }
 
     #[test]
     fn lwoodz_analysis_uses_the_audit_subcommand() {

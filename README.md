@@ -40,6 +40,14 @@ complete logs under `<tools-dir>/.uni/install-logs/`, and verifies the expected
 binary. A failed recipe, build, or verification is reported as tool
 availability—not as project health.
 
+Before running Lwoodz or Traci, Uni checks for their Poka-managed target inputs
+(`lwoodz.toml` and `traci.toml`). If either is missing, Uni initializes or
+extends the target's `poka.toml`, runs `poka apply`, verifies that Poka created
+the file, and only then starts the assessment tools. Existing inputs are left
+untouched. If Poka is unavailable or cannot materialize an input, Uni still
+runs the underlying analyzer with its built-in defaults and records the Poka
+failure in that tool's report note.
+
 In an interactive terminal, clone and install stages show a spinner. In CI or
 redirected output, Uni prints stable start lines instead. Each stage also emits
 transparent telemetry to stderr containing only the application name, stage,
