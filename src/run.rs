@@ -248,6 +248,12 @@ async fn prepare_missing_inputs_with_poka(
                 "{path} was missing and remained absent after `poka apply`; assessment still ran"
             ),
             Err(error) => {
+                tracing::error!(
+                    tool = tool.key(),
+                    input = path,
+                    %error,
+                    "Poka failed to materialize analyzer input"
+                );
                 format!("{path} was missing; `poka apply` failed ({error}); assessment still ran")
             }
         };
@@ -362,13 +368,24 @@ async fn run_poka_command(
         .stdin(Stdio::null());
     match tokio::time::timeout(timeout, command.output()).await {
         Ok(Ok(output)) if output.status.success() => Ok(()),
-        Ok(Ok(output)) => Err(format!(
-            "{stage} exited {:?}: {}",
-            output.status.code(),
-            diagnostic(&output)
-        )),
-        Ok(Err(error)) => Err(format!("failed to start {stage}: {error}")),
-        Err(_) => Err(format!("{stage} timed out after {}s", timeout.as_secs())),
+        Ok(Ok(output)) => {
+            let exit_code = output.status.code();
+            let detail = diagnostic(&output);
+            tracing::error!(stage, ?exit_code, %detail, "Poka command failed");
+            Err(format!("{stage} exited {exit_code:?}: {detail}"))
+        }
+        Ok(Err(error)) => {
+            tracing::error!(stage, %error, "Poka command could not start");
+            Err(format!("failed to start {stage}: {error}"))
+        }
+        Err(_) => {
+            tracing::error!(
+                stage,
+                timeout_s = timeout.as_secs(),
+                "Poka command timed out"
+            );
+            Err(format!("{stage} timed out after {}s", timeout.as_secs()))
+        }
     }
 }
 
