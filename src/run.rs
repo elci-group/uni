@@ -56,6 +56,17 @@ pub async fn execute(opts: &AnalyzeOptions) -> Result<Report, String> {
 
     let timeout = Duration::from_secs(opts.timeout);
     let admitter = Arc::new(Admitter::from_env());
+    let selected_tools: Vec<ToolId> = ToolId::ALL
+        .into_iter()
+        .filter(|tool| selected(*tool))
+        .collect();
+    let poka_notes = prepare_missing_inputs_with_poka(
+        &target,
+        &selected_tools,
+        timeout,
+        tool::resolve_binary_by_name("poka"),
+    )
+    .await;
 
     let mut handles: Vec<tokio::task::JoinHandle<(ToolId, ToolReport)>> = Vec::new();
     let mut immediate: BTreeMap<&'static str, ToolReport> = BTreeMap::new();
@@ -142,6 +153,12 @@ pub async fn execute(opts: &AnalyzeOptions) -> Result<Report, String> {
         }
     }
 
+    for (tool, note) in poka_notes {
+        if let Some(report) = immediate.get_mut(tool.key()) {
+            append_note(report, note);
+        }
+    }
+
     let tools: Vec<ToolReport> = ToolId::ALL
         .into_iter()
         .map(|t| {
@@ -166,6 +183,200 @@ pub async fn execute(opts: &AnalyzeOptions) -> Result<Report, String> {
         suite,
         integrity,
     })
+}
+
+/// Poka owns project-policy materialization. Before an analyzer whose native
+/// configuration is indexed by Poka runs, make a missing config explicit in
+/// `poka.toml`, ask Poka to materialize it, and only then start assessments.
+/// Existing files are never regenerated.
+async fn prepare_missing_inputs_with_poka(
+    target: &Path,
+    selected: &[ToolId],
+    timeout: Duration,
+    poka_bin: Option<PathBuf>,
+) -> BTreeMap<ToolId, String> {
+    let missing: Vec<(ToolId, &'static str)> = selected
+        .iter()
+        .filter_map(|tool| poka_managed_input(*tool).map(|path| (*tool, path)))
+        .filter(|(_, path)| !target.join(path).is_file())
+        .collect();
+    if missing.is_empty() {
+        return BTreeMap::new();
+    }
+
+    let mut notes = BTreeMap::new();
+    let Some(poka_bin) = poka_bin else {
+        for (tool, path) in missing {
+            notes.insert(
+                tool,
+                format!(
+                    "{path} was missing; Poka is unavailable, so the assessment ran with the tool's built-in defaults"
+                ),
+            );
+        }
+        return notes;
+    };
+
+    let tools: Vec<&str> = missing.iter().map(|(tool, _)| tool.key()).collect();
+    let manifest = target.join("poka.toml");
+    let preparation = if manifest.is_file() {
+        enable_poka_tools(&manifest, &tools)
+    } else {
+        run_poka_init(&poka_bin, target, &tools, timeout).await
+    };
+
+    if let Err(error) = preparation {
+        tracing::error!(target = %target.display(), %error, "Poka prerequisite configuration failed");
+        for (tool, path) in missing {
+            notes.insert(
+                tool,
+                format!(
+                    "{path} was missing; Poka could not configure the target ({error}); assessment still ran"
+                ),
+            );
+        }
+        return notes;
+    }
+
+    let apply = run_poka_apply(&poka_bin, target, timeout).await;
+    for (tool, path) in missing {
+        let note = match &apply {
+            Ok(()) if target.join(path).is_file() => {
+                format!("Poka created {path} before the assessment")
+            }
+            Ok(()) => format!(
+                "{path} was missing and remained absent after `poka apply`; assessment still ran"
+            ),
+            Err(error) => format!(
+                "{path} was missing; `poka apply` failed ({error}); assessment still ran"
+            ),
+        };
+        notes.insert(tool, note);
+    }
+    notes
+}
+
+fn poka_managed_input(tool: ToolId) -> Option<&'static str> {
+    match tool {
+        ToolId::Lwoodz => Some("lwoodz.toml"),
+        ToolId::Traci => Some("traci.toml"),
+        _ => None,
+    }
+}
+
+fn enable_poka_tools(manifest: &Path, tools: &[&str]) -> Result<(), String> {
+    let source = std::fs::read_to_string(manifest)
+        .map_err(|error| format!("could not read {}: {error}", manifest.display()))?;
+    let updated = poka_manifest_with_tools(&source, tools);
+    if updated != source {
+        std::fs::write(manifest, updated)
+            .map_err(|error| format!("could not update {}: {error}", manifest.display()))?;
+    }
+    Ok(())
+}
+
+fn poka_manifest_with_tools(source: &str, tools: &[&str]) -> String {
+    let lines: Vec<&str> = source.lines().collect();
+    let tools_start = lines.iter().position(|line| line.trim() == "[tools]");
+    let (insert_at, present) = if let Some(start) = tools_start {
+        let end = lines
+            .iter()
+            .enumerate()
+            .skip(start + 1)
+            .find(|(_, line)| line.trim_start().starts_with('['))
+            .map(|(index, _)| index)
+            .unwrap_or(lines.len());
+        let present = lines[start + 1..end]
+            .iter()
+            .filter_map(|line| line.split_once('=').map(|(key, _)| key.trim()))
+            .collect::<Vec<_>>();
+        (end, present)
+    } else {
+        (lines.len(), Vec::new())
+    };
+    let additions: Vec<&str> = tools
+        .iter()
+        .copied()
+        .filter(|tool| !present.contains(tool))
+        .collect();
+    if additions.is_empty() {
+        return source.to_string();
+    }
+
+    let mut output = String::new();
+    for (index, line) in lines.iter().enumerate() {
+        if index == insert_at {
+            if tools_start.is_none() {
+                output.push_str("\n[tools]\n");
+            }
+            for tool in &additions {
+                output.push_str(&format!("{tool} = true\n"));
+            }
+        }
+        output.push_str(line);
+        output.push('\n');
+    }
+    if insert_at == lines.len() {
+        if tools_start.is_none() {
+            output.push_str("\n[tools]\n");
+        }
+        for tool in additions {
+            output.push_str(&format!("{tool} = true\n"));
+        }
+    }
+    output
+}
+
+async fn run_poka_init(
+    poka_bin: &Path,
+    target: &Path,
+    tools: &[&str],
+    timeout: Duration,
+) -> Result<(), String> {
+    let name = target
+        .file_name()
+        .and_then(|name| name.to_str())
+        .filter(|name| !name.is_empty())
+        .unwrap_or("project");
+    let mut command = tokio::process::Command::new(poka_bin);
+    command
+        .current_dir(target)
+        .args(["init", "--name", name, "--tools", &tools.join(",")]);
+    run_poka_command(command, "poka init", timeout).await
+}
+
+async fn run_poka_apply(
+    poka_bin: &Path,
+    target: &Path,
+    timeout: Duration,
+) -> Result<(), String> {
+    let mut command = tokio::process::Command::new(poka_bin);
+    command.current_dir(target).arg("apply");
+    run_poka_command(command, "poka apply", timeout).await
+}
+
+async fn run_poka_command(
+    mut command: tokio::process::Command,
+    stage: &str,
+    timeout: Duration,
+) -> Result<(), String> {
+    command
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .stdin(Stdio::null());
+    match tokio::time::timeout(timeout, command.output()).await {
+        Ok(Ok(output)) if output.status.success() => Ok(()),
+        Ok(Ok(output)) => Err(format!("{stage} exited {:?}: {}", output.status.code(), diagnostic(&output))),
+        Ok(Err(error)) => Err(format!("failed to start {stage}: {error}")),
+        Err(_) => Err(format!("{stage} timed out after {}s", timeout.as_secs())),
+    }
+}
+
+fn append_note(report: &mut ToolReport, note: String) {
+    report.note = Some(match report.note.take() {
+        Some(existing) => format!("{existing}; {note}"),
+        None => note,
+    });
 }
 
 /// Resolve an installed tool, or bootstrap its associated elci-group checkout
