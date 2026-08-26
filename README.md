@@ -72,7 +72,10 @@ plain, including Lwoodz and Vamos, remain uncolored. `NO_COLOR` disables all
 ANSI styling.
 Not-applicable and zero-observation results are ungraded; unknown Isopod
 controls reduce coverage rather than counting as failures, and compliance is
-not graded below 80% assessment coverage. See
+not graded below 80% assessment coverage. A graded tool reporting `fail`
+caps the overall score at 73 (the bottom of the "C" band) regardless of the
+weighted average, so one critical-axis failure cannot be diluted away by
+unrelated healthy scores. See
 [`docs/result-protocol.md`](docs/result-protocol.md).
 
 ## Ferret scoring

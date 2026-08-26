@@ -38,11 +38,29 @@ pub fn parse(stdout: &str, _exit_code: Option<i32>) -> ParseOutcome {
         .and_then(Value::as_u64)
         .unwrap_or(0);
 
-    let coverage = if file_count > 0 {
-        analyzed as f64 / file_count as f64
-    } else {
-        1.0
-    };
+    // file_count == 0 means chakra had nothing to analyze (missing metadata
+    // or a genuinely empty project), not perfect coverage. Scoring this as
+    // 100 would reward "could not analyze anything" the same as "analyzed
+    // everything" — treat it as no data instead, matching how isopod treats
+    // zero controls.
+    if file_count == 0 {
+        return ParseOutcome {
+            status: Status::NoData,
+            score: None,
+            summary: format!(
+                "{nodes} nodes, {} flows; no file metadata reported",
+                flows.len()
+            ),
+            findings: Vec::new(),
+            note: Some(
+                "chakra reported zero analyzable files; coverage and confidence cannot be computed"
+                    .to_string(),
+            ),
+            raw: Some(root),
+        };
+    }
+
+    let coverage = analyzed as f64 / file_count as f64;
 
     let avg_confidence = if flows.is_empty() {
         1.0
@@ -90,5 +108,28 @@ pub fn parse(stdout: &str, _exit_code: Option<i32>) -> ParseOutcome {
         findings,
         note: None,
         raw: Some(root),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn zero_files_is_no_data_not_a_perfect_score() {
+        let stdout =
+            r#"{"nodes":[],"flows":[],"metadata":{"file_count":0,"analyzed_file_count":0}}"#;
+        let out = parse(stdout, Some(0));
+        assert_eq!(out.status, Status::NoData);
+        assert_eq!(out.score, None);
+    }
+
+    #[test]
+    fn partial_coverage_scores_below_full_marks() {
+        let stdout = r#"{"nodes":[{}],"flows":[{"confidence":1.0,"provenance":"static"}],"metadata":{"file_count":10,"analyzed_file_count":3}}"#;
+        let out = parse(stdout, Some(0));
+        // coverage 0.3, confidence 1.0 => 100*(0.5*1.0 + 0.5*0.3) = 65
+        assert!((out.score.unwrap() - 65.0).abs() < 1e-9);
+        assert_eq!(out.status, Status::Warn);
     }
 }

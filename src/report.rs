@@ -138,24 +138,41 @@ pub struct Report {
 }
 
 impl Report {
+    /// A graded tool reporting `Status::Fail` caps the overall score here,
+    /// regardless of what the average works out to. Without this, a single
+    /// critical-axis failure (e.g. a missing license) can be diluted away by
+    /// unrelated healthy scores (e.g. module cohesion) into a passing
+    /// average — this floor keeps one hard failure visible in the grade
+    /// instead of averaged out. 73.0 is the bottom of the "C" band, so a
+    /// capped grade still reads as a real problem rather than a rounding
+    /// artifact.
+    const HARD_FAIL_CAP: f64 = 73.0;
+
     pub fn compute_overall(tools: &[ToolReport]) -> Overall {
         let mut weighted_sum = 0.0;
         let mut weight_total = 0.0;
         let mut weights = Vec::new();
+        let mut hard_fail = false;
 
         for t in tools {
             if let Some(score) = t.score {
                 weights.push((t.tool.to_string(), 1.0));
                 weighted_sum += score;
                 weight_total += 1.0;
+                if matches!(t.status, Status::Fail) {
+                    hard_fail = true;
+                }
             }
         }
 
-        let score = if weight_total > 0.0 {
+        let mut score = if weight_total > 0.0 {
             Some(weighted_sum / weight_total)
         } else {
             None
         };
+        if hard_fail {
+            score = score.map(|s| s.min(Self::HARD_FAIL_CAP));
+        }
 
         Overall {
             score,
@@ -302,6 +319,32 @@ mod tests {
         assert_eq!(overall.total_tools, 3);
         assert!((overall.score.unwrap() - 90.0).abs() < 1e-9);
         assert_eq!(overall.grade, Some("A-"));
+    }
+
+    #[test]
+    fn a_hard_fail_caps_overall_despite_a_healthy_average() {
+        let mut failing = tool_report("lwoodz", Some(40.0));
+        failing.status = Status::Fail;
+        let tools = vec![
+            failing,
+            tool_report("fract", Some(100.0)),
+            tool_report("chakra", Some(100.0)),
+        ];
+        let overall = Report::compute_overall(&tools);
+        // Unweighted average would be (40+100+100)/3 = 80.0 (a B-); the hard
+        // fail must cap it at 73.0 instead.
+        assert!((overall.score.unwrap() - 73.0).abs() < 1e-9);
+        assert_eq!(overall.grade, Some("C"));
+    }
+
+    #[test]
+    fn hard_fail_cap_does_not_raise_an_already_lower_score() {
+        let mut failing = tool_report("lwoodz", Some(40.0));
+        failing.status = Status::Fail;
+        let tools = vec![failing, tool_report("fract", Some(50.0))];
+        let overall = Report::compute_overall(&tools);
+        // Average is 45.0, already below the cap — the cap must not raise it.
+        assert!((overall.score.unwrap() - 45.0).abs() < 1e-9);
     }
 
     #[test]

@@ -20,6 +20,14 @@ from its valid-result rate and lists compatibility, availability, and execution
 defects. `overall.provisional` is true whenever integrity is not `healthy` or
 when project evidence is materially incomplete.
 
+`overall.score` is the unweighted mean of every graded tool's score, with one
+exception: if any graded tool reports `status: fail`, the overall score is
+capped at 73.0 (the bottom of the letter-grade "C" band) even when the
+unweighted mean would be higher. This prevents a single critical-axis failure
+(e.g. a missing license) from being averaged away by unrelated healthy scores
+(e.g. module cohesion). The cap only lowers the score — it never raises an
+average that was already below it.
+
 `status: fail` means the analyzer ran successfully and found project issues;
 it does not mean execution failed. Human reports render that state as
 `findings`. Analyzer failures are identified by `execution: failed`,

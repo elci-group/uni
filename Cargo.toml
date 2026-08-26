@@ -1,6 +1,6 @@
 [package]
 name = "uni"
-version = "0.1.8"
+version = "0.1.9"
 edition = "2021"
 description = "Unified analysis tool: runs amber, ami, bart, chakra, ferret, fract, isopod, jeenome, lwoodz, tempcheq, traci, and vamos concurrently against a project and compiles one deterministic, graded snapshot report."
 license = "MIT"

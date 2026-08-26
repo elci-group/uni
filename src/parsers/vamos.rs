@@ -43,6 +43,31 @@ pub fn parse(stdout: &str, _exit_code: Option<i32>) -> ParseOutcome {
     let total_nominal: u64 = rows.iter().map(|r| r.nominal).sum();
     let total_validated: u64 = rows.iter().map(|r| r.validated).sum();
 
+    // Rows exist (an action is defined) but none has ever fired: same "no
+    // real usage yet" situation as no rows at all. Without this guard,
+    // total_triggered == 0 divides by zero, and the resulting NaN survives
+    // clamp_score (per f64::clamp's documented NaN passthrough) to become a
+    // score that serializes as JSON `null` while letter_for(NaN) still
+    // reports grade "F" — an internally inconsistent report.
+    if total_triggered == 0 {
+        let findings: Vec<String> = rows
+            .iter()
+            .take(5)
+            .map(|r| format!("{}: defined but never triggered", r.action))
+            .collect();
+        return ParseOutcome {
+            status: Status::Warn,
+            score: None,
+            summary: format!("{} action(s) defined, none triggered yet", rows.len()),
+            findings,
+            note: Some(
+                "vamos.toml is present but no instances have been triggered yet; run `vamos trigger`/`step`/`fact` against real usage to start scoring completion"
+                    .to_string(),
+            ),
+            raw: None,
+        };
+    }
+
     let validated_ratio = total_validated as f64 / total_triggered as f64;
     let nominal_ratio = total_nominal as f64 / total_triggered as f64;
     let score = clamp_score(100.0 * validated_ratio - 20.0 * nominal_ratio);
@@ -142,6 +167,15 @@ mod tests {
         let out = parse("", Some(0));
         assert_eq!(out.score, None);
         assert_eq!(out.status, Status::Warn);
+    }
+
+    #[test]
+    fn zero_triggered_rows_are_ungraded_not_nan() {
+        let stdout = "deploy triggered=0 nominal=0 validated=0 avg_structural_confidence=0.00\n";
+        let out = parse(stdout, Some(0));
+        assert_eq!(out.score, None);
+        assert_eq!(out.status, Status::Warn);
+        assert!(out.findings[0].contains("deploy"));
     }
 
     #[test]
