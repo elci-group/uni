@@ -1,13 +1,30 @@
 // Copyright (c) 2026 sal
 // SPDX-License-Identifier: MIT
-//! isopod's `check --json` emits a bare array of control results
-//! (PASS/FAIL/WARNING/UNKNOWN). Unknown is missing evidence, not failure.
+//! isopod's `check --json` emits `{"controls": [...], "frameworks": [...]}`,
+//! where `controls` holds the PASS/FAIL/WARNING/UNKNOWN results. Unknown is
+//! missing evidence, not failure.
+//!
+//! Older isopod versions emitted a bare array of control results instead of
+//! this object; that shape is still accepted here for compatibility. Before
+//! this fix, an object response (isopod's current, real output) fell through
+//! to `Ok(other) => vec![other]`, which wrapped the whole `{"controls":
+//! [],"frameworks":[]}` object as a single pseudo-control with no "status"
+//! field. That pseudo-control defaulted to UNKNOWN, so every project isopod
+//! legitimately found zero applicable controls for (i.e. every project, since
+//! `isopod check` returned `"controls": []` for both oip and ferret in
+//! practice) was reported as "0/1 controls assessed: 1 unknown" — a
+//! fabricated finding — instead of the correct zero-controls/no-data result.
 use super::ParseOutcome;
 use crate::report::Status;
 use serde_json::Value;
 
 pub fn parse(stdout: &str, exit_code: Option<i32>) -> ParseOutcome {
     let controls: Vec<Value> = match serde_json::from_str(stdout) {
+        Ok(Value::Object(mut o)) => match o.remove("controls") {
+            Some(Value::Array(a)) => a,
+            Some(other) => vec![other],
+            None => vec![Value::Object(o)],
+        },
         Ok(Value::Array(a)) => a,
         Ok(other) => vec![other],
         Err(e) => {
@@ -128,5 +145,31 @@ mod tests {
         let out = parse(stdout, Some(0));
         assert_eq!(out.score, Some(100.0));
         assert_eq!(out.status, Status::Ok);
+    }
+
+    // Regression test: `isopod check --json` actually emits
+    // `{"controls": [...], "frameworks": [...]}`, not a bare array. Before
+    // this fix, that object fell through to the `Ok(other) => vec![other]`
+    // branch, which treated the whole object as one status-less pseudo
+    // control and manufactured a fabricated "1 unknown" finding — observed
+    // running uni against both oip and ferret, where isopod legitimately has
+    // zero applicable controls and returns `{"controls": [], "frameworks":
+    // []}`.
+    #[test]
+    fn empty_controls_object_is_no_data_not_one_fabricated_unknown() {
+        let stdout = r#"{"controls": [], "frameworks": []}"#;
+        let out = parse(stdout, Some(0));
+        assert_eq!(out.status, Status::NoData);
+        assert_eq!(out.score, None);
+        assert!(out.summary.starts_with("0/0 controls assessed"));
+    }
+
+    #[test]
+    fn controls_object_with_results_is_parsed_like_a_bare_array() {
+        let stdout = r#"{"controls": [{"status":"PASS","title":"a"},{"status":"FAIL","title":"b"}], "frameworks": ["iso27001"]}"#;
+        let out = parse(stdout, Some(0));
+        assert_eq!(out.status, Status::Fail);
+        assert_eq!(out.score, Some(50.0));
+        assert!(out.findings[0].contains("FAIL: b"));
     }
 }
