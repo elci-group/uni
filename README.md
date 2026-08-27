@@ -25,6 +25,31 @@ cargo run -- revise --apply /path/to/project
 Use `--skip` to exclude applications and `--tools-dir` to choose where sibling
 application repositories live.
 
+## Cohort mode
+
+`--cohort` runs the same per-project suite across every first-party
+repository instead of one target:
+
+```bash
+cargo run -- --cohort --cohort-out ./cohort-results
+cargo run -- --cohort --cohort-org elci-group --cohort-batch-size 4 --cohort-cycle-seconds 30
+```
+
+Discovery calls `gh repo list <org> --json name,isFork,isArchived` (default
+org `elci-group`) — the authoritative first-party list, since fork status
+isn't reliably derivable from local git metadata and a filesystem walk
+would also sweep in a large account's dormant/legacy repos. Each surviving
+repo resolves to `<tools-dir>/<repo>` (the same sibling-checkout convention
+`--tools-dir` already uses for Uni's own applications); a repo with no local
+checkout there is reported `not_locally_available`, not silently skipped.
+
+Repos run `--cohort-batch-size` at a time (default 4), pausing
+`--cohort-cycle-seconds` between batches (default 30) — deliberately paced
+rather than firing every repo's full tool suite at once. Every repo's full
+`uni.report/v3` JSON is written to `--cohort-out` as `<repo>.json`, plus one
+`summary.json` rollup; the human and `--json` output is a compact one-line-
+per-repo table, not the full per-tool detail a single-project run prints.
+
 `uni revise` initializes Vamos with `vamos init` when the target has no
 `vamos.toml`, then includes Vamos in its diagnostic pass. Lwoodz analysis uses
 the current `lwoodz --json audit` contract or the probed legacy equivalent; a flagged missing license is previewed and repaired with

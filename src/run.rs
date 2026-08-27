@@ -27,6 +27,18 @@ async fn tag<F: std::future::Future<Output = ToolReport>>(
 }
 
 pub async fn execute(opts: &AnalyzeOptions) -> Result<Report, String> {
+    execute_with_admitter(opts, None).await
+}
+
+/// Same as [`execute`], but accepts a pre-built [`Admitter`] to share across
+/// multiple targets (used by cohort mode, so every repo in a batch reuses
+/// one ingauge client/connection instead of each building its own). `None`
+/// builds one internally from the environment, same as [`execute`] always
+/// did.
+pub async fn execute_with_admitter(
+    opts: &AnalyzeOptions,
+    shared_admitter: Option<Arc<Admitter>>,
+) -> Result<Report, String> {
     let target = std::fs::canonicalize(&opts.target)
         .map_err(|e| format!("target path {:?} is not accessible: {e}", opts.target))?;
 
@@ -55,7 +67,7 @@ pub async fn execute(opts: &AnalyzeOptions) -> Result<Report, String> {
     };
 
     let timeout = Duration::from_secs(opts.timeout);
-    let admitter = Arc::new(Admitter::from_env());
+    let admitter = shared_admitter.unwrap_or_else(|| Arc::new(Admitter::from_env()));
     let selected_tools: Vec<ToolId> = ToolId::ALL
         .into_iter()
         .filter(|tool| selected(*tool))
@@ -942,6 +954,25 @@ fn build_command(tool: ToolId, bin: &Path, target: &Path) -> tokio::process::Com
     cmd
 }
 
+/// Waits for ingauge admission, logging a stderr telemetry line when a real
+/// delay occurred. `wait_and_admit`'s own cooldown display is a live
+/// terminal timer — presentation output only, invisible in a captured or
+/// redirected log — so a long unattended (e.g. cohort) run's gate
+/// backpressure would otherwise leave no trace.
+async fn admit_with_telemetry(admitter: &Admitter, tool: &str, provider: &str) {
+    let start = Instant::now();
+    let _ = admitter
+        .wait_and_admit(provider, Option::<String>::None, None)
+        .await;
+    let elapsed = start.elapsed();
+    if elapsed > Duration::from_millis(200) {
+        eprintln!(
+            "uni: tool={tool} stage=gate outcome=delayed provider={provider} elapsed_ms={}",
+            elapsed.as_millis()
+        );
+    }
+}
+
 async fn run_one(
     tool: ToolId,
     bin: PathBuf,
@@ -950,9 +981,7 @@ async fn run_one(
     admitter: Arc<Admitter>,
 ) -> ToolReport {
     if let Some(provider) = tool.gate_provider() {
-        let _ = admitter
-            .wait_and_admit(provider, Option::<String>::None, None)
-            .await;
+        admit_with_telemetry(&admitter, tool.key(), provider).await;
     }
 
     let mut cmd = if tool == ToolId::Ferret {
@@ -1189,9 +1218,7 @@ async fn run_jeenome(
         },
     };
 
-    let _ = admitter
-        .wait_and_admit("groq", Option::<String>::None, None)
-        .await;
+    admit_with_telemetry(&admitter, ToolId::Jeenome.key(), "groq").await;
 
     let mut cmd = tokio::process::Command::new(&bin);
     cmd.arg("-i")

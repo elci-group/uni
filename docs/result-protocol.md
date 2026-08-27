@@ -63,3 +63,19 @@ Missing tools are classified without changing the filesystem by default.
 This deliberately distinguishes repository availability from installability
 and prevents a checkout directory name from being treated as a Cargo package
 or executable name.
+
+## Cohort reports (`uni.cohort/v1`)
+
+`--cohort` produces a separate top-level shape, not a list of
+`uni.report/v3` documents: `{schema, org, discovered, locally_available,
+cycle: {batch_size, cycle_seconds}, repos: [...], rollup: {...}}`. Each
+`repos[]` entry is a compact pointer — repo name, local path, the written
+`report_file` name, overall score/grade, and integrity status — not the full
+per-tool report; that full detail is what `report_file` points to on disk.
+`rollup` is computed only from repos with a numeric `overall_score` (a tool
+selection that never scores, e.g. `--only bart`, legitimately yields
+`graded_count: 0` — that mirrors `overall.score: null` on a single-project
+report when nothing graded, not a cohort-specific failure). A repo discovered
+on GitHub but absent from the local `--tools-dir` convention is reported
+`status: "not_locally_available"`, distinct from a repo whose analysis ran
+and failed.

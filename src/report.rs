@@ -137,6 +137,95 @@ pub struct Report {
     pub integrity: AnalysisIntegrity,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum CohortRepoStatus {
+    /// A per-project report was produced (regardless of its own grade).
+    Graded,
+    /// Discovered on GitHub but has no local checkout under the cohort root.
+    NotLocallyAvailable,
+}
+
+#[derive(Debug, Serialize)]
+pub struct CohortRepoEntry {
+    pub repo: String,
+    pub path: Option<String>,
+    pub report_file: Option<String>,
+    pub status: CohortRepoStatus,
+    pub overall_score: Option<f64>,
+    pub overall_grade: Option<&'static str>,
+    pub integrity_status: Option<IntegrityStatus>,
+}
+
+#[derive(Debug, Serialize)]
+pub struct CohortRollup {
+    pub graded_count: usize,
+    pub mean_score: Option<f64>,
+    pub worst: Vec<String>,
+    pub integrity_failures: Vec<String>,
+}
+
+impl CohortRollup {
+    /// Lowest 5 graded repos by overall score, and every repo whose
+    /// analysis integrity isn't healthy — the two things worth a human's
+    /// attention first out of a cohort-sized result set.
+    pub fn compute(repos: &[CohortRepoEntry]) -> Self {
+        let mut graded: Vec<(&str, f64)> = repos
+            .iter()
+            .filter_map(|r| r.overall_score.map(|s| (r.repo.as_str(), s)))
+            .collect();
+        graded.sort_by(|a, b| a.1.partial_cmp(&b.1).unwrap_or(std::cmp::Ordering::Equal));
+
+        let mean_score = if graded.is_empty() {
+            None
+        } else {
+            Some(graded.iter().map(|(_, s)| s).sum::<f64>() / graded.len() as f64)
+        };
+
+        let worst = graded
+            .iter()
+            .take(5)
+            .map(|(repo, score)| format!("{repo}: {score:.1}"))
+            .collect();
+
+        let integrity_failures = repos
+            .iter()
+            .filter(|r| {
+                matches!(
+                    r.integrity_status,
+                    Some(IntegrityStatus::Degraded) | Some(IntegrityStatus::Failed)
+                )
+            })
+            .map(|r| r.repo.clone())
+            .collect();
+
+        CohortRollup {
+            graded_count: graded.len(),
+            mean_score,
+            worst,
+            integrity_failures,
+        }
+    }
+}
+
+#[derive(Debug, Serialize)]
+pub struct CohortCycle {
+    pub batch_size: usize,
+    pub cycle_seconds: u64,
+}
+
+#[derive(Debug, Serialize)]
+pub struct CohortReport {
+    pub schema: &'static str,
+    pub org: String,
+    pub generated_at: String,
+    pub discovered: usize,
+    pub locally_available: usize,
+    pub cycle: CohortCycle,
+    pub repos: Vec<CohortRepoEntry>,
+    pub rollup: CohortRollup,
+}
+
 impl Report {
     /// A graded tool reporting `Status::Fail` caps the overall score here,
     /// regardless of what the average works out to. Without this, a single
@@ -385,5 +474,48 @@ mod tests {
         assert_eq!(integrity.status, IntegrityStatus::Failed);
         assert_eq!(integrity.score, 0.0);
         assert_eq!(integrity.defects.len(), 1);
+    }
+
+    fn cohort_repo(
+        repo: &str,
+        score: Option<f64>,
+        integrity: Option<IntegrityStatus>,
+    ) -> CohortRepoEntry {
+        CohortRepoEntry {
+            repo: repo.to_string(),
+            path: Some(format!("/home/sal/{repo}")),
+            report_file: score.map(|_| format!("{repo}.json")),
+            status: if score.is_some() {
+                CohortRepoStatus::Graded
+            } else {
+                CohortRepoStatus::NotLocallyAvailable
+            },
+            overall_score: score,
+            overall_grade: score.map(letter_for),
+            integrity_status: integrity,
+        }
+    }
+
+    #[test]
+    fn rollup_ranks_worst_scores_and_lists_integrity_failures() {
+        let repos = vec![
+            cohort_repo("healthy", Some(95.0), Some(IntegrityStatus::Healthy)),
+            cohort_repo("degraded", Some(60.0), Some(IntegrityStatus::Degraded)),
+            cohort_repo("not-checked-out", None, None),
+        ];
+        let rollup = CohortRollup::compute(&repos);
+        assert_eq!(rollup.graded_count, 2);
+        assert!((rollup.mean_score.unwrap() - 77.5).abs() < 1e-9);
+        assert_eq!(rollup.worst[0], "degraded: 60.0");
+        assert_eq!(rollup.integrity_failures, vec!["degraded".to_string()]);
+    }
+
+    #[test]
+    fn rollup_with_no_graded_repos_has_no_mean() {
+        let repos = vec![cohort_repo("not-checked-out", None, None)];
+        let rollup = CohortRollup::compute(&repos);
+        assert_eq!(rollup.graded_count, 0);
+        assert_eq!(rollup.mean_score, None);
+        assert!(rollup.worst.is_empty());
     }
 }

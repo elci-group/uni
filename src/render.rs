@@ -437,6 +437,79 @@ fn progress_bar(ratio: f64) -> String {
     bar
 }
 
+/// A cohort run can cover ~100 repos, so this is deliberately a compact
+/// one-line-per-repo table rather than the full per-tool detail block
+/// `human_report` renders for a single project — that detail lives in each
+/// repo's own JSON file under `--cohort-out` instead.
+pub fn human_cohort_report(report: &crate::report::CohortReport) -> String {
+    use crate::report::CohortRepoStatus;
+
+    let mut out = String::new();
+    out.push_str(&format!(
+        "uni cohort — {} ({} discovered, {} locally available)\n",
+        report.org, report.discovered, report.locally_available
+    ));
+    out.push_str(&format!(
+        "batch size {}, {}s between cycles\n\n",
+        report.cycle.batch_size, report.cycle.cycle_seconds
+    ));
+
+    let name_width = report
+        .repos
+        .iter()
+        .map(|r| r.repo.len())
+        .max()
+        .unwrap_or(4)
+        .max(4);
+    out.push_str(&format!(
+        "{}  {}  {}  {}\n",
+        pad_right("REPO", name_width),
+        pad_right("GRADE", 5),
+        pad_left("SCORE", 6),
+        "INTEGRITY"
+    ));
+
+    for repo in &report.repos {
+        let (grade, score) = match (repo.overall_grade, repo.overall_score) {
+            (Some(g), Some(s)) => (g.to_string(), format!("{s:.1}")),
+            _ => ("—".to_string(), "—".to_string()),
+        };
+        let integrity = match (repo.status, repo.integrity_status) {
+            (CohortRepoStatus::NotLocallyAvailable, _) => "not locally available".to_string(),
+            (_, Some(status)) => format!("{} {}", integrity_emoji(status), integrity_word(status)),
+            (_, None) => "—".to_string(),
+        };
+        out.push_str(&format!(
+            "{}  {}  {}  {}\n",
+            pad_right(&repo.repo, name_width),
+            pad_right(&grade, 5),
+            pad_left(&score, 6),
+            integrity
+        ));
+    }
+
+    out.push_str(&format!(
+        "\n{} graded, mean score {}\n",
+        report.rollup.graded_count,
+        report
+            .rollup
+            .mean_score
+            .map(|s| format!("{s:.1}"))
+            .unwrap_or_else(|| "N/A".to_string())
+    ));
+    if !report.rollup.worst.is_empty() {
+        out.push_str(&format!("worst: {}\n", report.rollup.worst.join(", ")));
+    }
+    if !report.rollup.integrity_failures.is_empty() {
+        out.push_str(&format!(
+            "integrity issues: {}\n",
+            report.rollup.integrity_failures.join(", ")
+        ));
+    }
+
+    out
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

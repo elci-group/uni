@@ -1,6 +1,6 @@
 // Copyright (c) 2026 sal
 // SPDX-License-Identifier: MIT
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 use clap::{Parser, Subcommand};
 
@@ -62,6 +62,29 @@ pub struct Cli {
     /// snapshot tool by default, not a gate).
     #[arg(long)]
     pub fail_under: Option<f64>,
+
+    /// Assess every first-party elci-group repository instead of one
+    /// project. `target` becomes the discovery root override (rarely
+    /// needed) rather than a single project path.
+    #[arg(long)]
+    pub cohort: bool,
+
+    /// GitHub account to discover first-party repos from.
+    #[arg(long, default_value = "elci-group")]
+    pub cohort_org: String,
+
+    /// How many repos to analyze concurrently per cycle.
+    #[arg(long, default_value_t = 4)]
+    pub cohort_batch_size: usize,
+
+    /// Seconds to pause between batches.
+    #[arg(long, default_value_t = 30)]
+    pub cohort_cycle_seconds: u64,
+
+    /// Directory to write per-repo reports and the rollup summary into
+    /// (default: `./uni-cohort-<timestamp>/`).
+    #[arg(long)]
+    pub cohort_out: Option<PathBuf>,
 }
 
 #[derive(Subcommand, Debug)]
@@ -111,6 +134,21 @@ pub struct AnalyzeArgs {
 
     #[arg(long)]
     pub fail_under: Option<f64>,
+
+    #[arg(long)]
+    pub cohort: bool,
+
+    #[arg(long, default_value = "elci-group")]
+    pub cohort_org: String,
+
+    #[arg(long, default_value_t = 4)]
+    pub cohort_batch_size: usize,
+
+    #[arg(long, default_value_t = 30)]
+    pub cohort_cycle_seconds: u64,
+
+    #[arg(long)]
+    pub cohort_out: Option<PathBuf>,
 }
 
 #[derive(Parser, Debug)]
@@ -187,7 +225,9 @@ pub enum RunFailLevel {
 }
 
 /// The subset of options `run::execute` needs, shared by the bare
-/// `uni <target>` invocation and `uni analyze`.
+/// `uni <target>` invocation and `uni analyze`. Clone so cohort mode can
+/// reuse one base template per repo, overriding just `target`.
+#[derive(Clone)]
 pub struct AnalyzeOptions {
     pub target: PathBuf,
     pub only: Vec<String>,
@@ -197,6 +237,16 @@ pub struct AnalyzeOptions {
     pub timeout: u64,
     pub tools_dir: Option<PathBuf>,
     pub install_missing: bool,
+}
+
+/// Cohort-mode discovery/pacing options, shared by the bare `uni --cohort`
+/// invocation and `uni analyze --cohort`.
+pub struct CohortOptions {
+    pub root: Option<PathBuf>,
+    pub org: String,
+    pub batch_size: usize,
+    pub cycle_seconds: u64,
+    pub out: Option<PathBuf>,
 }
 
 impl Cli {
@@ -212,6 +262,16 @@ impl Cli {
             install_missing: self.install_missing,
         }
     }
+
+    pub fn cohort_options(&self) -> CohortOptions {
+        CohortOptions {
+            root: (self.target.as_path() != Path::new(".")).then(|| self.target.clone()),
+            org: self.cohort_org.clone(),
+            batch_size: self.cohort_batch_size,
+            cycle_seconds: self.cohort_cycle_seconds,
+            out: self.cohort_out.clone(),
+        }
+    }
 }
 
 impl AnalyzeArgs {
@@ -225,6 +285,16 @@ impl AnalyzeArgs {
             timeout: self.timeout,
             tools_dir: self.tools_dir.clone(),
             install_missing: self.install_missing,
+        }
+    }
+
+    pub fn cohort_options(&self) -> CohortOptions {
+        CohortOptions {
+            root: (self.target.as_path() != Path::new(".")).then(|| self.target.clone()),
+            org: self.cohort_org.clone(),
+            batch_size: self.cohort_batch_size,
+            cycle_seconds: self.cohort_cycle_seconds,
+            out: self.cohort_out.clone(),
         }
     }
 }
