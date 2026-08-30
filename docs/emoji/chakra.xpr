@@ -1,0 +1,410 @@
+{
+  "header": {
+    "spec_version": "0.1.0"
+  },
+  "identity": {
+    "namespace": "example",
+    "asset_id": "mandala_v1"
+  },
+  "metadata": {
+    "name": "Glowing Violet Mandala",
+    "aliases": [
+      "lavender mandala"
+    ],
+    "tags": [
+      "mandala",
+      "glow",
+      "violet"
+    ]
+  },
+  "canvas": {
+    "size": 1024
+  },
+  "layers": [
+    {
+      "name": "mandala",
+      "opacity": 255,
+      "blend": "normal",
+      "paths": [
+        {
+          "feature": "core",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 592,
+              "y": 512
+            },
+            {
+              "op": "quad_to",
+              "cx": 592,
+              "cy": 432,
+              "x": 512,
+              "y": 432
+            },
+            {
+              "op": "quad_to",
+              "cx": 432,
+              "cy": 432,
+              "x": 432,
+              "y": 512
+            },
+            {
+              "op": "quad_to",
+              "cx": 432,
+              "cy": 592,
+              "x": 512,
+              "y": 592
+            },
+            {
+              "op": "quad_to",
+              "cx": 592,
+              "cy": 592,
+              "x": 592,
+              "y": 512
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 210,
+              "g": 180,
+              "b": 255,
+              "a": 255
+            }
+          },
+          "stroke": {
+            "color": {
+              "r": 230,
+              "g": 200,
+              "b": 255,
+              "a": 255
+            },
+            "width": 12,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "glow",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 812,
+              "y": 512
+            },
+            {
+              "op": "quad_to",
+              "cx": 812,
+              "cy": 212,
+              "x": 512,
+              "y": 212
+            },
+            {
+              "op": "quad_to",
+              "cx": 212,
+              "cy": 212,
+              "x": 212,
+              "y": 512
+            },
+            {
+              "op": "quad_to",
+              "cx": 212,
+              "cy": 812,
+              "x": 512,
+              "y": 812
+            },
+            {
+              "op": "quad_to",
+              "cx": 812,
+              "cy": 812,
+              "x": 812,
+              "y": 512
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 240,
+              "g": 220,
+              "b": 255,
+              "a": 255
+            }
+          },
+          "stroke": null,
+          "opacity": 200
+        },
+        {
+          "feature": "outer-ring",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 912,
+              "y": 512
+            },
+            {
+              "op": "quad_to",
+              "cx": 912,
+              "cy": 112,
+              "x": 512,
+              "y": 112
+            },
+            {
+              "op": "quad_to",
+              "cx": 112,
+              "cy": 112,
+              "x": 112,
+              "y": 512
+            },
+            {
+              "op": "quad_to",
+              "cx": 112,
+              "cy": 912,
+              "x": 512,
+              "y": 912
+            },
+            {
+              "op": "quad_to",
+              "cx": 912,
+              "cy": 912,
+              "x": 912,
+              "y": 512
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": null,
+          "stroke": {
+            "color": {
+              "r": 160,
+              "g": 60,
+              "b": 220,
+              "a": 255
+            },
+            "width": 12,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "spiral-1",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 512,
+              "y": 512
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 600,
+              "c1y": 400,
+              "c2x": 700,
+              "c2y": 300,
+              "x": 800,
+              "y": 200
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 850,
+              "c1y": 250,
+              "c2x": 900,
+              "c2y": 350,
+              "x": 950,
+              "y": 500
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 900,
+              "c1y": 600,
+              "c2x": 800,
+              "c2y": 700,
+              "x": 700,
+              "y": 800
+            }
+          ],
+          "fill": null,
+          "stroke": {
+            "color": {
+              "r": 200,
+              "g": 100,
+              "b": 220,
+              "a": 255
+            },
+            "width": 8,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "spiral-2",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 512,
+              "y": 512
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 400,
+              "c1y": 400,
+              "c2x": 300,
+              "c2y": 300,
+              "x": 200,
+              "y": 200
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 150,
+              "c1y": 250,
+              "c2x": 100,
+              "c2y": 350,
+              "x": 50,
+              "y": 500
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 0,
+              "c1y": 600,
+              "c2x": 100,
+              "c2y": 700,
+              "x": 300,
+              "y": 800
+            }
+          ],
+          "fill": null,
+          "stroke": {
+            "color": {
+              "r": 200,
+              "g": 100,
+              "b": 220,
+              "a": 255
+            },
+            "width": 8,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "spiral-3",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 512,
+              "y": 512
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 620,
+              "c1y": 340,
+              "c2x": 820,
+              "c2y": 240,
+              "x": 970,
+              "y": 80
+            }
+          ],
+          "fill": null,
+          "stroke": {
+            "color": {
+              "r": 200,
+              "g": 100,
+              "b": 220,
+              "a": 255
+            },
+            "width": 6,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "spiral-4",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 512,
+              "y": 512
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 380,
+              "c1y": 340,
+              "c2x": 180,
+              "c2y": 240,
+              "x": 30,
+              "y": 80
+            }
+          ],
+          "fill": null,
+          "stroke": {
+            "color": {
+              "r": 200,
+              "g": 100,
+              "b": 220,
+              "a": 255
+            },
+            "width": 6,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "spiral-5",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 512,
+              "y": 512
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 300,
+              "c1y": 400,
+              "c2x": 200,
+              "c2y": 300,
+              "x": 100,
+              "y": 200
+            }
+          ],
+          "fill": null,
+          "stroke": {
+            "color": {
+              "r": 180,
+              "g": 80,
+              "b": 200,
+              "a": 255
+            },
+            "width": 6,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        }
+      ]
+    }
+  ],
+  "semantics": {
+    "description": "a glowing violet mandala wheel with flowing energy lines spiraling outward, serene and balanced, lavender and purple tones",
+    "emotion": "serene",
+    "intensity": 70
+  },
+  "variants": {
+    "tiny": null,
+    "text": null,
+    "standard": null,
+    "large": null,
+    "full": null
+  },
+  "compatibility": {
+    "min_spec_version": "0.1.0"
+  },
+  "provenance": null
+}

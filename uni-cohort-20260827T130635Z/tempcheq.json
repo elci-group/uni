@@ -1,0 +1,3824 @@
+{
+  "schema": "uni.report/v3",
+  "target": "/home/sal/tempcheq",
+  "generated_at": "2026-08-27T13:07:59.343730779+00:00",
+  "tools_dir": "/home/sal",
+  "tools": [
+    {
+      "tool": "amber",
+      "purpose": "dependency bloat / replaceability",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 9
+      },
+      "binary": "/home/sal/.local/bin/amber",
+      "score": 73.33333333333334,
+      "grade": "C",
+      "exit_code": 1,
+      "duration_ms": 12472,
+      "summary": "9 dependencies analyzed: 4 keep/security-block, 4 propose, 1 proceed",
+      "findings": [
+        "anyhow: security_block (replaceability 66)",
+        "once_cell: security_block (replaceability 68)",
+        "regex: security_block (replaceability 56)",
+        "serde: security_block (replaceability 20)",
+        "clap: propose (replaceability 61)"
+      ],
+      "note": null,
+      "raw": {
+        "amber_version": "0.3.0",
+        "results": [
+          {
+            "crate": "anyhow",
+            "metadata": {
+              "cve_count": 1,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 85% (3 unique APIs from 0 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 15% (category: general)",
+              "Maintenance burden: 35% (1 CVEs, score: 50)",
+              "Testability: 70% (5 affected files)",
+              "API surface: 90% (using ~1% of public APIs)",
+              "Category rule applied: FREQUENTLY_REPLACEABLE list match",
+              "Confidence: 80% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 80,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 35,
+                "security_safety": 15,
+                "testability": 70,
+                "transitive_value": 55,
+                "usage_simplicity": 85
+              },
+              "overall": 66,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 5,
+              "call_sites": 0,
+              "imported_items": 7,
+              "is_trivial": true,
+              "unique_apis": 3
+            },
+            "version": "1.0.104"
+          },
+          {
+            "crate": "clap",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 65% (4 unique APIs from 4 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 50% (category: cli)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 55% (2 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 70% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 70,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 55,
+                "transitive_value": 65,
+                "usage_simplicity": 65
+              },
+              "overall": 61,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 2,
+              "call_sites": 4,
+              "imported_items": 5,
+              "is_trivial": false,
+              "unique_apis": 4
+            },
+            "version": "4.6.6"
+          },
+          {
+            "crate": "notify",
+            "metadata": {
+              "cve_count": 0,
+              "license": "CC0-1.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 85% (2 unique APIs from 2 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 70% (using ~13% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 70,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 80,
+                "transitive_value": 55,
+                "usage_simplicity": 85
+              },
+              "overall": 64,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 2,
+              "imported_items": 2,
+              "is_trivial": true,
+              "unique_apis": 2
+            },
+            "version": "6.1.1"
+          },
+          {
+            "crate": "once_cell",
+            "metadata": {
+              "cve_count": 1,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 90% (1 unique APIs from 0 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 15% (category: general)",
+              "Maintenance burden: 35% (1 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~1% of public APIs)",
+              "Category rule applied: FREQUENTLY_REPLACEABLE list match",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 35,
+                "security_safety": 15,
+                "testability": 80,
+                "transitive_value": 55,
+                "usage_simplicity": 90
+              },
+              "overall": 68,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 0,
+              "imported_items": 1,
+              "is_trivial": true,
+              "unique_apis": 1
+            },
+            "version": "1.21.4"
+          },
+          {
+            "crate": "owo-colors",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 90% (1 unique APIs from 0 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 65% (category: terminal)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 70% (3 affected files)",
+              "API surface: 90% (using ~3% of public APIs)",
+              "Category rule applied: FREQUENTLY_REPLACEABLE list match",
+              "Confidence: 80% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Safe to Replace",
+              "classification_stars": "★★★★★",
+              "confidence": 80,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 65,
+                "testability": 70,
+                "transitive_value": 55,
+                "usage_simplicity": 90
+              },
+              "overall": 80,
+              "recommendation": "proceed"
+            },
+            "usage": {
+              "affected_files": 3,
+              "call_sites": 0,
+              "imported_items": 3,
+              "is_trivial": true,
+              "unique_apis": 1
+            },
+            "version": "4.3.0"
+          },
+          {
+            "crate": "regex",
+            "metadata": {
+              "cve_count": 1,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 90% (1 unique APIs from 0 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 0% (category: parsing)",
+              "Maintenance burden: 35% (1 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~3% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 35,
+                "security_safety": 0,
+                "testability": 80,
+                "transitive_value": 65,
+                "usage_simplicity": 90
+              },
+              "overall": 56,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 0,
+              "imported_items": 1,
+              "is_trivial": true,
+              "unique_apis": 1
+            },
+            "version": "1.13.1"
+          },
+          {
+            "crate": "serde",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 90% (1 unique APIs from 2 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 0% (category: serialization)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~3% of public APIs)",
+              "Category rule applied: NEVER_REPLACE list match",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 0,
+                "testability": 80,
+                "transitive_value": 55,
+                "usage_simplicity": 90
+              },
+              "overall": 20,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 2,
+              "imported_items": 1,
+              "is_trivial": true,
+              "unique_apis": 1
+            },
+            "version": "1.0.229"
+          },
+          {
+            "crate": "serde_json",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 50% (0 unique APIs from 3 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 50% (category: serialization)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 80,
+                "transitive_value": 65,
+                "usage_simplicity": 50
+              },
+              "overall": 60,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 3,
+              "imported_items": 0,
+              "is_trivial": true,
+              "unique_apis": 0
+            },
+            "version": "1.0.151"
+          },
+          {
+            "crate": "walkdir",
+            "metadata": {
+              "cve_count": 0,
+              "license": "Unlicense",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 90% (1 unique APIs from 0 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~7% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 80,
+                "transitive_value": 55,
+                "usage_simplicity": 90
+              },
+              "overall": 68,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 0,
+              "imported_items": 1,
+              "is_trivial": true,
+              "unique_apis": 1
+            },
+            "version": "2.5.0"
+          }
+        ],
+        "total_dependencies": 9
+      }
+    },
+    {
+      "tool": "ami",
+      "purpose": "project profile completeness (market-intelligence readiness)",
+      "status": "skipped",
+      "availability": "not_checked",
+      "execution": "skipped",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": null,
+      "duration_ms": null,
+      "summary": "skipped",
+      "findings": [],
+      "note": "ami is opt-in because project profiling is not code health; use `--only ami` when its installed build exposes JSON output",
+      "raw": null
+    },
+    {
+      "tool": "bart",
+      "purpose": "filesystem size & hotspots (informational)",
+      "status": "ok",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/usr/bin/bart",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 610,
+      "summary": "71 files, 296.1 KB under root",
+      "findings": [
+        "/home/sal/tempcheq/src: 149.0 KB",
+        "/home/sal/tempcheq/.kaptaind: 69.1 KB",
+        "/home/sal/tempcheq/.lwoodz: 14.6 KB",
+        "/home/sal/tempcheq/Cargo.lock: 14.2 KB",
+        "/home/sal/tempcheq/.github: 8.9 KB"
+      ],
+      "note": "informational only — bart measures disk usage, not code health",
+      "raw": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787659437,
+                "path": "/home/sal/tempcheq/src/thermal_html.rs",
+                "size": 41800
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787653101,
+                "path": "/home/sal/tempcheq/src/export.rs",
+                "size": 19030
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787659064,
+                "path": "/home/sal/tempcheq/src/discover.rs",
+                "size": 18561
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787658857,
+                "path": "/home/sal/tempcheq/src/thermal.rs",
+                "size": 12148
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787504472,
+                "path": "/home/sal/tempcheq/src/discover.rs.bak",
+                "size": 11897
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787610524,
+                "path": "/home/sal/tempcheq/src/report.rs",
+                "size": 9147
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787504542,
+                "path": "/home/sal/tempcheq/src/classify.rs",
+                "size": 7565
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787504472,
+                "path": "/home/sal/tempcheq/src/classify.rs.bak",
+                "size": 7483
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787228695,
+                "path": "/home/sal/tempcheq/src/hypothesize.rs",
+                "size": 4013
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787228755,
+                "path": "/home/sal/tempcheq/src/fix.rs",
+                "size": 3553
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787226204,
+                "path": "/home/sal/tempcheq/src/benchmark.rs",
+                "size": 3121
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787653101,
+                "path": "/home/sal/tempcheq/src/main.rs",
+                "size": 2892
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787610523,
+                "path": "/home/sal/tempcheq/src/action.rs",
+                "size": 2466
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787231460,
+                "path": "/home/sal/tempcheq/src/cli.rs",
+                "size": 2290
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787226237,
+                "path": "/home/sal/tempcheq/src/run.rs",
+                "size": 1316
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787226230,
+                "path": "/home/sal/tempcheq/src/watch.rs",
+                "size": 1150
+              }
+            ],
+            "depth": 1,
+            "file_count": 16,
+            "is_dir": true,
+            "modified": 1787659437,
+            "path": "/home/sal/tempcheq/src",
+            "size": 152528
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787658865,
+                    "path": "/home/sal/tempcheq/.kaptaind/analysis/01f206c4-2c43-446f-85da-de2881f04072.json",
+                    "size": 1963
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787659450,
+                    "path": "/home/sal/tempcheq/.kaptaind/analysis/1ab37921-b50a-4524-b06b-b2e1e8e7e838.json",
+                    "size": 1503
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787658972,
+                    "path": "/home/sal/tempcheq/.kaptaind/analysis/7cdb7480-81a9-4a22-9746-e3be9ef84b25.json",
+                    "size": 1500
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787658224,
+                    "path": "/home/sal/tempcheq/.kaptaind/analysis/f5e2a995-33ac-417b-b9d8-e366fd727da4.json",
+                    "size": 1495
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787658625,
+                    "path": "/home/sal/tempcheq/.kaptaind/analysis/a70af3bd-de26-479f-a91c-74bf9e4fac20.json",
+                    "size": 1266
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787504547,
+                    "path": "/home/sal/tempcheq/.kaptaind/analysis/219c0b9d-7317-484f-9a48-0c5666e80e7e.json",
+                    "size": 1260
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787659070,
+                    "path": "/home/sal/tempcheq/.kaptaind/analysis/26c296c7-7f28-429c-a310-2eb4b7dcb048.json",
+                    "size": 1259
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787504571,
+                    "path": "/home/sal/tempcheq/.kaptaind/analysis/059b98f4-7382-46fc-a844-8864b2bb3187.json",
+                    "size": 1258
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787598300,
+                    "path": "/home/sal/tempcheq/.kaptaind/analysis/1ba10093-d3c7-4588-b884-945048f15ecb.json",
+                    "size": 1257
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787598154,
+                    "path": "/home/sal/tempcheq/.kaptaind/analysis/15578ab6-2238-4fc7-b581-afe4739d1e2f.json",
+                    "size": 1255
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787642060,
+                    "path": "/home/sal/tempcheq/.kaptaind/analysis/489a9d95-af06-4e8e-8653-fb9512371e4e.json",
+                    "size": 1254
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787660090,
+                    "path": "/home/sal/tempcheq/.kaptaind/analysis/1671350c-3e78-4608-8636-3d06f887222b.json",
+                    "size": 797
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787659457,
+                    "path": "/home/sal/tempcheq/.kaptaind/analysis/aa6fb0e1-7d4d-40d4-99af-5d2380c36943.json",
+                    "size": 797
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787232902,
+                    "path": "/home/sal/tempcheq/.kaptaind/analysis/24eab066-8e78-423e-9bc6-b41f1cd91d15.json",
+                    "size": 796
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787659977,
+                    "path": "/home/sal/tempcheq/.kaptaind/analysis/ae42d61a-0bf8-420e-9b6e-e36c1b54de09.json",
+                    "size": 790
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787237082,
+                    "path": "/home/sal/tempcheq/.kaptaind/analysis/2f498100-c337-4aab-b1ff-fde350300725.json",
+                    "size": 790
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787610317,
+                    "path": "/home/sal/tempcheq/.kaptaind/analysis/4ea01639-21fa-4a83-8941-9981474712f8.json",
+                    "size": 788
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787233788,
+                    "path": "/home/sal/tempcheq/.kaptaind/analysis/b279419e-a575-4407-b948-d335d5aedaac.json",
+                    "size": 788
+                  }
+                ],
+                "depth": 2,
+                "file_count": 18,
+                "is_dir": true,
+                "modified": 1787660090,
+                "path": "/home/sal/tempcheq/.kaptaind/analysis",
+                "size": 24912
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787232901,
+                "path": "/home/sal/tempcheq/.kaptaind/traces.db",
+                "size": 16384
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 0,
+                    "is_dir": true,
+                    "modified": 1787232901,
+                    "path": "/home/sal/tempcheq/.kaptaind/vacs/assets",
+                    "size": 4096
+                  }
+                ],
+                "depth": 2,
+                "file_count": 0,
+                "is_dir": true,
+                "modified": 1787232901,
+                "path": "/home/sal/tempcheq/.kaptaind/vacs",
+                "size": 8192
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787660090,
+                "path": "/home/sal/tempcheq/.kaptaind/audit.jsonl",
+                "size": 4959
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787237082,
+                "path": "/home/sal/tempcheq/.kaptaind/decisions.jsonl",
+                "size": 4564
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787659450,
+                "path": "/home/sal/tempcheq/.kaptaind/ast_cache.json",
+                "size": 4145
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787835114,
+                "path": "/home/sal/tempcheq/.kaptaind/daemon.out",
+                "size": 1734
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787237084,
+                "path": "/home/sal/tempcheq/.kaptaind/audit.chain.jsonl",
+                "size": 848
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787660090,
+                "path": "/home/sal/tempcheq/.kaptaind/telemetry.json",
+                "size": 572
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787836066,
+                "path": "/home/sal/tempcheq/.kaptaind/status.json",
+                "size": 173
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787660090,
+                "path": "/home/sal/tempcheq/.kaptaind/version_cache.json",
+                "size": 134
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787827911,
+                "path": "/home/sal/tempcheq/.kaptaind/daemon.pid",
+                "size": 5
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787827911,
+                "path": "/home/sal/tempcheq/.kaptaind/daemon.err",
+                "size": 0
+              }
+            ],
+            "depth": 1,
+            "file_count": 29,
+            "is_dir": true,
+            "modified": 1787836066,
+            "path": "/home/sal/tempcheq/.kaptaind",
+            "size": 70718
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787237076,
+                "path": "/home/sal/tempcheq/.lwoodz/manifest.json",
+                "size": 10169
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787389782,
+                "path": "/home/sal/tempcheq/.lwoodz/audit.jsonl",
+                "size": 565
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787237076,
+                "path": "/home/sal/tempcheq/.lwoodz/contributors.json",
+                "size": 170
+              }
+            ],
+            "depth": 1,
+            "file_count": 3,
+            "is_dir": true,
+            "modified": 1787237076,
+            "path": "/home/sal/tempcheq/.lwoodz",
+            "size": 15000
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787660089,
+            "path": "/home/sal/tempcheq/Cargo.lock",
+            "size": 14504
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787609876,
+                    "path": "/home/sal/tempcheq/.github/workflows/secret-scan.yml",
+                    "size": 260
+                  }
+                ],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": true,
+                "modified": 1787609876,
+                "path": "/home/sal/tempcheq/.github/workflows",
+                "size": 4356
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787609876,
+                "path": "/home/sal/tempcheq/.github/copilot-instructions.md",
+                "size": 650
+              }
+            ],
+            "depth": 1,
+            "file_count": 2,
+            "is_dir": true,
+            "modified": 1787609876,
+            "path": "/home/sal/tempcheq/.github",
+            "size": 9102
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787231746,
+            "path": "/home/sal/tempcheq/CLAUDE.md",
+            "size": 7007
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787658617,
+            "path": "/home/sal/tempcheq/README.md",
+            "size": 6762
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787609876,
+                "path": "/home/sal/tempcheq/.claude/CLAUDE.md",
+                "size": 639
+              }
+            ],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": true,
+            "modified": 1787609876,
+            "path": "/home/sal/tempcheq/.claude",
+            "size": 4735
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787659139,
+                "path": "/home/sal/tempcheq/.vamos/session.json",
+                "size": 511
+              }
+            ],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": true,
+            "modified": 1787610132,
+            "path": "/home/sal/tempcheq/.vamos",
+            "size": 4607
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787237076,
+            "path": "/home/sal/tempcheq/THIRD_PARTY_NOTICES",
+            "size": 3084
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787609856,
+            "path": "/home/sal/tempcheq/vamos.toml",
+            "size": 2703
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787659968,
+            "path": "/home/sal/tempcheq/kaptaind.toml",
+            "size": 1857
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787234753,
+            "path": "/home/sal/tempcheq/lwoodz.toml",
+            "size": 1517
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787237076,
+            "path": "/home/sal/tempcheq/LICENSE",
+            "size": 1067
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787836066,
+            "path": "/home/sal/tempcheq/traci.toml",
+            "size": 955
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787658617,
+            "path": "/home/sal/tempcheq/deliver.toml",
+            "size": 868
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787609876,
+            "path": "/home/sal/tempcheq/AGENTS.md",
+            "size": 639
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787609876,
+            "path": "/home/sal/tempcheq/poka.lock",
+            "size": 536
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787660090,
+            "path": "/home/sal/tempcheq/Cargo.toml",
+            "size": 444
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787836065,
+            "path": "/home/sal/tempcheq/poka.toml",
+            "size": 153
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787237076,
+            "path": "/home/sal/tempcheq/NOTICE",
+            "size": 150
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787237076,
+            "path": "/home/sal/tempcheq/COPYRIGHT",
+            "size": 116
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787232802,
+            "path": "/home/sal/tempcheq/.kaptainignore",
+            "size": 61
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787226463,
+            "path": "/home/sal/tempcheq/.gitignore",
+            "size": 8
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787660090,
+            "path": "/home/sal/tempcheq/VERSION",
+            "size": 5
+          }
+        ],
+        "depth": 0,
+        "file_count": 71,
+        "is_dir": true,
+        "modified": 1787836066,
+        "path": "/home/sal/tempcheq",
+        "size": 303222
+      }
+    },
+    {
+      "tool": "chakra",
+      "purpose": "data-flow / architecture map coverage",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": 0.19718309859154928,
+        "confidence": 1.0,
+        "observations": 70
+      },
+      "binary": "/home/sal/.local/bin/chakra",
+      "score": 59.859154929577464,
+      "grade": "F",
+      "exit_code": 0,
+      "duration_ms": 683,
+      "summary": "24 nodes, 70 flows; coverage 19.7% (14/71 files), confidence 100.0%",
+      "findings": [
+        "70 flow(s) with provenance=observed"
+      ],
+      "note": null,
+      "raw": {
+        "boundaries": [],
+        "events": [],
+        "evidence": [
+          {
+            "detail": "anyhow::",
+            "file": "src/main.rs",
+            "id": "ev-0001",
+            "kind": "rust_use",
+            "line": 14
+          },
+          {
+            "detail": "clap::Parser",
+            "file": "src/main.rs",
+            "id": "ev-0002",
+            "kind": "rust_use",
+            "line": 16
+          },
+          {
+            "detail": "cli::",
+            "file": "src/main.rs",
+            "id": "ev-0003",
+            "kind": "rust_use",
+            "line": 17
+          },
+          {
+            "detail": "run::",
+            "file": "src/main.rs",
+            "id": "ev-0004",
+            "kind": "rust_use",
+            "line": 18
+          },
+          {
+            "detail": "action",
+            "file": "src/main.rs",
+            "id": "ev-0005",
+            "kind": "rust_mod",
+            "line": 1
+          },
+          {
+            "detail": "benchmark",
+            "file": "src/main.rs",
+            "id": "ev-0006",
+            "kind": "rust_mod",
+            "line": 2
+          },
+          {
+            "detail": "cli",
+            "file": "src/main.rs",
+            "id": "ev-0007",
+            "kind": "rust_mod",
+            "line": 3
+          },
+          {
+            "detail": "classify",
+            "file": "src/main.rs",
+            "id": "ev-0008",
+            "kind": "rust_mod",
+            "line": 4
+          },
+          {
+            "detail": "discover",
+            "file": "src/main.rs",
+            "id": "ev-0009",
+            "kind": "rust_mod",
+            "line": 5
+          },
+          {
+            "detail": "export",
+            "file": "src/main.rs",
+            "id": "ev-0010",
+            "kind": "rust_mod",
+            "line": 6
+          },
+          {
+            "detail": "fix",
+            "file": "src/main.rs",
+            "id": "ev-0011",
+            "kind": "rust_mod",
+            "line": 7
+          },
+          {
+            "detail": "hypothesize",
+            "file": "src/main.rs",
+            "id": "ev-0012",
+            "kind": "rust_mod",
+            "line": 8
+          },
+          {
+            "detail": "report",
+            "file": "src/main.rs",
+            "id": "ev-0013",
+            "kind": "rust_mod",
+            "line": 9
+          },
+          {
+            "detail": "run",
+            "file": "src/main.rs",
+            "id": "ev-0014",
+            "kind": "rust_mod",
+            "line": 10
+          },
+          {
+            "detail": "thermal",
+            "file": "src/main.rs",
+            "id": "ev-0015",
+            "kind": "rust_mod",
+            "line": 11
+          },
+          {
+            "detail": "thermal_html",
+            "file": "src/main.rs",
+            "id": "ev-0016",
+            "kind": "rust_mod",
+            "line": 12
+          },
+          {
+            "detail": "watch",
+            "file": "src/main.rs",
+            "id": "ev-0017",
+            "kind": "rust_mod",
+            "line": 13
+          },
+          {
+            "detail": "crate::run::",
+            "file": "src/watch.rs",
+            "id": "ev-0018",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "anyhow::Result",
+            "file": "src/watch.rs",
+            "id": "ev-0019",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "notify::",
+            "file": "src/watch.rs",
+            "id": "ev-0020",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "std::path::Path",
+            "file": "src/watch.rs",
+            "id": "ev-0021",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "std::sync::mpsc::channel",
+            "file": "src/watch.rs",
+            "id": "ev-0022",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "std::time::Duration",
+            "file": "src/watch.rs",
+            "id": "ev-0023",
+            "kind": "rust_use",
+            "line": 6
+          },
+          {
+            "detail": "crate::action::InferenceAction",
+            "file": "src/classify.rs",
+            "id": "ev-0024",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "crate::action::TemperatureState",
+            "file": "src/export.rs",
+            "id": "ev-0025",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "crate::classify::",
+            "file": "src/export.rs",
+            "id": "ev-0026",
+            "kind": "rust_use",
+            "line": 11
+          },
+          {
+            "detail": "crate::report::Entry",
+            "file": "src/export.rs",
+            "id": "ev-0027",
+            "kind": "rust_use",
+            "line": 12
+          },
+          {
+            "detail": "std::cmp::Ordering",
+            "file": "src/export.rs",
+            "id": "ev-0028",
+            "kind": "rust_use",
+            "line": 13
+          },
+          {
+            "detail": "std::path::Path",
+            "file": "src/export.rs",
+            "id": "ev-0029",
+            "kind": "rust_use",
+            "line": 14
+          },
+          {
+            "detail": "crate::discover::",
+            "file": "src/fix.rs",
+            "id": "ev-0030",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "crate::report::Entry",
+            "file": "src/fix.rs",
+            "id": "ev-0031",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "anyhow::",
+            "file": "src/fix.rs",
+            "id": "ev-0032",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "owo_colors::OwoColorize",
+            "file": "src/fix.rs",
+            "id": "ev-0033",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "std::collections::BTreeMap",
+            "file": "src/fix.rs",
+            "id": "ev-0034",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "std::path::",
+            "file": "src/fix.rs",
+            "id": "ev-0035",
+            "kind": "rust_use",
+            "line": 6
+          },
+          {
+            "detail": "std::path::PathBuf",
+            "file": "src/action.rs",
+            "id": "ev-0036",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "crate::action::",
+            "file": "src/discover.rs",
+            "id": "ev-0037",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "anyhow::Result",
+            "file": "src/discover.rs",
+            "id": "ev-0038",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "once_cell::sync::Lazy",
+            "file": "src/discover.rs",
+            "id": "ev-0039",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "regex::Regex",
+            "file": "src/discover.rs",
+            "id": "ev-0040",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "std::path::Path",
+            "file": "src/discover.rs",
+            "id": "ev-0041",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "walkdir::WalkDir",
+            "file": "src/discover.rs",
+            "id": "ev-0042",
+            "kind": "rust_use",
+            "line": 6
+          },
+          {
+            "detail": "super::",
+            "file": "src/discover.rs",
+            "id": "ev-0043",
+            "kind": "rust_use",
+            "line": 382
+          },
+          {
+            "detail": "crate::report::Entry",
+            "file": "src/thermal_html.rs",
+            "id": "ev-0044",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "crate::thermal::",
+            "file": "src/thermal_html.rs",
+            "id": "ev-0045",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "std::cmp::Ordering",
+            "file": "src/thermal_html.rs",
+            "id": "ev-0046",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "std::path::Path",
+            "file": "src/thermal_html.rs",
+            "id": "ev-0047",
+            "kind": "rust_use",
+            "line": 8
+          },
+          {
+            "detail": "super::",
+            "file": "src/thermal_html.rs",
+            "id": "ev-0048",
+            "kind": "rust_use",
+            "line": 313
+          },
+          {
+            "detail": "crate::thermal::",
+            "file": "src/thermal_html.rs",
+            "id": "ev-0049",
+            "kind": "rust_use",
+            "line": 314
+          },
+          {
+            "detail": "crate::discover::discover",
+            "file": "src/run.rs",
+            "id": "ev-0050",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "crate::hypothesize::hypothesize",
+            "file": "src/run.rs",
+            "id": "ev-0051",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "crate::report::",
+            "file": "src/run.rs",
+            "id": "ev-0052",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "anyhow::Result",
+            "file": "src/run.rs",
+            "id": "ev-0053",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "std::path::Path",
+            "file": "src/run.rs",
+            "id": "ev-0054",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "clap::",
+            "file": "src/cli.rs",
+            "id": "ev-0055",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "std::path::PathBuf",
+            "file": "src/cli.rs",
+            "id": "ev-0056",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "crate::action::",
+            "file": "src/hypothesize.rs",
+            "id": "ev-0057",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "crate::classify::",
+            "file": "src/hypothesize.rs",
+            "id": "ev-0058",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "crate::action::TemperatureState",
+            "file": "src/thermal.rs",
+            "id": "ev-0059",
+            "kind": "rust_use",
+            "line": 6
+          },
+          {
+            "detail": "crate::report::Entry",
+            "file": "src/thermal.rs",
+            "id": "ev-0060",
+            "kind": "rust_use",
+            "line": 8
+          },
+          {
+            "detail": "std::cmp::Ordering",
+            "file": "src/thermal.rs",
+            "id": "ev-0061",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "super::",
+            "file": "src/thermal.rs",
+            "id": "ev-0062",
+            "kind": "rust_use",
+            "line": 338
+          },
+          {
+            "detail": "crate::hypothesize::Recommendation",
+            "file": "src/benchmark.rs",
+            "id": "ev-0063",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "crate::report::Entry",
+            "file": "src/benchmark.rs",
+            "id": "ev-0064",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "owo_colors::OwoColorize",
+            "file": "src/benchmark.rs",
+            "id": "ev-0065",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "crate::action::",
+            "file": "src/report.rs",
+            "id": "ev-0066",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "crate::hypothesize::Recommendation",
+            "file": "src/report.rs",
+            "id": "ev-0067",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "owo_colors::OwoColorize",
+            "file": "src/report.rs",
+            "id": "ev-0068",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "serde::Serialize",
+            "file": "src/report.rs",
+            "id": "ev-0069",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "std::path::Path",
+            "file": "src/report.rs",
+            "id": "ev-0070",
+            "kind": "rust_use",
+            "line": 5
+          }
+        ],
+        "flows": [
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0001"
+            ],
+            "id": "flow-0001",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:anyhow"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0002"
+            ],
+            "id": "flow-0002",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:clap"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0003"
+            ],
+            "id": "flow-0003",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/main.rs",
+            "target": "file:src/cli.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0004"
+            ],
+            "id": "flow-0004",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/main.rs",
+            "target": "file:src/run.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0005"
+            ],
+            "id": "flow-0005",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/main.rs",
+            "target": "file:src/action.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0006"
+            ],
+            "id": "flow-0006",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/main.rs",
+            "target": "file:src/benchmark.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0007"
+            ],
+            "id": "flow-0007",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/main.rs",
+            "target": "file:src/cli.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0008"
+            ],
+            "id": "flow-0008",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/main.rs",
+            "target": "file:src/classify.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0009"
+            ],
+            "id": "flow-0009",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/main.rs",
+            "target": "file:src/discover.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0010"
+            ],
+            "id": "flow-0010",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/main.rs",
+            "target": "file:src/export.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0011"
+            ],
+            "id": "flow-0011",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/main.rs",
+            "target": "file:src/fix.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0012"
+            ],
+            "id": "flow-0012",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/main.rs",
+            "target": "file:src/hypothesize.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0013"
+            ],
+            "id": "flow-0013",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/main.rs",
+            "target": "file:src/report.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0014"
+            ],
+            "id": "flow-0014",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/main.rs",
+            "target": "file:src/run.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0015"
+            ],
+            "id": "flow-0015",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/main.rs",
+            "target": "file:src/thermal.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0016"
+            ],
+            "id": "flow-0016",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/main.rs",
+            "target": "file:src/thermal_html.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0017"
+            ],
+            "id": "flow-0017",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/main.rs",
+            "target": "file:src/watch.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0018"
+            ],
+            "id": "flow-0018",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/watch.rs",
+            "target": "file:src/run.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0019"
+            ],
+            "id": "flow-0019",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/watch.rs",
+            "target": "ext:rust:anyhow"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0020"
+            ],
+            "id": "flow-0020",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/watch.rs",
+            "target": "ext:rust:notify"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0021"
+            ],
+            "id": "flow-0021",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/watch.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0022"
+            ],
+            "id": "flow-0022",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/watch.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0023"
+            ],
+            "id": "flow-0023",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/watch.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0024"
+            ],
+            "id": "flow-0024",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/classify.rs",
+            "target": "file:src/action.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0025"
+            ],
+            "id": "flow-0025",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/export.rs",
+            "target": "file:src/action.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0026"
+            ],
+            "id": "flow-0026",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/export.rs",
+            "target": "file:src/classify.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0027"
+            ],
+            "id": "flow-0027",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/export.rs",
+            "target": "file:src/report.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0028"
+            ],
+            "id": "flow-0028",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/export.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0029"
+            ],
+            "id": "flow-0029",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/export.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0030"
+            ],
+            "id": "flow-0030",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/fix.rs",
+            "target": "file:src/discover.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0031"
+            ],
+            "id": "flow-0031",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/fix.rs",
+            "target": "file:src/report.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0032"
+            ],
+            "id": "flow-0032",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/fix.rs",
+            "target": "ext:rust:anyhow"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0033"
+            ],
+            "id": "flow-0033",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/fix.rs",
+            "target": "ext:rust:owo_colors"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0034"
+            ],
+            "id": "flow-0034",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/fix.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0035"
+            ],
+            "id": "flow-0035",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/fix.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0036"
+            ],
+            "id": "flow-0036",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/action.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0037"
+            ],
+            "id": "flow-0037",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/discover.rs",
+            "target": "file:src/action.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0038"
+            ],
+            "id": "flow-0038",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/discover.rs",
+            "target": "ext:rust:anyhow"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0039"
+            ],
+            "id": "flow-0039",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/discover.rs",
+            "target": "ext:rust:once_cell"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0040"
+            ],
+            "id": "flow-0040",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/discover.rs",
+            "target": "ext:rust:regex"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0041"
+            ],
+            "id": "flow-0041",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/discover.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0042"
+            ],
+            "id": "flow-0042",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/discover.rs",
+            "target": "ext:rust:walkdir"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0043"
+            ],
+            "id": "flow-0043",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/discover.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0044"
+            ],
+            "id": "flow-0044",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/thermal_html.rs",
+            "target": "file:src/report.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0045"
+            ],
+            "id": "flow-0045",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/thermal_html.rs",
+            "target": "file:src/thermal.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0046"
+            ],
+            "id": "flow-0046",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/thermal_html.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0047"
+            ],
+            "id": "flow-0047",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/thermal_html.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0048"
+            ],
+            "id": "flow-0048",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/thermal_html.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0049"
+            ],
+            "id": "flow-0049",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/thermal_html.rs",
+            "target": "file:src/thermal.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0050"
+            ],
+            "id": "flow-0050",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/run.rs",
+            "target": "file:src/discover.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0051"
+            ],
+            "id": "flow-0051",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/run.rs",
+            "target": "file:src/hypothesize.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0052"
+            ],
+            "id": "flow-0052",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/run.rs",
+            "target": "file:src/report.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0053"
+            ],
+            "id": "flow-0053",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/run.rs",
+            "target": "ext:rust:anyhow"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0054"
+            ],
+            "id": "flow-0054",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/run.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0055"
+            ],
+            "id": "flow-0055",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/cli.rs",
+            "target": "ext:rust:clap"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0056"
+            ],
+            "id": "flow-0056",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/cli.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0057"
+            ],
+            "id": "flow-0057",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/hypothesize.rs",
+            "target": "file:src/action.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0058"
+            ],
+            "id": "flow-0058",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/hypothesize.rs",
+            "target": "file:src/classify.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0059"
+            ],
+            "id": "flow-0059",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/thermal.rs",
+            "target": "file:src/action.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0060"
+            ],
+            "id": "flow-0060",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/thermal.rs",
+            "target": "file:src/report.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0061"
+            ],
+            "id": "flow-0061",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/thermal.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0062"
+            ],
+            "id": "flow-0062",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/thermal.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0063"
+            ],
+            "id": "flow-0063",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/benchmark.rs",
+            "target": "file:src/hypothesize.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0064"
+            ],
+            "id": "flow-0064",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/benchmark.rs",
+            "target": "file:src/report.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0065"
+            ],
+            "id": "flow-0065",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/benchmark.rs",
+            "target": "ext:rust:owo_colors"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0066"
+            ],
+            "id": "flow-0066",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/report.rs",
+            "target": "file:src/action.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0067"
+            ],
+            "id": "flow-0067",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/report.rs",
+            "target": "file:src/hypothesize.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0068"
+            ],
+            "id": "flow-0068",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/report.rs",
+            "target": "ext:rust:owo_colors"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0069"
+            ],
+            "id": "flow-0069",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/report.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0070"
+            ],
+            "id": "flow-0070",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/report.rs",
+            "target": "ext:rust:std"
+          }
+        ],
+        "inferences": [],
+        "metadata": {
+          "analyzed_file_count": 14,
+          "analyzers": [
+            "rust",
+            "javascript",
+            "typescript",
+            "python",
+            "go"
+          ],
+          "chakra_version": "0.3.33",
+          "duration_ms": 407,
+          "file_count": 71,
+          "languages": {
+            "rust": 14
+          }
+        },
+        "nodes": [
+          {
+            "id": "ext:rust:anyhow",
+            "kind": "external",
+            "language": "rust",
+            "name": "anyhow"
+          },
+          {
+            "id": "ext:rust:clap",
+            "kind": "external",
+            "language": "rust",
+            "name": "clap"
+          },
+          {
+            "id": "ext:rust:notify",
+            "kind": "external",
+            "language": "rust",
+            "name": "notify"
+          },
+          {
+            "id": "ext:rust:once_cell",
+            "kind": "external",
+            "language": "rust",
+            "name": "once_cell"
+          },
+          {
+            "id": "ext:rust:owo_colors",
+            "kind": "external",
+            "language": "rust",
+            "name": "owo_colors"
+          },
+          {
+            "id": "ext:rust:regex",
+            "kind": "external",
+            "language": "rust",
+            "name": "regex"
+          },
+          {
+            "id": "ext:rust:serde",
+            "kind": "external",
+            "language": "rust",
+            "name": "serde"
+          },
+          {
+            "id": "ext:rust:std",
+            "kind": "external",
+            "language": "rust",
+            "name": "std"
+          },
+          {
+            "id": "ext:rust:walkdir",
+            "kind": "external",
+            "language": "rust",
+            "name": "walkdir"
+          },
+          {
+            "id": "file:src/action.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/action.rs"
+          },
+          {
+            "id": "file:src/benchmark.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/benchmark.rs"
+          },
+          {
+            "id": "file:src/classify.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/classify.rs"
+          },
+          {
+            "id": "file:src/cli.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/cli.rs"
+          },
+          {
+            "id": "file:src/discover.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/discover.rs"
+          },
+          {
+            "id": "file:src/export.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/export.rs"
+          },
+          {
+            "id": "file:src/fix.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/fix.rs"
+          },
+          {
+            "id": "file:src/hypothesize.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/hypothesize.rs"
+          },
+          {
+            "id": "file:src/main.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/main.rs"
+          },
+          {
+            "id": "file:src/report.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/report.rs"
+          },
+          {
+            "id": "file:src/run.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/run.rs"
+          },
+          {
+            "id": "file:src/thermal.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/thermal.rs"
+          },
+          {
+            "id": "file:src/thermal_html.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/thermal_html.rs"
+          },
+          {
+            "id": "file:src/watch.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/watch.rs"
+          },
+          {
+            "id": "mod:rust:super::",
+            "kind": "module",
+            "language": "rust",
+            "name": "super::"
+          }
+        ],
+        "schema": "chakra.flow/v1",
+        "subject": {
+          "generated_at": "2026-08-27T13:07:47.533842825Z",
+          "path": "/home/sal/tempcheq"
+        }
+      }
+    },
+    {
+      "tool": "ferret",
+      "purpose": "repository-specific review findings (hunt)",
+      "status": "error",
+      "availability": "installed",
+      "execution": "failed",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": 2,
+      "duration_ms": 8,
+      "summary": "error",
+      "findings": [],
+      "note": "produced no stdout; stderr: error: unexpected argument '/home/sal/tempcheq' found\n\nUsage: ferret [OPTIONS] [TARGET] [COMMAND]\n\nFor more information, try '--help'.\n",
+      "raw": null
+    },
+    {
+      "tool": "fract",
+      "purpose": "module entropy, cohesion, duplication",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/home/sal/.local/bin/fract",
+      "score": 88.57142857142858,
+      "grade": "B+",
+      "exit_code": 0,
+      "duration_ms": 680,
+      "summary": "14 modules indexed: 0 excellent, 10 healthy, 4 warning, 0 critical",
+      "findings": [
+        "src/export.rs: entropy 0.70 — Within entropy budget (0.70)",
+        "src/discover.rs: entropy 0.68 — Within entropy budget (0.68)",
+        "src/thermal.rs: entropy 0.67 — Within entropy budget (0.67)",
+        "src/thermal_html.rs: entropy 0.66 — Within entropy budget (0.66)",
+        "src/report.rs: entropy 0.62 — Within entropy budget (0.62)"
+      ],
+      "note": null,
+      "raw": {
+        "findings": [
+          {
+            "confidence": null,
+            "entropy": 0.6984416831153668,
+            "evidence": {
+              "cyclomatic": "38",
+              "duplicates": "43",
+              "fan_in": "0",
+              "fan_out": "5",
+              "functions": "13",
+              "health": "Warning",
+              "lines": "538",
+              "public_api": "9"
+            },
+            "id": "src/export.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.70)",
+            "module": "src/export.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.70 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.684537102622023,
+            "evidence": {
+              "cyclomatic": "83",
+              "duplicates": "48",
+              "fan_in": "2",
+              "fan_out": "7",
+              "functions": "16",
+              "health": "Warning",
+              "lines": "486",
+              "public_api": "1"
+            },
+            "id": "src/discover.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.68)",
+            "module": "src/discover.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.68 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6739541223936583,
+            "evidence": {
+              "cyclomatic": "46",
+              "duplicates": "10",
+              "fan_in": "2",
+              "fan_out": "4",
+              "functions": "24",
+              "health": "Warning",
+              "lines": "387",
+              "public_api": "43"
+            },
+            "id": "src/thermal.rs",
+            "kind": "Reduce public API surface",
+            "message": "Within entropy budget (0.67)",
+            "module": "src/thermal.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.67 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6636895929088897,
+            "evidence": {
+              "cyclomatic": "65",
+              "duplicates": "15",
+              "fan_in": "0",
+              "fan_out": "6",
+              "functions": "10",
+              "health": "Warning",
+              "lines": "372",
+              "public_api": "1"
+            },
+            "id": "src/thermal_html.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.66)",
+            "module": "src/thermal_html.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.66 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6221857159315562,
+            "evidence": {
+              "cyclomatic": "30",
+              "duplicates": "6",
+              "fan_in": "6",
+              "fan_out": "5",
+              "functions": "9",
+              "health": "Healthy",
+              "lines": "297",
+              "public_api": "8"
+            },
+            "id": "src/report.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.62)",
+            "module": "src/report.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.62 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6221402535474355,
+            "evidence": {
+              "cyclomatic": "14",
+              "duplicates": "2",
+              "fan_in": "0",
+              "fan_out": "6",
+              "functions": "3",
+              "health": "Healthy",
+              "lines": "106",
+              "public_api": "9"
+            },
+            "id": "src/fix.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.62)",
+            "module": "src/fix.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.62 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6102600258418822,
+            "evidence": {
+              "cyclomatic": "14",
+              "duplicates": "0",
+              "fan_in": "2",
+              "fan_out": "1",
+              "functions": "4",
+              "health": "Healthy",
+              "lines": "195",
+              "public_api": "9"
+            },
+            "id": "src/classify.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.61)",
+            "module": "src/classify.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.61 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5863009714818549,
+            "evidence": {
+              "cyclomatic": "13",
+              "duplicates": "2",
+              "fan_in": "0",
+              "fan_out": "4",
+              "functions": "2",
+              "health": "Healthy",
+              "lines": "107",
+              "public_api": "0"
+            },
+            "id": "src/main.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.59)",
+            "module": "src/main.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.59 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5836571582707828,
+            "evidence": {
+              "cyclomatic": "9",
+              "duplicates": "1",
+              "fan_in": "3",
+              "fan_out": "2",
+              "functions": "4",
+              "health": "Healthy",
+              "lines": "110",
+              "public_api": "11"
+            },
+            "id": "src/hypothesize.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.58)",
+            "module": "src/hypothesize.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.58 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5692656846869987,
+            "evidence": {
+              "cyclomatic": "3",
+              "duplicates": "1",
+              "fan_in": "6",
+              "fan_out": "1",
+              "functions": "3",
+              "health": "Healthy",
+              "lines": "79",
+              "public_api": "13"
+            },
+            "id": "src/action.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.57)",
+            "module": "src/action.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.57 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5652107250148635,
+            "evidence": {
+              "cyclomatic": "3",
+              "duplicates": "0",
+              "fan_in": "1",
+              "fan_out": "5",
+              "functions": "2",
+              "health": "Healthy",
+              "lines": "56",
+              "public_api": "6"
+            },
+            "id": "src/run.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.57)",
+            "module": "src/run.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.57 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.519972962181745,
+            "evidence": {
+              "cyclomatic": "4",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "6",
+              "functions": "1",
+              "health": "Healthy",
+              "lines": "33",
+              "public_api": "1"
+            },
+            "id": "src/watch.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.52)",
+            "module": "src/watch.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.52 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5107985502345953,
+            "evidence": {
+              "cyclomatic": "7",
+              "duplicates": "1",
+              "fan_in": "0",
+              "fan_out": "3",
+              "functions": "3",
+              "health": "Healthy",
+              "lines": "86",
+              "public_api": "1"
+            },
+            "id": "src/benchmark.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.51)",
+            "module": "src/benchmark.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.51 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.4790409571277737,
+            "evidence": {
+              "cyclomatic": "0",
+              "duplicates": "2",
+              "fan_in": "0",
+              "fan_out": "2",
+              "functions": "0",
+              "health": "Healthy",
+              "lines": "81",
+              "public_api": "17"
+            },
+            "id": "src/cli.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.48)",
+            "module": "src/cli.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.48 below threshold 0.82"
+          }
+        ],
+        "root": "/home/sal/tempcheq",
+        "schema": "fract.report/v1",
+        "summary": {
+          "critical": 0,
+          "excellent": 0,
+          "healthy": 10,
+          "score": 88.57142857142858,
+          "total": 14,
+          "warning": 4
+        }
+      }
+    },
+    {
+      "tool": "isopod",
+      "purpose": "ISO27001/27002 compliance posture",
+      "status": "no_data",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 0
+      },
+      "binary": "/home/sal/.local/bin/isopod",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 3681,
+      "summary": "0/0 controls assessed (0.0% coverage): 0 pass, 0 warn, 0 fail, 0 unknown",
+      "findings": [],
+      "note": "coverage is 0.0%; compliance is ungraded below the 80% evidence threshold, and UNKNOWN controls are not treated as failures",
+      "raw": []
+    },
+    {
+      "tool": "jeenome",
+      "purpose": "behavioural trace analysis (opt-in)",
+      "status": "skipped",
+      "availability": "not_checked",
+      "execution": "skipped",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": null,
+      "duration_ms": null,
+      "summary": "skipped",
+      "findings": [],
+      "note": "jeenome is opt-in (needs an strace trace, not just a project path); pass --jeenome to include it",
+      "raw": null
+    },
+    {
+      "tool": "lwoodz",
+      "purpose": "license / SPDX compliance",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/home/sal/lwoodz/target/debug/lwoodz",
+      "score": 83.68852459016394,
+      "grade": "B",
+      "exit_code": 0,
+      "duration_ms": 4517,
+      "summary": "license=MIT, spdx_valid=true, header coverage 0/14, 0 incompatible / 4 warning issues among 61 deps",
+      "findings": [
+        "bitflags [warning]: Dependency 'bitflags' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+        "filetime [warning]: Dependency 'filetime' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+        "same-file [warning]: Dependency 'same-file' (Unlicense/MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+        "walkdir [warning]: Dependency 'walkdir' (Unlicense/MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements."
+      ],
+      "note": "advisory warning deductions are proportional to dependency count; missing licenses and incompatible dependencies remain hard findings",
+      "raw": {
+        "compatibility": {
+          "incompatible": 0,
+          "issues": [
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "bitflags",
+              "reason": "Dependency 'bitflags' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "filetime",
+              "reason": "Dependency 'filetime' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unlicense/MIT",
+              "dependency": "same-file",
+              "reason": "Dependency 'same-file' (Unlicense/MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unlicense/MIT",
+              "dependency": "walkdir",
+              "reason": "Dependency 'walkdir' (Unlicense/MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            }
+          ],
+          "total_deps": 61,
+          "warnings": 4
+        },
+        "detected_license": "MIT",
+        "findings": [
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'bitflags' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'filetime' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'same-file' (Unlicense/MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'walkdir' (Unlicense/MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "MISSING_HEADERS",
+            "level": "warning",
+            "message": "14 of 14 source files missing copyright/SPDX headers",
+            "path": null
+          }
+        ],
+        "generated_at": "2026-08-27T13:07:51.404159673+00:00",
+        "has_license_file": true,
+        "header_coverage": {
+          "missing": 14,
+          "total_files": 14,
+          "with_header": 0
+        },
+        "holder": "elci-group",
+        "passed": true,
+        "project_license": "MIT",
+        "spdx_manifest_exists": true,
+        "spdx_valid": true,
+        "year": 2026
+      }
+    },
+    {
+      "tool": "tempcheq",
+      "purpose": "LLM sampling-temperature correctness",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 10
+      },
+      "binary": "/home/sal/.local/bin/tempcheq",
+      "score": 90.0,
+      "grade": "A-",
+      "exit_code": 0,
+      "duration_ms": 1877,
+      "summary": "10 inference actions: 1 material deviations, 7 implicit/default temperatures",
+      "findings": [
+        "nearby_explicit_temperature_prevents_duplicate_implicit_action (src/discover.rs:464): verdict +0.15"
+      ],
+      "note": null,
+      "raw": {
+        "actions": [
+          {
+            "band_high": 0.15000000596046448,
+            "band_ideal": 0.05000000074505806,
+            "band_low": 0.0,
+            "class": "deterministic-extraction",
+            "confidence": 0.8500000238418579,
+            "file": "src/action.rs",
+            "line": 60,
+            "material_deviation": false,
+            "name": "label",
+            "reasons": [
+              "classified as deterministic-extraction on keywords: label, deterministic, inference"
+            ],
+            "source_kind": "sdk-invocation",
+            "temperature": 0.0,
+            "temperature_precision": 0,
+            "temperature_state": "explicit",
+            "verdict": -0.05000000074505806
+          },
+          {
+            "band_high": 0.15000000596046448,
+            "band_ideal": 0.05000000074505806,
+            "band_low": 0.0,
+            "class": "deterministic-extraction",
+            "confidence": 0.7000000476837158,
+            "file": "src/discover.rs",
+            "line": 68,
+            "material_deviation": false,
+            "name": "Regex",
+            "reasons": [
+              "classified as deterministic-extraction on keywords: regex, inference",
+              "no explicit temperature set; provider default is in effect"
+            ],
+            "source_kind": "api-call",
+            "temperature": null,
+            "temperature_precision": null,
+            "temperature_state": "implicit",
+            "verdict": null
+          },
+          {
+            "band_high": 0.15000000596046448,
+            "band_ideal": 0.05000000074505806,
+            "band_low": 0.0,
+            "class": "deterministic-extraction",
+            "confidence": 0.7000000476837158,
+            "file": "src/discover.rs",
+            "line": 69,
+            "material_deviation": false,
+            "name": "Regex",
+            "reasons": [
+              "classified as deterministic-extraction on keywords: regex, inference",
+              "no explicit temperature set; provider default is in effect"
+            ],
+            "source_kind": "api-call",
+            "temperature": null,
+            "temperature_precision": null,
+            "temperature_state": "implicit",
+            "verdict": null
+          },
+          {
+            "band_high": 0.15000000596046448,
+            "band_ideal": 0.05000000074505806,
+            "band_low": 0.0,
+            "class": "deterministic-extraction",
+            "confidence": 0.7000000476837158,
+            "file": "src/discover.rs",
+            "line": 77,
+            "material_deviation": false,
+            "name": "Regex",
+            "reasons": [
+              "classified as deterministic-extraction on keywords: regex, inference",
+              "no explicit temperature set; provider default is in effect"
+            ],
+            "source_kind": "api-call",
+            "temperature": null,
+            "temperature_precision": null,
+            "temperature_state": "implicit",
+            "verdict": null
+          },
+          {
+            "band_high": 0.800000011920929,
+            "band_ideal": 0.5,
+            "band_low": 0.20000000298023224,
+            "class": "unclassified",
+            "confidence": 0.3499999940395355,
+            "file": "src/discover.rs",
+            "line": 251,
+            "material_deviation": false,
+            "name": "TEMPERATURE",
+            "reasons": [
+              "no strong task keywords found near 'TEMPERATURE'; falling back to a wide unclassified band",
+              "no explicit temperature set; provider default is in effect"
+            ],
+            "source_kind": "env-var",
+            "temperature": null,
+            "temperature_precision": null,
+            "temperature_state": "implicit",
+            "verdict": null
+          },
+          {
+            "band_high": 0.25,
+            "band_ideal": 0.10000000149011612,
+            "band_low": 0.0,
+            "class": "eval-judge",
+            "confidence": 0.550000011920929,
+            "file": "src/discover.rs",
+            "line": 397,
+            "material_deviation": false,
+            "name": "detects_multiline_openai_responses_call_via_command_curl",
+            "reasons": [
+              "classified as eval-judge on keywords: assert",
+              "no explicit temperature set; provider default is in effect"
+            ],
+            "source_kind": "shell-wrapper",
+            "temperature": null,
+            "temperature_precision": null,
+            "temperature_state": "implicit",
+            "verdict": null
+          },
+          {
+            "band_high": 0.25,
+            "band_ideal": 0.10000000149011612,
+            "band_low": 0.0,
+            "class": "eval-judge",
+            "confidence": 0.550000011920929,
+            "file": "src/discover.rs",
+            "line": 419,
+            "material_deviation": false,
+            "name": "names_calls_from_enclosing_functions_beyond_local_context",
+            "reasons": [
+              "classified as eval-judge on keywords: assert",
+              "no explicit temperature set; provider default is in effect"
+            ],
+            "source_kind": "shell-wrapper",
+            "temperature": null,
+            "temperature_precision": null,
+            "temperature_state": "implicit",
+            "verdict": null
+          },
+          {
+            "band_high": 0.15000000596046448,
+            "band_ideal": 0.05000000074505806,
+            "band_low": 0.0,
+            "class": "deterministic-extraction",
+            "confidence": 0.550000011920929,
+            "file": "src/discover.rs",
+            "line": 435,
+            "material_deviation": false,
+            "name": "detects_multiline_groq_call_through_curl_helper",
+            "reasons": [
+              "classified as deterministic-extraction on keywords: inference",
+              "no explicit temperature set; provider default is in effect"
+            ],
+            "source_kind": "shell-wrapper",
+            "temperature": null,
+            "temperature_precision": null,
+            "temperature_state": "implicit",
+            "verdict": null
+          },
+          {
+            "band_high": 0.15000000596046448,
+            "band_ideal": 0.05000000074505806,
+            "band_low": 0.0,
+            "class": "deterministic-extraction",
+            "confidence": 0.550000011920929,
+            "file": "src/discover.rs",
+            "line": 464,
+            "material_deviation": true,
+            "name": "nearby_explicit_temperature_prevents_duplicate_implicit_action",
+            "reasons": [
+              "classified as deterministic-extraction on keywords: inference"
+            ],
+            "source_kind": "sdk-invocation",
+            "temperature": 0.20000000298023224,
+            "temperature_precision": 1,
+            "temperature_state": "explicit",
+            "verdict": 0.15000000596046448
+          },
+          {
+            "band_high": 0.25,
+            "band_ideal": 0.10000000149011612,
+            "band_low": 0.0,
+            "class": "eval-judge",
+            "confidence": 0.550000011920929,
+            "file": "src/discover.rs",
+            "line": 479,
+            "material_deviation": false,
+            "name": "preserves_trailing_decimal_precision_from_source",
+            "reasons": [
+              "classified as eval-judge on keywords: assert"
+            ],
+            "source_kind": "sdk-invocation",
+            "temperature": 0.20000000298023224,
+            "temperature_precision": 2,
+            "temperature_state": "explicit",
+            "verdict": 0.10000000149011612
+          }
+        ],
+        "implicit_default": 7,
+        "inapplicable": 0,
+        "material_deviations": 1,
+        "temperature_controlled": 3,
+        "total_actions": 10,
+        "workspace": "/home/sal/tempcheq"
+      }
+    },
+    {
+      "tool": "traci",
+      "purpose": "observability/telemetry completeness",
+      "status": "fail",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 27
+      },
+      "binary": "/home/sal/.local/bin/traci",
+      "score": null,
+      "grade": null,
+      "exit_code": 2,
+      "duration_ms": 681,
+      "summary": "14 files, 27 observability diagnostics: 25 critical, 2 error-severity, 0 warning-severity, 0 info",
+      "findings": [
+        "[observability/critical] TRC007 /home/sal/tempcheq/src/benchmark.rs:68 — panic path cannot be reconstructed from telemetry",
+        "[observability/critical] TRC007 /home/sal/tempcheq/src/discover.rs:21 — panic path cannot be reconstructed from telemetry",
+        "[observability/critical] TRC007 /home/sal/tempcheq/src/discover.rs:25 — panic path cannot be reconstructed from telemetry",
+        "[observability/critical] TRC007 /home/sal/tempcheq/src/discover.rs:35 — panic path cannot be reconstructed from telemetry",
+        "[observability/critical] TRC007 /home/sal/tempcheq/src/discover.rs:39 — panic path cannot be reconstructed from telemetry"
+      ],
+      "note": "observability diagnostics are not assigned a project-health score because Traci does not expose a total opportunity/coverage denominator; traci.toml was missing; `poka apply` failed (poka apply exited Some(101): thread 'main' (201833) panicked at crates/poka-core/src/index.rs:99:33: external generator 'traci' failed: parsing JSON output from generator 'traci': expected value at line 1 column 1 note: run with `RUST_BACKTRACE=1` environment variable ); assessment still ran",
+      "raw": {
+        "diagnostics": [
+          {
+            "column": 9,
+            "line": 68,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/tempcheq/src/benchmark.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "candidates.sort_by(|a, b| a.partial_cmp(b).unwrap());"
+          },
+          {
+            "column": 5,
+            "line": 21,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/tempcheq/src/discover.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "Regex::new(r#\"(?i)\\btemperature\\b\"?\\s*[:=]\\s*\"?(-?[0-9]*\\.?[0-9]+)\"?\"#).unwrap()"
+          },
+          {
+            "column": 5,
+            "line": 25,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/tempcheq/src/discover.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "Regex::new(r#\"(?i)\\.temperature\\(\\s*(-?[0-9]*\\.?[0-9]+)\\s*\\)\"#).unwrap()"
+          },
+          {
+            "column": 5,
+            "line": 35,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/tempcheq/src/discover.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "Regex::new(r#\"(?i)\\b([A-Z0-9_]*TEMPERATURE[A-Z0-9_]*)\\s*[:=]\\s*\"?(-?[0-9]*\\.?[0-9]+)\"?\"#).unwrap()"
+          },
+          {
+            "column": 5,
+            "line": 39,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/tempcheq/src/discover.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "Regex::new(r#\"(?i)(?:os\\.environ(?:\\.get)?|process\\.env|std::env::var)\\(?[\"']?([A-Z0-9_]*TEMPERATURE[A-Z0-9_]*)[\"']?\\)?\"#).unwrap()"
+          },
+          {
+            "column": 5,
+            "line": 43,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/tempcheq/src/discover.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "Regex::new(r#\"(?i)^\\s*(?:export\\s+)?(?:pub\\s+)?(?:async\\s+)?(?:fn|def|function|class|struct|impl)\\s+([A-Za-z_][A-Za-z0-9_]*)\"#).unwrap()"
+          },
+          {
+            "column": 5,
+            "line": 47,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/tempcheq/src/discover.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "Regex::new(r#\"(?i)^\\s*(?:export\\s+)?(?:pub\\s+)?(?:const|let)\\s+(?:mut\\s+)?([A-Za-z_][A-Za-z0-9_]*)\"#).unwrap()"
+          },
+          {
+            "column": 5,
+            "line": 51,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/tempcheq/src/discover.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "Regex::new(r#\"^\\s*\"([A-Za-z_][A-Za-z0-9_\\- ]*)\"\\s*:\"#).unwrap()"
+          },
+          {
+            "column": 5,
+            "line": 55,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/tempcheq/src/discover.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "Regex::new(r#\"^\\s*([A-Za-z_][A-Za-z0-9_\\-]*)\\s*:\\s*\\S\"#).unwrap()"
+          },
+          {
+            "column": 9,
+            "line": 62,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/tempcheq/src/discover.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "(Regex::new(r\"openai\\.(ChatCompletion|chat\\.completions)\\.create\").unwrap(), SourceKind::SdkInvocation),"
+          },
+          {
+            "column": 9,
+            "line": 63,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/tempcheq/src/discover.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "(Regex::new(r\"client\\.chat\\.completions\\.create\").unwrap(), SourceKind::SdkInvocation),"
+          },
+          {
+            "column": 9,
+            "line": 64,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/tempcheq/src/discover.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "(Regex::new(r\"client\\.messages\\.create|anthropic\\.Anthropic\\(|\\.messages\\.create\\(\").unwrap(), SourceKind::SdkInvocation),"
+          },
+          {
+            "column": 9,
+            "line": 65,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/tempcheq/src/discover.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "(Regex::new(r\"ChatOpenAI\\(|ChatAnthropic\\(|ChatGoogleGenerativeAI\\(|ChatOllama\\(\").unwrap(), SourceKind::AgentConfig),"
+          },
+          {
+            "column": 9,
+            "line": 66,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/tempcheq/src/discover.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "(Regex::new(r\"ollama\\.(chat|generate)\\(\").unwrap(), SourceKind::SdkInvocation),"
+          },
+          {
+            "column": 9,
+            "line": 67,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/tempcheq/src/discover.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "(Regex::new(r\"genai\\.GenerativeModel\\(|GenerationConfig\\(\").unwrap(), SourceKind::SdkInvocation),"
+          },
+          {
+            "column": 9,
+            "line": 68,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/tempcheq/src/discover.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "(Regex::new(r\"(fetch|axios\\.post|reqwest::)\\([^)]*(chat/completions|/messages|generateContent|/responses\\b)\").unwrap(), SourceKind::ApiCall),"
+          },
+          {
+            "column": 9,
+            "line": 69,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/tempcheq/src/discover.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "(Regex::new(r\"curl\\s+.*(chat/completions|/v1/messages|/api/generate|/responses\\b)\").unwrap(), SourceKind::ShellWrapper),"
+          },
+          {
+            "column": 9,
+            "line": 70,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/tempcheq/src/discover.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "(Regex::new(r#\"(?i)\"model\"\\s*:\"#).unwrap(), SourceKind::ConfigFile),"
+          },
+          {
+            "column": 5,
+            "line": 77,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/tempcheq/src/discover.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "Regex::new(r\"(?i)(chat/completions|/v1/messages\\b|/api/generate\\b|generateContent|/responses\\b)\").unwrap()"
+          },
+          {
+            "column": 5,
+            "line": 87,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/tempcheq/src/discover.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".unwrap()"
+          },
+          {
+            "column": 5,
+            "line": 91,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/tempcheq/src/discover.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "Regex::new(r#\"(?i)(Command::new\\(\\s*\"curl\"|\\bcurl_with_config\\s*\\(|\\bcurl\\s+)\"#).unwrap()"
+          },
+          {
+            "column": 5,
+            "line": 95,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/tempcheq/src/discover.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "Regex::new(r\"\\.embeddings\\.create\\(|embed_documents\\(|embed_query\\(|EmbeddingModel\\(\").unwrap()"
+          },
+          {
+            "column": 9,
+            "line": 111,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/tempcheq/src/discover.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": ".filter_map(|e| e.ok())"
+          },
+          {
+            "column": 17,
+            "line": 86,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/tempcheq/src/fix.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".map(|m| m.get(1).unwrap().range())"
+          },
+          {
+            "column": 17,
+            "line": 87,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/tempcheq/src/fix.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".or_else(|| ENV_TEMP_ASSIGN.captures(line).map(|m| m.get(2).unwrap().range()));"
+          },
+          {
+            "column": 5,
+            "line": 296,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/tempcheq/src/report.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "serde_json::to_value(report).unwrap()"
+          },
+          {
+            "column": 9,
+            "line": 11,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/tempcheq/src/watch.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let _ = tx.send(res);"
+          }
+        ],
+        "summary": {
+          "critical": 25,
+          "diagnostics": 27,
+          "errors": 2,
+          "files": 14,
+          "info": 0,
+          "warnings": 0
+        }
+      }
+    },
+    {
+      "tool": "vamos",
+      "purpose": "nominal vs. validated action completion",
+      "status": "fail",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/home/sal/vamos/target/debug/vamos",
+      "score": 0.0,
+      "grade": "F",
+      "exit_code": 0,
+      "duration_ms": 1342,
+      "summary": "1 actions, 2 instances: 0 validated, 0 nominal (never progressed)",
+      "findings": [
+        "create_file: triggered=2 nominal=0 validated=0 avg_confidence=1.00"
+      ],
+      "note": null,
+      "raw": null
+    }
+  ],
+  "overall": {
+    "score": 65.90874023741722,
+    "grade": "D",
+    "graded_tools": 6,
+    "total_tools": 12,
+    "weights": [
+      [
+        "amber",
+        1.0
+      ],
+      [
+        "chakra",
+        1.0
+      ],
+      [
+        "fract",
+        1.0
+      ],
+      [
+        "lwoodz",
+        1.0
+      ],
+      [
+        "tempcheq",
+        1.0
+      ],
+      [
+        "vamos",
+        1.0
+      ]
+    ],
+    "provisional": true
+  },
+  "suite": {
+    "required_tools": 10,
+    "available_tools": 10,
+    "executed_tools": 9,
+    "valid_results": 9,
+    "analysis_coverage": 0.19718309859154928,
+    "confidence": 1.0
+  },
+  "integrity": {
+    "status": "degraded",
+    "score": 90.0,
+    "grade": "A-",
+    "defects": [
+      "ferret: error"
+    ]
+  }
+}

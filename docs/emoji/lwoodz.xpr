@@ -1,0 +1,249 @@
+{
+  "header": {
+    "spec_version": "0.1.0"
+  },
+  "identity": null,
+  "metadata": {
+    "name": null,
+    "aliases": [],
+    "tags": []
+  },
+  "canvas": {
+    "size": 1024
+  },
+  "layers": [
+    {
+      "name": "stamp",
+      "opacity": 255,
+      "blend": "normal",
+      "paths": [
+        {
+          "feature": "ring",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 912,
+              "y": 512
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 912,
+              "c1y": 291,
+              "c2x": 733,
+              "c2y": 112,
+              "x": 512,
+              "y": 112
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 291,
+              "c1y": 112,
+              "c2x": 112,
+              "c2y": 291,
+              "x": 112,
+              "y": 512
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 112,
+              "c1y": 733,
+              "c2x": 291,
+              "c2y": 912,
+              "x": 512,
+              "y": 912
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 733,
+              "c1y": 912,
+              "c2x": 912,
+              "c2y": 733,
+              "x": 912,
+              "y": 512
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 150,
+              "g": 100,
+              "b": 50,
+              "a": 255
+            }
+          },
+          "stroke": null,
+          "opacity": 255
+        },
+        {
+          "feature": "stamp-body",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 762,
+              "y": 512
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 762,
+              "c1y": 361,
+              "c2x": 663,
+              "c2y": 262,
+              "x": 512,
+              "y": 262
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 361,
+              "c1y": 262,
+              "c2x": 262,
+              "c2y": 361,
+              "x": 262,
+              "y": 512
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 262,
+              "c1y": 663,
+              "c2x": 361,
+              "c2y": 762,
+              "x": 512,
+              "y": 762
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 663,
+              "c1y": 762,
+              "c2x": 762,
+              "c2y": 663,
+              "x": 762,
+              "y": 512
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 100,
+              "g": 60,
+              "b": 30,
+              "a": 255
+            }
+          },
+          "stroke": null,
+          "opacity": 255
+        },
+        {
+          "feature": "checkmark",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 412,
+              "y": 512
+            },
+            {
+              "op": "line_to",
+              "x": 492,
+              "y": 592
+            },
+            {
+              "op": "line_to",
+              "x": 632,
+              "y": 452
+            }
+          ],
+          "fill": null,
+          "stroke": {
+            "color": {
+              "r": 255,
+              "g": 215,
+              "b": 0,
+              "a": 255
+            },
+            "width": 30,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "glow",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 772,
+              "y": 512
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 772,
+              "c1y": 340,
+              "c2x": 660,
+              "c2y": 228,
+              "x": 512,
+              "y": 228
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 340,
+              "c1y": 228,
+              "c2x": 228,
+              "c2y": 340,
+              "x": 228,
+              "y": 512
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 228,
+              "c1y": 660,
+              "c2x": 340,
+              "c2y": 772,
+              "x": 512,
+              "y": 772
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 660,
+              "c1y": 772,
+              "c2x": 772,
+              "c2y": 660,
+              "x": 772,
+              "y": 512
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 255,
+              "g": 215,
+              "b": 0,
+              "a": 255
+            }
+          },
+          "stroke": null,
+          "opacity": 120
+        }
+      ]
+    }
+  ],
+  "semantics": {
+    "description": "a wooden stamp seal pressing a glowing approval checkmark into a ring of tree growth rings, warm brown and gold tones",
+    "emotion": "approval",
+    "intensity": 80
+  },
+  "variants": {
+    "tiny": null,
+    "text": null,
+    "standard": null,
+    "large": null,
+    "full": null
+  },
+  "compatibility": {
+    "min_spec_version": "0.1.0"
+  },
+  "provenance": null
+}

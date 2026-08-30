@@ -1,11 +1,19 @@
 [package]
 name = "uni"
-version = "0.1.9"
+version = "0.2.0"
 edition = "2021"
 description = "Unified analysis tool: runs amber, ami, bart, chakra, ferret, fract, isopod, jeenome, lwoodz, tempcheq, traci, and vamos concurrently against a project and compiles one deterministic, graded snapshot report."
 license = "MIT"
 repository = "https://github.com/elci-group/uni"
 keywords = ["analysis", "code-quality", "cli", "grading", "report"]
+
+[lib]
+name = "uni"
+path = "src/lib.rs"
+
+[[bin]]
+name = "uni"
+path = "src/main.rs"
 
 [dependencies]
 clap = { version = "4", features = ["derive"] }
@@ -15,5 +23,7 @@ tokio = { version = "1", features = ["rt-multi-thread", "macros", "process", "ti
 chrono = { version = "0.4", features = ["clock"] }
 ingauge-gate = { git = "https://github.com/elci-group/ingauge.git", package = "ingauge-gate" }
 tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 uuid = { version = "1", features = ["v4", "serde"] }
 md5 = "0.7"
+bound-core = { path = "../bound/crates/bound-core" }

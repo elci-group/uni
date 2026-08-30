@@ -1,0 +1,511 @@
+{
+  "header": {
+    "spec_version": "0.1.0"
+  },
+  "identity": {
+    "namespace": "example",
+    "asset_id": "friendly_badge_v2"
+  },
+  "metadata": {
+    "name": "Friendly Badge",
+    "aliases": [],
+    "tags": [
+      "badge",
+      "character",
+      "cheerful",
+      "blue",
+      "white"
+    ]
+  },
+  "canvas": {
+    "size": 1024
+  },
+  "layers": [
+    {
+      "name": "main",
+      "opacity": 255,
+      "blend": "normal",
+      "paths": [
+        {
+          "feature": "badge",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 500,
+              "y": 300
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 500,
+              "c1y": 190,
+              "c2x": 410,
+              "c2y": 100,
+              "x": 300,
+              "y": 100
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 190,
+              "c1y": 100,
+              "c2x": 100,
+              "c2y": 190,
+              "x": 100,
+              "y": 300
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 100,
+              "c1y": 410,
+              "c2x": 190,
+              "c2y": 500,
+              "x": 300,
+              "y": 500
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 410,
+              "c1y": 500,
+              "c2x": 500,
+              "c2y": 410,
+              "x": 500,
+              "y": 300
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 100,
+              "g": 150,
+              "b": 255,
+              "a": 255
+            }
+          },
+          "stroke": {
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 255
+            },
+            "width": 8,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "eye_left",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 300,
+              "y": 240
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 300,
+              "c1y": 213,
+              "c2x": 287,
+              "c2y": 200,
+              "x": 270,
+              "y": 200
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 253,
+              "c1y": 200,
+              "c2x": 240,
+              "c2y": 213,
+              "x": 240,
+              "y": 240
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 240,
+              "c1y": 267,
+              "c2x": 253,
+              "c2y": 280,
+              "x": 270,
+              "y": 280
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 287,
+              "c1y": 280,
+              "c2x": 300,
+              "c2y": 267,
+              "x": 300,
+              "y": 240
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 255
+            }
+          },
+          "stroke": {
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 255
+            },
+            "width": 8,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "pupil_left",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 270,
+              "y": 240
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 270,
+              "c1y": 231,
+              "c2x": 263,
+              "c2y": 224,
+              "x": 254,
+              "y": 224
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 245,
+              "c1y": 224,
+              "c2x": 238,
+              "c2y": 231,
+              "x": 238,
+              "y": 240
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 238,
+              "c1y": 249,
+              "c2x": 245,
+              "c2y": 256,
+              "x": 254,
+              "y": 256
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 263,
+              "c1y": 256,
+              "c2x": 270,
+              "c2y": 249,
+              "x": 270,
+              "y": 240
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 255
+            }
+          },
+          "stroke": null,
+          "opacity": 255
+        },
+        {
+          "feature": "eye_right",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 440,
+              "y": 240
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 440,
+              "c1y": 213,
+              "c2x": 427,
+              "c2y": 200,
+              "x": 410,
+              "y": 200
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 393,
+              "c1y": 200,
+              "c2x": 380,
+              "c2y": 213,
+              "x": 380,
+              "y": 240
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 380,
+              "c1y": 267,
+              "c2x": 393,
+              "c2y": 280,
+              "x": 410,
+              "y": 280
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 427,
+              "c1y": 280,
+              "c2x": 440,
+              "c2y": 267,
+              "x": 440,
+              "y": 240
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 255
+            }
+          },
+          "stroke": {
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 255
+            },
+            "width": 8,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "pupil_right",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 410,
+              "y": 240
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 410,
+              "c1y": 231,
+              "c2x": 403,
+              "c2y": 224,
+              "x": 394,
+              "y": 224
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 385,
+              "c1y": 224,
+              "c2x": 378,
+              "c2y": 231,
+              "x": 378,
+              "y": 240
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 378,
+              "c1y": 249,
+              "c2x": 385,
+              "c2y": 256,
+              "x": 394,
+              "y": 256
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 403,
+              "c1y": 256,
+              "c2x": 410,
+              "c2y": 249,
+              "x": 410,
+              "y": 240
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 255
+            }
+          },
+          "stroke": null,
+          "opacity": 255
+        },
+        {
+          "feature": "smile",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 220,
+              "y": 340
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 260,
+              "c1y": 300,
+              "c2x": 340,
+              "c2y": 300,
+              "x": 380,
+              "y": 340
+            },
+            {
+              "op": "line_to",
+              "x": 380,
+              "y": 360
+            },
+            {
+              "op": "line_to",
+              "x": 220,
+              "y": 360
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 255,
+              "g": 200,
+              "b": 0,
+              "a": 255
+            }
+          },
+          "stroke": null,
+          "opacity": 255
+        },
+        {
+          "feature": "clipboard",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 560,
+              "y": 200
+            },
+            {
+              "op": "line_to",
+              "x": 740,
+              "y": 200
+            },
+            {
+              "op": "line_to",
+              "x": 740,
+              "y": 440
+            },
+            {
+              "op": "line_to",
+              "x": 560,
+              "y": 440
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 255
+            }
+          },
+          "stroke": {
+            "color": {
+              "r": 100,
+              "g": 150,
+              "b": 255,
+              "a": 255
+            },
+            "width": 6,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "checklist",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 580,
+              "y": 260
+            },
+            {
+              "op": "line_to",
+              "x": 610,
+              "y": 290
+            },
+            {
+              "op": "line_to",
+              "x": 720,
+              "y": 190
+            },
+            {
+              "op": "move_to",
+              "x": 580,
+              "y": 320
+            },
+            {
+              "op": "line_to",
+              "x": 610,
+              "y": 350
+            },
+            {
+              "op": "line_to",
+              "x": 720,
+              "y": 250
+            }
+          ],
+          "fill": null,
+          "stroke": {
+            "color": {
+              "r": 0,
+              "g": 200,
+              "b": 0,
+              "a": 255
+            },
+            "width": 12,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        }
+      ]
+    }
+  ],
+  "semantics": {
+    "description": "a friendly round ID-badge character with a big warm smile and a small checklist clipboard, cheerful blue and white tones",
+    "emotion": "cheerful",
+    "intensity": 80
+  },
+  "variants": {
+    "tiny": null,
+    "text": null,
+    "standard": null,
+    "large": null,
+    "full": null
+  },
+  "compatibility": {
+    "min_spec_version": "0.1.0"
+  },
+  "provenance": null
+}

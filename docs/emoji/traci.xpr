@@ -1,0 +1,376 @@
+{
+  "header": {
+    "spec_version": "0.1.0"
+  },
+  "identity": {
+    "namespace": "visual",
+    "asset_id": "heartbeat-radar"
+  },
+  "metadata": {
+    "name": "Cyan Radar Pulse",
+    "aliases": [],
+    "tags": [
+      "alert",
+      "watchful",
+      "cyan",
+      "radar"
+    ]
+  },
+  "canvas": {
+    "size": 1024
+  },
+  "layers": [
+    {
+      "name": "background",
+      "opacity": 255,
+      "blend": "normal",
+      "paths": [
+        {
+          "feature": null,
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "op": "line_to",
+              "x": 1024,
+              "y": 0
+            },
+            {
+              "op": "line_to",
+              "x": 1024,
+              "y": 1024
+            },
+            {
+              "op": "line_to",
+              "x": 0,
+              "y": 1024
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 0,
+              "g": 16,
+              "b": 32,
+              "a": 255
+            }
+          },
+          "stroke": null,
+          "opacity": 255
+        }
+      ]
+    },
+    {
+      "name": "radar-sweep",
+      "opacity": 255,
+      "blend": "normal",
+      "paths": [
+        {
+          "feature": "sweep-glow",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 512,
+              "y": 512
+            },
+            {
+              "op": "line_to",
+              "x": 795,
+              "y": 229
+            },
+            {
+              "op": "quad_to",
+              "cx": 1024,
+              "cy": 512,
+              "x": 795,
+              "y": 795
+            },
+            {
+              "op": "line_to",
+              "x": 512,
+              "y": 512
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": null,
+          "stroke": {
+            "color": {
+              "r": 0,
+              "g": 255,
+              "b": 255,
+              "a": 255
+            },
+            "width": 30,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 80
+        },
+        {
+          "feature": "sweep",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 512,
+              "y": 512
+            },
+            {
+              "op": "line_to",
+              "x": 795,
+              "y": 229
+            },
+            {
+              "op": "quad_to",
+              "cx": 1024,
+              "cy": 512,
+              "x": 795,
+              "y": 795
+            },
+            {
+              "op": "line_to",
+              "x": 512,
+              "y": 512
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 0,
+              "g": 255,
+              "b": 255,
+              "a": 255
+            }
+          },
+          "stroke": {
+            "color": {
+              "r": 0,
+              "g": 255,
+              "b": 255,
+              "a": 255
+            },
+            "width": 4,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "origin",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 520,
+              "y": 500
+            },
+            {
+              "op": "line_to",
+              "x": 544,
+              "y": 500
+            },
+            {
+              "op": "line_to",
+              "x": 544,
+              "y": 524
+            },
+            {
+              "op": "line_to",
+              "x": 520,
+              "y": 524
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 0,
+              "g": 255,
+              "b": 255,
+              "a": 255
+            }
+          },
+          "stroke": {
+            "color": {
+              "r": 0,
+              "g": 255,
+              "b": 255,
+              "a": 255
+            },
+            "width": 2,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        }
+      ]
+    },
+    {
+      "name": "pulse-line",
+      "opacity": 255,
+      "blend": "normal",
+      "paths": [
+        {
+          "feature": "pulse-glow",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 200,
+              "y": 600
+            },
+            {
+              "op": "line_to",
+              "x": 300,
+              "y": 500
+            },
+            {
+              "op": "line_to",
+              "x": 350,
+              "y": 650
+            },
+            {
+              "op": "line_to",
+              "x": 400,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 450,
+              "y": 700
+            },
+            {
+              "op": "line_to",
+              "x": 500,
+              "y": 550
+            },
+            {
+              "op": "line_to",
+              "x": 600,
+              "y": 600
+            },
+            {
+              "op": "line_to",
+              "x": 700,
+              "y": 500
+            },
+            {
+              "op": "line_to",
+              "x": 800,
+              "y": 650
+            },
+            {
+              "op": "line_to",
+              "x": 512,
+              "y": 512
+            }
+          ],
+          "fill": null,
+          "stroke": {
+            "color": {
+              "r": 0,
+              "g": 255,
+              "b": 255,
+              "a": 255
+            },
+            "width": 20,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 120
+        },
+        {
+          "feature": "pulse",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 200,
+              "y": 600
+            },
+            {
+              "op": "line_to",
+              "x": 300,
+              "y": 500
+            },
+            {
+              "op": "line_to",
+              "x": 350,
+              "y": 650
+            },
+            {
+              "op": "line_to",
+              "x": 400,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 450,
+              "y": 700
+            },
+            {
+              "op": "line_to",
+              "x": 500,
+              "y": 550
+            },
+            {
+              "op": "line_to",
+              "x": 600,
+              "y": 600
+            },
+            {
+              "op": "line_to",
+              "x": 700,
+              "y": 500
+            },
+            {
+              "op": "line_to",
+              "x": 800,
+              "y": 650
+            },
+            {
+              "op": "line_to",
+              "x": 512,
+              "y": 512
+            }
+          ],
+          "fill": null,
+          "stroke": {
+            "color": {
+              "r": 0,
+              "g": 255,
+              "b": 255,
+              "a": 255
+            },
+            "width": 8,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        }
+      ]
+    }
+  ],
+  "semantics": {
+    "description": "glowing cyan heartbeat pulse line that loops back into a bright radar sweep, with a visible connection and outer glow for both pulse and sweep, conveying alert and watchful feeling on a dark background",
+    "emotion": "alert",
+    "intensity": 85
+  },
+  "variants": {
+    "tiny": null,
+    "text": null,
+    "standard": null,
+    "large": null,
+    "full": null
+  },
+  "compatibility": {
+    "min_spec_version": "0.1.0"
+  },
+  "provenance": null
+}

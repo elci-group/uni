@@ -1,0 +1,5577 @@
+{
+  "schema": "uni.report/v3",
+  "target": "/home/sal/orbweaver",
+  "generated_at": "2026-08-27T13:10:37.856584786+00:00",
+  "tools_dir": "/home/sal",
+  "tools": [
+    {
+      "tool": "amber",
+      "purpose": "dependency bloat / replaceability",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 22
+      },
+      "binary": "/home/sal/.local/bin/amber",
+      "score": 59.09090909090909,
+      "grade": "F",
+      "exit_code": 1,
+      "duration_ms": 5099,
+      "summary": "22 dependencies analyzed: 6 keep/security-block, 15 propose, 1 proceed",
+      "findings": [
+        "anyhow: security_block (replaceability 67)",
+        "chrono: security_block (replaceability 68)",
+        "git2: security_block (replaceability 52)",
+        "rusqlite: security_block (replaceability 52)",
+        "serde: security_block (replaceability 20)"
+      ],
+      "note": null,
+      "raw": {
+        "amber_version": "0.3.0",
+        "results": [
+          {
+            "crate": "anyhow",
+            "metadata": {
+              "cve_count": 1,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 85% (2 unique APIs from 0 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 15% (category: general)",
+              "Maintenance burden: 35% (1 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~1% of public APIs)",
+              "Category rule applied: FREQUENTLY_REPLACEABLE list match",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 35,
+                "security_safety": 15,
+                "testability": 80,
+                "transitive_value": 55,
+                "usage_simplicity": 85
+              },
+              "overall": 67,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 0,
+              "imported_items": 2,
+              "is_trivial": true,
+              "unique_apis": 2
+            },
+            "version": "1.0.104"
+          },
+          {
+            "crate": "chrono",
+            "metadata": {
+              "cve_count": 1,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 85% (3 unique APIs from 1 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 15% (category: datetime)",
+              "Maintenance burden: 35% (1 CVEs, score: 50)",
+              "Testability: 70% (4 affected files)",
+              "API surface: 90% (using ~5% of public APIs)",
+              "Category rule applied: FREQUENTLY_REPLACEABLE list match",
+              "Confidence: 80% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 80,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 35,
+                "security_safety": 15,
+                "testability": 70,
+                "transitive_value": 65,
+                "usage_simplicity": 85
+              },
+              "overall": 68,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 4,
+              "call_sites": 1,
+              "imported_items": 9,
+              "is_trivial": true,
+              "unique_apis": 3
+            },
+            "version": "0.4.45"
+          },
+          {
+            "crate": "clap",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 85% (2 unique APIs from 2 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 50% (category: cli)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 80,
+                "transitive_value": 65,
+                "usage_simplicity": 85
+              },
+              "overall": 68,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 2,
+              "imported_items": 2,
+              "is_trivial": true,
+              "unique_apis": 2
+            },
+            "version": "4.6.6"
+          },
+          {
+            "crate": "console",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 85% (2 unique APIs from 0 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 70% (2 affected files)",
+              "API surface: 90% (using ~2% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 80% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 80,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 70,
+                "transitive_value": 55,
+                "usage_simplicity": 85
+              },
+              "overall": 65,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 2,
+              "call_sites": 0,
+              "imported_items": 3,
+              "is_trivial": true,
+              "unique_apis": 2
+            },
+            "version": "0.15.11"
+          },
+          {
+            "crate": "git2",
+            "metadata": {
+              "cve_count": 3,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 90% (1 unique APIs from 0 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 0% (category: general)",
+              "Maintenance burden: 15% (3 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 15,
+                "security_safety": 0,
+                "testability": 80,
+                "transitive_value": 55,
+                "usage_simplicity": 90
+              },
+              "overall": 52,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 0,
+              "imported_items": 1,
+              "is_trivial": true,
+              "unique_apis": 1
+            },
+            "version": "0.19.0"
+          },
+          {
+            "crate": "indicatif",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 85% (2 unique APIs from 0 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~1% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 80,
+                "transitive_value": 55,
+                "usage_simplicity": 85
+              },
+              "overall": 66,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 0,
+              "imported_items": 2,
+              "is_trivial": true,
+              "unique_apis": 2
+            },
+            "version": "0.17.11"
+          },
+          {
+            "crate": "orbweaver-analysis",
+            "metadata": {
+              "cve_count": 0,
+              "license": "UNLICENSED",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 50% (0 unique APIs from 2 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 80,
+                "transitive_value": 55,
+                "usage_simplicity": 50
+              },
+              "overall": 58,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 2,
+              "imported_items": 0,
+              "is_trivial": true,
+              "unique_apis": 0
+            },
+            "version": "0.1.0"
+          },
+          {
+            "crate": "orbweaver-connectors",
+            "metadata": {
+              "cve_count": 0,
+              "license": "UNLICENSED",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 35% (0 unique APIs from 7 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 65% (1 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 80% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Medium Risk",
+              "classification_stars": "★★★☆☆",
+              "confidence": 80,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 65,
+                "transitive_value": 55,
+                "usage_simplicity": 35
+              },
+              "overall": 52,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 7,
+              "imported_items": 0,
+              "is_trivial": false,
+              "unique_apis": 0
+            },
+            "version": "0.1.0"
+          },
+          {
+            "crate": "orbweaver-core",
+            "metadata": {
+              "cve_count": 0,
+              "license": "UNLICENSED",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 55% (11 unique APIs from 2 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 45% (9 affected files)",
+              "API surface: 10% (using ~73% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 45% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Medium Risk",
+              "classification_stars": "★★★☆☆",
+              "confidence": 45,
+              "dimensions": {
+                "api_surface": 10,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 45,
+                "transitive_value": 55,
+                "usage_simplicity": 55
+              },
+              "overall": 47,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 9,
+              "call_sites": 2,
+              "imported_items": 36,
+              "is_trivial": false,
+              "unique_apis": 11
+            },
+            "version": "0.1.0"
+          },
+          {
+            "crate": "orbweaver-evidence",
+            "metadata": {
+              "cve_count": 0,
+              "license": "UNLICENSED",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 65% (4 unique APIs from 0 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 45% (7 affected files)",
+              "API surface: 70% (using ~27% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 60% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 60,
+              "dimensions": {
+                "api_surface": 70,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 45,
+                "transitive_value": 55,
+                "usage_simplicity": 65
+              },
+              "overall": 56,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 7,
+              "call_sites": 0,
+              "imported_items": 17,
+              "is_trivial": false,
+              "unique_apis": 4
+            },
+            "version": "0.1.0"
+          },
+          {
+            "crate": "orbweaver-git",
+            "metadata": {
+              "cve_count": 0,
+              "license": "UNLICENSED",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 50% (0 unique APIs from 4 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 80,
+                "transitive_value": 55,
+                "usage_simplicity": 50
+              },
+              "overall": 58,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 4,
+              "imported_items": 0,
+              "is_trivial": true,
+              "unique_apis": 0
+            },
+            "version": "0.1.0"
+          },
+          {
+            "crate": "orbweaver-graph",
+            "metadata": {
+              "cve_count": 0,
+              "license": "UNLICENSED",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 90% (1 unique APIs from 0 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~7% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 80,
+                "transitive_value": 55,
+                "usage_simplicity": 90
+              },
+              "overall": 68,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 0,
+              "imported_items": 1,
+              "is_trivial": true,
+              "unique_apis": 1
+            },
+            "version": "0.1.0"
+          },
+          {
+            "crate": "orbweaver-ingest",
+            "metadata": {
+              "cve_count": 0,
+              "license": "UNLICENSED",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 90% (1 unique APIs from 2 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~7% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 80,
+                "transitive_value": 55,
+                "usage_simplicity": 90
+              },
+              "overall": 68,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 2,
+              "imported_items": 1,
+              "is_trivial": true,
+              "unique_apis": 1
+            },
+            "version": "0.1.0"
+          },
+          {
+            "crate": "orbweaver-storage",
+            "metadata": {
+              "cve_count": 0,
+              "license": "UNLICENSED",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 30% (0 unique APIs from 75 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 65% (1 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 70% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Medium Risk",
+              "classification_stars": "★★★☆☆",
+              "confidence": 70,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 65,
+                "transitive_value": 55,
+                "usage_simplicity": 30
+              },
+              "overall": 51,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 75,
+              "imported_items": 0,
+              "is_trivial": false,
+              "unique_apis": 0
+            },
+            "version": "0.1.0"
+          },
+          {
+            "crate": "petgraph",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 85% (2 unique APIs from 0 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 80,
+                "transitive_value": 55,
+                "usage_simplicity": 85
+              },
+              "overall": 66,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 0,
+              "imported_items": 2,
+              "is_trivial": true,
+              "unique_apis": 2
+            },
+            "version": "0.6.5"
+          },
+          {
+            "crate": "rusqlite",
+            "metadata": {
+              "cve_count": 2,
+              "license": "MIT",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 85% (2 unique APIs from 0 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 0% (category: general)",
+              "Maintenance burden: 25% (2 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~1% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 25,
+                "security_safety": 0,
+                "testability": 80,
+                "transitive_value": 55,
+                "usage_simplicity": 85
+              },
+              "overall": 52,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 0,
+              "imported_items": 2,
+              "is_trivial": true,
+              "unique_apis": 2
+            },
+            "version": "0.31.0"
+          },
+          {
+            "crate": "serde",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 65% (2 unique APIs from 48 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 0% (category: serialization)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 45% (8 affected files)",
+              "API surface: 90% (using ~7% of public APIs)",
+              "Category rule applied: NEVER_REPLACE list match",
+              "Confidence: 55% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 55,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 0,
+                "testability": 45,
+                "transitive_value": 55,
+                "usage_simplicity": 65
+              },
+              "overall": 20,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 8,
+              "call_sites": 48,
+              "imported_items": 10,
+              "is_trivial": false,
+              "unique_apis": 2
+            },
+            "version": "1.0.229"
+          },
+          {
+            "crate": "serde_json",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 30% (0 unique APIs from 27 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 50% (category: serialization)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 45% (6 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 55% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Medium Risk",
+              "classification_stars": "★★★☆☆",
+              "confidence": 55,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 45,
+                "transitive_value": 65,
+                "usage_simplicity": 30
+              },
+              "overall": 51,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 6,
+              "call_sites": 27,
+              "imported_items": 0,
+              "is_trivial": false,
+              "unique_apis": 0
+            },
+            "version": "1.0.151"
+          },
+          {
+            "crate": "tempfile",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 30% (0 unique APIs from 64 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 45% (8 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 55% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Medium Risk",
+              "classification_stars": "★★★☆☆",
+              "confidence": 55,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 45,
+                "transitive_value": 55,
+                "usage_simplicity": 30
+              },
+              "overall": 49,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 8,
+              "call_sites": 64,
+              "imported_items": 0,
+              "is_trivial": false,
+              "unique_apis": 0
+            },
+            "version": "3.27.0"
+          },
+          {
+            "crate": "thiserror",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 70% (0 unique APIs from 0 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 65% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 85% (0 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: FREQUENTLY_REPLACEABLE list match",
+              "Confidence: 100% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Safe to Replace",
+              "classification_stars": "★★★★★",
+              "confidence": 100,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 65,
+                "testability": 85,
+                "transitive_value": 55,
+                "usage_simplicity": 70
+              },
+              "overall": 77,
+              "recommendation": "proceed"
+            },
+            "usage": {
+              "affected_files": 0,
+              "call_sites": 0,
+              "imported_items": 0,
+              "is_trivial": true,
+              "unique_apis": 0
+            },
+            "version": "1.0.69"
+          },
+          {
+            "crate": "toml",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 35% (0 unique APIs from 16 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: serialization)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 55% (3 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 75% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Medium Risk",
+              "classification_stars": "★★★☆☆",
+              "confidence": 75,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 55,
+                "transitive_value": 55,
+                "usage_simplicity": 35
+              },
+              "overall": 51,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 3,
+              "call_sites": 16,
+              "imported_items": 0,
+              "is_trivial": false,
+              "unique_apis": 0
+            },
+            "version": "0.8.23"
+          },
+          {
+            "crate": "uuid",
+            "metadata": {
+              "cve_count": 0,
+              "license": "Apache-2.0 OR MIT",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 90% (1 unique APIs from 4 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 0% (category: randomness)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 70% (2 affected files)",
+              "API surface: 90% (using ~7% of public APIs)",
+              "Category rule applied: NEVER_REPLACE list match",
+              "Confidence: 80% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 80,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 0,
+                "testability": 70,
+                "transitive_value": 65,
+                "usage_simplicity": 90
+              },
+              "overall": 20,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 2,
+              "call_sites": 4,
+              "imported_items": 1,
+              "is_trivial": true,
+              "unique_apis": 1
+            },
+            "version": "1.24.1"
+          }
+        ],
+        "total_dependencies": 22
+      }
+    },
+    {
+      "tool": "ami",
+      "purpose": "project profile completeness (market-intelligence readiness)",
+      "status": "skipped",
+      "availability": "not_checked",
+      "execution": "skipped",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": null,
+      "duration_ms": null,
+      "summary": "skipped",
+      "findings": [],
+      "note": "ami is opt-in because project profiling is not code health; use `--only ami` when its installed build exposes JSON output",
+      "raw": null
+    },
+    {
+      "tool": "bart",
+      "purpose": "filesystem size & hotspots (informational)",
+      "status": "ok",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/usr/bin/bart",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 59,
+      "summary": "41 files, 337.0 KB under root",
+      "findings": [
+        "/home/sal/orbweaver/crates: 267.5 KB",
+        "/home/sal/orbweaver/Cargo.lock: 34.4 KB",
+        "/home/sal/orbweaver/docs: 15.4 KB",
+        "/home/sal/orbweaver/README.md: 8.3 KB",
+        "/home/sal/orbweaver/.claude: 4.7 KB"
+      ],
+      "note": "informational only — bart measures disk usage, not code health",
+      "raw": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "depth": 4,
+                        "file_count": 1,
+                        "is_dir": false,
+                        "modified": 1787328959,
+                        "path": "/home/sal/orbweaver/crates/orbweaver-ingest/src/manifests.rs",
+                        "size": 16399
+                      },
+                      {
+                        "children": [],
+                        "depth": 4,
+                        "file_count": 1,
+                        "is_dir": false,
+                        "modified": 1787330440,
+                        "path": "/home/sal/orbweaver/crates/orbweaver-ingest/src/rust_scan.rs",
+                        "size": 16370
+                      },
+                      {
+                        "children": [],
+                        "depth": 4,
+                        "file_count": 1,
+                        "is_dir": false,
+                        "modified": 1787330528,
+                        "path": "/home/sal/orbweaver/crates/orbweaver-ingest/src/lib.rs",
+                        "size": 12486
+                      },
+                      {
+                        "children": [],
+                        "depth": 4,
+                        "file_count": 1,
+                        "is_dir": false,
+                        "modified": 1787328990,
+                        "path": "/home/sal/orbweaver/crates/orbweaver-ingest/src/capabilities.rs",
+                        "size": 11056
+                      },
+                      {
+                        "children": [],
+                        "depth": 4,
+                        "file_count": 1,
+                        "is_dir": false,
+                        "modified": 1787330331,
+                        "path": "/home/sal/orbweaver/crates/orbweaver-ingest/src/interfaces.rs",
+                        "size": 8425
+                      },
+                      {
+                        "children": [],
+                        "depth": 4,
+                        "file_count": 1,
+                        "is_dir": false,
+                        "modified": 1787330497,
+                        "path": "/home/sal/orbweaver/crates/orbweaver-ingest/src/schemas.rs",
+                        "size": 8230
+                      },
+                      {
+                        "children": [],
+                        "depth": 4,
+                        "file_count": 1,
+                        "is_dir": false,
+                        "modified": 1787328971,
+                        "path": "/home/sal/orbweaver/crates/orbweaver-ingest/src/discover.rs",
+                        "size": 4312
+                      }
+                    ],
+                    "depth": 3,
+                    "file_count": 7,
+                    "is_dir": true,
+                    "modified": 1787330528,
+                    "path": "/home/sal/orbweaver/crates/orbweaver-ingest/src",
+                    "size": 81374
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787328940,
+                    "path": "/home/sal/orbweaver/crates/orbweaver-ingest/Cargo.toml",
+                    "size": 409
+                  }
+                ],
+                "depth": 2,
+                "file_count": 8,
+                "is_dir": true,
+                "modified": 1787328940,
+                "path": "/home/sal/orbweaver/crates/orbweaver-ingest",
+                "size": 85879
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "depth": 4,
+                        "file_count": 1,
+                        "is_dir": false,
+                        "modified": 1787345683,
+                        "path": "/home/sal/orbweaver/crates/orbweaver-connectors/src/probe.rs",
+                        "size": 12416
+                      },
+                      {
+                        "children": [],
+                        "depth": 4,
+                        "file_count": 1,
+                        "is_dir": false,
+                        "modified": 1787346314,
+                        "path": "/home/sal/orbweaver/crates/orbweaver-connectors/src/install.rs",
+                        "size": 12388
+                      },
+                      {
+                        "children": [],
+                        "depth": 4,
+                        "file_count": 1,
+                        "is_dir": false,
+                        "modified": 1787346332,
+                        "path": "/home/sal/orbweaver/crates/orbweaver-connectors/src/lib.rs",
+                        "size": 5454
+                      },
+                      {
+                        "children": [],
+                        "depth": 4,
+                        "file_count": 1,
+                        "is_dir": false,
+                        "modified": 1787345633,
+                        "path": "/home/sal/orbweaver/crates/orbweaver-connectors/src/orb.rs",
+                        "size": 5267
+                      },
+                      {
+                        "children": [],
+                        "depth": 4,
+                        "file_count": 1,
+                        "is_dir": false,
+                        "modified": 1787345612,
+                        "path": "/home/sal/orbweaver/crates/orbweaver-connectors/src/github.rs",
+                        "size": 5139
+                      },
+                      {
+                        "children": [],
+                        "depth": 4,
+                        "file_count": 1,
+                        "is_dir": false,
+                        "modified": 1787345850,
+                        "path": "/home/sal/orbweaver/crates/orbweaver-connectors/src/process.rs",
+                        "size": 2908
+                      }
+                    ],
+                    "depth": 3,
+                    "file_count": 6,
+                    "is_dir": true,
+                    "modified": 1787346332,
+                    "path": "/home/sal/orbweaver/crates/orbweaver-connectors/src",
+                    "size": 47668
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787345770,
+                    "path": "/home/sal/orbweaver/crates/orbweaver-connectors/Cargo.toml",
+                    "size": 291
+                  }
+                ],
+                "depth": 2,
+                "file_count": 7,
+                "is_dir": true,
+                "modified": 1787345770,
+                "path": "/home/sal/orbweaver/crates/orbweaver-connectors",
+                "size": 52055
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "depth": 4,
+                        "file_count": 1,
+                        "is_dir": false,
+                        "modified": 1787346075,
+                        "path": "/home/sal/orbweaver/crates/orbweaver-cli/src/main.rs",
+                        "size": 22556
+                      },
+                      {
+                        "children": [],
+                        "depth": 4,
+                        "file_count": 1,
+                        "is_dir": false,
+                        "modified": 1787343559,
+                        "path": "/home/sal/orbweaver/crates/orbweaver-cli/src/style.rs",
+                        "size": 2480
+                      }
+                    ],
+                    "depth": 3,
+                    "file_count": 2,
+                    "is_dir": true,
+                    "modified": 1787346075,
+                    "path": "/home/sal/orbweaver/crates/orbweaver-cli/src",
+                    "size": 29132
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787343533,
+                    "path": "/home/sal/orbweaver/crates/orbweaver-cli/Cargo.toml",
+                    "size": 592
+                  }
+                ],
+                "depth": 2,
+                "file_count": 3,
+                "is_dir": true,
+                "modified": 1787343533,
+                "path": "/home/sal/orbweaver/crates/orbweaver-cli",
+                "size": 33820
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "depth": 4,
+                        "file_count": 1,
+                        "is_dir": false,
+                        "modified": 1787330655,
+                        "path": "/home/sal/orbweaver/crates/orbweaver-storage/src/lib.rs",
+                        "size": 21457
+                      }
+                    ],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": true,
+                    "modified": 1787330655,
+                    "path": "/home/sal/orbweaver/crates/orbweaver-storage/src",
+                    "size": 25553
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787325998,
+                    "path": "/home/sal/orbweaver/crates/orbweaver-storage/Cargo.toml",
+                    "size": 321
+                  }
+                ],
+                "depth": 2,
+                "file_count": 2,
+                "is_dir": true,
+                "modified": 1787325998,
+                "path": "/home/sal/orbweaver/crates/orbweaver-storage",
+                "size": 29970
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "depth": 4,
+                        "file_count": 1,
+                        "is_dir": false,
+                        "modified": 1787329073,
+                        "path": "/home/sal/orbweaver/crates/orbweaver-analysis/src/lib.rs",
+                        "size": 8043
+                      }
+                    ],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": true,
+                    "modified": 1787329073,
+                    "path": "/home/sal/orbweaver/crates/orbweaver-analysis/src",
+                    "size": 12139
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787328699,
+                    "path": "/home/sal/orbweaver/crates/orbweaver-analysis/Cargo.toml",
+                    "size": 209
+                  }
+                ],
+                "depth": 2,
+                "file_count": 2,
+                "is_dir": true,
+                "modified": 1787328699,
+                "path": "/home/sal/orbweaver/crates/orbweaver-analysis",
+                "size": 16444
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "depth": 4,
+                        "file_count": 1,
+                        "is_dir": false,
+                        "modified": 1787329021,
+                        "path": "/home/sal/orbweaver/crates/orbweaver-graph/src/lib.rs",
+                        "size": 6727
+                      }
+                    ],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": true,
+                    "modified": 1787329021,
+                    "path": "/home/sal/orbweaver/crates/orbweaver-graph/src",
+                    "size": 10823
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787325972,
+                    "path": "/home/sal/orbweaver/crates/orbweaver-graph/Cargo.toml",
+                    "size": 260
+                  }
+                ],
+                "depth": 2,
+                "file_count": 2,
+                "is_dir": true,
+                "modified": 1787325972,
+                "path": "/home/sal/orbweaver/crates/orbweaver-graph",
+                "size": 15179
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "depth": 4,
+                        "file_count": 1,
+                        "is_dir": false,
+                        "modified": 1787330369,
+                        "path": "/home/sal/orbweaver/crates/orbweaver-core/src/lib.rs",
+                        "size": 5699
+                      }
+                    ],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": true,
+                    "modified": 1787330369,
+                    "path": "/home/sal/orbweaver/crates/orbweaver-core/src",
+                    "size": 9795
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787325780,
+                    "path": "/home/sal/orbweaver/crates/orbweaver-core/Cargo.toml",
+                    "size": 246
+                  }
+                ],
+                "depth": 2,
+                "file_count": 2,
+                "is_dir": true,
+                "modified": 1787325780,
+                "path": "/home/sal/orbweaver/crates/orbweaver-core",
+                "size": 14137
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "depth": 4,
+                        "file_count": 1,
+                        "is_dir": false,
+                        "modified": 1787325816,
+                        "path": "/home/sal/orbweaver/crates/orbweaver-evidence/src/lib.rs",
+                        "size": 3043
+                      }
+                    ],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": true,
+                    "modified": 1787325816,
+                    "path": "/home/sal/orbweaver/crates/orbweaver-evidence/src",
+                    "size": 7139
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787325804,
+                    "path": "/home/sal/orbweaver/crates/orbweaver-evidence/Cargo.toml",
+                    "size": 223
+                  }
+                ],
+                "depth": 2,
+                "file_count": 2,
+                "is_dir": true,
+                "modified": 1787325804,
+                "path": "/home/sal/orbweaver/crates/orbweaver-evidence",
+                "size": 11458
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "depth": 4,
+                        "file_count": 1,
+                        "is_dir": false,
+                        "modified": 1787325845,
+                        "path": "/home/sal/orbweaver/crates/orbweaver-git/src/lib.rs",
+                        "size": 2468
+                      }
+                    ],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": true,
+                    "modified": 1787325845,
+                    "path": "/home/sal/orbweaver/crates/orbweaver-git/src",
+                    "size": 6564
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787325848,
+                    "path": "/home/sal/orbweaver/crates/orbweaver-git/Cargo.toml",
+                    "size": 195
+                  }
+                ],
+                "depth": 2,
+                "file_count": 2,
+                "is_dir": true,
+                "modified": 1787325848,
+                "path": "/home/sal/orbweaver/crates/orbweaver-git",
+                "size": 10855
+              }
+            ],
+            "depth": 1,
+            "file_count": 30,
+            "is_dir": true,
+            "modified": 1787331190,
+            "path": "/home/sal/orbweaver/crates",
+            "size": 273893
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787345641,
+            "path": "/home/sal/orbweaver/Cargo.lock",
+            "size": 35219
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787346469,
+                "path": "/home/sal/orbweaver/docs/ROADMAP.md",
+                "size": 11659
+              }
+            ],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": true,
+            "modified": 1787346469,
+            "path": "/home/sal/orbweaver/docs",
+            "size": 15755
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787346501,
+            "path": "/home/sal/orbweaver/README.md",
+            "size": 8476
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787354842,
+                "path": "/home/sal/orbweaver/.claude/RESUME.md",
+                "size": 694
+              }
+            ],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": true,
+            "modified": 1787354842,
+            "path": "/home/sal/orbweaver/.claude",
+            "size": 4790
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787343524,
+            "path": "/home/sal/orbweaver/Cargo.toml",
+            "size": 1344
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787836232,
+            "path": "/home/sal/orbweaver/traci.toml",
+            "size": 955
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787326814,
+            "path": "/home/sal/orbweaver/kaptaind.toml",
+            "size": 390
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787836232,
+            "path": "/home/sal/orbweaver/poka.toml",
+            "size": 126
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787327822,
+            "path": "/home/sal/orbweaver/.kaptainignore",
+            "size": 61
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787326836,
+            "path": "/home/sal/orbweaver/.gitignore",
+            "size": 20
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787327732,
+            "path": "/home/sal/orbweaver/VERSION",
+            "size": 5
+          }
+        ],
+        "depth": 0,
+        "file_count": 41,
+        "is_dir": true,
+        "modified": 1787836232,
+        "path": "/home/sal/orbweaver",
+        "size": 345130
+      }
+    },
+    {
+      "tool": "chakra",
+      "purpose": "data-flow / architecture map coverage",
+      "status": "ok",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": 0.525,
+        "confidence": 1.0,
+        "observations": 121
+      },
+      "binary": "/home/sal/.local/bin/chakra",
+      "score": 76.25,
+      "grade": "C",
+      "exit_code": 0,
+      "duration_ms": 48,
+      "summary": "47 nodes, 121 flows; coverage 52.5% (21/40 files), confidence 100.0%",
+      "findings": [
+        "121 flow(s) with provenance=observed"
+      ],
+      "note": null,
+      "raw": {
+        "boundaries": [],
+        "events": [],
+        "evidence": [
+          {
+            "detail": "chrono::",
+            "file": "crates/orbweaver-storage/src/lib.rs",
+            "id": "ev-0001",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "orbweaver_core::",
+            "file": "crates/orbweaver-storage/src/lib.rs",
+            "id": "ev-0002",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "orbweaver_evidence::",
+            "file": "crates/orbweaver-storage/src/lib.rs",
+            "id": "ev-0003",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "rusqlite::",
+            "file": "crates/orbweaver-storage/src/lib.rs",
+            "id": "ev-0004",
+            "kind": "rust_use",
+            "line": 10
+          },
+          {
+            "detail": "std::path::",
+            "file": "crates/orbweaver-storage/src/lib.rs",
+            "id": "ev-0005",
+            "kind": "rust_use",
+            "line": 11
+          },
+          {
+            "detail": "orbweaver_core::Repository",
+            "file": "crates/orbweaver-graph/src/lib.rs",
+            "id": "ev-0006",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "petgraph::graph::",
+            "file": "crates/orbweaver-graph/src/lib.rs",
+            "id": "ev-0007",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "serde::Serialize",
+            "file": "crates/orbweaver-graph/src/lib.rs",
+            "id": "ev-0008",
+            "kind": "rust_use",
+            "line": 10
+          },
+          {
+            "detail": "std::collections::HashMap",
+            "file": "crates/orbweaver-graph/src/lib.rs",
+            "id": "ev-0009",
+            "kind": "rust_use",
+            "line": 11
+          },
+          {
+            "detail": "super::",
+            "file": "crates/orbweaver-graph/src/lib.rs",
+            "id": "ev-0010",
+            "kind": "rust_use",
+            "line": 135
+          },
+          {
+            "detail": "orbweaver_core::DependencyRef",
+            "file": "crates/orbweaver-graph/src/lib.rs",
+            "id": "ev-0011",
+            "kind": "rust_use",
+            "line": 136
+          },
+          {
+            "detail": "std::path::PathBuf",
+            "file": "crates/orbweaver-graph/src/lib.rs",
+            "id": "ev-0012",
+            "kind": "rust_use",
+            "line": 137
+          },
+          {
+            "detail": "chrono::",
+            "file": "crates/orbweaver-core/src/lib.rs",
+            "id": "ev-0013",
+            "kind": "rust_use",
+            "line": 11
+          },
+          {
+            "detail": "serde::",
+            "file": "crates/orbweaver-core/src/lib.rs",
+            "id": "ev-0014",
+            "kind": "rust_use",
+            "line": 13
+          },
+          {
+            "detail": "std::path::PathBuf",
+            "file": "crates/orbweaver-core/src/lib.rs",
+            "id": "ev-0015",
+            "kind": "rust_use",
+            "line": 14
+          },
+          {
+            "detail": "orbweaver_core::",
+            "file": "crates/orbweaver-analysis/src/lib.rs",
+            "id": "ev-0016",
+            "kind": "rust_use",
+            "line": 14
+          },
+          {
+            "detail": "serde::Serialize",
+            "file": "crates/orbweaver-analysis/src/lib.rs",
+            "id": "ev-0017",
+            "kind": "rust_use",
+            "line": 16
+          },
+          {
+            "detail": "std::collections::",
+            "file": "crates/orbweaver-analysis/src/lib.rs",
+            "id": "ev-0018",
+            "kind": "rust_use",
+            "line": 17
+          },
+          {
+            "detail": "super::",
+            "file": "crates/orbweaver-analysis/src/lib.rs",
+            "id": "ev-0019",
+            "kind": "rust_use",
+            "line": 94
+          },
+          {
+            "detail": "orbweaver_core::DependencyRef",
+            "file": "crates/orbweaver-analysis/src/lib.rs",
+            "id": "ev-0020",
+            "kind": "rust_use",
+            "line": 95
+          },
+          {
+            "detail": "std::path::PathBuf",
+            "file": "crates/orbweaver-analysis/src/lib.rs",
+            "id": "ev-0021",
+            "kind": "rust_use",
+            "line": 96
+          },
+          {
+            "detail": "chrono::",
+            "file": "crates/orbweaver-git/src/lib.rs",
+            "id": "ev-0022",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "git2::Repository",
+            "file": "crates/orbweaver-git/src/lib.rs",
+            "id": "ev-0023",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "std::collections::HashSet",
+            "file": "crates/orbweaver-git/src/lib.rs",
+            "id": "ev-0024",
+            "kind": "rust_use",
+            "line": 8
+          },
+          {
+            "detail": "std::path::Path",
+            "file": "crates/orbweaver-git/src/lib.rs",
+            "id": "ev-0025",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "github::",
+            "file": "crates/orbweaver-connectors/src/lib.rs",
+            "id": "ev-0026",
+            "kind": "rust_use",
+            "line": 21
+          },
+          {
+            "detail": "install::",
+            "file": "crates/orbweaver-connectors/src/lib.rs",
+            "id": "ev-0027",
+            "kind": "rust_use",
+            "line": 23
+          },
+          {
+            "detail": "orb::",
+            "file": "crates/orbweaver-connectors/src/lib.rs",
+            "id": "ev-0028",
+            "kind": "rust_use",
+            "line": 24
+          },
+          {
+            "detail": "probe::",
+            "file": "crates/orbweaver-connectors/src/lib.rs",
+            "id": "ev-0029",
+            "kind": "rust_use",
+            "line": 25
+          },
+          {
+            "detail": "orbweaver_evidence::Availability",
+            "file": "crates/orbweaver-connectors/src/lib.rs",
+            "id": "ev-0030",
+            "kind": "rust_use",
+            "line": 26
+          },
+          {
+            "detail": "std::collections::HashMap",
+            "file": "crates/orbweaver-connectors/src/lib.rs",
+            "id": "ev-0031",
+            "kind": "rust_use",
+            "line": 28
+          },
+          {
+            "detail": "std::path::PathBuf",
+            "file": "crates/orbweaver-connectors/src/lib.rs",
+            "id": "ev-0032",
+            "kind": "rust_use",
+            "line": 29
+          },
+          {
+            "detail": "super::",
+            "file": "crates/orbweaver-connectors/src/lib.rs",
+            "id": "ev-0033",
+            "kind": "rust_use",
+            "line": 120
+          },
+          {
+            "detail": "github",
+            "file": "crates/orbweaver-connectors/src/lib.rs",
+            "id": "ev-0034",
+            "kind": "rust_mod",
+            "line": 15
+          },
+          {
+            "detail": "install",
+            "file": "crates/orbweaver-connectors/src/lib.rs",
+            "id": "ev-0035",
+            "kind": "rust_mod",
+            "line": 17
+          },
+          {
+            "detail": "orb",
+            "file": "crates/orbweaver-connectors/src/lib.rs",
+            "id": "ev-0036",
+            "kind": "rust_mod",
+            "line": 18
+          },
+          {
+            "detail": "probe",
+            "file": "crates/orbweaver-connectors/src/lib.rs",
+            "id": "ev-0037",
+            "kind": "rust_mod",
+            "line": 19
+          },
+          {
+            "detail": "process",
+            "file": "crates/orbweaver-connectors/src/lib.rs",
+            "id": "ev-0038",
+            "kind": "rust_mod",
+            "line": 20
+          },
+          {
+            "detail": "serde::Deserialize",
+            "file": "crates/orbweaver-connectors/src/orb.rs",
+            "id": "ev-0039",
+            "kind": "rust_use",
+            "line": 35
+          },
+          {
+            "detail": "std::fs",
+            "file": "crates/orbweaver-connectors/src/orb.rs",
+            "id": "ev-0040",
+            "kind": "rust_use",
+            "line": 37
+          },
+          {
+            "detail": "std::path::Path",
+            "file": "crates/orbweaver-connectors/src/orb.rs",
+            "id": "ev-0041",
+            "kind": "rust_use",
+            "line": 38
+          },
+          {
+            "detail": "super::",
+            "file": "crates/orbweaver-connectors/src/orb.rs",
+            "id": "ev-0042",
+            "kind": "rust_use",
+            "line": 110
+          },
+          {
+            "detail": "serde::Deserialize",
+            "file": "crates/orbweaver-connectors/src/github.rs",
+            "id": "ev-0043",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "std::path::Path",
+            "file": "crates/orbweaver-connectors/src/github.rs",
+            "id": "ev-0044",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "std::time::Duration",
+            "file": "crates/orbweaver-connectors/src/github.rs",
+            "id": "ev-0045",
+            "kind": "rust_use",
+            "line": 10
+          },
+          {
+            "detail": "crate::process::run_with_timeout",
+            "file": "crates/orbweaver-connectors/src/github.rs",
+            "id": "ev-0046",
+            "kind": "rust_use",
+            "line": 11
+          },
+          {
+            "detail": "std::path::",
+            "file": "crates/orbweaver-connectors/src/process.rs",
+            "id": "ev-0047",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "std::process::",
+            "file": "crates/orbweaver-connectors/src/process.rs",
+            "id": "ev-0048",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "std::time::",
+            "file": "crates/orbweaver-connectors/src/process.rs",
+            "id": "ev-0049",
+            "kind": "rust_use",
+            "line": 8
+          },
+          {
+            "detail": "crate::process::",
+            "file": "crates/orbweaver-connectors/src/probe.rs",
+            "id": "ev-0050",
+            "kind": "rust_use",
+            "line": 6
+          },
+          {
+            "detail": "orbweaver_evidence::Availability",
+            "file": "crates/orbweaver-connectors/src/probe.rs",
+            "id": "ev-0051",
+            "kind": "rust_use",
+            "line": 8
+          },
+          {
+            "detail": "serde::Serialize",
+            "file": "crates/orbweaver-connectors/src/probe.rs",
+            "id": "ev-0052",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "std::collections::HashSet",
+            "file": "crates/orbweaver-connectors/src/probe.rs",
+            "id": "ev-0053",
+            "kind": "rust_use",
+            "line": 10
+          },
+          {
+            "detail": "std::path::Path",
+            "file": "crates/orbweaver-connectors/src/probe.rs",
+            "id": "ev-0054",
+            "kind": "rust_use",
+            "line": 11
+          },
+          {
+            "detail": "super::",
+            "file": "crates/orbweaver-connectors/src/probe.rs",
+            "id": "ev-0055",
+            "kind": "rust_use",
+            "line": 250
+          },
+          {
+            "detail": "crate::",
+            "file": "crates/orbweaver-connectors/src/install.rs",
+            "id": "ev-0056",
+            "kind": "rust_use",
+            "line": 6
+          },
+          {
+            "detail": "serde::Serialize",
+            "file": "crates/orbweaver-connectors/src/install.rs",
+            "id": "ev-0057",
+            "kind": "rust_use",
+            "line": 8
+          },
+          {
+            "detail": "std::fs",
+            "file": "crates/orbweaver-connectors/src/install.rs",
+            "id": "ev-0058",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "std::path::",
+            "file": "crates/orbweaver-connectors/src/install.rs",
+            "id": "ev-0059",
+            "kind": "rust_use",
+            "line": 10
+          },
+          {
+            "detail": "std::time::Duration",
+            "file": "crates/orbweaver-connectors/src/install.rs",
+            "id": "ev-0060",
+            "kind": "rust_use",
+            "line": 11
+          },
+          {
+            "detail": "std::os::unix::fs::PermissionsExt",
+            "file": "crates/orbweaver-connectors/src/install.rs",
+            "id": "ev-0061",
+            "kind": "rust_use",
+            "line": 227
+          },
+          {
+            "detail": "super::",
+            "file": "crates/orbweaver-connectors/src/install.rs",
+            "id": "ev-0062",
+            "kind": "rust_use",
+            "line": 244
+          },
+          {
+            "detail": "console::",
+            "file": "crates/orbweaver-cli/src/style.rs",
+            "id": "ev-0063",
+            "kind": "rust_use",
+            "line": 10
+          },
+          {
+            "detail": "indicatif::",
+            "file": "crates/orbweaver-cli/src/style.rs",
+            "id": "ev-0064",
+            "kind": "rust_use",
+            "line": 12
+          },
+          {
+            "detail": "std::time::Duration",
+            "file": "crates/orbweaver-cli/src/style.rs",
+            "id": "ev-0065",
+            "kind": "rust_use",
+            "line": 13
+          },
+          {
+            "detail": "anyhow::",
+            "file": "crates/orbweaver-cli/src/main.rs",
+            "id": "ev-0066",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "clap::",
+            "file": "crates/orbweaver-cli/src/main.rs",
+            "id": "ev-0067",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "console::style",
+            "file": "crates/orbweaver-cli/src/main.rs",
+            "id": "ev-0068",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "orbweaver_core::CapabilityKind",
+            "file": "crates/orbweaver-cli/src/main.rs",
+            "id": "ev-0069",
+            "kind": "rust_use",
+            "line": 6
+          },
+          {
+            "detail": "orbweaver_graph::EcosystemGraph",
+            "file": "crates/orbweaver-cli/src/main.rs",
+            "id": "ev-0070",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "orbweaver_ingest::ScanConfig",
+            "file": "crates/orbweaver-cli/src/main.rs",
+            "id": "ev-0071",
+            "kind": "rust_use",
+            "line": 8
+          },
+          {
+            "detail": "std::path::",
+            "file": "crates/orbweaver-cli/src/main.rs",
+            "id": "ev-0072",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "style",
+            "file": "crates/orbweaver-cli/src/main.rs",
+            "id": "ev-0073",
+            "kind": "rust_mod",
+            "line": 1
+          },
+          {
+            "detail": "chrono::",
+            "file": "crates/orbweaver-evidence/src/lib.rs",
+            "id": "ev-0074",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "serde::",
+            "file": "crates/orbweaver-evidence/src/lib.rs",
+            "id": "ev-0075",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "uuid::Uuid",
+            "file": "crates/orbweaver-evidence/src/lib.rs",
+            "id": "ev-0076",
+            "kind": "rust_use",
+            "line": 10
+          },
+          {
+            "detail": "orbweaver_core::",
+            "file": "crates/orbweaver-ingest/src/manifests.rs",
+            "id": "ev-0077",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "std::fs",
+            "file": "crates/orbweaver-ingest/src/manifests.rs",
+            "id": "ev-0078",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "std::path::Path",
+            "file": "crates/orbweaver-ingest/src/manifests.rs",
+            "id": "ev-0079",
+            "kind": "rust_use",
+            "line": 8
+          },
+          {
+            "detail": "super::",
+            "file": "crates/orbweaver-ingest/src/manifests.rs",
+            "id": "ev-0080",
+            "kind": "rust_use",
+            "line": 309
+          },
+          {
+            "detail": "std::fs",
+            "file": "crates/orbweaver-ingest/src/manifests.rs",
+            "id": "ev-0081",
+            "kind": "rust_use",
+            "line": 310
+          },
+          {
+            "detail": "discover::discover_repositories",
+            "file": "crates/orbweaver-ingest/src/lib.rs",
+            "id": "ev-0082",
+            "kind": "rust_use",
+            "line": 13
+          },
+          {
+            "detail": "orbweaver_core::",
+            "file": "crates/orbweaver-ingest/src/lib.rs",
+            "id": "ev-0083",
+            "kind": "rust_use",
+            "line": 15
+          },
+          {
+            "detail": "orbweaver_evidence::",
+            "file": "crates/orbweaver-ingest/src/lib.rs",
+            "id": "ev-0084",
+            "kind": "rust_use",
+            "line": 17
+          },
+          {
+            "detail": "std::collections::HashMap",
+            "file": "crates/orbweaver-ingest/src/lib.rs",
+            "id": "ev-0085",
+            "kind": "rust_use",
+            "line": 18
+          },
+          {
+            "detail": "std::path::",
+            "file": "crates/orbweaver-ingest/src/lib.rs",
+            "id": "ev-0086",
+            "kind": "rust_use",
+            "line": 19
+          },
+          {
+            "detail": "super::",
+            "file": "crates/orbweaver-ingest/src/lib.rs",
+            "id": "ev-0087",
+            "kind": "rust_use",
+            "line": 287
+          },
+          {
+            "detail": "orbweaver_core::DependencyRef",
+            "file": "crates/orbweaver-ingest/src/lib.rs",
+            "id": "ev-0088",
+            "kind": "rust_use",
+            "line": 288
+          },
+          {
+            "detail": "capabilities",
+            "file": "crates/orbweaver-ingest/src/lib.rs",
+            "id": "ev-0089",
+            "kind": "rust_mod",
+            "line": 6
+          },
+          {
+            "detail": "discover",
+            "file": "crates/orbweaver-ingest/src/lib.rs",
+            "id": "ev-0090",
+            "kind": "rust_mod",
+            "line": 8
+          },
+          {
+            "detail": "interfaces",
+            "file": "crates/orbweaver-ingest/src/lib.rs",
+            "id": "ev-0091",
+            "kind": "rust_mod",
+            "line": 9
+          },
+          {
+            "detail": "manifests",
+            "file": "crates/orbweaver-ingest/src/lib.rs",
+            "id": "ev-0092",
+            "kind": "rust_mod",
+            "line": 10
+          },
+          {
+            "detail": "rust_scan",
+            "file": "crates/orbweaver-ingest/src/lib.rs",
+            "id": "ev-0093",
+            "kind": "rust_mod",
+            "line": 11
+          },
+          {
+            "detail": "schemas",
+            "file": "crates/orbweaver-ingest/src/lib.rs",
+            "id": "ev-0094",
+            "kind": "rust_mod",
+            "line": 12
+          },
+          {
+            "detail": "orbweaver_core::",
+            "file": "crates/orbweaver-ingest/src/capabilities.rs",
+            "id": "ev-0095",
+            "kind": "rust_use",
+            "line": 20
+          },
+          {
+            "detail": "orbweaver_evidence::",
+            "file": "crates/orbweaver-ingest/src/capabilities.rs",
+            "id": "ev-0096",
+            "kind": "rust_use",
+            "line": 22
+          },
+          {
+            "detail": "std::fs",
+            "file": "crates/orbweaver-ingest/src/capabilities.rs",
+            "id": "ev-0097",
+            "kind": "rust_use",
+            "line": 23
+          },
+          {
+            "detail": "std::path::Path",
+            "file": "crates/orbweaver-ingest/src/capabilities.rs",
+            "id": "ev-0098",
+            "kind": "rust_use",
+            "line": 24
+          },
+          {
+            "detail": "super::",
+            "file": "crates/orbweaver-ingest/src/capabilities.rs",
+            "id": "ev-0099",
+            "kind": "rust_use",
+            "line": 218
+          },
+          {
+            "detail": "std::fs",
+            "file": "crates/orbweaver-ingest/src/discover.rs",
+            "id": "ev-0100",
+            "kind": "rust_use",
+            "line": 11
+          },
+          {
+            "detail": "std::path::",
+            "file": "crates/orbweaver-ingest/src/discover.rs",
+            "id": "ev-0101",
+            "kind": "rust_use",
+            "line": 13
+          },
+          {
+            "detail": "super::",
+            "file": "crates/orbweaver-ingest/src/discover.rs",
+            "id": "ev-0102",
+            "kind": "rust_use",
+            "line": 78
+          },
+          {
+            "detail": "std::fs",
+            "file": "crates/orbweaver-ingest/src/discover.rs",
+            "id": "ev-0103",
+            "kind": "rust_use",
+            "line": 79
+          },
+          {
+            "detail": "crate::rust_scan",
+            "file": "crates/orbweaver-ingest/src/schemas.rs",
+            "id": "ev-0104",
+            "kind": "rust_use",
+            "line": 11
+          },
+          {
+            "detail": "orbweaver_core::",
+            "file": "crates/orbweaver-ingest/src/schemas.rs",
+            "id": "ev-0105",
+            "kind": "rust_use",
+            "line": 13
+          },
+          {
+            "detail": "orbweaver_evidence::",
+            "file": "crates/orbweaver-ingest/src/schemas.rs",
+            "id": "ev-0106",
+            "kind": "rust_use",
+            "line": 14
+          },
+          {
+            "detail": "std::collections::BTreeSet",
+            "file": "crates/orbweaver-ingest/src/schemas.rs",
+            "id": "ev-0107",
+            "kind": "rust_use",
+            "line": 15
+          },
+          {
+            "detail": "std::fs",
+            "file": "crates/orbweaver-ingest/src/schemas.rs",
+            "id": "ev-0108",
+            "kind": "rust_use",
+            "line": 16
+          },
+          {
+            "detail": "super::",
+            "file": "crates/orbweaver-ingest/src/schemas.rs",
+            "id": "ev-0109",
+            "kind": "rust_use",
+            "line": 130
+          },
+          {
+            "detail": "std::path::Path",
+            "file": "crates/orbweaver-ingest/src/schemas.rs",
+            "id": "ev-0110",
+            "kind": "rust_use",
+            "line": 131
+          },
+          {
+            "detail": "crate::rust_scan::",
+            "file": "crates/orbweaver-ingest/src/interfaces.rs",
+            "id": "ev-0111",
+            "kind": "rust_use",
+            "line": 14
+          },
+          {
+            "detail": "orbweaver_core::",
+            "file": "crates/orbweaver-ingest/src/interfaces.rs",
+            "id": "ev-0112",
+            "kind": "rust_use",
+            "line": 16
+          },
+          {
+            "detail": "orbweaver_evidence::",
+            "file": "crates/orbweaver-ingest/src/interfaces.rs",
+            "id": "ev-0113",
+            "kind": "rust_use",
+            "line": 17
+          },
+          {
+            "detail": "std::collections::BTreeSet",
+            "file": "crates/orbweaver-ingest/src/interfaces.rs",
+            "id": "ev-0114",
+            "kind": "rust_use",
+            "line": 18
+          },
+          {
+            "detail": "std::fs",
+            "file": "crates/orbweaver-ingest/src/interfaces.rs",
+            "id": "ev-0115",
+            "kind": "rust_use",
+            "line": 19
+          },
+          {
+            "detail": "super::",
+            "file": "crates/orbweaver-ingest/src/interfaces.rs",
+            "id": "ev-0116",
+            "kind": "rust_use",
+            "line": 99
+          },
+          {
+            "detail": "std::path::Path",
+            "file": "crates/orbweaver-ingest/src/interfaces.rs",
+            "id": "ev-0117",
+            "kind": "rust_use",
+            "line": 100
+          },
+          {
+            "detail": "clap::Subcommand",
+            "file": "crates/orbweaver-ingest/src/interfaces.rs",
+            "id": "ev-0118",
+            "kind": "rust_use",
+            "line": 141
+          },
+          {
+            "detail": "super::",
+            "file": "crates/orbweaver-ingest/src/interfaces.rs",
+            "id": "ev-0119",
+            "kind": "rust_use",
+            "line": 231
+          },
+          {
+            "detail": "std::fs",
+            "file": "crates/orbweaver-ingest/src/rust_scan.rs",
+            "id": "ev-0120",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "std::path::",
+            "file": "crates/orbweaver-ingest/src/rust_scan.rs",
+            "id": "ev-0121",
+            "kind": "rust_use",
+            "line": 11
+          }
+        ],
+        "flows": [
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0001"
+            ],
+            "id": "flow-0001",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-storage/src/lib.rs",
+            "target": "ext:rust:chrono"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0002"
+            ],
+            "id": "flow-0002",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-storage/src/lib.rs",
+            "target": "ext:rust:orbweaver_core"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0003"
+            ],
+            "id": "flow-0003",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-storage/src/lib.rs",
+            "target": "ext:rust:orbweaver_evidence"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0004"
+            ],
+            "id": "flow-0004",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-storage/src/lib.rs",
+            "target": "ext:rust:rusqlite"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0005"
+            ],
+            "id": "flow-0005",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-storage/src/lib.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0006"
+            ],
+            "id": "flow-0006",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-graph/src/lib.rs",
+            "target": "ext:rust:orbweaver_core"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0007"
+            ],
+            "id": "flow-0007",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-graph/src/lib.rs",
+            "target": "ext:rust:petgraph"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0008"
+            ],
+            "id": "flow-0008",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-graph/src/lib.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0009"
+            ],
+            "id": "flow-0009",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-graph/src/lib.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0010"
+            ],
+            "id": "flow-0010",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:crates/orbweaver-graph/src/lib.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0011"
+            ],
+            "id": "flow-0011",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-graph/src/lib.rs",
+            "target": "ext:rust:orbweaver_core"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0012"
+            ],
+            "id": "flow-0012",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-graph/src/lib.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0013"
+            ],
+            "id": "flow-0013",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-core/src/lib.rs",
+            "target": "ext:rust:chrono"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0014"
+            ],
+            "id": "flow-0014",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-core/src/lib.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0015"
+            ],
+            "id": "flow-0015",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-core/src/lib.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0016"
+            ],
+            "id": "flow-0016",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-analysis/src/lib.rs",
+            "target": "ext:rust:orbweaver_core"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0017"
+            ],
+            "id": "flow-0017",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-analysis/src/lib.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0018"
+            ],
+            "id": "flow-0018",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-analysis/src/lib.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0019"
+            ],
+            "id": "flow-0019",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:crates/orbweaver-analysis/src/lib.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0020"
+            ],
+            "id": "flow-0020",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-analysis/src/lib.rs",
+            "target": "ext:rust:orbweaver_core"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0021"
+            ],
+            "id": "flow-0021",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-analysis/src/lib.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0022"
+            ],
+            "id": "flow-0022",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-git/src/lib.rs",
+            "target": "ext:rust:chrono"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0023"
+            ],
+            "id": "flow-0023",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-git/src/lib.rs",
+            "target": "ext:rust:git2"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0024"
+            ],
+            "id": "flow-0024",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-git/src/lib.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0025"
+            ],
+            "id": "flow-0025",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-git/src/lib.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0026"
+            ],
+            "id": "flow-0026",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-connectors/src/lib.rs",
+            "target": "ext:rust:github"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0027"
+            ],
+            "id": "flow-0027",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-connectors/src/lib.rs",
+            "target": "ext:rust:install"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0028"
+            ],
+            "id": "flow-0028",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-connectors/src/lib.rs",
+            "target": "ext:rust:orb"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0029"
+            ],
+            "id": "flow-0029",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-connectors/src/lib.rs",
+            "target": "ext:rust:probe"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0030"
+            ],
+            "id": "flow-0030",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-connectors/src/lib.rs",
+            "target": "ext:rust:orbweaver_evidence"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0031"
+            ],
+            "id": "flow-0031",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-connectors/src/lib.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0032"
+            ],
+            "id": "flow-0032",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-connectors/src/lib.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0033"
+            ],
+            "id": "flow-0033",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:crates/orbweaver-connectors/src/lib.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0034"
+            ],
+            "id": "flow-0034",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:crates/orbweaver-connectors/src/lib.rs",
+            "target": "file:crates/orbweaver-connectors/src/github.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0035"
+            ],
+            "id": "flow-0035",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:crates/orbweaver-connectors/src/lib.rs",
+            "target": "file:crates/orbweaver-connectors/src/install.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0036"
+            ],
+            "id": "flow-0036",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:crates/orbweaver-connectors/src/lib.rs",
+            "target": "file:crates/orbweaver-connectors/src/orb.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0037"
+            ],
+            "id": "flow-0037",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:crates/orbweaver-connectors/src/lib.rs",
+            "target": "file:crates/orbweaver-connectors/src/probe.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0038"
+            ],
+            "id": "flow-0038",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:crates/orbweaver-connectors/src/lib.rs",
+            "target": "file:crates/orbweaver-connectors/src/process.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0039"
+            ],
+            "id": "flow-0039",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-connectors/src/orb.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0040"
+            ],
+            "id": "flow-0040",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-connectors/src/orb.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0041"
+            ],
+            "id": "flow-0041",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-connectors/src/orb.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0042"
+            ],
+            "id": "flow-0042",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:crates/orbweaver-connectors/src/orb.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0043"
+            ],
+            "id": "flow-0043",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-connectors/src/github.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0044"
+            ],
+            "id": "flow-0044",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-connectors/src/github.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0045"
+            ],
+            "id": "flow-0045",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-connectors/src/github.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0046"
+            ],
+            "id": "flow-0046",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:crates/orbweaver-connectors/src/github.rs",
+            "target": "mod:rust:crate::process::run_with_timeout"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0047"
+            ],
+            "id": "flow-0047",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-connectors/src/process.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0048"
+            ],
+            "id": "flow-0048",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-connectors/src/process.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0049"
+            ],
+            "id": "flow-0049",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-connectors/src/process.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0050"
+            ],
+            "id": "flow-0050",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:crates/orbweaver-connectors/src/probe.rs",
+            "target": "mod:rust:crate::process::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0051"
+            ],
+            "id": "flow-0051",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-connectors/src/probe.rs",
+            "target": "ext:rust:orbweaver_evidence"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0052"
+            ],
+            "id": "flow-0052",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-connectors/src/probe.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0053"
+            ],
+            "id": "flow-0053",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-connectors/src/probe.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0054"
+            ],
+            "id": "flow-0054",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-connectors/src/probe.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0055"
+            ],
+            "id": "flow-0055",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:crates/orbweaver-connectors/src/probe.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0056"
+            ],
+            "id": "flow-0056",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:crates/orbweaver-connectors/src/install.rs",
+            "target": "mod:rust:crate::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0057"
+            ],
+            "id": "flow-0057",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-connectors/src/install.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0058"
+            ],
+            "id": "flow-0058",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-connectors/src/install.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0059"
+            ],
+            "id": "flow-0059",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-connectors/src/install.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0060"
+            ],
+            "id": "flow-0060",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-connectors/src/install.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0061"
+            ],
+            "id": "flow-0061",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-connectors/src/install.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0062"
+            ],
+            "id": "flow-0062",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:crates/orbweaver-connectors/src/install.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0063"
+            ],
+            "id": "flow-0063",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-cli/src/style.rs",
+            "target": "ext:rust:console"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0064"
+            ],
+            "id": "flow-0064",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-cli/src/style.rs",
+            "target": "ext:rust:indicatif"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0065"
+            ],
+            "id": "flow-0065",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-cli/src/style.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0066"
+            ],
+            "id": "flow-0066",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-cli/src/main.rs",
+            "target": "ext:rust:anyhow"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0067"
+            ],
+            "id": "flow-0067",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-cli/src/main.rs",
+            "target": "ext:rust:clap"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0068"
+            ],
+            "id": "flow-0068",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-cli/src/main.rs",
+            "target": "ext:rust:console"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0069"
+            ],
+            "id": "flow-0069",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-cli/src/main.rs",
+            "target": "ext:rust:orbweaver_core"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0070"
+            ],
+            "id": "flow-0070",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-cli/src/main.rs",
+            "target": "ext:rust:orbweaver_graph"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0071"
+            ],
+            "id": "flow-0071",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-cli/src/main.rs",
+            "target": "ext:rust:orbweaver_ingest"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0072"
+            ],
+            "id": "flow-0072",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-cli/src/main.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0073"
+            ],
+            "id": "flow-0073",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:crates/orbweaver-cli/src/main.rs",
+            "target": "file:crates/orbweaver-cli/src/style.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0074"
+            ],
+            "id": "flow-0074",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-evidence/src/lib.rs",
+            "target": "ext:rust:chrono"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0075"
+            ],
+            "id": "flow-0075",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-evidence/src/lib.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0076"
+            ],
+            "id": "flow-0076",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-evidence/src/lib.rs",
+            "target": "ext:rust:uuid"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0077"
+            ],
+            "id": "flow-0077",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/manifests.rs",
+            "target": "ext:rust:orbweaver_core"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0078"
+            ],
+            "id": "flow-0078",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/manifests.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0079"
+            ],
+            "id": "flow-0079",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/manifests.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0080"
+            ],
+            "id": "flow-0080",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:crates/orbweaver-ingest/src/manifests.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0081"
+            ],
+            "id": "flow-0081",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/manifests.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0082"
+            ],
+            "id": "flow-0082",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/lib.rs",
+            "target": "ext:rust:discover"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0083"
+            ],
+            "id": "flow-0083",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/lib.rs",
+            "target": "ext:rust:orbweaver_core"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0084"
+            ],
+            "id": "flow-0084",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/lib.rs",
+            "target": "ext:rust:orbweaver_evidence"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0085"
+            ],
+            "id": "flow-0085",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/lib.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0086"
+            ],
+            "id": "flow-0086",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/lib.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0087"
+            ],
+            "id": "flow-0087",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:crates/orbweaver-ingest/src/lib.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0088"
+            ],
+            "id": "flow-0088",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/lib.rs",
+            "target": "ext:rust:orbweaver_core"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0089"
+            ],
+            "id": "flow-0089",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:crates/orbweaver-ingest/src/lib.rs",
+            "target": "file:crates/orbweaver-ingest/src/capabilities.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0090"
+            ],
+            "id": "flow-0090",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:crates/orbweaver-ingest/src/lib.rs",
+            "target": "file:crates/orbweaver-ingest/src/discover.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0091"
+            ],
+            "id": "flow-0091",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:crates/orbweaver-ingest/src/lib.rs",
+            "target": "file:crates/orbweaver-ingest/src/interfaces.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0092"
+            ],
+            "id": "flow-0092",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:crates/orbweaver-ingest/src/lib.rs",
+            "target": "file:crates/orbweaver-ingest/src/manifests.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0093"
+            ],
+            "id": "flow-0093",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:crates/orbweaver-ingest/src/lib.rs",
+            "target": "file:crates/orbweaver-ingest/src/rust_scan.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0094"
+            ],
+            "id": "flow-0094",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:crates/orbweaver-ingest/src/lib.rs",
+            "target": "file:crates/orbweaver-ingest/src/schemas.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0095"
+            ],
+            "id": "flow-0095",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/capabilities.rs",
+            "target": "ext:rust:orbweaver_core"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0096"
+            ],
+            "id": "flow-0096",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/capabilities.rs",
+            "target": "ext:rust:orbweaver_evidence"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0097"
+            ],
+            "id": "flow-0097",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/capabilities.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0098"
+            ],
+            "id": "flow-0098",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/capabilities.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0099"
+            ],
+            "id": "flow-0099",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:crates/orbweaver-ingest/src/capabilities.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0100"
+            ],
+            "id": "flow-0100",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/discover.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0101"
+            ],
+            "id": "flow-0101",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/discover.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0102"
+            ],
+            "id": "flow-0102",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:crates/orbweaver-ingest/src/discover.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0103"
+            ],
+            "id": "flow-0103",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/discover.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0104"
+            ],
+            "id": "flow-0104",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:crates/orbweaver-ingest/src/schemas.rs",
+            "target": "mod:rust:crate::rust_scan"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0105"
+            ],
+            "id": "flow-0105",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/schemas.rs",
+            "target": "ext:rust:orbweaver_core"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0106"
+            ],
+            "id": "flow-0106",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/schemas.rs",
+            "target": "ext:rust:orbweaver_evidence"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0107"
+            ],
+            "id": "flow-0107",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/schemas.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0108"
+            ],
+            "id": "flow-0108",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/schemas.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0109"
+            ],
+            "id": "flow-0109",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:crates/orbweaver-ingest/src/schemas.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0110"
+            ],
+            "id": "flow-0110",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/schemas.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0111"
+            ],
+            "id": "flow-0111",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:crates/orbweaver-ingest/src/interfaces.rs",
+            "target": "mod:rust:crate::rust_scan::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0112"
+            ],
+            "id": "flow-0112",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/interfaces.rs",
+            "target": "ext:rust:orbweaver_core"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0113"
+            ],
+            "id": "flow-0113",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/interfaces.rs",
+            "target": "ext:rust:orbweaver_evidence"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0114"
+            ],
+            "id": "flow-0114",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/interfaces.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0115"
+            ],
+            "id": "flow-0115",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/interfaces.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0116"
+            ],
+            "id": "flow-0116",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:crates/orbweaver-ingest/src/interfaces.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0117"
+            ],
+            "id": "flow-0117",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/interfaces.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0118"
+            ],
+            "id": "flow-0118",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/interfaces.rs",
+            "target": "ext:rust:clap"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0119"
+            ],
+            "id": "flow-0119",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:crates/orbweaver-ingest/src/interfaces.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0120"
+            ],
+            "id": "flow-0120",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/rust_scan.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0121"
+            ],
+            "id": "flow-0121",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:crates/orbweaver-ingest/src/rust_scan.rs",
+            "target": "ext:rust:std"
+          }
+        ],
+        "inferences": [],
+        "metadata": {
+          "analyzed_file_count": 21,
+          "analyzers": [
+            "rust",
+            "javascript",
+            "typescript",
+            "python",
+            "go"
+          ],
+          "chakra_version": "0.3.33",
+          "duration_ms": 40,
+          "file_count": 40,
+          "languages": {
+            "rust": 21
+          }
+        },
+        "nodes": [
+          {
+            "id": "ext:rust:anyhow",
+            "kind": "external",
+            "language": "rust",
+            "name": "anyhow"
+          },
+          {
+            "id": "ext:rust:chrono",
+            "kind": "external",
+            "language": "rust",
+            "name": "chrono"
+          },
+          {
+            "id": "ext:rust:clap",
+            "kind": "external",
+            "language": "rust",
+            "name": "clap"
+          },
+          {
+            "id": "ext:rust:console",
+            "kind": "external",
+            "language": "rust",
+            "name": "console"
+          },
+          {
+            "id": "ext:rust:discover",
+            "kind": "external",
+            "language": "rust",
+            "name": "discover"
+          },
+          {
+            "id": "ext:rust:git2",
+            "kind": "external",
+            "language": "rust",
+            "name": "git2"
+          },
+          {
+            "id": "ext:rust:github",
+            "kind": "external",
+            "language": "rust",
+            "name": "github"
+          },
+          {
+            "id": "ext:rust:indicatif",
+            "kind": "external",
+            "language": "rust",
+            "name": "indicatif"
+          },
+          {
+            "id": "ext:rust:install",
+            "kind": "external",
+            "language": "rust",
+            "name": "install"
+          },
+          {
+            "id": "ext:rust:orb",
+            "kind": "external",
+            "language": "rust",
+            "name": "orb"
+          },
+          {
+            "id": "ext:rust:orbweaver_core",
+            "kind": "external",
+            "language": "rust",
+            "name": "orbweaver_core"
+          },
+          {
+            "id": "ext:rust:orbweaver_evidence",
+            "kind": "external",
+            "language": "rust",
+            "name": "orbweaver_evidence"
+          },
+          {
+            "id": "ext:rust:orbweaver_graph",
+            "kind": "external",
+            "language": "rust",
+            "name": "orbweaver_graph"
+          },
+          {
+            "id": "ext:rust:orbweaver_ingest",
+            "kind": "external",
+            "language": "rust",
+            "name": "orbweaver_ingest"
+          },
+          {
+            "id": "ext:rust:petgraph",
+            "kind": "external",
+            "language": "rust",
+            "name": "petgraph"
+          },
+          {
+            "id": "ext:rust:probe",
+            "kind": "external",
+            "language": "rust",
+            "name": "probe"
+          },
+          {
+            "id": "ext:rust:rusqlite",
+            "kind": "external",
+            "language": "rust",
+            "name": "rusqlite"
+          },
+          {
+            "id": "ext:rust:serde",
+            "kind": "external",
+            "language": "rust",
+            "name": "serde"
+          },
+          {
+            "id": "ext:rust:std",
+            "kind": "external",
+            "language": "rust",
+            "name": "std"
+          },
+          {
+            "id": "ext:rust:uuid",
+            "kind": "external",
+            "language": "rust",
+            "name": "uuid"
+          },
+          {
+            "id": "file:crates/orbweaver-analysis/src/lib.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "crates/orbweaver-analysis/src/lib.rs"
+          },
+          {
+            "id": "file:crates/orbweaver-cli/src/main.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "crates/orbweaver-cli/src/main.rs"
+          },
+          {
+            "id": "file:crates/orbweaver-cli/src/style.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "crates/orbweaver-cli/src/style.rs"
+          },
+          {
+            "id": "file:crates/orbweaver-connectors/src/github.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "crates/orbweaver-connectors/src/github.rs"
+          },
+          {
+            "id": "file:crates/orbweaver-connectors/src/install.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "crates/orbweaver-connectors/src/install.rs"
+          },
+          {
+            "id": "file:crates/orbweaver-connectors/src/lib.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "crates/orbweaver-connectors/src/lib.rs"
+          },
+          {
+            "id": "file:crates/orbweaver-connectors/src/orb.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "crates/orbweaver-connectors/src/orb.rs"
+          },
+          {
+            "id": "file:crates/orbweaver-connectors/src/probe.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "crates/orbweaver-connectors/src/probe.rs"
+          },
+          {
+            "id": "file:crates/orbweaver-connectors/src/process.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "crates/orbweaver-connectors/src/process.rs"
+          },
+          {
+            "id": "file:crates/orbweaver-core/src/lib.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "crates/orbweaver-core/src/lib.rs"
+          },
+          {
+            "id": "file:crates/orbweaver-evidence/src/lib.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "crates/orbweaver-evidence/src/lib.rs"
+          },
+          {
+            "id": "file:crates/orbweaver-git/src/lib.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "crates/orbweaver-git/src/lib.rs"
+          },
+          {
+            "id": "file:crates/orbweaver-graph/src/lib.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "crates/orbweaver-graph/src/lib.rs"
+          },
+          {
+            "id": "file:crates/orbweaver-ingest/src/capabilities.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "crates/orbweaver-ingest/src/capabilities.rs"
+          },
+          {
+            "id": "file:crates/orbweaver-ingest/src/discover.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "crates/orbweaver-ingest/src/discover.rs"
+          },
+          {
+            "id": "file:crates/orbweaver-ingest/src/interfaces.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "crates/orbweaver-ingest/src/interfaces.rs"
+          },
+          {
+            "id": "file:crates/orbweaver-ingest/src/lib.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "crates/orbweaver-ingest/src/lib.rs"
+          },
+          {
+            "id": "file:crates/orbweaver-ingest/src/manifests.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "crates/orbweaver-ingest/src/manifests.rs"
+          },
+          {
+            "id": "file:crates/orbweaver-ingest/src/rust_scan.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "crates/orbweaver-ingest/src/rust_scan.rs"
+          },
+          {
+            "id": "file:crates/orbweaver-ingest/src/schemas.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "crates/orbweaver-ingest/src/schemas.rs"
+          },
+          {
+            "id": "file:crates/orbweaver-storage/src/lib.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "crates/orbweaver-storage/src/lib.rs"
+          },
+          {
+            "id": "mod:rust:crate::",
+            "kind": "module",
+            "language": "rust",
+            "name": "crate::"
+          },
+          {
+            "id": "mod:rust:crate::process::",
+            "kind": "module",
+            "language": "rust",
+            "name": "crate::process::"
+          },
+          {
+            "id": "mod:rust:crate::process::run_with_timeout",
+            "kind": "module",
+            "language": "rust",
+            "name": "crate::process::run_with_timeout"
+          },
+          {
+            "id": "mod:rust:crate::rust_scan",
+            "kind": "module",
+            "language": "rust",
+            "name": "crate::rust_scan"
+          },
+          {
+            "id": "mod:rust:crate::rust_scan::",
+            "kind": "module",
+            "language": "rust",
+            "name": "crate::rust_scan::"
+          },
+          {
+            "id": "mod:rust:super::",
+            "kind": "module",
+            "language": "rust",
+            "name": "super::"
+          }
+        ],
+        "schema": "chakra.flow/v1",
+        "subject": {
+          "generated_at": "2026-08-27T13:10:32.802777544Z",
+          "path": "/home/sal/orbweaver"
+        }
+      }
+    },
+    {
+      "tool": "ferret",
+      "purpose": "repository-specific review findings (hunt)",
+      "status": "error",
+      "availability": "installed",
+      "execution": "failed",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": 2,
+      "duration_ms": 15,
+      "summary": "error",
+      "findings": [],
+      "note": "produced no stdout; stderr: error: unexpected argument '/home/sal/orbweaver' found\n\nUsage: ferret [OPTIONS] [TARGET] [COMMAND]\n\nFor more information, try '--help'.\n",
+      "raw": null
+    },
+    {
+      "tool": "fract",
+      "purpose": "module entropy, cohesion, duplication",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/home/sal/.local/bin/fract",
+      "score": 86.66666666666666,
+      "grade": "B",
+      "exit_code": 0,
+      "duration_ms": 74,
+      "summary": "21 modules indexed: 0 excellent, 14 healthy, 7 warning, 0 critical",
+      "findings": [
+        "crates/orbweaver-ingest/src/rust_scan.rs: entropy 0.76 — Within entropy budget (0.76)",
+        "crates/orbweaver-cli/src/main.rs: entropy 0.71 — Within entropy budget (0.71)",
+        "crates/orbweaver-ingest/src/manifests.rs: entropy 0.70 — Within entropy budget (0.70)",
+        "crates/orbweaver-ingest/src/lib.rs: entropy 0.69 — Within entropy budget (0.69)",
+        "crates/orbweaver-storage/src/lib.rs: entropy 0.69 — Within entropy budget (0.69)"
+      ],
+      "note": null,
+      "raw": {
+        "findings": [
+          {
+            "confidence": null,
+            "entropy": 0.7550672958465858,
+            "evidence": {
+              "cyclomatic": "109",
+              "duplicates": "52",
+              "fan_in": "0",
+              "fan_out": "2",
+              "functions": "8",
+              "health": "Warning",
+              "lines": "509",
+              "public_api": "10"
+            },
+            "id": "crates/orbweaver-ingest/src/rust_scan.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.76)",
+            "module": "crates/orbweaver-ingest/src/rust_scan.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.76 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.7147065942321716,
+            "evidence": {
+              "cyclomatic": "48",
+              "duplicates": "50",
+              "fan_in": "0",
+              "fan_out": "7",
+              "functions": "15",
+              "health": "Warning",
+              "lines": "636",
+              "public_api": "0"
+            },
+            "id": "crates/orbweaver-cli/src/main.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.71)",
+            "module": "crates/orbweaver-cli/src/main.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.71 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6996836692377533,
+            "evidence": {
+              "cyclomatic": "36",
+              "duplicates": "68",
+              "fan_in": "0",
+              "fan_out": "5",
+              "functions": "12",
+              "health": "Warning",
+              "lines": "483",
+              "public_api": "9"
+            },
+            "id": "crates/orbweaver-ingest/src/manifests.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.70)",
+            "module": "crates/orbweaver-ingest/src/manifests.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.70 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6936096606237107,
+            "evidence": {
+              "cyclomatic": "27",
+              "duplicates": "22",
+              "fan_in": "0",
+              "fan_out": "6",
+              "functions": "7",
+              "health": "Warning",
+              "lines": "373",
+              "public_api": "11"
+            },
+            "id": "crates/orbweaver-ingest/src/lib.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.69)",
+            "module": "crates/orbweaver-ingest/src/lib.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.69 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.69337769539147,
+            "evidence": {
+              "cyclomatic": "20",
+              "duplicates": "91",
+              "fan_in": "0",
+              "fan_out": "5",
+              "functions": "15",
+              "health": "Warning",
+              "lines": "598",
+              "public_api": "16"
+            },
+            "id": "crates/orbweaver-storage/src/lib.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.69)",
+            "module": "crates/orbweaver-storage/src/lib.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.69 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.667144371470074,
+            "evidence": {
+              "cyclomatic": "35",
+              "duplicates": "15",
+              "fan_in": "0",
+              "fan_out": "6",
+              "functions": "10",
+              "health": "Warning",
+              "lines": "331",
+              "public_api": "16"
+            },
+            "id": "crates/orbweaver-connectors/src/probe.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.67)",
+            "module": "crates/orbweaver-connectors/src/probe.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.67 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.66049114882322,
+            "evidence": {
+              "cyclomatic": "0",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "3",
+              "functions": "1",
+              "health": "Warning",
+              "lines": "90",
+              "public_api": "15"
+            },
+            "id": "crates/orbweaver-evidence/src/lib.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.66)",
+            "module": "crates/orbweaver-evidence/src/lib.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.66 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6152967665913043,
+            "evidence": {
+              "cyclomatic": "9",
+              "duplicates": "13",
+              "fan_in": "0",
+              "fan_out": "7",
+              "functions": "10",
+              "health": "Healthy",
+              "lines": "214",
+              "public_api": "20"
+            },
+            "id": "crates/orbweaver-graph/src/lib.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.62)",
+            "module": "crates/orbweaver-graph/src/lib.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.62 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6112104728075075,
+            "evidence": {
+              "cyclomatic": "21",
+              "duplicates": "12",
+              "fan_in": "0",
+              "fan_out": "7",
+              "functions": "9",
+              "health": "Healthy",
+              "lines": "248",
+              "public_api": "9"
+            },
+            "id": "crates/orbweaver-ingest/src/schemas.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.61)",
+            "module": "crates/orbweaver-ingest/src/schemas.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.61 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6069317522598106,
+            "evidence": {
+              "cyclomatic": "25",
+              "duplicates": "29",
+              "fan_in": "0",
+              "fan_out": "5",
+              "functions": "13",
+              "health": "Healthy",
+              "lines": "319",
+              "public_api": "1"
+            },
+            "id": "crates/orbweaver-ingest/src/capabilities.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.61)",
+            "module": "crates/orbweaver-ingest/src/capabilities.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.61 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.605961831251873,
+            "evidence": {
+              "cyclomatic": "11",
+              "duplicates": "11",
+              "fan_in": "0",
+              "fan_out": "6",
+              "functions": "5",
+              "health": "Healthy",
+              "lines": "200",
+              "public_api": "6"
+            },
+            "id": "crates/orbweaver-analysis/src/lib.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.61)",
+            "module": "crates/orbweaver-analysis/src/lib.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.61 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6026001262863564,
+            "evidence": {
+              "cyclomatic": "9",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "4",
+              "functions": "2",
+              "health": "Healthy",
+              "lines": "78",
+              "public_api": "7"
+            },
+            "id": "crates/orbweaver-git/src/lib.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.60)",
+            "module": "crates/orbweaver-git/src/lib.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.60 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5990558275379786,
+            "evidence": {
+              "cyclomatic": "29",
+              "duplicates": "15",
+              "fan_in": "0",
+              "fan_out": "7",
+              "functions": "17",
+              "health": "Healthy",
+              "lines": "318",
+              "public_api": "6"
+            },
+            "id": "crates/orbweaver-connectors/src/install.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.60)",
+            "module": "crates/orbweaver-connectors/src/install.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.60 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.598237463060588,
+            "evidence": {
+              "cyclomatic": "7",
+              "duplicates": "6",
+              "fan_in": "0",
+              "fan_out": "4",
+              "functions": "4",
+              "health": "Healthy",
+              "lines": "143",
+              "public_api": "9"
+            },
+            "id": "crates/orbweaver-connectors/src/github.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.60)",
+            "module": "crates/orbweaver-connectors/src/github.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.60 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5793491350905979,
+            "evidence": {
+              "cyclomatic": "17",
+              "duplicates": "16",
+              "fan_in": "0",
+              "fan_out": "9",
+              "functions": "11",
+              "health": "Healthy",
+              "lines": "255",
+              "public_api": "1"
+            },
+            "id": "crates/orbweaver-ingest/src/interfaces.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.58)",
+            "module": "crates/orbweaver-ingest/src/interfaces.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.58 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5709269208652852,
+            "evidence": {
+              "cyclomatic": "8",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "4",
+              "functions": "4",
+              "health": "Healthy",
+              "lines": "133",
+              "public_api": "8"
+            },
+            "id": "crates/orbweaver-connectors/src/lib.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.57)",
+            "module": "crates/orbweaver-connectors/src/lib.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.57 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5675883045259299,
+            "evidence": {
+              "cyclomatic": "8",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "3",
+              "functions": "3",
+              "health": "Healthy",
+              "lines": "85",
+              "public_api": "7"
+            },
+            "id": "crates/orbweaver-connectors/src/process.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.57)",
+            "module": "crates/orbweaver-connectors/src/process.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.57 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5635898453296105,
+            "evidence": {
+              "cyclomatic": "2",
+              "duplicates": "9",
+              "fan_in": "0",
+              "fan_out": "4",
+              "functions": "8",
+              "health": "Healthy",
+              "lines": "161",
+              "public_api": "12"
+            },
+            "id": "crates/orbweaver-connectors/src/orb.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.56)",
+            "module": "crates/orbweaver-connectors/src/orb.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.56 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5469248775292318,
+            "evidence": {
+              "cyclomatic": "9",
+              "duplicates": "4",
+              "fan_in": "0",
+              "fan_out": "4",
+              "functions": "4",
+              "health": "Healthy",
+              "lines": "138",
+              "public_api": "1"
+            },
+            "id": "crates/orbweaver-ingest/src/discover.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.55)",
+            "module": "crates/orbweaver-ingest/src/discover.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.55 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.53823281228495,
+            "evidence": {
+              "cyclomatic": "0",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "3",
+              "functions": "3",
+              "health": "Healthy",
+              "lines": "56",
+              "public_api": "17"
+            },
+            "id": "crates/orbweaver-cli/src/style.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.54)",
+            "module": "crates/orbweaver-cli/src/style.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.54 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5178546746137238,
+            "evidence": {
+              "cyclomatic": "0",
+              "duplicates": "15",
+              "fan_in": "0",
+              "fan_out": "3",
+              "functions": "0",
+              "health": "Healthy",
+              "lines": "150",
+              "public_api": "48"
+            },
+            "id": "crates/orbweaver-core/src/lib.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.52)",
+            "module": "crates/orbweaver-core/src/lib.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.52 below threshold 0.82"
+          }
+        ],
+        "root": "/home/sal/orbweaver",
+        "schema": "fract.report/v1",
+        "summary": {
+          "critical": 0,
+          "excellent": 0,
+          "healthy": 14,
+          "score": 86.66666666666666,
+          "total": 21,
+          "warning": 7
+        }
+      }
+    },
+    {
+      "tool": "isopod",
+      "purpose": "ISO27001/27002 compliance posture",
+      "status": "no_data",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 0
+      },
+      "binary": "/home/sal/.local/bin/isopod",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 218,
+      "summary": "0/0 controls assessed (0.0% coverage): 0 pass, 0 warn, 0 fail, 0 unknown",
+      "findings": [],
+      "note": "coverage is 0.0%; compliance is ungraded below the 80% evidence threshold, and UNKNOWN controls are not treated as failures",
+      "raw": []
+    },
+    {
+      "tool": "jeenome",
+      "purpose": "behavioural trace analysis (opt-in)",
+      "status": "skipped",
+      "availability": "not_checked",
+      "execution": "skipped",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": null,
+      "duration_ms": null,
+      "summary": "skipped",
+      "findings": [],
+      "note": "jeenome is opt-in (needs an strace trace, not just a project path); pass --jeenome to include it",
+      "raw": null
+    },
+    {
+      "tool": "lwoodz",
+      "purpose": "license / SPDX compliance",
+      "status": "fail",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/home/sal/lwoodz/target/debug/lwoodz",
+      "score": 51.737588652482266,
+      "grade": "F",
+      "exit_code": 0,
+      "duration_ms": 3755,
+      "summary": "license=unknown, spdx_valid=true, header coverage 0/21, 0 incompatible / 23 warning issues among 141 deps",
+      "findings": [
+        "fallible-iterator [warning]: Dependency 'fallible-iterator' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+        "fallible-streaming-iterator [warning]: Dependency 'fallible-streaming-iterator' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+        "fixedbitset [warning]: Dependency 'fixedbitset' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+        "icu_collections [warning]: Dependency 'icu_collections' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+        "icu_locale_core [warning]: Dependency 'icu_locale_core' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements."
+      ],
+      "note": "advisory warning deductions are proportional to dependency count; missing licenses and incompatible dependencies remain hard findings; lwoodz.toml was missing; `poka apply` failed (poka apply exited Some(101): thread 'main' (215785) panicked at crates/poka-core/src/index.rs:99:33: external generator 'lwoodz' failed: external generator 'lwoodz' exited with exit status: 2: error: unexpected argument '--init' found Usage: lwoodz [OPTIONS] [COMMAND] ); assessment still ran",
+      "raw": {
+        "compatibility": {
+          "incompatible": 0,
+          "issues": [
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "fallible-iterator",
+              "reason": "Dependency 'fallible-iterator' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "fallible-streaming-iterator",
+              "reason": "Dependency 'fallible-streaming-iterator' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "fixedbitset",
+              "reason": "Dependency 'fixedbitset' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "icu_collections",
+              "reason": "Dependency 'icu_collections' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "icu_locale_core",
+              "reason": "Dependency 'icu_locale_core' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "icu_normalizer",
+              "reason": "Dependency 'icu_normalizer' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "icu_normalizer_data",
+              "reason": "Dependency 'icu_normalizer_data' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "icu_properties",
+              "reason": "Dependency 'icu_properties' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "icu_properties_data",
+              "reason": "Dependency 'icu_properties_data' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "icu_provider",
+              "reason": "Dependency 'icu_provider' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "litemap",
+              "reason": "Dependency 'litemap' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "potential_utf",
+              "reason": "Dependency 'potential_utf' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "tinystr",
+              "reason": "Dependency 'tinystr' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "vcpkg",
+              "reason": "Dependency 'vcpkg' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "version_check",
+              "reason": "Dependency 'version_check' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "writeable",
+              "reason": "Dependency 'writeable' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "yoke",
+              "reason": "Dependency 'yoke' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "yoke-derive",
+              "reason": "Dependency 'yoke-derive' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "zerofrom",
+              "reason": "Dependency 'zerofrom' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "zerofrom-derive",
+              "reason": "Dependency 'zerofrom-derive' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "zerotrie",
+              "reason": "Dependency 'zerotrie' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "zerovec",
+              "reason": "Dependency 'zerovec' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "zerovec-derive",
+              "reason": "Dependency 'zerovec-derive' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            }
+          ],
+          "total_deps": 141,
+          "warnings": 23
+        },
+        "detected_license": null,
+        "findings": [
+          {
+            "code": "MISSING_LICENSE_FILE",
+            "level": "error",
+            "message": "LICENSE not found at /home/sal/orbweaver/LICENSE",
+            "path": "LICENSE"
+          },
+          {
+            "code": "MISSING_SPDX_MANIFEST",
+            "level": "warning",
+            "message": "SPDX manifest not found at .lwoodz/manifest.json — run `lwoodz generate`",
+            "path": ".lwoodz/manifest.json"
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'fallible-iterator' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'fallible-streaming-iterator' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'fixedbitset' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'icu_collections' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'icu_locale_core' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'icu_normalizer' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'icu_normalizer_data' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'icu_properties' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'icu_properties_data' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'icu_provider' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'litemap' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'potential_utf' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'tinystr' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'vcpkg' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'version_check' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'writeable' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'yoke' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'yoke-derive' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'zerofrom' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'zerofrom-derive' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'zerotrie' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'zerovec' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'zerovec-derive' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "MISSING_HEADERS",
+            "level": "warning",
+            "message": "21 of 21 source files missing copyright/SPDX headers",
+            "path": null
+          }
+        ],
+        "generated_at": "2026-08-27T13:10:36.547798435+00:00",
+        "has_license_file": false,
+        "header_coverage": {
+          "missing": 21,
+          "total_files": 21,
+          "with_header": 0
+        },
+        "holder": "Your Name",
+        "passed": false,
+        "project_license": "MIT",
+        "spdx_manifest_exists": false,
+        "spdx_valid": true,
+        "year": 2026
+      }
+    },
+    {
+      "tool": "tempcheq",
+      "purpose": "LLM sampling-temperature correctness",
+      "status": "not_applicable",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 0
+      },
+      "binary": "/home/sal/.local/bin/tempcheq",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 145,
+      "summary": "not applicable: no inference actions found",
+      "findings": [],
+      "note": "zero observations do not establish project health and are excluded from scoring",
+      "raw": {
+        "actions": [],
+        "implicit_default": 0,
+        "inapplicable": 0,
+        "material_deviations": 0,
+        "temperature_controlled": 0,
+        "total_actions": 0,
+        "workspace": "/home/sal/orbweaver"
+      }
+    },
+    {
+      "tool": "traci",
+      "purpose": "observability/telemetry completeness",
+      "status": "fail",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 36
+      },
+      "binary": "/home/sal/.local/bin/traci",
+      "score": null,
+      "grade": null,
+      "exit_code": 2,
+      "duration_ms": 65,
+      "summary": "21 files, 36 observability diagnostics: 2 critical, 34 error-severity, 0 warning-severity, 0 info",
+      "findings": [
+        "[observability/critical] TRC007 /home/sal/orbweaver/crates/orbweaver-cli/src/main.rs:197 — panic path cannot be reconstructed from telemetry",
+        "[observability/critical] TRC007 /home/sal/orbweaver/crates/orbweaver-cli/src/style.rs:50 — panic path cannot be reconstructed from telemetry",
+        "[observability/error] TRC001 /home/sal/orbweaver/crates/orbweaver-cli/src/main.rs:442 — failure path has no nearby structured diagnostic event",
+        "[observability/error] TRC002 /home/sal/orbweaver/crates/orbweaver-cli/src/main.rs:509 — result is discarded without a diagnostic record",
+        "[observability/error] TRC002 /home/sal/orbweaver/crates/orbweaver-cli/src/main.rs:510 — result is discarded without a diagnostic record"
+      ],
+      "note": "observability diagnostics are not assigned a project-health score because Traci does not expose a total opportunity/coverage denominator; Poka's stale generator was repaired with the current native `traci` initializer; created traci.toml",
+      "raw": {
+        "diagnostics": [
+          {
+            "column": 9,
+            "line": 197,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/orbweaver/crates/orbweaver-cli/src/main.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".expect(\"just-loaded snapshot must be listed\");"
+          },
+          {
+            "column": 9,
+            "line": 442,
+            "message": "failure path has no nearby structured diagnostic event",
+            "path": "/home/sal/orbweaver/crates/orbweaver-cli/src/main.rs",
+            "rule": "TRC001",
+            "severity": "error",
+            "snippet": "Err(e) => {"
+          },
+          {
+            "column": 5,
+            "line": 509,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/orbweaver/crates/orbweaver-cli/src/main.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let conn = orbweaver_storage::open(&db_path).ok()?;"
+          },
+          {
+            "column": 5,
+            "line": 510,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/orbweaver/crates/orbweaver-cli/src/main.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let snapshot_id = orbweaver_storage::latest_snapshot_id(&conn).ok()??;"
+          },
+          {
+            "column": 5,
+            "line": 511,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/orbweaver/crates/orbweaver-cli/src/main.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let data = orbweaver_storage::load_snapshot(&conn, &snapshot_id).ok()?;"
+          },
+          {
+            "column": 9,
+            "line": 525,
+            "message": "failure path has no nearby structured diagnostic event",
+            "path": "/home/sal/orbweaver/crates/orbweaver-cli/src/main.rs",
+            "rule": "TRC001",
+            "severity": "error",
+            "snippet": "Err(e) => println!(\"{} local snapshot store: {e}\", style::FAIL),"
+          },
+          {
+            "column": 9,
+            "line": 554,
+            "message": "failure path has no nearby structured diagnostic event",
+            "path": "/home/sal/orbweaver/crates/orbweaver-cli/src/main.rs",
+            "rule": "TRC001",
+            "severity": "error",
+            "snippet": "Err(e) => println!(\"{} ELCI connector discovery: {e}\", style::WARN),"
+          },
+          {
+            "column": 13,
+            "line": 50,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/orbweaver/crates/orbweaver-cli/src/style.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".unwrap()"
+          },
+          {
+            "column": 9,
+            "line": 43,
+            "message": "failure path has no nearby structured diagnostic event",
+            "path": "/home/sal/orbweaver/crates/orbweaver-connectors/src/github.rs",
+            "rule": "TRC001",
+            "severity": "error",
+            "snippet": "return Err(format!(\"`gh repo list {org}` failed: {}\", output.text.trim()));"
+          },
+          {
+            "column": 5,
+            "line": 100,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/orbweaver/crates/orbweaver-connectors/src/github.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let view: ReleaseView = serde_json::from_str(&output.text).ok()?;"
+          },
+          {
+            "column": 9,
+            "line": 139,
+            "message": "failure path has no nearby structured diagnostic event",
+            "path": "/home/sal/orbweaver/crates/orbweaver-connectors/src/github.rs",
+            "rule": "TRC001",
+            "severity": "error",
+            "snippet": "return Err(format!(\"`gh release download` failed: {}\", output.text.trim()));"
+          },
+          {
+            "column": 9,
+            "line": 105,
+            "message": "failure path has no nearby structured diagnostic event",
+            "path": "/home/sal/orbweaver/crates/orbweaver-connectors/src/install.rs",
+            "rule": "TRC001",
+            "severity": "error",
+            "snippet": "Err(format!(\"`{binary}` failed:\\n{}\", process::tail(&output.text, 2000)))"
+          },
+          {
+            "column": 13,
+            "line": 119,
+            "message": "failure path has no nearby structured diagnostic event",
+            "path": "/home/sal/orbweaver/crates/orbweaver-connectors/src/install.rs",
+            "rule": "TRC001",
+            "severity": "error",
+            "snippet": "return Err(format!(\"refusing to clone a non-SSH remote: {ssh_url}\"));"
+          },
+          {
+            "column": 13,
+            "line": 125,
+            "message": "failure path has no nearby structured diagnostic event",
+            "path": "/home/sal/orbweaver/crates/orbweaver-connectors/src/install.rs",
+            "rule": "TRC001",
+            "severity": "error",
+            "snippet": "return Err(format!(\"unsafe repo name, refusing to use it as a path component: {repo_name}\"));"
+          },
+          {
+            "column": 9,
+            "line": 143,
+            "message": "failure path has no nearby structured diagnostic event",
+            "path": "/home/sal/orbweaver/crates/orbweaver-connectors/src/install.rs",
+            "rule": "TRC001",
+            "severity": "error",
+            "snippet": "return Err(format!(\"{repo_name} has no Cargo.toml — baby only builds Rust projects\"));"
+          },
+          {
+            "column": 17,
+            "line": 89,
+            "message": "failure path has no nearby structured diagnostic event",
+            "path": "/home/sal/orbweaver/crates/orbweaver-connectors/src/lib.rs",
+            "rule": "TRC001",
+            "severity": "error",
+            "snippet": "Err(e) => vec![ConnectorReport {"
+          },
+          {
+            "column": 5,
+            "line": 95,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/orbweaver/crates/orbweaver-connectors/src/orb.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let content = fs::read_to_string(repo_path.join(ORB_FILENAME)).ok()?;"
+          },
+          {
+            "column": 5,
+            "line": 44,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/orbweaver/crates/orbweaver-connectors/src/process.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let mut child = command.spawn().ok()?;"
+          },
+          {
+            "column": 21,
+            "line": 52,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/orbweaver/crates/orbweaver-connectors/src/process.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let _ = child.kill();"
+          },
+          {
+            "column": 21,
+            "line": 53,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/orbweaver/crates/orbweaver-connectors/src/process.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let _ = child.wait();"
+          },
+          {
+            "column": 13,
+            "line": 58,
+            "message": "failure path has no nearby structured diagnostic event",
+            "path": "/home/sal/orbweaver/crates/orbweaver-connectors/src/process.rs",
+            "rule": "TRC001",
+            "severity": "error",
+            "snippet": "Err(_) => return None,"
+          },
+          {
+            "column": 5,
+            "line": 62,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/orbweaver/crates/orbweaver-connectors/src/process.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let output = child.wait_with_output().ok()?;"
+          },
+          {
+            "column": 5,
+            "line": 26,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/orbweaver/crates/orbweaver-git/src/lib.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let repo = GitRepo::open(path).ok()?;"
+          },
+          {
+            "column": 9,
+            "line": 30,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/orbweaver/crates/orbweaver-git/src/lib.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": ".ok()"
+          },
+          {
+            "column": 5,
+            "line": 33,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/orbweaver/crates/orbweaver-git/src/lib.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let mut revwalk = repo.revwalk().ok()?;"
+          },
+          {
+            "column": 9,
+            "line": 224,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/orbweaver/crates/orbweaver-ingest/src/lib.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": ".filter_map(|r| r.path.canonicalize().ok().map(|p| (p, r.id.clone())))"
+          },
+          {
+            "column": 21,
+            "line": 240,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/orbweaver/crates/orbweaver-ingest/src/lib.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": ".ok()"
+          },
+          {
+            "column": 5,
+            "line": 18,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/orbweaver/crates/orbweaver-ingest/src/manifests.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let content = fs::read_to_string(path).ok()?;"
+          },
+          {
+            "column": 5,
+            "line": 19,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/orbweaver/crates/orbweaver-ingest/src/manifests.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let value: toml::Value = toml::from_str(&content).ok()?;"
+          },
+          {
+            "column": 5,
+            "line": 80,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/orbweaver/crates/orbweaver-ingest/src/manifests.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let content = fs::read_to_string(path).ok()?;"
+          },
+          {
+            "column": 5,
+            "line": 81,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/orbweaver/crates/orbweaver-ingest/src/manifests.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let value: serde_json::Value = serde_json::from_str(&content).ok()?;"
+          },
+          {
+            "column": 5,
+            "line": 128,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/orbweaver/crates/orbweaver-ingest/src/manifests.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let content = fs::read_to_string(path).ok()?;"
+          },
+          {
+            "column": 5,
+            "line": 129,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/orbweaver/crates/orbweaver-ingest/src/manifests.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let value: toml::Value = toml::from_str(&content).ok()?;"
+          },
+          {
+            "column": 5,
+            "line": 228,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/orbweaver/crates/orbweaver-ingest/src/manifests.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let content = fs::read_to_string(path).ok()?;"
+          },
+          {
+            "column": 9,
+            "line": 314,
+            "message": "failure path has no nearby structured diagnostic event",
+            "path": "/home/sal/orbweaver/crates/orbweaver-storage/src/lib.rs",
+            "rule": "TRC001",
+            "severity": "error",
+            "snippet": "e => Err(OrbweaverError::Storage(e.to_string())),"
+          },
+          {
+            "column": 21,
+            "line": 502,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/orbweaver/crates/orbweaver-storage/src/lib.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": ".and_then(|s| DateTime::parse_from_rfc3339(&s).ok())"
+          }
+        ],
+        "summary": {
+          "critical": 2,
+          "diagnostics": 36,
+          "errors": 34,
+          "files": 21,
+          "info": 0,
+          "warnings": 0
+        }
+      }
+    },
+    {
+      "tool": "vamos",
+      "purpose": "nominal vs. validated action completion",
+      "status": "skipped",
+      "availability": "not_checked",
+      "execution": "skipped",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": null,
+      "duration_ms": null,
+      "summary": "skipped",
+      "findings": [],
+      "note": "no vamos.toml in project root; vamos hasn't been adopted here yet — run `vamos init` in the target to start tracking action lifecycles",
+      "raw": null
+    }
+  ],
+  "overall": {
+    "score": 68.4362911025145,
+    "grade": "D+",
+    "graded_tools": 4,
+    "total_tools": 12,
+    "weights": [
+      [
+        "amber",
+        1.0
+      ],
+      [
+        "chakra",
+        1.0
+      ],
+      [
+        "fract",
+        1.0
+      ],
+      [
+        "lwoodz",
+        1.0
+      ]
+    ],
+    "provisional": true
+  },
+  "suite": {
+    "required_tools": 9,
+    "available_tools": 9,
+    "executed_tools": 8,
+    "valid_results": 8,
+    "analysis_coverage": 0.525,
+    "confidence": 1.0
+  },
+  "integrity": {
+    "status": "degraded",
+    "score": 88.88888888888889,
+    "grade": "B+",
+    "defects": [
+      "ferret: error"
+    ]
+  }
+}

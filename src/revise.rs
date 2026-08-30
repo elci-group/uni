@@ -36,7 +36,7 @@
 //!     `verify_remediation` afterward re-diagnoses the *actual* flagged
 //!     tool (chakra/fract), independent of whatever traci itself checked.
 //!
-//!   ami, bart, ferret, jeenome, and vamos have no entry here. isopod's
+//!   ami, bart, ferret, jeenome, vamos, and viva-palestina have no entry here. isopod's
 //!   unmet controls are deliberately *not* delegated to `traci enforce`
 //!   either, despite chakra/fract being: they're organizational/policy
 //!   findings (security testing procedure, backup policy,

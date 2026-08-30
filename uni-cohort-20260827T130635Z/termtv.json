@@ -1,0 +1,2854 @@
+{
+  "schema": "uni.report/v3",
+  "target": "/home/sal/termtv",
+  "generated_at": "2026-08-27T13:19:40.827588323+00:00",
+  "tools_dir": "/home/sal",
+  "tools": [
+    {
+      "tool": "amber",
+      "purpose": "dependency bloat / replaceability",
+      "status": "error",
+      "availability": "installed",
+      "execution": "failed",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 3887,
+      "summary": "error",
+      "findings": [],
+      "note": "produced no stdout; stderr: \u001b[32m INFO\u001b[0m starting full repository analysis \u001b[3mmanifest\u001b[0m\u001b[2m=\u001b[0m/home/sal/termtv/Cargo.toml \u001b[3moutput\u001b[0m\u001b[2m=\u001b[0mNone\n\u001b[32m INFO\u001b[0m \u001b[1mphase\u001b[0m\u001b[1m{\u001b[0m\u001b[3mphase\u001b[0m\u001b[2m=\u001b[0m\"index\"\u001b[1m}\u001b[0m\u001b[2m:\u001b[0m indexing repository dependencies \u001b[3mphase\u001b[0m\u001b[2m=\u001b[0m\"index\" \u001b[3mmanifest\u001b[0m\u001b[2m=\u001b",
+      "raw": null
+    },
+    {
+      "tool": "ami",
+      "purpose": "project profile completeness (market-intelligence readiness)",
+      "status": "skipped",
+      "availability": "not_checked",
+      "execution": "skipped",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": null,
+      "duration_ms": null,
+      "summary": "skipped",
+      "findings": [],
+      "note": "ami is opt-in because project profiling is not code health; use `--only ami` when its installed build exposes JSON output",
+      "raw": null
+    },
+    {
+      "tool": "bart",
+      "purpose": "filesystem size & hotspots (informational)",
+      "status": "ok",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/usr/bin/bart",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 1382,
+      "summary": "45 files, 42.2 MB under root",
+      "findings": [
+        "/home/sal/termtv/assets: 42.0 MB",
+        "/home/sal/termtv/src: 102.6 KB",
+        "/home/sal/termtv/ROADMAP.md: 12.2 KB",
+        "/home/sal/termtv/completions: 8.5 KB",
+        "/home/sal/termtv/.agents: 8.1 KB"
+      ],
+      "note": "informational only — bart measures disk usage, not code health",
+      "raw": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786047659,
+                "path": "/home/sal/termtv/assets/raw-video.ttv",
+                "size": 31212020
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786047659,
+                "path": "/home/sal/termtv/assets/raw-video.wav",
+                "size": 10196054
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786047141,
+                "path": "/home/sal/termtv/assets/raw-video.webm",
+                "size": 2655518
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786048353,
+                "path": "/home/sal/termtv/assets/hubble-720p-30s.txt",
+                "size": 561
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786049739,
+                "path": "/home/sal/termtv/assets/README.txt",
+                "size": 531
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786048353,
+                "path": "/home/sal/termtv/assets/hubble-720p-10s.txt",
+                "size": 456
+              }
+            ],
+            "depth": 1,
+            "file_count": 6,
+            "is_dir": true,
+            "modified": 1786048479,
+            "path": "/home/sal/termtv/assets",
+            "size": 44069236
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787693402,
+                "path": "/home/sal/termtv/src/main.rs",
+                "size": 19075
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787693232,
+                "path": "/home/sal/termtv/src/source.rs",
+                "size": 18905
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787693222,
+                "path": "/home/sal/termtv/src/video.rs",
+                "size": 16684
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1786047927,
+                    "path": "/home/sal/termtv/src/bin/termtv-bench.rs",
+                    "size": 3125
+                  }
+                ],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": true,
+                "modified": 1786047878,
+                "path": "/home/sal/termtv/src/bin",
+                "size": 7221
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786139864,
+                "path": "/home/sal/termtv/src/framebuffer.rs",
+                "size": 6091
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786137547,
+                "path": "/home/sal/termtv/src/render.rs",
+                "size": 4846
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786140634,
+                "path": "/home/sal/termtv/src/backend.rs",
+                "size": 4541
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787691963,
+                "path": "/home/sal/termtv/src/config.rs",
+                "size": 4528
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787693238,
+                "path": "/home/sal/termtv/src/controls.rs",
+                "size": 3538
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786140116,
+                "path": "/home/sal/termtv/src/platform.rs",
+                "size": 2990
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786138047,
+                "path": "/home/sal/termtv/src/accel.rs",
+                "size": 2865
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786138200,
+                "path": "/home/sal/termtv/src/error.rs",
+                "size": 2658
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786137458,
+                "path": "/home/sal/termtv/src/capture.rs",
+                "size": 1968
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786136026,
+                "path": "/home/sal/termtv/src/scene.rs",
+                "size": 1639
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786137084,
+                "path": "/home/sal/termtv/src/color.rs",
+                "size": 1233
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787690725,
+                "path": "/home/sal/termtv/src/lib.rs",
+                "size": 1070
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786138176,
+                "path": "/home/sal/termtv/src/diagnostics.rs",
+                "size": 925
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787692270,
+                "path": "/home/sal/termtv/src/constants.rs",
+                "size": 224
+              }
+            ],
+            "depth": 1,
+            "file_count": 18,
+            "is_dir": true,
+            "modified": 1787693402,
+            "path": "/home/sal/termtv/src",
+            "size": 105097
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1786140146,
+            "path": "/home/sal/termtv/ROADMAP.md",
+            "size": 12471
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786140532,
+                "path": "/home/sal/termtv/completions/termtv.fish",
+                "size": 1897
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786140532,
+                "path": "/home/sal/termtv/completions/termtv.zsh",
+                "size": 1652
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786140532,
+                "path": "/home/sal/termtv/completions/termtv.bash",
+                "size": 1069
+              }
+            ],
+            "depth": 1,
+            "file_count": 3,
+            "is_dir": true,
+            "modified": 1786140532,
+            "path": "/home/sal/termtv/completions",
+            "size": 8714
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1786137016,
+                    "path": "/home/sal/termtv/.agents/skills/deliver",
+                    "size": 28
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1786137016,
+                    "path": "/home/sal/termtv/.agents/skills/amber",
+                    "size": 26
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1786137016,
+                    "path": "/home/sal/termtv/.agents/skills/fract",
+                    "size": 26
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1786137016,
+                    "path": "/home/sal/termtv/.agents/skills/bart",
+                    "size": 25
+                  }
+                ],
+                "depth": 2,
+                "file_count": 4,
+                "is_dir": true,
+                "modified": 1786137016,
+                "path": "/home/sal/termtv/.agents/skills",
+                "size": 4201
+              }
+            ],
+            "depth": 1,
+            "file_count": 4,
+            "is_dir": true,
+            "modified": 1786135886,
+            "path": "/home/sal/termtv/.agents",
+            "size": 8297
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786140572,
+                "path": "/home/sal/termtv/tests/cli_help.rs",
+                "size": 2053
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786137458,
+                "path": "/home/sal/termtv/tests/ttv1_round_trip.rs",
+                "size": 1515
+              }
+            ],
+            "depth": 1,
+            "file_count": 2,
+            "is_dir": true,
+            "modified": 1786137283,
+            "path": "/home/sal/termtv/tests",
+            "size": 7664
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1786054419,
+            "path": "/home/sal/termtv/README.md",
+            "size": 6172
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786140532,
+                "path": "/home/sal/termtv/man/termtv.1",
+                "size": 1825
+              }
+            ],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": true,
+            "modified": 1786140532,
+            "path": "/home/sal/termtv/man",
+            "size": 5921
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 0,
+            "is_dir": true,
+            "modified": 1786052925,
+            "path": "/home/sal/termtv/.codex",
+            "size": 4096
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1786137426,
+            "path": "/home/sal/termtv/TESTING.md",
+            "size": 2981
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1786140566,
+            "path": "/home/sal/termtv/deliver.toml",
+            "size": 2717
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1786136934,
+            "path": "/home/sal/termtv/AGENTS.md",
+            "size": 1691
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787836775,
+            "path": "/home/sal/termtv/traci.toml",
+            "size": 955
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1786135898,
+            "path": "/home/sal/termtv/.gitignore",
+            "size": 328
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1786046610,
+            "path": "/home/sal/termtv/Cargo.toml",
+            "size": 265
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1786046613,
+            "path": "/home/sal/termtv/Cargo.lock",
+            "size": 150
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787836771,
+            "path": "/home/sal/termtv/poka.toml",
+            "size": 123
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1786136861,
+            "path": "/home/sal/termtv/.amber.toml",
+            "size": 68
+          }
+        ],
+        "depth": 0,
+        "file_count": 45,
+        "is_dir": true,
+        "modified": 1787836775,
+        "path": "/home/sal/termtv",
+        "size": 44241042
+      }
+    },
+    {
+      "tool": "chakra",
+      "purpose": "data-flow / architecture map coverage",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": 0.4878048780487805,
+        "confidence": 1.0,
+        "observations": 60
+      },
+      "binary": "/home/sal/.local/bin/chakra",
+      "score": 74.39024390243902,
+      "grade": "C",
+      "exit_code": 0,
+      "duration_ms": 2976,
+      "summary": "24 nodes, 60 flows; coverage 48.8% (20/41 files), confidence 100.0%",
+      "findings": [
+        "60 flow(s) with provenance=observed"
+      ],
+      "note": null,
+      "raw": {
+        "boundaries": [],
+        "events": [],
+        "evidence": [
+          {
+            "detail": "std::process::Command",
+            "file": "tests/cli_help.rs",
+            "id": "ev-0001",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "std::fs::File",
+            "file": "tests/ttv1_round_trip.rs",
+            "id": "ev-0002",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "std::io::Write",
+            "file": "tests/ttv1_round_trip.rs",
+            "id": "ev-0003",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "termtv::",
+            "file": "tests/ttv1_round_trip.rs",
+            "id": "ev-0004",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "std::",
+            "file": "src/bin/termtv-bench.rs",
+            "id": "ev-0005",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "termtv::",
+            "file": "src/bin/termtv-bench.rs",
+            "id": "ev-0006",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "std::path::PathBuf",
+            "file": "src/config.rs",
+            "id": "ev-0007",
+            "kind": "rust_use",
+            "line": 21
+          },
+          {
+            "detail": "super::",
+            "file": "src/config.rs",
+            "id": "ev-0008",
+            "kind": "rust_use",
+            "line": 118
+          },
+          {
+            "detail": "accel::",
+            "file": "src/lib.rs",
+            "id": "ev-0009",
+            "kind": "rust_use",
+            "line": 28
+          },
+          {
+            "detail": "backend::",
+            "file": "src/lib.rs",
+            "id": "ev-0010",
+            "kind": "rust_use",
+            "line": 30
+          },
+          {
+            "detail": "capture::",
+            "file": "src/lib.rs",
+            "id": "ev-0011",
+            "kind": "rust_use",
+            "line": 33
+          },
+          {
+            "detail": "color::",
+            "file": "src/lib.rs",
+            "id": "ev-0012",
+            "kind": "rust_use",
+            "line": 34
+          },
+          {
+            "detail": "config::Config",
+            "file": "src/lib.rs",
+            "id": "ev-0013",
+            "kind": "rust_use",
+            "line": 35
+          },
+          {
+            "detail": "framebuffer::Framebuffer",
+            "file": "src/lib.rs",
+            "id": "ev-0014",
+            "kind": "rust_use",
+            "line": 36
+          },
+          {
+            "detail": "scene::",
+            "file": "src/lib.rs",
+            "id": "ev-0015",
+            "kind": "rust_use",
+            "line": 37
+          },
+          {
+            "detail": "source::PlaybackOptions",
+            "file": "src/lib.rs",
+            "id": "ev-0016",
+            "kind": "rust_use",
+            "line": 38
+          },
+          {
+            "detail": "video::Video",
+            "file": "src/lib.rs",
+            "id": "ev-0017",
+            "kind": "rust_use",
+            "line": 39
+          },
+          {
+            "detail": "accel",
+            "file": "src/lib.rs",
+            "id": "ev-0018",
+            "kind": "rust_mod",
+            "line": 11
+          },
+          {
+            "detail": "backend",
+            "file": "src/lib.rs",
+            "id": "ev-0019",
+            "kind": "rust_mod",
+            "line": 13
+          },
+          {
+            "detail": "capture",
+            "file": "src/lib.rs",
+            "id": "ev-0020",
+            "kind": "rust_mod",
+            "line": 14
+          },
+          {
+            "detail": "color",
+            "file": "src/lib.rs",
+            "id": "ev-0021",
+            "kind": "rust_mod",
+            "line": 15
+          },
+          {
+            "detail": "config",
+            "file": "src/lib.rs",
+            "id": "ev-0022",
+            "kind": "rust_mod",
+            "line": 16
+          },
+          {
+            "detail": "framebuffer",
+            "file": "src/lib.rs",
+            "id": "ev-0023",
+            "kind": "rust_mod",
+            "line": 17
+          },
+          {
+            "detail": "platform",
+            "file": "src/lib.rs",
+            "id": "ev-0024",
+            "kind": "rust_mod",
+            "line": 18
+          },
+          {
+            "detail": "scene",
+            "file": "src/lib.rs",
+            "id": "ev-0025",
+            "kind": "rust_mod",
+            "line": 19
+          },
+          {
+            "detail": "source",
+            "file": "src/lib.rs",
+            "id": "ev-0026",
+            "kind": "rust_mod",
+            "line": 20
+          },
+          {
+            "detail": "video",
+            "file": "src/lib.rs",
+            "id": "ev-0027",
+            "kind": "rust_mod",
+            "line": 21
+          },
+          {
+            "detail": "constants",
+            "file": "src/lib.rs",
+            "id": "ev-0028",
+            "kind": "rust_mod",
+            "line": 22
+          },
+          {
+            "detail": "controls",
+            "file": "src/lib.rs",
+            "id": "ev-0029",
+            "kind": "rust_mod",
+            "line": 24
+          },
+          {
+            "detail": "diagnostics",
+            "file": "src/lib.rs",
+            "id": "ev-0030",
+            "kind": "rust_mod",
+            "line": 25
+          },
+          {
+            "detail": "error",
+            "file": "src/lib.rs",
+            "id": "ev-0031",
+            "kind": "rust_mod",
+            "line": 26
+          },
+          {
+            "detail": "render",
+            "file": "src/lib.rs",
+            "id": "ev-0032",
+            "kind": "rust_mod",
+            "line": 27
+          },
+          {
+            "detail": "std::",
+            "file": "src/main.rs",
+            "id": "ev-0033",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "termtv::",
+            "file": "src/main.rs",
+            "id": "ev-0034",
+            "kind": "rust_use",
+            "line": 13
+          },
+          {
+            "detail": "std::",
+            "file": "src/video.rs",
+            "id": "ev-0035",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "crate::",
+            "file": "src/video.rs",
+            "id": "ev-0036",
+            "kind": "rust_use",
+            "line": 10
+          },
+          {
+            "detail": "super::",
+            "file": "src/video.rs",
+            "id": "ev-0037",
+            "kind": "rust_use",
+            "line": 427
+          },
+          {
+            "detail": "crate::framebuffer::Framebuffer",
+            "file": "src/backend.rs",
+            "id": "ev-0038",
+            "kind": "rust_use",
+            "line": 11
+          },
+          {
+            "detail": "super::",
+            "file": "src/backend.rs",
+            "id": "ev-0039",
+            "kind": "rust_use",
+            "line": 101
+          },
+          {
+            "detail": "crate::color::",
+            "file": "src/backend.rs",
+            "id": "ev-0040",
+            "kind": "rust_use",
+            "line": 102
+          },
+          {
+            "detail": "std::",
+            "file": "src/error.rs",
+            "id": "ev-0041",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "std::",
+            "file": "src/platform.rs",
+            "id": "ev-0042",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "std::os::unix::process::CommandExt",
+            "file": "src/platform.rs",
+            "id": "ev-0043",
+            "kind": "rust_use",
+            "line": 6
+          },
+          {
+            "detail": "std::",
+            "file": "src/source.rs",
+            "id": "ev-0044",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "crate::",
+            "file": "src/source.rs",
+            "id": "ev-0045",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "std::fmt::Write",
+            "file": "src/framebuffer.rs",
+            "id": "ev-0046",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "crate::color::",
+            "file": "src/framebuffer.rs",
+            "id": "ev-0047",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "super::",
+            "file": "src/framebuffer.rs",
+            "id": "ev-0048",
+            "kind": "rust_use",
+            "line": 103
+          },
+          {
+            "detail": "std::",
+            "file": "src/controls.rs",
+            "id": "ev-0049",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "std::",
+            "file": "src/render.rs",
+            "id": "ev-0050",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "crate::",
+            "file": "src/render.rs",
+            "id": "ev-0051",
+            "kind": "rust_use",
+            "line": 8
+          },
+          {
+            "detail": "super::",
+            "file": "src/render.rs",
+            "id": "ev-0052",
+            "kind": "rust_use",
+            "line": 134
+          },
+          {
+            "detail": "crate::color::",
+            "file": "src/scene.rs",
+            "id": "ev-0053",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "crate::framebuffer::Framebuffer",
+            "file": "src/scene.rs",
+            "id": "ev-0054",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "super::",
+            "file": "src/color.rs",
+            "id": "ev-0055",
+            "kind": "rust_use",
+            "line": 34
+          },
+          {
+            "detail": "std::process::Command",
+            "file": "src/accel.rs",
+            "id": "ev-0056",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "super::",
+            "file": "src/accel.rs",
+            "id": "ev-0057",
+            "kind": "rust_use",
+            "line": 68
+          },
+          {
+            "detail": "std::path::PathBuf",
+            "file": "src/capture.rs",
+            "id": "ev-0058",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "crate::accel::Acceleration",
+            "file": "src/capture.rs",
+            "id": "ev-0059",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "super::",
+            "file": "src/capture.rs",
+            "id": "ev-0060",
+            "kind": "rust_use",
+            "line": 59
+          }
+        ],
+        "flows": [
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0001"
+            ],
+            "id": "flow-0001",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:tests/cli_help.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0002"
+            ],
+            "id": "flow-0002",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:tests/ttv1_round_trip.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0003"
+            ],
+            "id": "flow-0003",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:tests/ttv1_round_trip.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0004"
+            ],
+            "id": "flow-0004",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:tests/ttv1_round_trip.rs",
+            "target": "ext:rust:termtv"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0005"
+            ],
+            "id": "flow-0005",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/bin/termtv-bench.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0006"
+            ],
+            "id": "flow-0006",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/bin/termtv-bench.rs",
+            "target": "ext:rust:termtv"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0007"
+            ],
+            "id": "flow-0007",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/config.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0008"
+            ],
+            "id": "flow-0008",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/config.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0009"
+            ],
+            "id": "flow-0009",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/accel.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0010"
+            ],
+            "id": "flow-0010",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/backend.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0011"
+            ],
+            "id": "flow-0011",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/capture.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0012"
+            ],
+            "id": "flow-0012",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/color.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0013"
+            ],
+            "id": "flow-0013",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/config.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0014"
+            ],
+            "id": "flow-0014",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/framebuffer.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0015"
+            ],
+            "id": "flow-0015",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/scene.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0016"
+            ],
+            "id": "flow-0016",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/source.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0017"
+            ],
+            "id": "flow-0017",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/video.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0018"
+            ],
+            "id": "flow-0018",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/accel.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0019"
+            ],
+            "id": "flow-0019",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/backend.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0020"
+            ],
+            "id": "flow-0020",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/capture.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0021"
+            ],
+            "id": "flow-0021",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/color.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0022"
+            ],
+            "id": "flow-0022",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/config.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0023"
+            ],
+            "id": "flow-0023",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/framebuffer.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0024"
+            ],
+            "id": "flow-0024",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/platform.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0025"
+            ],
+            "id": "flow-0025",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/scene.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0026"
+            ],
+            "id": "flow-0026",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/source.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0027"
+            ],
+            "id": "flow-0027",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/video.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0028"
+            ],
+            "id": "flow-0028",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/constants.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0029"
+            ],
+            "id": "flow-0029",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/controls.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0030"
+            ],
+            "id": "flow-0030",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/diagnostics.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0031"
+            ],
+            "id": "flow-0031",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/error.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0032"
+            ],
+            "id": "flow-0032",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/render.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0033"
+            ],
+            "id": "flow-0033",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0034"
+            ],
+            "id": "flow-0034",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:termtv"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0035"
+            ],
+            "id": "flow-0035",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/video.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0036"
+            ],
+            "id": "flow-0036",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/video.rs",
+            "target": "mod:rust:crate::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0037"
+            ],
+            "id": "flow-0037",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/video.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0038"
+            ],
+            "id": "flow-0038",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/backend.rs",
+            "target": "file:src/framebuffer.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0039"
+            ],
+            "id": "flow-0039",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/backend.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0040"
+            ],
+            "id": "flow-0040",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/backend.rs",
+            "target": "file:src/color.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0041"
+            ],
+            "id": "flow-0041",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/error.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0042"
+            ],
+            "id": "flow-0042",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/platform.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0043"
+            ],
+            "id": "flow-0043",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/platform.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0044"
+            ],
+            "id": "flow-0044",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/source.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0045"
+            ],
+            "id": "flow-0045",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/source.rs",
+            "target": "mod:rust:crate::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0046"
+            ],
+            "id": "flow-0046",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/framebuffer.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0047"
+            ],
+            "id": "flow-0047",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/framebuffer.rs",
+            "target": "file:src/color.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0048"
+            ],
+            "id": "flow-0048",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/framebuffer.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0049"
+            ],
+            "id": "flow-0049",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/controls.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0050"
+            ],
+            "id": "flow-0050",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/render.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0051"
+            ],
+            "id": "flow-0051",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/render.rs",
+            "target": "mod:rust:crate::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0052"
+            ],
+            "id": "flow-0052",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/render.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0053"
+            ],
+            "id": "flow-0053",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/scene.rs",
+            "target": "file:src/color.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0054"
+            ],
+            "id": "flow-0054",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/scene.rs",
+            "target": "file:src/framebuffer.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0055"
+            ],
+            "id": "flow-0055",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/color.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0056"
+            ],
+            "id": "flow-0056",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/accel.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0057"
+            ],
+            "id": "flow-0057",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/accel.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0058"
+            ],
+            "id": "flow-0058",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/capture.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0059"
+            ],
+            "id": "flow-0059",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/capture.rs",
+            "target": "file:src/accel.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0060"
+            ],
+            "id": "flow-0060",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/capture.rs",
+            "target": "mod:rust:super::"
+          }
+        ],
+        "inferences": [],
+        "metadata": {
+          "analyzed_file_count": 20,
+          "analyzers": [
+            "rust",
+            "javascript",
+            "typescript",
+            "python",
+            "go"
+          ],
+          "chakra_version": "0.3.33",
+          "duration_ms": 2017,
+          "file_count": 41,
+          "languages": {
+            "rust": 20
+          }
+        },
+        "nodes": [
+          {
+            "id": "ext:rust:std",
+            "kind": "external",
+            "language": "rust",
+            "name": "std"
+          },
+          {
+            "id": "ext:rust:termtv",
+            "kind": "external",
+            "language": "rust",
+            "name": "termtv"
+          },
+          {
+            "id": "file:src/accel.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/accel.rs"
+          },
+          {
+            "id": "file:src/backend.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/backend.rs"
+          },
+          {
+            "id": "file:src/bin/termtv-bench.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/bin/termtv-bench.rs"
+          },
+          {
+            "id": "file:src/capture.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/capture.rs"
+          },
+          {
+            "id": "file:src/color.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/color.rs"
+          },
+          {
+            "id": "file:src/config.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/config.rs"
+          },
+          {
+            "id": "file:src/constants.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/constants.rs"
+          },
+          {
+            "id": "file:src/controls.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/controls.rs"
+          },
+          {
+            "id": "file:src/diagnostics.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/diagnostics.rs"
+          },
+          {
+            "id": "file:src/error.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/error.rs"
+          },
+          {
+            "id": "file:src/framebuffer.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/framebuffer.rs"
+          },
+          {
+            "id": "file:src/lib.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/lib.rs"
+          },
+          {
+            "id": "file:src/main.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/main.rs"
+          },
+          {
+            "id": "file:src/platform.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/platform.rs"
+          },
+          {
+            "id": "file:src/render.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/render.rs"
+          },
+          {
+            "id": "file:src/scene.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/scene.rs"
+          },
+          {
+            "id": "file:src/source.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/source.rs"
+          },
+          {
+            "id": "file:src/video.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/video.rs"
+          },
+          {
+            "id": "file:tests/cli_help.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "tests/cli_help.rs"
+          },
+          {
+            "id": "file:tests/ttv1_round_trip.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "tests/ttv1_round_trip.rs"
+          },
+          {
+            "id": "mod:rust:crate::",
+            "kind": "module",
+            "language": "rust",
+            "name": "crate::"
+          },
+          {
+            "id": "mod:rust:super::",
+            "kind": "module",
+            "language": "rust",
+            "name": "super::"
+          }
+        ],
+        "schema": "chakra.flow/v1",
+        "subject": {
+          "generated_at": "2026-08-27T13:19:39.688532557Z",
+          "path": "/home/sal/termtv"
+        }
+      }
+    },
+    {
+      "tool": "ferret",
+      "purpose": "repository-specific review findings (hunt)",
+      "status": "error",
+      "availability": "installed",
+      "execution": "failed",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": 2,
+      "duration_ms": 339,
+      "summary": "error",
+      "findings": [],
+      "note": "produced no stdout; stderr: error: unexpected argument '/home/sal/termtv' found\n\nUsage: ferret [OPTIONS] [TARGET] [COMMAND]\n\nFor more information, try '--help'.\n",
+      "raw": null
+    },
+    {
+      "tool": "fract",
+      "purpose": "module entropy, cohesion, duplication",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/home/sal/.local/bin/fract",
+      "score": 96.0,
+      "grade": "A",
+      "exit_code": 0,
+      "duration_ms": 2247,
+      "summary": "20 modules indexed: 1 excellent, 17 healthy, 2 warning, 0 critical",
+      "findings": [
+        "src/source.rs: entropy 0.79 — Within entropy budget (0.79)",
+        "src/video.rs: entropy 0.69 — Within entropy budget (0.69)",
+        "src/controls.rs: entropy 0.62 — Within entropy budget (0.62)",
+        "src/main.rs: entropy 0.61 — Within entropy budget (0.61)",
+        "src/render.rs: entropy 0.61 — Within entropy budget (0.61)"
+      ],
+      "note": null,
+      "raw": {
+        "findings": [
+          {
+            "confidence": null,
+            "entropy": 0.7876441041367174,
+            "evidence": {
+              "cyclomatic": "73",
+              "duplicates": "61",
+              "fan_in": "0",
+              "fan_out": "2",
+              "functions": "1",
+              "health": "Warning",
+              "lines": "540",
+              "public_api": "9"
+            },
+            "id": "src/source.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.79)",
+            "module": "src/source.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.79 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.68998098278536,
+            "evidence": {
+              "cyclomatic": "48",
+              "duplicates": "28",
+              "fan_in": "0",
+              "fan_out": "3",
+              "functions": "11",
+              "health": "Warning",
+              "lines": "449",
+              "public_api": "11"
+            },
+            "id": "src/video.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.69)",
+            "module": "src/video.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.69 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6166936491600001,
+            "evidence": {
+              "cyclomatic": "14",
+              "duplicates": "1",
+              "fan_in": "0",
+              "fan_out": "1",
+              "functions": "1",
+              "health": "Healthy",
+              "lines": "98",
+              "public_api": "0"
+            },
+            "id": "src/controls.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.62)",
+            "module": "src/controls.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.62 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6120451816907798,
+            "evidence": {
+              "cyclomatic": "42",
+              "duplicates": "18",
+              "fan_in": "0",
+              "fan_out": "2",
+              "functions": "24",
+              "health": "Healthy",
+              "lines": "482",
+              "public_api": "0"
+            },
+            "id": "src/main.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.61)",
+            "module": "src/main.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.61 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6066204071366819,
+            "evidence": {
+              "cyclomatic": "21",
+              "duplicates": "1",
+              "fan_in": "0",
+              "fan_out": "3",
+              "functions": "3",
+              "health": "Healthy",
+              "lines": "164",
+              "public_api": "0"
+            },
+            "id": "src/render.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.61)",
+            "module": "src/render.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.61 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5666417967716241,
+            "evidence": {
+              "cyclomatic": "2",
+              "duplicates": "3",
+              "fan_in": "0",
+              "fan_out": "3",
+              "functions": "4",
+              "health": "Healthy",
+              "lines": "77",
+              "public_api": "14"
+            },
+            "id": "src/capture.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.57)",
+            "module": "src/capture.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.57 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5601822075351904,
+            "evidence": {
+              "cyclomatic": "11",
+              "duplicates": "2",
+              "fan_in": "0",
+              "fan_out": "2",
+              "functions": "7",
+              "health": "Healthy",
+              "lines": "150",
+              "public_api": "10"
+            },
+            "id": "src/config.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.56)",
+            "module": "src/config.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.56 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5504332297676853,
+            "evidence": {
+              "cyclomatic": "3",
+              "duplicates": "3",
+              "fan_in": "0",
+              "fan_out": "2",
+              "functions": "2",
+              "health": "Healthy",
+              "lines": "99",
+              "public_api": "0"
+            },
+            "id": "src/bin/termtv-bench.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.55)",
+            "module": "src/bin/termtv-bench.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.55 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.543996677002005,
+            "evidence": {
+              "cyclomatic": "16",
+              "duplicates": "2",
+              "fan_in": "2",
+              "fan_out": "3",
+              "functions": "12",
+              "health": "Healthy",
+              "lines": "201",
+              "public_api": "8"
+            },
+            "id": "src/framebuffer.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.54)",
+            "module": "src/framebuffer.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.54 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5428503877050795,
+            "evidence": {
+              "cyclomatic": "9",
+              "duplicates": "7",
+              "fan_in": "0",
+              "fan_out": "2",
+              "functions": "4",
+              "health": "Healthy",
+              "lines": "93",
+              "public_api": "3"
+            },
+            "id": "src/platform.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.54)",
+            "module": "src/platform.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.54 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5368720185458956,
+            "evidence": {
+              "cyclomatic": "2",
+              "duplicates": "1",
+              "fan_in": "0",
+              "fan_out": "3",
+              "functions": "1",
+              "health": "Healthy",
+              "lines": "49",
+              "public_api": "0"
+            },
+            "id": "tests/ttv1_round_trip.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.54)",
+            "module": "tests/ttv1_round_trip.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.54 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5220168725145686,
+            "evidence": {
+              "cyclomatic": "4",
+              "duplicates": "12",
+              "fan_in": "0",
+              "fan_out": "3",
+              "functions": "13",
+              "health": "Healthy",
+              "lines": "147",
+              "public_api": "6"
+            },
+            "id": "src/backend.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.52)",
+            "module": "src/backend.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.52 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.499780744388366,
+            "evidence": {
+              "cyclomatic": "4",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "2",
+              "functions": "2",
+              "health": "Healthy",
+              "lines": "46",
+              "public_api": "2"
+            },
+            "id": "src/scene.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.50)",
+            "module": "src/scene.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.50 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.49816260744646906,
+            "evidence": {
+              "cyclomatic": "1",
+              "duplicates": "0",
+              "fan_in": "3",
+              "fan_out": "1",
+              "functions": "4",
+              "health": "Healthy",
+              "lines": "51",
+              "public_api": "4"
+            },
+            "id": "src/color.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.50)",
+            "module": "src/color.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.50 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.4940739740970451,
+            "evidence": {
+              "cyclomatic": "8",
+              "duplicates": "2",
+              "fan_in": "0",
+              "fan_out": "1",
+              "functions": "4",
+              "health": "Healthy",
+              "lines": "81",
+              "public_api": "1"
+            },
+            "id": "src/error.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.49)",
+            "module": "src/error.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.49 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.4802338653517496,
+            "evidence": {
+              "cyclomatic": "4",
+              "duplicates": "0",
+              "fan_in": "1",
+              "fan_out": "2",
+              "functions": "6",
+              "health": "Healthy",
+              "lines": "99",
+              "public_api": "3"
+            },
+            "id": "src/accel.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.48)",
+            "module": "src/accel.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.48 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.45584703494139606,
+            "evidence": {
+              "cyclomatic": "0",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "0",
+              "functions": "0",
+              "health": "Healthy",
+              "lines": "39",
+              "public_api": "20"
+            },
+            "id": "src/lib.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.46)",
+            "module": "src/lib.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.46 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.45104194409995674,
+            "evidence": {
+              "cyclomatic": "0",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "0",
+              "functions": "0",
+              "health": "Healthy",
+              "lines": "7",
+              "public_api": "2"
+            },
+            "id": "src/constants.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.45)",
+            "module": "src/constants.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.45 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.4310461396850532,
+            "evidence": {
+              "cyclomatic": "0",
+              "duplicates": "1",
+              "fan_in": "0",
+              "fan_out": "1",
+              "functions": "10",
+              "health": "Healthy",
+              "lines": "74",
+              "public_api": "0"
+            },
+            "id": "tests/cli_help.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.43)",
+            "module": "tests/cli_help.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.43 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.3692094018361363,
+            "evidence": {
+              "cyclomatic": "1",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "0",
+              "functions": "0",
+              "health": "Excellent",
+              "lines": "29",
+              "public_api": "0"
+            },
+            "id": "src/diagnostics.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.37)",
+            "module": "src/diagnostics.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.37 below threshold 0.82"
+          }
+        ],
+        "root": "/home/sal/termtv",
+        "schema": "fract.report/v1",
+        "summary": {
+          "critical": 0,
+          "excellent": 1,
+          "healthy": 17,
+          "score": 96,
+          "total": 20,
+          "warning": 2
+        }
+      }
+    },
+    {
+      "tool": "isopod",
+      "purpose": "ISO27001/27002 compliance posture",
+      "status": "no_data",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 0
+      },
+      "binary": "/home/sal/.local/bin/isopod",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 3524,
+      "summary": "0/0 controls assessed (0.0% coverage): 0 pass, 0 warn, 0 fail, 0 unknown",
+      "findings": [],
+      "note": "coverage is 0.0%; compliance is ungraded below the 80% evidence threshold, and UNKNOWN controls are not treated as failures",
+      "raw": []
+    },
+    {
+      "tool": "jeenome",
+      "purpose": "behavioural trace analysis (opt-in)",
+      "status": "skipped",
+      "availability": "not_checked",
+      "execution": "skipped",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": null,
+      "duration_ms": null,
+      "summary": "skipped",
+      "findings": [],
+      "note": "jeenome is opt-in (needs an strace trace, not just a project path); pass --jeenome to include it",
+      "raw": null
+    },
+    {
+      "tool": "lwoodz",
+      "purpose": "license / SPDX compliance",
+      "status": "fail",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/home/sal/lwoodz/target/debug/lwoodz",
+      "score": 55.0,
+      "grade": "F",
+      "exit_code": 0,
+      "duration_ms": 2309,
+      "summary": "license=unknown, spdx_valid=true, header coverage 0/20, 0 incompatible / 0 warning issues among 0 deps",
+      "findings": [],
+      "note": "advisory warning deductions are proportional to dependency count; missing licenses and incompatible dependencies remain hard findings; lwoodz.toml was missing; `poka apply` failed (poka apply exited Some(101): thread 'main' (249138) panicked at crates/poka-core/src/index.rs:99:33: external generator 'lwoodz' failed: external generator 'lwoodz' exited with exit status: 2: error: unexpected argument '--init' found Usage: lwoodz [OPTIONS] [COMMAND] ); assessment still ran",
+      "raw": {
+        "compatibility": {
+          "incompatible": 0,
+          "issues": [],
+          "total_deps": 0,
+          "warnings": 0
+        },
+        "detected_license": null,
+        "findings": [
+          {
+            "code": "MISSING_LICENSE_FILE",
+            "level": "error",
+            "message": "LICENSE not found at /home/sal/termtv/LICENSE",
+            "path": "LICENSE"
+          },
+          {
+            "code": "MISSING_SPDX_MANIFEST",
+            "level": "warning",
+            "message": "SPDX manifest not found at .lwoodz/manifest.json — run `lwoodz generate`",
+            "path": ".lwoodz/manifest.json"
+          },
+          {
+            "code": "MISSING_HEADERS",
+            "level": "warning",
+            "message": "20 of 20 source files missing copyright/SPDX headers",
+            "path": null
+          }
+        ],
+        "generated_at": "2026-08-27T13:19:40.824647667+00:00",
+        "has_license_file": false,
+        "header_coverage": {
+          "missing": 20,
+          "total_files": 20,
+          "with_header": 0
+        },
+        "holder": "Your Name",
+        "passed": false,
+        "project_license": "MIT",
+        "spdx_manifest_exists": false,
+        "spdx_valid": true,
+        "year": 2026
+      }
+    },
+    {
+      "tool": "tempcheq",
+      "purpose": "LLM sampling-temperature correctness",
+      "status": "not_applicable",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 0
+      },
+      "binary": "/home/sal/.local/bin/tempcheq",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 2229,
+      "summary": "not applicable: no inference actions found",
+      "findings": [],
+      "note": "zero observations do not establish project health and are excluded from scoring",
+      "raw": {
+        "actions": [],
+        "implicit_default": 0,
+        "inapplicable": 0,
+        "material_deviations": 0,
+        "temperature_controlled": 0,
+        "total_actions": 0,
+        "workspace": "/home/sal/termtv"
+      }
+    },
+    {
+      "tool": "traci",
+      "purpose": "observability/telemetry completeness",
+      "status": "fail",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 25
+      },
+      "binary": "/home/sal/.local/bin/traci",
+      "score": null,
+      "grade": null,
+      "exit_code": 2,
+      "duration_ms": 2175,
+      "summary": "20 files, 25 observability diagnostics: 12 critical, 12 error-severity, 1 warning-severity, 0 info",
+      "findings": [
+        "[observability/critical] TRC007 /home/sal/termtv/src/framebuffer.rs:24 — panic path cannot be reconstructed from telemetry",
+        "[observability/critical] TRC007 /home/sal/termtv/src/source.rs:332 — panic path cannot be reconstructed from telemetry",
+        "[observability/critical] TRC007 /home/sal/termtv/tests/cli_help.rs:9 — panic path cannot be reconstructed from telemetry",
+        "[observability/critical] TRC007 /home/sal/termtv/tests/ttv1_round_trip.rs:24 — panic path cannot be reconstructed from telemetry",
+        "[observability/critical] TRC007 /home/sal/termtv/tests/ttv1_round_trip.rs:25 — panic path cannot be reconstructed from telemetry"
+      ],
+      "note": "observability diagnostics are not assigned a project-health score because Traci does not expose a total opportunity/coverage denominator; Poka's stale generator was repaired with the current native `traci` initializer; created traci.toml",
+      "raw": {
+        "diagnostics": [
+          {
+            "column": 13,
+            "line": 24,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/termtv/src/framebuffer.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".expect(\"framebuffer dimensions overflow\");"
+          },
+          {
+            "column": 9,
+            "line": 24,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/termtv/src/main.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let _ = Command::new(\"stty\").arg(\"sane\").status();"
+          },
+          {
+            "column": 9,
+            "line": 25,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/termtv/src/main.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let _ = std::io::stdout().write_all(b\"\\x1b[?25h\");"
+          },
+          {
+            "column": 5,
+            "line": 58,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/termtv/src/platform.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let _ = std::fs::remove_file(camera_stop_path(pid));"
+          },
+          {
+            "column": 13,
+            "line": 50,
+            "message": "failure path has no nearby structured diagnostic event",
+            "path": "/home/sal/termtv/src/source.rs",
+            "rule": "TRC001",
+            "severity": "error",
+            "snippet": "return Err(TermtvError::Io(io::Error::new("
+          },
+          {
+            "column": 9,
+            "line": 319,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/termtv/src/source.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let _ = video.wait();"
+          },
+          {
+            "column": 9,
+            "line": 320,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/termtv/src/source.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let _ = reap_child(&mut audio, \"source_audio\");"
+          },
+          {
+            "column": 13,
+            "line": 332,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/termtv/src/source.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "PassOutcome::Seek(seek_to.expect(\"seek_to is Some in this branch\"))"
+          },
+          {
+            "column": 9,
+            "line": 39,
+            "message": "event has no structured contextual fields",
+            "path": "/home/sal/termtv/src/video.rs",
+            "rule": "TRC004",
+            "severity": "warning",
+            "snippet": "crate::trace!(\"opening video path={}\", path.display());"
+          },
+          {
+            "column": 25,
+            "line": 333,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/termtv/src/video.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let _ = child.kill();"
+          },
+          {
+            "column": 25,
+            "line": 334,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/termtv/src/video.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let _ = child.wait();"
+          },
+          {
+            "column": 17,
+            "line": 372,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/termtv/src/video.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let _ = child.kill();"
+          },
+          {
+            "column": 17,
+            "line": 373,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/termtv/src/video.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let _ = child.wait();"
+          },
+          {
+            "column": 5,
+            "line": 9,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/termtv/tests/cli_help.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let output = command.output().expect(\"cargo run should succeed\");"
+          },
+          {
+            "column": 5,
+            "line": 11,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/termtv/tests/ttv1_round_trip.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let _ = std::fs::remove_file(&tmp);"
+          },
+          {
+            "column": 9,
+            "line": 24,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/termtv/tests/ttv1_round_trip.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let mut file = File::create(&tmp).unwrap();"
+          },
+          {
+            "column": 9,
+            "line": 25,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/termtv/tests/ttv1_round_trip.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "file.write_all(b\"TTV1\").unwrap();"
+          },
+          {
+            "column": 9,
+            "line": 26,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/termtv/tests/ttv1_round_trip.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "file.write_all(&(width as u16).to_le_bytes()).unwrap();"
+          },
+          {
+            "column": 9,
+            "line": 27,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/termtv/tests/ttv1_round_trip.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "file.write_all(&(height as u16).to_le_bytes()).unwrap();"
+          },
+          {
+            "column": 9,
+            "line": 28,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/termtv/tests/ttv1_round_trip.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "file.write_all(&(30_000_u32).to_le_bytes()).unwrap();"
+          },
+          {
+            "column": 9,
+            "line": 29,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/termtv/tests/ttv1_round_trip.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "file.write_all(&2_u64.to_le_bytes()).unwrap();"
+          },
+          {
+            "column": 21,
+            "line": 33,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/termtv/tests/ttv1_round_trip.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".unwrap();"
+          },
+          {
+            "column": 21,
+            "line": 35,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/termtv/tests/ttv1_round_trip.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 40,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/termtv/tests/ttv1_round_trip.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let video = Video::open(&tmp).unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 48,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/termtv/tests/ttv1_round_trip.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let _ = std::fs::remove_file(&tmp);"
+          }
+        ],
+        "summary": {
+          "critical": 12,
+          "diagnostics": 25,
+          "errors": 12,
+          "files": 20,
+          "info": 0,
+          "warnings": 1
+        }
+      }
+    },
+    {
+      "tool": "vamos",
+      "purpose": "nominal vs. validated action completion",
+      "status": "skipped",
+      "availability": "not_checked",
+      "execution": "skipped",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": null,
+      "duration_ms": null,
+      "summary": "skipped",
+      "findings": [],
+      "note": "no vamos.toml in project root; vamos hasn't been adopted here yet — run `vamos init` in the target to start tracking action lifecycles",
+      "raw": null
+    }
+  ],
+  "overall": {
+    "score": 73.0,
+    "grade": "C",
+    "graded_tools": 3,
+    "total_tools": 12,
+    "weights": [
+      [
+        "chakra",
+        1.0
+      ],
+      [
+        "fract",
+        1.0
+      ],
+      [
+        "lwoodz",
+        1.0
+      ]
+    ],
+    "provisional": true
+  },
+  "suite": {
+    "required_tools": 9,
+    "available_tools": 9,
+    "executed_tools": 7,
+    "valid_results": 7,
+    "analysis_coverage": 0.4878048780487805,
+    "confidence": 1.0
+  },
+  "integrity": {
+    "status": "failed",
+    "score": 77.77777777777779,
+    "grade": "C+",
+    "defects": [
+      "amber: error",
+      "ferret: error"
+    ]
+  }
+}

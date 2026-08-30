@@ -1,0 +1,1118 @@
+{
+  "schema": "uni.report/v3",
+  "target": "/home/sal/verity",
+  "generated_at": "2026-08-27T13:07:11.631153210+00:00",
+  "tools_dir": "/home/sal",
+  "tools": [
+    {
+      "tool": "amber",
+      "purpose": "dependency bloat / replaceability",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 3
+      },
+      "binary": "/home/sal/.local/bin/amber",
+      "score": 80.0,
+      "grade": "B-",
+      "exit_code": 1,
+      "duration_ms": 2602,
+      "summary": "3 dependencies analyzed: 1 keep/security-block, 1 propose, 1 proceed",
+      "findings": [
+        "serde: security_block (replaceability 20)",
+        "clap: propose (replaceability 70)"
+      ],
+      "note": null,
+      "raw": {
+        "amber_version": "0.3.0",
+        "results": [
+          {
+            "crate": "clap",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 90% (1 unique APIs from 1 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 50% (category: cli)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 80,
+                "transitive_value": 65,
+                "usage_simplicity": 90
+              },
+              "overall": 70,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 1,
+              "imported_items": 1,
+              "is_trivial": true,
+              "unique_apis": 1
+            },
+            "version": "4.6.6"
+          },
+          {
+            "crate": "serde",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 90% (1 unique APIs from 2 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 0% (category: serialization)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~3% of public APIs)",
+              "Category rule applied: NEVER_REPLACE list match",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 0,
+                "testability": 80,
+                "transitive_value": 55,
+                "usage_simplicity": 90
+              },
+              "overall": 20,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 2,
+              "imported_items": 1,
+              "is_trivial": true,
+              "unique_apis": 1
+            },
+            "version": "1.0.229"
+          },
+          {
+            "crate": "serde_json",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 70% (0 unique APIs from 0 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 50% (category: serialization)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 85% (0 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 100% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Safe to Replace",
+              "classification_stars": "★★★★★",
+              "confidence": 100,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 85,
+                "transitive_value": 65,
+                "usage_simplicity": 70
+              },
+              "overall": 65,
+              "recommendation": "proceed"
+            },
+            "usage": {
+              "affected_files": 0,
+              "call_sites": 0,
+              "imported_items": 0,
+              "is_trivial": true,
+              "unique_apis": 0
+            },
+            "version": "1.0.151"
+          }
+        ],
+        "total_dependencies": 3
+      }
+    },
+    {
+      "tool": "ami",
+      "purpose": "project profile completeness (market-intelligence readiness)",
+      "status": "skipped",
+      "availability": "not_checked",
+      "execution": "skipped",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": null,
+      "duration_ms": null,
+      "summary": "skipped",
+      "findings": [],
+      "note": "ami is opt-in because project profiling is not code health; use `--only ami` when its installed build exposes JSON output",
+      "raw": null
+    },
+    {
+      "tool": "bart",
+      "purpose": "filesystem size & hotspots (informational)",
+      "status": "ok",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/usr/bin/bart",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 43,
+      "summary": "30 files, 91.5 KB under root",
+      "findings": [
+        "/home/sal/verity/.kaptaind: 36.1 KB",
+        "/home/sal/verity/src: 22.5 KB",
+        "/home/sal/verity/.github: 9.0 KB",
+        "/home/sal/verity/Cargo.lock: 6.3 KB",
+        "/home/sal/verity/.claude: 4.6 KB"
+      ],
+      "note": "informational only — bart measures disk usage, not code health",
+      "raw": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787764415,
+                "path": "/home/sal/verity/.kaptaind/traces.db",
+                "size": 16384
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 0,
+                    "is_dir": true,
+                    "modified": 1787764415,
+                    "path": "/home/sal/verity/.kaptaind/vacs/assets",
+                    "size": 4096
+                  }
+                ],
+                "depth": 2,
+                "file_count": 0,
+                "is_dir": true,
+                "modified": 1787764415,
+                "path": "/home/sal/verity/.kaptaind/vacs",
+                "size": 8192
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787764419,
+                    "path": "/home/sal/verity/.kaptaind/analysis/65422d32-9fe6-4004-881d-e7f62e4cdfdd.json",
+                    "size": 796
+                  }
+                ],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": true,
+                "modified": 1787764419,
+                "path": "/home/sal/verity/.kaptaind/analysis",
+                "size": 4892
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787835113,
+                "path": "/home/sal/verity/.kaptaind/daemon.out",
+                "size": 1732
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787764419,
+                "path": "/home/sal/verity/.kaptaind/telemetry.json",
+                "size": 546
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787764420,
+                "path": "/home/sal/verity/.kaptaind/decisions.jsonl",
+                "size": 462
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787764420,
+                "path": "/home/sal/verity/.kaptaind/audit.jsonl",
+                "size": 258
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787836028,
+                "path": "/home/sal/verity/.kaptaind/status.json",
+                "size": 173
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787764419,
+                "path": "/home/sal/verity/.kaptaind/version_cache.json",
+                "size": 134
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787764420,
+                "path": "/home/sal/verity/.kaptaind/audit.chain.jsonl",
+                "size": 120
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787827911,
+                "path": "/home/sal/verity/.kaptaind/daemon.pid",
+                "size": 5
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787827911,
+                "path": "/home/sal/verity/.kaptaind/daemon.err",
+                "size": 0
+              }
+            ],
+            "depth": 1,
+            "file_count": 11,
+            "is_dir": true,
+            "modified": 1787836028,
+            "path": "/home/sal/verity/.kaptaind",
+            "size": 36994
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787760222,
+                "path": "/home/sal/verity/src/main.rs",
+                "size": 13082
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787760156,
+                "path": "/home/sal/verity/src/rules.rs",
+                "size": 5852
+              }
+            ],
+            "depth": 1,
+            "file_count": 2,
+            "is_dir": true,
+            "modified": 1787760204,
+            "path": "/home/sal/verity/src",
+            "size": 23030
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787760283,
+                    "path": "/home/sal/verity/.github/workflows/secret-scan.yml",
+                    "size": 260
+                  }
+                ],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": true,
+                "modified": 1787760283,
+                "path": "/home/sal/verity/.github/workflows",
+                "size": 4356
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787760283,
+                "path": "/home/sal/verity/.github/copilot-instructions.md",
+                "size": 648
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787760288,
+                "path": "/home/sal/verity/.github/dependabot.yml",
+                "size": 109
+              }
+            ],
+            "depth": 1,
+            "file_count": 3,
+            "is_dir": true,
+            "modified": 1787760288,
+            "path": "/home/sal/verity/.github",
+            "size": 9209
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787764419,
+            "path": "/home/sal/verity/Cargo.lock",
+            "size": 6484
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787760283,
+                "path": "/home/sal/verity/.claude/CLAUDE.md",
+                "size": 637
+              }
+            ],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": true,
+            "modified": 1787760283,
+            "path": "/home/sal/verity/.claude",
+            "size": 4733
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787760256,
+            "path": "/home/sal/verity/README.md",
+            "size": 2774
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787763260,
+            "path": "/home/sal/verity/kaptaind.toml",
+            "size": 2065
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787760242,
+            "path": "/home/sal/verity/LICENSE",
+            "size": 1067
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787836029,
+            "path": "/home/sal/verity/traci.toml",
+            "size": 955
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787760283,
+            "path": "/home/sal/verity/AGENTS.md",
+            "size": 637
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787760283,
+            "path": "/home/sal/verity/poka.lock",
+            "size": 536
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787764419,
+            "path": "/home/sal/verity/Cargo.toml",
+            "size": 467
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787760288,
+            "path": "/home/sal/verity/SECURITY.md",
+            "size": 455
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787836028,
+            "path": "/home/sal/verity/poka.toml",
+            "size": 165
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787763252,
+            "path": "/home/sal/verity/.kaptainignore",
+            "size": 61
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787760266,
+            "path": "/home/sal/verity/.gitignore",
+            "size": 8
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787764419,
+            "path": "/home/sal/verity/VERSION",
+            "size": 5
+          }
+        ],
+        "depth": 0,
+        "file_count": 30,
+        "is_dir": true,
+        "modified": 1787836029,
+        "path": "/home/sal/verity",
+        "size": 93741
+      }
+    },
+    {
+      "tool": "chakra",
+      "purpose": "data-flow / architecture map coverage",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": 0.06666666666666667,
+        "confidence": 1.0,
+        "observations": 7
+      },
+      "binary": "/home/sal/.local/bin/chakra",
+      "score": 53.333333333333336,
+      "grade": "F",
+      "exit_code": 0,
+      "duration_ms": 38,
+      "summary": "6 nodes, 7 flows; coverage 6.7% (2/30 files), confidence 100.0%",
+      "findings": [
+        "7 flow(s) with provenance=observed"
+      ],
+      "note": null,
+      "raw": {
+        "boundaries": [],
+        "events": [],
+        "evidence": [
+          {
+            "detail": "clap::Parser",
+            "file": "src/main.rs",
+            "id": "ev-0001",
+            "kind": "rust_use",
+            "line": 18
+          },
+          {
+            "detail": "serde::Serialize",
+            "file": "src/main.rs",
+            "id": "ev-0002",
+            "kind": "rust_use",
+            "line": 20
+          },
+          {
+            "detail": "std::fs",
+            "file": "src/main.rs",
+            "id": "ev-0003",
+            "kind": "rust_use",
+            "line": 21
+          },
+          {
+            "detail": "std::path::",
+            "file": "src/main.rs",
+            "id": "ev-0004",
+            "kind": "rust_use",
+            "line": 22
+          },
+          {
+            "detail": "rules::",
+            "file": "src/main.rs",
+            "id": "ev-0005",
+            "kind": "rust_use",
+            "line": 25
+          },
+          {
+            "detail": "super::",
+            "file": "src/main.rs",
+            "id": "ev-0006",
+            "kind": "rust_use",
+            "line": 335
+          },
+          {
+            "detail": "rules",
+            "file": "src/main.rs",
+            "id": "ev-0007",
+            "kind": "rust_mod",
+            "line": 23
+          }
+        ],
+        "flows": [
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0001"
+            ],
+            "id": "flow-0001",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:clap"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0002"
+            ],
+            "id": "flow-0002",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0003"
+            ],
+            "id": "flow-0003",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0004"
+            ],
+            "id": "flow-0004",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0005"
+            ],
+            "id": "flow-0005",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/main.rs",
+            "target": "file:src/rules.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0006"
+            ],
+            "id": "flow-0006",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/main.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0007"
+            ],
+            "id": "flow-0007",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/main.rs",
+            "target": "file:src/rules.rs"
+          }
+        ],
+        "inferences": [],
+        "metadata": {
+          "analyzed_file_count": 2,
+          "analyzers": [
+            "rust",
+            "javascript",
+            "typescript",
+            "python",
+            "go"
+          ],
+          "chakra_version": "0.3.33",
+          "duration_ms": 18,
+          "file_count": 30,
+          "languages": {
+            "rust": 2
+          }
+        },
+        "nodes": [
+          {
+            "id": "ext:rust:clap",
+            "kind": "external",
+            "language": "rust",
+            "name": "clap"
+          },
+          {
+            "id": "ext:rust:serde",
+            "kind": "external",
+            "language": "rust",
+            "name": "serde"
+          },
+          {
+            "id": "ext:rust:std",
+            "kind": "external",
+            "language": "rust",
+            "name": "std"
+          },
+          {
+            "id": "file:src/main.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/main.rs"
+          },
+          {
+            "id": "file:src/rules.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/rules.rs"
+          },
+          {
+            "id": "mod:rust:super::",
+            "kind": "module",
+            "language": "rust",
+            "name": "super::"
+          }
+        ],
+        "schema": "chakra.flow/v1",
+        "subject": {
+          "generated_at": "2026-08-27T13:07:09.054227045Z",
+          "path": "/home/sal/verity"
+        }
+      }
+    },
+    {
+      "tool": "ferret",
+      "purpose": "repository-specific review findings (hunt)",
+      "status": "error",
+      "availability": "installed",
+      "execution": "failed",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": 2,
+      "duration_ms": 63,
+      "summary": "error",
+      "findings": [],
+      "note": "produced no stdout; stderr: error: unexpected argument '/home/sal/verity' found\n\nUsage: ferret [OPTIONS] [TARGET] [COMMAND]\n\nFor more information, try '--help'.\n",
+      "raw": null
+    },
+    {
+      "tool": "fract",
+      "purpose": "module entropy, cohesion, duplication",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/home/sal/.local/bin/fract",
+      "score": 80.0,
+      "grade": "B-",
+      "exit_code": 0,
+      "duration_ms": 33,
+      "summary": "2 modules indexed: 0 excellent, 1 healthy, 1 warning, 0 critical",
+      "findings": [
+        "src/rules.rs: entropy 0.69 — Within entropy budget (0.69)",
+        "src/main.rs: entropy 0.62 — Within entropy budget (0.62)"
+      ],
+      "note": null,
+      "raw": {
+        "findings": [
+          {
+            "confidence": null,
+            "entropy": 0.6872734039636204,
+            "evidence": {
+              "cyclomatic": "1",
+              "duplicates": "24",
+              "fan_in": "0",
+              "fan_out": "0",
+              "functions": "1",
+              "health": "Warning",
+              "lines": "168",
+              "public_api": "11"
+            },
+            "id": "src/rules.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.69)",
+            "module": "src/rules.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.69 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6211632914652464,
+            "evidence": {
+              "cyclomatic": "40",
+              "duplicates": "22",
+              "fan_in": "0",
+              "fan_out": "6",
+              "functions": "19",
+              "health": "Healthy",
+              "lines": "410",
+              "public_api": "0"
+            },
+            "id": "src/main.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.62)",
+            "module": "src/main.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.62 below threshold 0.82"
+          }
+        ],
+        "root": "/home/sal/verity",
+        "schema": "fract.report/v1",
+        "summary": {
+          "critical": 0,
+          "excellent": 0,
+          "healthy": 1,
+          "score": 80,
+          "total": 2,
+          "warning": 1
+        }
+      }
+    },
+    {
+      "tool": "isopod",
+      "purpose": "ISO27001/27002 compliance posture",
+      "status": "no_data",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 0
+      },
+      "binary": "/home/sal/.local/bin/isopod",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 536,
+      "summary": "0/0 controls assessed (0.0% coverage): 0 pass, 0 warn, 0 fail, 0 unknown",
+      "findings": [],
+      "note": "coverage is 0.0%; compliance is ungraded below the 80% evidence threshold, and UNKNOWN controls are not treated as failures",
+      "raw": []
+    },
+    {
+      "tool": "jeenome",
+      "purpose": "behavioural trace analysis (opt-in)",
+      "status": "skipped",
+      "availability": "not_checked",
+      "execution": "skipped",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": null,
+      "duration_ms": null,
+      "summary": "skipped",
+      "findings": [],
+      "note": "jeenome is opt-in (needs an strace trace, not just a project path); pass --jeenome to include it",
+      "raw": null
+    },
+    {
+      "tool": "lwoodz",
+      "purpose": "license / SPDX compliance",
+      "status": "ok",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/home/sal/lwoodz/target/debug/lwoodz",
+      "score": 100.0,
+      "grade": "A+",
+      "exit_code": 0,
+      "duration_ms": 985,
+      "summary": "license=MIT, spdx_valid=true, header coverage 2/2, 0 incompatible / 0 warning issues among 28 deps",
+      "findings": [],
+      "note": "advisory warning deductions are proportional to dependency count; missing licenses and incompatible dependencies remain hard findings; lwoodz.toml was missing; `poka apply` failed (poka apply exited Some(101): thread 'main' (198215) panicked at crates/poka-core/src/index.rs:99:33: external generator 'lwoodz' failed: external generator 'lwoodz' exited with exit status: 2: error: unexpected argument '--init' found Usage: lwoodz [OPTIONS] [COMMAND] ); assessment still ran",
+      "raw": {
+        "compatibility": {
+          "incompatible": 0,
+          "issues": [],
+          "total_deps": 28,
+          "warnings": 0
+        },
+        "detected_license": "MIT",
+        "findings": [
+          {
+            "code": "MISSING_SPDX_MANIFEST",
+            "level": "warning",
+            "message": "SPDX manifest not found at .lwoodz/manifest.json — run `lwoodz generate`",
+            "path": ".lwoodz/manifest.json"
+          }
+        ],
+        "generated_at": "2026-08-27T13:07:10.108357232+00:00",
+        "has_license_file": true,
+        "header_coverage": {
+          "missing": 0,
+          "total_files": 2,
+          "with_header": 2
+        },
+        "holder": "Your Name",
+        "passed": true,
+        "project_license": "MIT",
+        "spdx_manifest_exists": false,
+        "spdx_valid": true,
+        "year": 2026
+      }
+    },
+    {
+      "tool": "tempcheq",
+      "purpose": "LLM sampling-temperature correctness",
+      "status": "not_applicable",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 0
+      },
+      "binary": "/home/sal/.local/bin/tempcheq",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 74,
+      "summary": "not applicable: no inference actions found",
+      "findings": [],
+      "note": "zero observations do not establish project health and are excluded from scoring",
+      "raw": {
+        "actions": [],
+        "implicit_default": 0,
+        "inapplicable": 0,
+        "material_deviations": 0,
+        "temperature_controlled": 0,
+        "total_actions": 0,
+        "workspace": "/home/sal/verity"
+      }
+    },
+    {
+      "tool": "traci",
+      "purpose": "observability/telemetry completeness",
+      "status": "fail",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 1
+      },
+      "binary": "/home/sal/.local/bin/traci",
+      "score": null,
+      "grade": null,
+      "exit_code": 2,
+      "duration_ms": 33,
+      "summary": "2 files, 1 observability diagnostics: 1 critical, 0 error-severity, 0 warning-severity, 0 info",
+      "findings": [
+        "[observability/critical] TRC007 /home/sal/verity/src/main.rs:309 — panic path cannot be reconstructed from telemetry"
+      ],
+      "note": "observability diagnostics are not assigned a project-health score because Traci does not expose a total opportunity/coverage denominator; Poka's stale generator was repaired with the current native `traci` initializer; created traci.toml",
+      "raw": {
+        "diagnostics": [
+          {
+            "column": 9,
+            "line": 309,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/verity/src/main.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "println!(\"{}\", serde_json::to_string_pretty(report).unwrap());"
+          }
+        ],
+        "summary": {
+          "critical": 1,
+          "diagnostics": 1,
+          "errors": 0,
+          "files": 2,
+          "info": 0,
+          "warnings": 0
+        }
+      }
+    },
+    {
+      "tool": "vamos",
+      "purpose": "nominal vs. validated action completion",
+      "status": "skipped",
+      "availability": "not_checked",
+      "execution": "skipped",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": null,
+      "duration_ms": null,
+      "summary": "skipped",
+      "findings": [],
+      "note": "no vamos.toml in project root; vamos hasn't been adopted here yet — run `vamos init` in the target to start tracking action lifecycles",
+      "raw": null
+    }
+  ],
+  "overall": {
+    "score": 78.33333333333334,
+    "grade": "C+",
+    "graded_tools": 4,
+    "total_tools": 12,
+    "weights": [
+      [
+        "amber",
+        1.0
+      ],
+      [
+        "chakra",
+        1.0
+      ],
+      [
+        "fract",
+        1.0
+      ],
+      [
+        "lwoodz",
+        1.0
+      ]
+    ],
+    "provisional": true
+  },
+  "suite": {
+    "required_tools": 9,
+    "available_tools": 9,
+    "executed_tools": 8,
+    "valid_results": 8,
+    "analysis_coverage": 0.06666666666666667,
+    "confidence": 1.0
+  },
+  "integrity": {
+    "status": "degraded",
+    "score": 88.88888888888889,
+    "grade": "B+",
+    "defects": [
+      "ferret: error"
+    ]
+  }
+}

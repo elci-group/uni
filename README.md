@@ -4,12 +4,17 @@ Uni runs a deterministic, concurrent analysis suite against one project and
 normalizes each application's output into a single graded report.
 
 The default suite is Amber, Bart, Chakra, Ferret hunt, Fract, Isopod, Lwoodz,
-Tempcheq, Traci, and Vamos. AMI is opt-in via `--only ami`: project-profile
-completeness is not code health, and Uni requires a JSON-capable AMI rather
-than scraping its human table. Jeenome is opt-in because it requires an
-`strace` trace. Ferret hunt prefers Ferret's `hunt` operation and supports
+Tempcheq, Traci, Vamos, and Viva Palestina. AMI is opt-in via `--only ami`:
+project-profile completeness is not code health, and Uni requires a JSON-capable
+AMI rather than scraping its human table. Jeenome is opt-in because it requires
+an `strace` trace. Ferret hunt prefers Ferret's `hunt` operation and supports
 builds that call it `track`; it uses an in-memory corpus, so the analysis does
 not write `ferret.db` into the target.
+
+Each tool has a custom emoji badge, generated with
+[xpressive](https://github.com/elci-group/xpressive)'s `.xpr` vector format —
+see [`docs/tool-badges.md`](docs/tool-badges.md). The terminal report itself
+still uses plain Unicode emoji; the badges are documentation-only.
 
 ## Usage
 
@@ -24,6 +29,11 @@ cargo run -- revise --apply /path/to/project
 
 Use `--skip` to exclude applications and `--tools-dir` to choose where sibling
 application repositories live.
+
+Pass `-v`/`-vv`/`-vvv` (or set `RUST_LOG`, e.g. `RUST_LOG=uni=debug`) to see
+diagnostic logging on stderr: the exact command run per tool, full stderr on
+failure, and why a tool was judged incompatible. This never mixes into
+`--json`/`--out` output.
 
 ## Cohort mode
 
@@ -112,6 +122,45 @@ or major findings fail the Ferret check; lower-severity findings warn.
 Lwoodz treats missing licenses and incompatible dependencies as hard findings.
 Advisory compatibility warnings are deducted proportionally to dependency
 count, so a large dependency tree is not penalized once per attribution notice.
+
+Viva Palestina flags excluded vendors as hard findings and review vendors as
+warnings; the score scales with the fraction of dependencies affected, and
+unknown vendors are noted but not penalized.
+
+## Experiments
+
+`uni experiments` evaluates candidate branches against an explicit baseline
+(default: the repository's default branch). It isolates each revision in a git
+worktree, runs the standard UNI analysis plus `cargo check`/`cargo test`, and
+produces a differential verdict:
+
+```bash
+uni experiments                          # discover and analyze all candidates
+uni experiments --list                   # list discovered candidates
+uni experiments --branch dependabot/...  # analyze a specific branch
+uni experiments --baseline main --branch feature/x
+uni experiments --json                   # machine-readable report
+```
+
+The subsystem is read-only: it never merges, pushes, deletes branches, or
+rewrites history. Experiment records are written to `.uni/experiments/<id>/`
+for auditability. Verdicts include `SUPERIOR`, `LIKELY_SUPERIOR`, `EQUIVALENT`,
+`UNCERTAIN`, `LIKELY_INFERIOR`, `INFERIOR`, and `BLOCKED`; correctness and
+security failures are hard gates that block adoption regardless of aggregate
+score.
+
+Policy gates let `uni experiments` act as a CI check:
+
+```bash
+uni experiments --minimum-confidence 0.8 --minimum-improvement 2.0
+```
+
+Structured telemetry events (`experiment.discovered`, `experiment.started`,
+`experiment.analysis_completed`, `experiment.verdict_produced`, etc.) are emitted
+as JSON lines on stderr for observability pipelines.
+
+When `gh` is available, `uni experiments` associates candidates with open pull
+requests and includes CI status rollup in the report.
 
 ## Development
 

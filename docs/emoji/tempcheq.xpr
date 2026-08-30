@@ -1,0 +1,385 @@
+{
+  "header": {
+    "spec_version": "0.1.0"
+  },
+  "identity": {
+    "namespace": "example",
+    "asset_id": "thermometer_001"
+  },
+  "metadata": {
+    "name": "Thermometer with Glowing Checkmark",
+    "aliases": [],
+    "tags": [
+      "thermometer",
+      "gradient",
+      "checkmark",
+      "glow"
+    ]
+  },
+  "canvas": {
+    "size": 1024
+  },
+  "layers": [
+    {
+      "name": "thermometer",
+      "opacity": 255,
+      "blend": "normal",
+      "paths": [
+        {
+          "feature": "outline",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 492,
+              "y": 100
+            },
+            {
+              "op": "line_to",
+              "x": 532,
+              "y": 100
+            },
+            {
+              "op": "line_to",
+              "x": 532,
+              "y": 720
+            },
+            {
+              "op": "line_to",
+              "x": 492,
+              "y": 720
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": null,
+          "stroke": {
+            "color": {
+              "r": 80,
+              "g": 80,
+              "b": 80,
+              "a": 255
+            },
+            "width": 4,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "gradient_top",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 496,
+              "y": 100
+            },
+            {
+              "op": "line_to",
+              "x": 528,
+              "y": 100
+            },
+            {
+              "op": "line_to",
+              "x": 528,
+              "y": 255
+            },
+            {
+              "op": "line_to",
+              "x": 496,
+              "y": 255
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 255,
+              "g": 0,
+              "b": 0,
+              "a": 255
+            }
+          },
+          "stroke": null,
+          "opacity": 255
+        },
+        {
+          "feature": "gradient_mid1",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 496,
+              "y": 255
+            },
+            {
+              "op": "line_to",
+              "x": 528,
+              "y": 255
+            },
+            {
+              "op": "line_to",
+              "x": 528,
+              "y": 410
+            },
+            {
+              "op": "line_to",
+              "x": 496,
+              "y": 410
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 255,
+              "g": 165,
+              "b": 0,
+              "a": 255
+            }
+          },
+          "stroke": null,
+          "opacity": 255
+        },
+        {
+          "feature": "gradient_mid2",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 496,
+              "y": 410
+            },
+            {
+              "op": "line_to",
+              "x": 528,
+              "y": 410
+            },
+            {
+              "op": "line_to",
+              "x": 528,
+              "y": 565
+            },
+            {
+              "op": "line_to",
+              "x": 496,
+              "y": 565
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 0,
+              "a": 255
+            }
+          },
+          "stroke": null,
+          "opacity": 255
+        },
+        {
+          "feature": "gradient_bottom",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 496,
+              "y": 565
+            },
+            {
+              "op": "line_to",
+              "x": 528,
+              "y": 565
+            },
+            {
+              "op": "line_to",
+              "x": 528,
+              "y": 720
+            },
+            {
+              "op": "line_to",
+              "x": 496,
+              "y": 720
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 255,
+              "a": 255
+            }
+          },
+          "stroke": null,
+          "opacity": 255
+        },
+        {
+          "feature": "bulb",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 552,
+              "y": 760
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 552,
+              "c1y": 738,
+              "c2x": 534,
+              "c2y": 720,
+              "x": 512,
+              "y": 720
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 490,
+              "c1y": 720,
+              "c2x": 472,
+              "c2y": 738,
+              "x": 472,
+              "y": 760
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 472,
+              "c1y": 782,
+              "c2x": 490,
+              "c2y": 800,
+              "x": 512,
+              "y": 800
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 534,
+              "c1y": 800,
+              "c2x": 552,
+              "c2y": 782,
+              "x": 552,
+              "y": 760
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 255,
+              "a": 255
+            }
+          },
+          "stroke": null,
+          "opacity": 255
+        }
+      ]
+    },
+    {
+      "name": "checkmark",
+      "opacity": 255,
+      "blend": "normal",
+      "paths": [
+        {
+          "feature": "checkmark_glow",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 500,
+              "y": 460
+            },
+            {
+              "op": "line_to",
+              "x": 510,
+              "y": 480
+            },
+            {
+              "op": "line_to",
+              "x": 540,
+              "y": 420
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": null,
+          "stroke": {
+            "color": {
+              "r": 0,
+              "g": 255,
+              "b": 0,
+              "a": 255
+            },
+            "width": 24,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "checkmark",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 500,
+              "y": 460
+            },
+            {
+              "op": "line_to",
+              "x": 510,
+              "y": 480
+            },
+            {
+              "op": "line_to",
+              "x": 540,
+              "y": 420
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 0,
+              "g": 255,
+              "b": 0,
+              "a": 255
+            }
+          },
+          "stroke": {
+            "color": {
+              "r": 0,
+              "g": 255,
+              "b": 0,
+              "a": 255
+            },
+            "width": 6,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        }
+      ]
+    }
+  ],
+  "semantics": {
+    "description": "a sleek thermometer with a smooth gradient from cool blue at the bottom to warm red at the top, and a solid green glowing checkmark centered in the mercury column",
+    "emotion": "hopeful",
+    "intensity": 80
+  },
+  "variants": {
+    "tiny": null,
+    "text": null,
+    "standard": null,
+    "large": null,
+    "full": null
+  },
+  "compatibility": {
+    "min_spec_version": "0.1.0"
+  },
+  "provenance": null
+}

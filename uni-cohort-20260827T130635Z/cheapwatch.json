@@ -1,0 +1,4777 @@
+{
+  "schema": "uni.report/v3",
+  "target": "/home/sal/cheapwatch",
+  "generated_at": "2026-08-27T13:18:55.921758530+00:00",
+  "tools_dir": "/home/sal",
+  "tools": [
+    {
+      "tool": "amber",
+      "purpose": "dependency bloat / replaceability",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 20
+      },
+      "binary": "/home/sal/.local/bin/amber",
+      "score": 64.0,
+      "grade": "D",
+      "exit_code": 1,
+      "duration_ms": 24139,
+      "summary": "20 dependencies analyzed: 7 keep/security-block, 12 propose, 1 proceed",
+      "findings": [
+        "chrono: security_block (replaceability 68)",
+        "rusqlite: security_block (replaceability 47)",
+        "serde: security_block (replaceability 20)",
+        "sha2: security_block (replaceability 20)",
+        "tokio: security_block (replaceability 20)"
+      ],
+      "note": null,
+      "raw": {
+        "amber_version": "0.3.0",
+        "results": [
+          {
+            "crate": "axum",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 65% (10 unique APIs from 5 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: networking)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 55% (3 affected files)",
+              "API surface: 70% (using ~22% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 70% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 70,
+              "dimensions": {
+                "api_surface": 70,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 55,
+                "transitive_value": 55,
+                "usage_simplicity": 65
+              },
+              "overall": 57,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 3,
+              "call_sites": 5,
+              "imported_items": 10,
+              "is_trivial": false,
+              "unique_apis": 10
+            },
+            "version": "0.8.9"
+          },
+          {
+            "crate": "chrono",
+            "metadata": {
+              "cve_count": 1,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 85% (2 unique APIs from 4 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 15% (category: datetime)",
+              "Maintenance burden: 35% (1 CVEs, score: 50)",
+              "Testability: 70% (3 affected files)",
+              "API surface: 90% (using ~3% of public APIs)",
+              "Category rule applied: FREQUENTLY_REPLACEABLE list match",
+              "Confidence: 80% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 80,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 35,
+                "security_safety": 15,
+                "testability": 70,
+                "transitive_value": 65,
+                "usage_simplicity": 85
+              },
+              "overall": 68,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 3,
+              "call_sites": 4,
+              "imported_items": 6,
+              "is_trivial": true,
+              "unique_apis": 2
+            },
+            "version": "0.4.45"
+          },
+          {
+            "crate": "clap",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 85% (2 unique APIs from 2 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 50% (category: cli)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 80,
+                "transitive_value": 65,
+                "usage_simplicity": 85
+              },
+              "overall": 68,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 2,
+              "imported_items": 2,
+              "is_trivial": true,
+              "unique_apis": 2
+            },
+            "version": "4.6.2"
+          },
+          {
+            "crate": "criterion",
+            "metadata": {
+              "cve_count": 0,
+              "license": "Apache-2.0 OR MIT",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 65% (4 unique APIs from 0 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 65% (1 affected files)",
+              "API surface: 90% (using ~9% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 75% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 75,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 65,
+                "transitive_value": 55,
+                "usage_simplicity": 65
+              },
+              "overall": 60,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 0,
+              "imported_items": 4,
+              "is_trivial": false,
+              "unique_apis": 4
+            },
+            "version": "0.5.1"
+          },
+          {
+            "crate": "hex",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 50% (0 unique APIs from 2 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 80,
+                "transitive_value": 55,
+                "usage_simplicity": 50
+              },
+              "overall": 58,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 2,
+              "imported_items": 0,
+              "is_trivial": true,
+              "unique_apis": 0
+            },
+            "version": "0.4.3"
+          },
+          {
+            "crate": "home",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 50% (0 unique APIs from 4 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 65% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: FREQUENTLY_REPLACEABLE list match",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 65,
+                "testability": 80,
+                "transitive_value": 55,
+                "usage_simplicity": 50
+              },
+              "overall": 71,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 4,
+              "imported_items": 0,
+              "is_trivial": true,
+              "unique_apis": 0
+            },
+            "version": "0.5.12"
+          },
+          {
+            "crate": "notify",
+            "metadata": {
+              "cve_count": 0,
+              "license": "CC0-1.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 65% (5 unique APIs from 2 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 55% (2 affected files)",
+              "API surface: 40% (using ~33% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 70% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Medium Risk",
+              "classification_stars": "★★★☆☆",
+              "confidence": 70,
+              "dimensions": {
+                "api_surface": 40,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 55,
+                "transitive_value": 55,
+                "usage_simplicity": 65
+              },
+              "overall": 54,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 2,
+              "call_sites": 2,
+              "imported_items": 5,
+              "is_trivial": false,
+              "unique_apis": 5
+            },
+            "version": "8.2.0"
+          },
+          {
+            "crate": "reqwest",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 75% (1 unique APIs from 10 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 50% (category: networking)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 65% (1 affected files)",
+              "API surface: 90% (using ~7% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 80% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 80,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 65,
+                "transitive_value": 65,
+                "usage_simplicity": 75
+              },
+              "overall": 64,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 10,
+              "imported_items": 1,
+              "is_trivial": false,
+              "unique_apis": 1
+            },
+            "version": "0.12.28"
+          },
+          {
+            "crate": "rusqlite",
+            "metadata": {
+              "cve_count": 2,
+              "license": "MIT",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 75% (3 unique APIs from 5 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 0% (category: general)",
+              "Maintenance burden: 25% (2 CVEs, score: 50)",
+              "Testability: 55% (2 affected files)",
+              "API surface: 90% (using ~2% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 80% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 80,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 25,
+                "security_safety": 0,
+                "testability": 55,
+                "transitive_value": 55,
+                "usage_simplicity": 75
+              },
+              "overall": 47,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 2,
+              "call_sites": 5,
+              "imported_items": 3,
+              "is_trivial": false,
+              "unique_apis": 3
+            },
+            "version": "0.34.0"
+          },
+          {
+            "crate": "serde",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 65% (2 unique APIs from 34 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 0% (category: serialization)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 55% (4 affected files)",
+              "API surface: 90% (using ~7% of public APIs)",
+              "Category rule applied: NEVER_REPLACE list match",
+              "Confidence: 65% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 65,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 0,
+                "testability": 55,
+                "transitive_value": 55,
+                "usage_simplicity": 65
+              },
+              "overall": 20,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 4,
+              "call_sites": 34,
+              "imported_items": 8,
+              "is_trivial": false,
+              "unique_apis": 2
+            },
+            "version": "1.0.228"
+          },
+          {
+            "crate": "serde_json",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 35% (0 unique APIs from 12 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 50% (category: serialization)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 55% (4 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 75% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Medium Risk",
+              "classification_stars": "★★★☆☆",
+              "confidence": 75,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 55,
+                "transitive_value": 65,
+                "usage_simplicity": 35
+              },
+              "overall": 53,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 4,
+              "call_sites": 12,
+              "imported_items": 0,
+              "is_trivial": false,
+              "unique_apis": 0
+            },
+            "version": "1.0.150"
+          },
+          {
+            "crate": "sha2",
+            "metadata": {
+              "cve_count": 1,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 85% (2 unique APIs from 0 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 0% (category: cryptography)",
+              "Maintenance burden: 35% (1 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~4% of public APIs)",
+              "Category rule applied: NEVER_REPLACE list match",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 35,
+                "security_safety": 0,
+                "testability": 80,
+                "transitive_value": 55,
+                "usage_simplicity": 85
+              },
+              "overall": 20,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 0,
+              "imported_items": 2,
+              "is_trivial": true,
+              "unique_apis": 2
+            },
+            "version": "0.10.9"
+          },
+          {
+            "crate": "tempfile",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 90% (1 unique APIs from 2 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 70% (4 affected files)",
+              "API surface: 90% (using ~1% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 80% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 80,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 70,
+                "transitive_value": 55,
+                "usage_simplicity": 90
+              },
+              "overall": 67,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 4,
+              "call_sites": 2,
+              "imported_items": 3,
+              "is_trivial": true,
+              "unique_apis": 1
+            },
+            "version": "3.27.0"
+          },
+          {
+            "crate": "thiserror",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 90% (1 unique APIs from 1 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 65% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: FREQUENTLY_REPLACEABLE list match",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Safe to Replace",
+              "classification_stars": "★★★★★",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 65,
+                "testability": 80,
+                "transitive_value": 55,
+                "usage_simplicity": 90
+              },
+              "overall": 81,
+              "recommendation": "proceed"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 1,
+              "imported_items": 1,
+              "is_trivial": true,
+              "unique_apis": 1
+            },
+            "version": "2.0.18"
+          },
+          {
+            "crate": "tokio",
+            "metadata": {
+              "cve_count": 5,
+              "license": "MIT",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 55% (6 unique APIs from 23 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 0% (category: async-runtime)",
+              "Maintenance burden: 0% (5 CVEs, score: 50)",
+              "Testability: 55% (4 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: NEVER_REPLACE list match",
+              "Confidence: 55% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 55,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 0,
+                "security_safety": 0,
+                "testability": 55,
+                "transitive_value": 65,
+                "usage_simplicity": 55
+              },
+              "overall": 20,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 4,
+              "call_sites": 23,
+              "imported_items": 10,
+              "is_trivial": false,
+              "unique_apis": 6
+            },
+            "version": "1.52.4"
+          },
+          {
+            "crate": "toml",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 50% (0 unique APIs from 3 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: serialization)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 70% (2 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 80% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 80,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 70,
+                "transitive_value": 55,
+                "usage_simplicity": 50
+              },
+              "overall": 57,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 2,
+              "call_sites": 3,
+              "imported_items": 0,
+              "is_trivial": true,
+              "unique_apis": 0
+            },
+            "version": "0.8.23"
+          },
+          {
+            "crate": "tower",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 90% (1 unique APIs from 0 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 80,
+                "transitive_value": 55,
+                "usage_simplicity": 90
+              },
+              "overall": 68,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 0,
+              "imported_items": 1,
+              "is_trivial": true,
+              "unique_apis": 1
+            },
+            "version": "0.5.3"
+          },
+          {
+            "crate": "tracing",
+            "metadata": {
+              "cve_count": 1,
+              "license": "MIT",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 65% (5 unique APIs from 2 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 0% (category: logging)",
+              "Maintenance burden: 35% (1 CVEs, score: 50)",
+              "Testability: 45% (6 affected files)",
+              "API surface: 90% (using ~1% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 60% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 60,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 35,
+                "security_safety": 0,
+                "testability": 45,
+                "transitive_value": 55,
+                "usage_simplicity": 65
+              },
+              "overall": 44,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 6,
+              "call_sites": 2,
+              "imported_items": 15,
+              "is_trivial": false,
+              "unique_apis": 5
+            },
+            "version": "0.1.44"
+          },
+          {
+            "crate": "tracing-subscriber",
+            "metadata": {
+              "cve_count": 1,
+              "license": "MIT",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 50% (0 unique APIs from 2 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 0% (category: logging)",
+              "Maintenance burden: 35% (1 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 35,
+                "security_safety": 0,
+                "testability": 80,
+                "transitive_value": 55,
+                "usage_simplicity": 50
+              },
+              "overall": 44,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 2,
+              "imported_items": 0,
+              "is_trivial": true,
+              "unique_apis": 0
+            },
+            "version": "0.3.23"
+          },
+          {
+            "crate": "walkdir",
+            "metadata": {
+              "cve_count": 0,
+              "license": "Unlicense",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 90% (1 unique APIs from 0 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~7% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 80,
+                "transitive_value": 55,
+                "usage_simplicity": 90
+              },
+              "overall": 68,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 0,
+              "imported_items": 1,
+              "is_trivial": true,
+              "unique_apis": 1
+            },
+            "version": "2.5.0"
+          }
+        ],
+        "total_dependencies": 20
+      }
+    },
+    {
+      "tool": "ami",
+      "purpose": "project profile completeness (market-intelligence readiness)",
+      "status": "skipped",
+      "availability": "not_checked",
+      "execution": "skipped",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": null,
+      "duration_ms": null,
+      "summary": "skipped",
+      "findings": [],
+      "note": "ami is opt-in because project profiling is not code health; use `--only ami` when its installed build exposes JSON output",
+      "raw": null
+    },
+    {
+      "tool": "bart",
+      "purpose": "filesystem size & hotspots (informational)",
+      "status": "ok",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/usr/bin/bart",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 39,
+      "summary": "29 files, 184.8 KB under root",
+      "findings": [
+        "/home/sal/cheapwatch/Cargo.lock: 64.1 KB",
+        "/home/sal/cheapwatch/src: 51.2 KB",
+        "/home/sal/cheapwatch/amber_report.json: 25.4 KB",
+        "/home/sal/cheapwatch/.dreams: 15.1 KB",
+        "/home/sal/cheapwatch/tests: 11.1 KB"
+      ],
+      "note": "informational only — bart measures disk usage, not code health",
+      "raw": {
+        "children": [
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1786725124,
+            "path": "/home/sal/cheapwatch/Cargo.lock",
+            "size": 65604
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1784241819,
+                "path": "/home/sal/cheapwatch/src/store.rs",
+                "size": 13536
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1784241335,
+                "path": "/home/sal/cheapwatch/src/scanner.rs",
+                "size": 11776
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1784240680,
+                "path": "/home/sal/cheapwatch/src/config.rs",
+                "size": 5970
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1784241819,
+                "path": "/home/sal/cheapwatch/src/api.rs",
+                "size": 5655
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1784241819,
+                "path": "/home/sal/cheapwatch/src/watcher.rs",
+                "size": 5187
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1784243538,
+                "path": "/home/sal/cheapwatch/src/main.rs",
+                "size": 3485
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1784240560,
+                "path": "/home/sal/cheapwatch/src/lib.rs",
+                "size": 2757
+              }
+            ],
+            "depth": 1,
+            "file_count": 7,
+            "is_dir": true,
+            "modified": 1784240768,
+            "path": "/home/sal/cheapwatch/src",
+            "size": 52462
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1784243101,
+            "path": "/home/sal/cheapwatch/amber_report.json",
+            "size": 25978
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1786261962,
+                    "path": "/home/sal/cheapwatch/.dreams/history/2026-08-09.dreams",
+                    "size": 2435
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1786145457,
+                    "path": "/home/sal/cheapwatch/.dreams/history/2026-08-07.dreams",
+                    "size": 2355
+                  }
+                ],
+                "depth": 2,
+                "file_count": 2,
+                "is_dir": true,
+                "modified": 1786261962,
+                "path": "/home/sal/cheapwatch/.dreams/history",
+                "size": 8886
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786261962,
+                "path": "/home/sal/cheapwatch/.dreams/active.dreams",
+                "size": 2435
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786092827,
+                "path": "/home/sal/cheapwatch/.dreams/rejected.dreams",
+                "size": 22
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786092827,
+                "path": "/home/sal/cheapwatch/.dreams/completed.dreams",
+                "size": 22
+              }
+            ],
+            "depth": 1,
+            "file_count": 5,
+            "is_dir": true,
+            "modified": 1786092827,
+            "path": "/home/sal/cheapwatch/.dreams",
+            "size": 15461
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1784241810,
+                "path": "/home/sal/cheapwatch/tests/integration.rs",
+                "size": 7319
+              }
+            ],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": true,
+            "modified": 1784240812,
+            "path": "/home/sal/cheapwatch/tests",
+            "size": 11415
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1784241296,
+                "path": "/home/sal/cheapwatch/benches/bench.rs",
+                "size": 1628
+              }
+            ],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": true,
+            "modified": 1784240827,
+            "path": "/home/sal/cheapwatch/benches",
+            "size": 5724
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1784243886,
+            "path": "/home/sal/cheapwatch/README.md",
+            "size": 3385
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1786736101,
+            "path": "/home/sal/cheapwatch/Cargo.toml",
+            "size": 1077
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787836626,
+            "path": "/home/sal/cheapwatch/traci.toml",
+            "size": 955
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1784240841,
+            "path": "/home/sal/cheapwatch/deliver.toml",
+            "size": 812
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1784243151,
+            "path": "/home/sal/cheapwatch/fract_report.txt",
+            "size": 790
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1786573115,
+            "path": "/home/sal/cheapwatch/PADAGONIA_INTEGRATION.md",
+            "size": 652
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1784243847,
+            "path": "/home/sal/cheapwatch/kaptaind.toml",
+            "size": 439
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787836626,
+            "path": "/home/sal/cheapwatch/poka.toml",
+            "size": 127
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1784240846,
+            "path": "/home/sal/cheapwatch/kaptaind.toml.bak",
+            "size": 85
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1784243372,
+            "path": "/home/sal/cheapwatch/.gitignore",
+            "size": 69
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1784243378,
+            "path": "/home/sal/cheapwatch/.kaptainignore",
+            "size": 61
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1786736101,
+            "path": "/home/sal/cheapwatch/VERSION",
+            "size": 5
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1784243101,
+            "path": "/home/sal/cheapwatch/fract_report.json",
+            "size": 0
+          }
+        ],
+        "depth": 0,
+        "file_count": 29,
+        "is_dir": true,
+        "modified": 1787836626,
+        "path": "/home/sal/cheapwatch",
+        "size": 189197
+      }
+    },
+    {
+      "tool": "chakra",
+      "purpose": "data-flow / architecture map coverage",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": 0.3103448275862069,
+        "confidence": 1.0,
+        "observations": 90
+      },
+      "binary": "/home/sal/.local/bin/chakra",
+      "score": 65.51724137931035,
+      "grade": "D",
+      "exit_code": 0,
+      "duration_ms": 41,
+      "summary": "28 nodes, 90 flows; coverage 31.0% (9/29 files), confidence 100.0%",
+      "findings": [
+        "90 flow(s) with provenance=observed"
+      ],
+      "note": null,
+      "raw": {
+        "boundaries": [],
+        "events": [],
+        "evidence": [
+          {
+            "detail": "std::fs::File",
+            "file": "tests/integration.rs",
+            "id": "ev-0001",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "std::io::Write",
+            "file": "tests/integration.rs",
+            "id": "ev-0002",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "std::net::SocketAddr",
+            "file": "tests/integration.rs",
+            "id": "ev-0003",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "std::time::Instant",
+            "file": "tests/integration.rs",
+            "id": "ev-0004",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "cheapwatch::api::",
+            "file": "tests/integration.rs",
+            "id": "ev-0005",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "cheapwatch::config::Config",
+            "file": "tests/integration.rs",
+            "id": "ev-0006",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "cheapwatch::store::Store",
+            "file": "tests/integration.rs",
+            "id": "ev-0007",
+            "kind": "rust_use",
+            "line": 8
+          },
+          {
+            "detail": "reqwest::StatusCode",
+            "file": "tests/integration.rs",
+            "id": "ev-0008",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "tempfile::TempDir",
+            "file": "tests/integration.rs",
+            "id": "ev-0009",
+            "kind": "rust_use",
+            "line": 10
+          },
+          {
+            "detail": "tokio::net::TcpListener",
+            "file": "tests/integration.rs",
+            "id": "ev-0010",
+            "kind": "rust_use",
+            "line": 11
+          },
+          {
+            "detail": "tokio::sync::watch",
+            "file": "tests/integration.rs",
+            "id": "ev-0011",
+            "kind": "rust_use",
+            "line": 12
+          },
+          {
+            "detail": "std::fs::File",
+            "file": "benches/bench.rs",
+            "id": "ev-0012",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "std::io::Write",
+            "file": "benches/bench.rs",
+            "id": "ev-0013",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "cheapwatch::config::Config",
+            "file": "benches/bench.rs",
+            "id": "ev-0014",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "cheapwatch::scanner::scan_once",
+            "file": "benches/bench.rs",
+            "id": "ev-0015",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "cheapwatch::store::Store",
+            "file": "benches/bench.rs",
+            "id": "ev-0016",
+            "kind": "rust_use",
+            "line": 6
+          },
+          {
+            "detail": "criterion::",
+            "file": "benches/bench.rs",
+            "id": "ev-0017",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "tempfile::TempDir",
+            "file": "benches/bench.rs",
+            "id": "ev-0018",
+            "kind": "rust_use",
+            "line": 8
+          },
+          {
+            "detail": "std::path::",
+            "file": "src/config.rs",
+            "id": "ev-0019",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "serde::",
+            "file": "src/config.rs",
+            "id": "ev-0020",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "tracing::warn",
+            "file": "src/config.rs",
+            "id": "ev-0021",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "super::",
+            "file": "src/config.rs",
+            "id": "ev-0022",
+            "kind": "rust_use",
+            "line": 186
+          },
+          {
+            "detail": "std::io::Write",
+            "file": "src/config.rs",
+            "id": "ev-0023",
+            "kind": "rust_use",
+            "line": 187
+          },
+          {
+            "detail": "std::path::PathBuf",
+            "file": "src/lib.rs",
+            "id": "ev-0024",
+            "kind": "rust_use",
+            "line": 6
+          },
+          {
+            "detail": "chrono::",
+            "file": "src/lib.rs",
+            "id": "ev-0025",
+            "kind": "rust_use",
+            "line": 8
+          },
+          {
+            "detail": "serde::",
+            "file": "src/lib.rs",
+            "id": "ev-0026",
+            "kind": "rust_use",
+            "line": 10
+          },
+          {
+            "detail": "thiserror::Error",
+            "file": "src/lib.rs",
+            "id": "ev-0027",
+            "kind": "rust_use",
+            "line": 11
+          },
+          {
+            "detail": "sha2::",
+            "file": "src/lib.rs",
+            "id": "ev-0028",
+            "kind": "rust_use",
+            "line": 54
+          },
+          {
+            "detail": "api",
+            "file": "src/lib.rs",
+            "id": "ev-0029",
+            "kind": "rust_mod",
+            "line": 1
+          },
+          {
+            "detail": "config",
+            "file": "src/lib.rs",
+            "id": "ev-0030",
+            "kind": "rust_mod",
+            "line": 2
+          },
+          {
+            "detail": "scanner",
+            "file": "src/lib.rs",
+            "id": "ev-0031",
+            "kind": "rust_mod",
+            "line": 3
+          },
+          {
+            "detail": "store",
+            "file": "src/lib.rs",
+            "id": "ev-0032",
+            "kind": "rust_mod",
+            "line": 4
+          },
+          {
+            "detail": "watcher",
+            "file": "src/lib.rs",
+            "id": "ev-0033",
+            "kind": "rust_mod",
+            "line": 5
+          },
+          {
+            "detail": "std::net::SocketAddr",
+            "file": "src/main.rs",
+            "id": "ev-0034",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "std::time::Instant",
+            "file": "src/main.rs",
+            "id": "ev-0035",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "clap::",
+            "file": "src/main.rs",
+            "id": "ev-0036",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "tokio::net::TcpListener",
+            "file": "src/main.rs",
+            "id": "ev-0037",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "tokio::sync::watch",
+            "file": "src/main.rs",
+            "id": "ev-0038",
+            "kind": "rust_use",
+            "line": 6
+          },
+          {
+            "detail": "tracing::",
+            "file": "src/main.rs",
+            "id": "ev-0039",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "cheapwatch::api::",
+            "file": "src/main.rs",
+            "id": "ev-0040",
+            "kind": "rust_use",
+            "line": 8
+          },
+          {
+            "detail": "cheapwatch::config::Config",
+            "file": "src/main.rs",
+            "id": "ev-0041",
+            "kind": "rust_use",
+            "line": 10
+          },
+          {
+            "detail": "cheapwatch::scanner::scan_once",
+            "file": "src/main.rs",
+            "id": "ev-0042",
+            "kind": "rust_use",
+            "line": 11
+          },
+          {
+            "detail": "cheapwatch::store::Store",
+            "file": "src/main.rs",
+            "id": "ev-0043",
+            "kind": "rust_use",
+            "line": 12
+          },
+          {
+            "detail": "cheapwatch::watcher::DaemonWatcher",
+            "file": "src/main.rs",
+            "id": "ev-0044",
+            "kind": "rust_use",
+            "line": 13
+          },
+          {
+            "detail": "std::path::PathBuf",
+            "file": "src/watcher.rs",
+            "id": "ev-0045",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "std::sync::Arc",
+            "file": "src/watcher.rs",
+            "id": "ev-0046",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "std::time::Duration",
+            "file": "src/watcher.rs",
+            "id": "ev-0047",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "notify::",
+            "file": "src/watcher.rs",
+            "id": "ev-0048",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "tokio::sync::",
+            "file": "src/watcher.rs",
+            "id": "ev-0049",
+            "kind": "rust_use",
+            "line": 6
+          },
+          {
+            "detail": "tokio::time::",
+            "file": "src/watcher.rs",
+            "id": "ev-0050",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "tracing::",
+            "file": "src/watcher.rs",
+            "id": "ev-0051",
+            "kind": "rust_use",
+            "line": 8
+          },
+          {
+            "detail": "crate::config::Config",
+            "file": "src/watcher.rs",
+            "id": "ev-0052",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "crate::scanner::scan_once",
+            "file": "src/watcher.rs",
+            "id": "ev-0053",
+            "kind": "rust_use",
+            "line": 11
+          },
+          {
+            "detail": "crate::store::Store",
+            "file": "src/watcher.rs",
+            "id": "ev-0054",
+            "kind": "rust_use",
+            "line": 12
+          },
+          {
+            "detail": "std::time::Instant",
+            "file": "src/api.rs",
+            "id": "ev-0055",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "axum::",
+            "file": "src/api.rs",
+            "id": "ev-0056",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "serde::",
+            "file": "src/api.rs",
+            "id": "ev-0057",
+            "kind": "rust_use",
+            "line": 10
+          },
+          {
+            "detail": "tokio::net::TcpListener",
+            "file": "src/api.rs",
+            "id": "ev-0058",
+            "kind": "rust_use",
+            "line": 11
+          },
+          {
+            "detail": "tokio::sync::watch",
+            "file": "src/api.rs",
+            "id": "ev-0059",
+            "kind": "rust_use",
+            "line": 12
+          },
+          {
+            "detail": "tracing::",
+            "file": "src/api.rs",
+            "id": "ev-0060",
+            "kind": "rust_use",
+            "line": 13
+          },
+          {
+            "detail": "crate::config::Config",
+            "file": "src/api.rs",
+            "id": "ev-0061",
+            "kind": "rust_use",
+            "line": 14
+          },
+          {
+            "detail": "crate::scanner::",
+            "file": "src/api.rs",
+            "id": "ev-0062",
+            "kind": "rust_use",
+            "line": 16
+          },
+          {
+            "detail": "crate::store::Store",
+            "file": "src/api.rs",
+            "id": "ev-0063",
+            "kind": "rust_use",
+            "line": 17
+          },
+          {
+            "detail": "crate::",
+            "file": "src/api.rs",
+            "id": "ev-0064",
+            "kind": "rust_use",
+            "line": 18
+          },
+          {
+            "detail": "super::",
+            "file": "src/api.rs",
+            "id": "ev-0065",
+            "kind": "rust_use",
+            "line": 167
+          },
+          {
+            "detail": "axum::body::Body",
+            "file": "src/api.rs",
+            "id": "ev-0066",
+            "kind": "rust_use",
+            "line": 168
+          },
+          {
+            "detail": "axum::http::Request",
+            "file": "src/api.rs",
+            "id": "ev-0067",
+            "kind": "rust_use",
+            "line": 169
+          },
+          {
+            "detail": "tower::util::ServiceExt",
+            "file": "src/api.rs",
+            "id": "ev-0068",
+            "kind": "rust_use",
+            "line": 170
+          },
+          {
+            "detail": "std::collections::HashMap",
+            "file": "src/scanner.rs",
+            "id": "ev-0069",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "std::fs::File",
+            "file": "src/scanner.rs",
+            "id": "ev-0070",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "std::io::",
+            "file": "src/scanner.rs",
+            "id": "ev-0071",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "std::path::Path",
+            "file": "src/scanner.rs",
+            "id": "ev-0072",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "chrono::",
+            "file": "src/scanner.rs",
+            "id": "ev-0073",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "serde::",
+            "file": "src/scanner.rs",
+            "id": "ev-0074",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "tracing::",
+            "file": "src/scanner.rs",
+            "id": "ev-0075",
+            "kind": "rust_use",
+            "line": 8
+          },
+          {
+            "detail": "walkdir::WalkDir",
+            "file": "src/scanner.rs",
+            "id": "ev-0076",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "crate::config::Config",
+            "file": "src/scanner.rs",
+            "id": "ev-0077",
+            "kind": "rust_use",
+            "line": 10
+          },
+          {
+            "detail": "crate::store::Store",
+            "file": "src/scanner.rs",
+            "id": "ev-0078",
+            "kind": "rust_use",
+            "line": 12
+          },
+          {
+            "detail": "crate::",
+            "file": "src/scanner.rs",
+            "id": "ev-0079",
+            "kind": "rust_use",
+            "line": 13
+          },
+          {
+            "detail": "super::",
+            "file": "src/scanner.rs",
+            "id": "ev-0080",
+            "kind": "rust_use",
+            "line": 294
+          },
+          {
+            "detail": "std::io::Write",
+            "file": "src/scanner.rs",
+            "id": "ev-0081",
+            "kind": "rust_use",
+            "line": 295
+          },
+          {
+            "detail": "std::path::PathBuf",
+            "file": "src/scanner.rs",
+            "id": "ev-0082",
+            "kind": "rust_use",
+            "line": 296
+          },
+          {
+            "detail": "tempfile::TempDir",
+            "file": "src/scanner.rs",
+            "id": "ev-0083",
+            "kind": "rust_use",
+            "line": 297
+          },
+          {
+            "detail": "std::path::Path",
+            "file": "src/store.rs",
+            "id": "ev-0084",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "std::sync::",
+            "file": "src/store.rs",
+            "id": "ev-0085",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "chrono::",
+            "file": "src/store.rs",
+            "id": "ev-0086",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "rusqlite::",
+            "file": "src/store.rs",
+            "id": "ev-0087",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "tracing::",
+            "file": "src/store.rs",
+            "id": "ev-0088",
+            "kind": "rust_use",
+            "line": 6
+          },
+          {
+            "detail": "crate::",
+            "file": "src/store.rs",
+            "id": "ev-0089",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "super::",
+            "file": "src/store.rs",
+            "id": "ev-0090",
+            "kind": "rust_use",
+            "line": 327
+          }
+        ],
+        "flows": [
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0001"
+            ],
+            "id": "flow-0001",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:tests/integration.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0002"
+            ],
+            "id": "flow-0002",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:tests/integration.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0003"
+            ],
+            "id": "flow-0003",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:tests/integration.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0004"
+            ],
+            "id": "flow-0004",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:tests/integration.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0005"
+            ],
+            "id": "flow-0005",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:tests/integration.rs",
+            "target": "ext:rust:cheapwatch"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0006"
+            ],
+            "id": "flow-0006",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:tests/integration.rs",
+            "target": "ext:rust:cheapwatch"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0007"
+            ],
+            "id": "flow-0007",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:tests/integration.rs",
+            "target": "ext:rust:cheapwatch"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0008"
+            ],
+            "id": "flow-0008",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:tests/integration.rs",
+            "target": "ext:rust:reqwest"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0009"
+            ],
+            "id": "flow-0009",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:tests/integration.rs",
+            "target": "ext:rust:tempfile"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0010"
+            ],
+            "id": "flow-0010",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:tests/integration.rs",
+            "target": "ext:rust:tokio"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0011"
+            ],
+            "id": "flow-0011",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:tests/integration.rs",
+            "target": "ext:rust:tokio"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0012"
+            ],
+            "id": "flow-0012",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:benches/bench.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0013"
+            ],
+            "id": "flow-0013",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:benches/bench.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0014"
+            ],
+            "id": "flow-0014",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:benches/bench.rs",
+            "target": "ext:rust:cheapwatch"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0015"
+            ],
+            "id": "flow-0015",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:benches/bench.rs",
+            "target": "ext:rust:cheapwatch"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0016"
+            ],
+            "id": "flow-0016",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:benches/bench.rs",
+            "target": "ext:rust:cheapwatch"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0017"
+            ],
+            "id": "flow-0017",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:benches/bench.rs",
+            "target": "ext:rust:criterion"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0018"
+            ],
+            "id": "flow-0018",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:benches/bench.rs",
+            "target": "ext:rust:tempfile"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0019"
+            ],
+            "id": "flow-0019",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/config.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0020"
+            ],
+            "id": "flow-0020",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/config.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0021"
+            ],
+            "id": "flow-0021",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/config.rs",
+            "target": "ext:rust:tracing"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0022"
+            ],
+            "id": "flow-0022",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/config.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0023"
+            ],
+            "id": "flow-0023",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/config.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0024"
+            ],
+            "id": "flow-0024",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/lib.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0025"
+            ],
+            "id": "flow-0025",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/lib.rs",
+            "target": "ext:rust:chrono"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0026"
+            ],
+            "id": "flow-0026",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/lib.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0027"
+            ],
+            "id": "flow-0027",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/lib.rs",
+            "target": "ext:rust:thiserror"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0028"
+            ],
+            "id": "flow-0028",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/lib.rs",
+            "target": "ext:rust:sha2"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0029"
+            ],
+            "id": "flow-0029",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/api.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0030"
+            ],
+            "id": "flow-0030",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/config.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0031"
+            ],
+            "id": "flow-0031",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/scanner.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0032"
+            ],
+            "id": "flow-0032",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/store.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0033"
+            ],
+            "id": "flow-0033",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/watcher.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0034"
+            ],
+            "id": "flow-0034",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0035"
+            ],
+            "id": "flow-0035",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0036"
+            ],
+            "id": "flow-0036",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:clap"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0037"
+            ],
+            "id": "flow-0037",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:tokio"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0038"
+            ],
+            "id": "flow-0038",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:tokio"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0039"
+            ],
+            "id": "flow-0039",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:tracing"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0040"
+            ],
+            "id": "flow-0040",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:cheapwatch"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0041"
+            ],
+            "id": "flow-0041",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:cheapwatch"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0042"
+            ],
+            "id": "flow-0042",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:cheapwatch"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0043"
+            ],
+            "id": "flow-0043",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:cheapwatch"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0044"
+            ],
+            "id": "flow-0044",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:cheapwatch"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0045"
+            ],
+            "id": "flow-0045",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/watcher.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0046"
+            ],
+            "id": "flow-0046",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/watcher.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0047"
+            ],
+            "id": "flow-0047",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/watcher.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0048"
+            ],
+            "id": "flow-0048",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/watcher.rs",
+            "target": "ext:rust:notify"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0049"
+            ],
+            "id": "flow-0049",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/watcher.rs",
+            "target": "ext:rust:tokio"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0050"
+            ],
+            "id": "flow-0050",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/watcher.rs",
+            "target": "ext:rust:tokio"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0051"
+            ],
+            "id": "flow-0051",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/watcher.rs",
+            "target": "ext:rust:tracing"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0052"
+            ],
+            "id": "flow-0052",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/watcher.rs",
+            "target": "file:src/config.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0053"
+            ],
+            "id": "flow-0053",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/watcher.rs",
+            "target": "file:src/scanner.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0054"
+            ],
+            "id": "flow-0054",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/watcher.rs",
+            "target": "file:src/store.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0055"
+            ],
+            "id": "flow-0055",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/api.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0056"
+            ],
+            "id": "flow-0056",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/api.rs",
+            "target": "ext:rust:axum"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0057"
+            ],
+            "id": "flow-0057",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/api.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0058"
+            ],
+            "id": "flow-0058",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/api.rs",
+            "target": "ext:rust:tokio"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0059"
+            ],
+            "id": "flow-0059",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/api.rs",
+            "target": "ext:rust:tokio"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0060"
+            ],
+            "id": "flow-0060",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/api.rs",
+            "target": "ext:rust:tracing"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0061"
+            ],
+            "id": "flow-0061",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/api.rs",
+            "target": "file:src/config.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0062"
+            ],
+            "id": "flow-0062",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/api.rs",
+            "target": "file:src/scanner.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0063"
+            ],
+            "id": "flow-0063",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/api.rs",
+            "target": "file:src/store.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0064"
+            ],
+            "id": "flow-0064",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/api.rs",
+            "target": "mod:rust:crate::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0065"
+            ],
+            "id": "flow-0065",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/api.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0066"
+            ],
+            "id": "flow-0066",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/api.rs",
+            "target": "ext:rust:axum"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0067"
+            ],
+            "id": "flow-0067",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/api.rs",
+            "target": "ext:rust:axum"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0068"
+            ],
+            "id": "flow-0068",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/api.rs",
+            "target": "ext:rust:tower"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0069"
+            ],
+            "id": "flow-0069",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/scanner.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0070"
+            ],
+            "id": "flow-0070",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/scanner.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0071"
+            ],
+            "id": "flow-0071",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/scanner.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0072"
+            ],
+            "id": "flow-0072",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/scanner.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0073"
+            ],
+            "id": "flow-0073",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/scanner.rs",
+            "target": "ext:rust:chrono"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0074"
+            ],
+            "id": "flow-0074",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/scanner.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0075"
+            ],
+            "id": "flow-0075",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/scanner.rs",
+            "target": "ext:rust:tracing"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0076"
+            ],
+            "id": "flow-0076",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/scanner.rs",
+            "target": "ext:rust:walkdir"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0077"
+            ],
+            "id": "flow-0077",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/scanner.rs",
+            "target": "file:src/config.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0078"
+            ],
+            "id": "flow-0078",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/scanner.rs",
+            "target": "file:src/store.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0079"
+            ],
+            "id": "flow-0079",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/scanner.rs",
+            "target": "mod:rust:crate::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0080"
+            ],
+            "id": "flow-0080",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/scanner.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0081"
+            ],
+            "id": "flow-0081",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/scanner.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0082"
+            ],
+            "id": "flow-0082",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/scanner.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0083"
+            ],
+            "id": "flow-0083",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/scanner.rs",
+            "target": "ext:rust:tempfile"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0084"
+            ],
+            "id": "flow-0084",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/store.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0085"
+            ],
+            "id": "flow-0085",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/store.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0086"
+            ],
+            "id": "flow-0086",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/store.rs",
+            "target": "ext:rust:chrono"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0087"
+            ],
+            "id": "flow-0087",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/store.rs",
+            "target": "ext:rust:rusqlite"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0088"
+            ],
+            "id": "flow-0088",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/store.rs",
+            "target": "ext:rust:tracing"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0089"
+            ],
+            "id": "flow-0089",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/store.rs",
+            "target": "mod:rust:crate::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0090"
+            ],
+            "id": "flow-0090",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/store.rs",
+            "target": "mod:rust:super::"
+          }
+        ],
+        "inferences": [],
+        "metadata": {
+          "analyzed_file_count": 9,
+          "analyzers": [
+            "rust",
+            "javascript",
+            "typescript",
+            "python",
+            "go"
+          ],
+          "chakra_version": "0.3.33",
+          "duration_ms": 10,
+          "file_count": 29,
+          "languages": {
+            "rust": 9
+          }
+        },
+        "nodes": [
+          {
+            "id": "ext:rust:axum",
+            "kind": "external",
+            "language": "rust",
+            "name": "axum"
+          },
+          {
+            "id": "ext:rust:cheapwatch",
+            "kind": "external",
+            "language": "rust",
+            "name": "cheapwatch"
+          },
+          {
+            "id": "ext:rust:chrono",
+            "kind": "external",
+            "language": "rust",
+            "name": "chrono"
+          },
+          {
+            "id": "ext:rust:clap",
+            "kind": "external",
+            "language": "rust",
+            "name": "clap"
+          },
+          {
+            "id": "ext:rust:criterion",
+            "kind": "external",
+            "language": "rust",
+            "name": "criterion"
+          },
+          {
+            "id": "ext:rust:notify",
+            "kind": "external",
+            "language": "rust",
+            "name": "notify"
+          },
+          {
+            "id": "ext:rust:reqwest",
+            "kind": "external",
+            "language": "rust",
+            "name": "reqwest"
+          },
+          {
+            "id": "ext:rust:rusqlite",
+            "kind": "external",
+            "language": "rust",
+            "name": "rusqlite"
+          },
+          {
+            "id": "ext:rust:serde",
+            "kind": "external",
+            "language": "rust",
+            "name": "serde"
+          },
+          {
+            "id": "ext:rust:sha2",
+            "kind": "external",
+            "language": "rust",
+            "name": "sha2"
+          },
+          {
+            "id": "ext:rust:std",
+            "kind": "external",
+            "language": "rust",
+            "name": "std"
+          },
+          {
+            "id": "ext:rust:tempfile",
+            "kind": "external",
+            "language": "rust",
+            "name": "tempfile"
+          },
+          {
+            "id": "ext:rust:thiserror",
+            "kind": "external",
+            "language": "rust",
+            "name": "thiserror"
+          },
+          {
+            "id": "ext:rust:tokio",
+            "kind": "external",
+            "language": "rust",
+            "name": "tokio"
+          },
+          {
+            "id": "ext:rust:tower",
+            "kind": "external",
+            "language": "rust",
+            "name": "tower"
+          },
+          {
+            "id": "ext:rust:tracing",
+            "kind": "external",
+            "language": "rust",
+            "name": "tracing"
+          },
+          {
+            "id": "ext:rust:walkdir",
+            "kind": "external",
+            "language": "rust",
+            "name": "walkdir"
+          },
+          {
+            "id": "file:benches/bench.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "benches/bench.rs"
+          },
+          {
+            "id": "file:src/api.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/api.rs"
+          },
+          {
+            "id": "file:src/config.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/config.rs"
+          },
+          {
+            "id": "file:src/lib.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/lib.rs"
+          },
+          {
+            "id": "file:src/main.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/main.rs"
+          },
+          {
+            "id": "file:src/scanner.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/scanner.rs"
+          },
+          {
+            "id": "file:src/store.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/store.rs"
+          },
+          {
+            "id": "file:src/watcher.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/watcher.rs"
+          },
+          {
+            "id": "file:tests/integration.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "tests/integration.rs"
+          },
+          {
+            "id": "mod:rust:crate::",
+            "kind": "module",
+            "language": "rust",
+            "name": "crate::"
+          },
+          {
+            "id": "mod:rust:super::",
+            "kind": "module",
+            "language": "rust",
+            "name": "super::"
+          }
+        ],
+        "schema": "chakra.flow/v1",
+        "subject": {
+          "generated_at": "2026-08-27T13:17:06.337130826Z",
+          "path": "/home/sal/cheapwatch"
+        }
+      }
+    },
+    {
+      "tool": "ferret",
+      "purpose": "repository-specific review findings (hunt)",
+      "status": "error",
+      "availability": "installed",
+      "execution": "failed",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": 2,
+      "duration_ms": 220,
+      "summary": "error",
+      "findings": [],
+      "note": "produced no stdout; stderr: error: unexpected argument '/home/sal/cheapwatch' found\n\nUsage: ferret [OPTIONS] [TARGET] [COMMAND]\n\nFor more information, try '--help'.\n",
+      "raw": null
+    },
+    {
+      "tool": "fract",
+      "purpose": "module entropy, cohesion, duplication",
+      "status": "ok",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/home/sal/.local/bin/fract",
+      "score": 100.0,
+      "grade": "A+",
+      "exit_code": 0,
+      "duration_ms": 315,
+      "summary": "9 modules indexed: 0 excellent, 9 healthy, 0 warning, 0 critical",
+      "findings": [
+        "src/scanner.rs: entropy 0.64 — Within entropy budget (0.64)",
+        "src/lib.rs: entropy 0.63 — Within entropy budget (0.63)",
+        "src/config.rs: entropy 0.58 — Within entropy budget (0.58)",
+        "src/store.rs: entropy 0.58 — Within entropy budget (0.58)",
+        "src/api.rs: entropy 0.57 — Within entropy budget (0.57)"
+      ],
+      "note": null,
+      "raw": {
+        "findings": [
+          {
+            "confidence": null,
+            "entropy": 0.6436564164564451,
+            "evidence": {
+              "cyclomatic": "29",
+              "duplicates": "23",
+              "fan_in": "2",
+              "fan_out": "15",
+              "functions": "16",
+              "health": "Healthy",
+              "lines": "358",
+              "public_api": "11"
+            },
+            "id": "src/scanner.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.64)",
+            "module": "src/scanner.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.64 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6339270967704036,
+            "evidence": {
+              "cyclomatic": "0",
+              "duplicates": "3",
+              "fan_in": "0",
+              "fan_out": "5",
+              "functions": "2",
+              "health": "Healthy",
+              "lines": "96",
+              "public_api": "37"
+            },
+            "id": "src/lib.rs",
+            "kind": "Reduce public API surface",
+            "message": "Within entropy budget (0.63)",
+            "module": "src/lib.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.63 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5845519834467129,
+            "evidence": {
+              "cyclomatic": "22",
+              "duplicates": "4",
+              "fan_in": "3",
+              "fan_out": "5",
+              "functions": "17",
+              "health": "Healthy",
+              "lines": "206",
+              "public_api": "14"
+            },
+            "id": "src/config.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.58)",
+            "module": "src/config.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.58 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5769501982074874,
+            "evidence": {
+              "cyclomatic": "3",
+              "duplicates": "31",
+              "fan_in": "3",
+              "fan_out": "7",
+              "functions": "19",
+              "health": "Healthy",
+              "lines": "386",
+              "public_api": "14"
+            },
+            "id": "src/store.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.58)",
+            "module": "src/store.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.58 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5689457549602791,
+            "evidence": {
+              "cyclomatic": "5",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "14",
+              "functions": "12",
+              "health": "Healthy",
+              "lines": "196",
+              "public_api": "16"
+            },
+            "id": "src/api.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.57)",
+            "module": "src/api.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.57 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5580022869677046,
+            "evidence": {
+              "cyclomatic": "6",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "7",
+              "functions": "1",
+              "health": "Healthy",
+              "lines": "54",
+              "public_api": "0"
+            },
+            "id": "benches/bench.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.56)",
+            "module": "benches/bench.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.56 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5571846441153601,
+            "evidence": {
+              "cyclomatic": "14",
+              "duplicates": "1",
+              "fan_in": "0",
+              "fan_out": "10",
+              "functions": "6",
+              "health": "Healthy",
+              "lines": "159",
+              "public_api": "4"
+            },
+            "id": "src/watcher.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.56)",
+            "module": "src/watcher.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.56 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5545451990037432,
+            "evidence": {
+              "cyclomatic": "2",
+              "duplicates": "38",
+              "fan_in": "0",
+              "fan_out": "11",
+              "functions": "11",
+              "health": "Healthy",
+              "lines": "242",
+              "public_api": "0"
+            },
+            "id": "tests/integration.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.55)",
+            "module": "tests/integration.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.55 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5368855926212045,
+            "evidence": {
+              "cyclomatic": "3",
+              "duplicates": "1",
+              "fan_in": "0",
+              "fan_out": "11",
+              "functions": "3",
+              "health": "Healthy",
+              "lines": "114",
+              "public_api": "0"
+            },
+            "id": "src/main.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.54)",
+            "module": "src/main.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.54 below threshold 0.82"
+          }
+        ],
+        "root": "/home/sal/cheapwatch",
+        "schema": "fract.report/v1",
+        "summary": {
+          "critical": 0,
+          "excellent": 0,
+          "healthy": 9,
+          "score": 100,
+          "total": 9,
+          "warning": 0
+        }
+      }
+    },
+    {
+      "tool": "isopod",
+      "purpose": "ISO27001/27002 compliance posture",
+      "status": "no_data",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 0
+      },
+      "binary": "/home/sal/.local/bin/isopod",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 690,
+      "summary": "0/0 controls assessed (0.0% coverage): 0 pass, 0 warn, 0 fail, 0 unknown",
+      "findings": [],
+      "note": "coverage is 0.0%; compliance is ungraded below the 80% evidence threshold, and UNKNOWN controls are not treated as failures",
+      "raw": []
+    },
+    {
+      "tool": "jeenome",
+      "purpose": "behavioural trace analysis (opt-in)",
+      "status": "skipped",
+      "availability": "not_checked",
+      "execution": "skipped",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": null,
+      "duration_ms": null,
+      "summary": "skipped",
+      "findings": [],
+      "note": "jeenome is opt-in (needs an strace trace, not just a project path); pass --jeenome to include it",
+      "raw": null
+    },
+    {
+      "tool": "lwoodz",
+      "purpose": "license / SPDX compliance",
+      "status": "fail",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/home/sal/lwoodz/target/debug/lwoodz",
+      "score": 52.411764705882355,
+      "grade": "F",
+      "exit_code": 0,
+      "duration_ms": 109394,
+      "summary": "license=unknown, spdx_valid=true, header coverage 0/9, 0 incompatible / 33 warning issues among 255 deps",
+      "findings": [
+        "android_system_properties [warning]: Dependency 'android_system_properties' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+        "criterion-plot [warning]: Dependency 'criterion-plot' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+        "fallible-iterator [warning]: Dependency 'fallible-iterator' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+        "fallible-streaming-iterator [warning]: Dependency 'fallible-streaming-iterator' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+        "fnv [warning]: Dependency 'fnv' (Apache-2.0 / MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements."
+      ],
+      "note": "advisory warning deductions are proportional to dependency count; missing licenses and incompatible dependencies remain hard findings; lwoodz.toml was missing; `poka apply` failed (poka apply exited Some(101): thread 'main' (244315) panicked at crates/poka-core/src/index.rs:99:33: external generator 'lwoodz' failed: external generator 'lwoodz' exited with exit status: 2: error: unexpected argument '--init' found Usage: lwoodz [OPTIONS] [COMMAND] ); assessment still ran",
+      "raw": {
+        "compatibility": {
+          "incompatible": 0,
+          "issues": [
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "android_system_properties",
+              "reason": "Dependency 'android_system_properties' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "criterion-plot",
+              "reason": "Dependency 'criterion-plot' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "fallible-iterator",
+              "reason": "Dependency 'fallible-iterator' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "fallible-streaming-iterator",
+              "reason": "Dependency 'fallible-streaming-iterator' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Apache-2.0 / MIT",
+              "dependency": "fnv",
+              "reason": "Dependency 'fnv' (Apache-2.0 / MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "foreign-types",
+              "reason": "Dependency 'foreign-types' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "foreign-types-shared",
+              "reason": "Dependency 'foreign-types-shared' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "hyper-tls",
+              "reason": "Dependency 'hyper-tls' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "icu_collections",
+              "reason": "Dependency 'icu_collections' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "icu_locale_core",
+              "reason": "Dependency 'icu_locale_core' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "icu_normalizer",
+              "reason": "Dependency 'icu_normalizer' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "icu_normalizer_data",
+              "reason": "Dependency 'icu_normalizer_data' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "icu_properties",
+              "reason": "Dependency 'icu_properties' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "icu_properties_data",
+              "reason": "Dependency 'icu_properties_data' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "icu_provider",
+              "reason": "Dependency 'icu_provider' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "itertools",
+              "reason": "Dependency 'itertools' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "litemap",
+              "reason": "Dependency 'litemap' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "openssl-macros",
+              "reason": "Dependency 'openssl-macros' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "potential_utf",
+              "reason": "Dependency 'potential_utf' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unlicense/MIT",
+              "dependency": "same-file",
+              "reason": "Dependency 'same-file' (Unlicense/MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "serde_urlencoded",
+              "reason": "Dependency 'serde_urlencoded' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "tinystr",
+              "reason": "Dependency 'tinystr' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "vcpkg",
+              "reason": "Dependency 'vcpkg' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "version_check",
+              "reason": "Dependency 'version_check' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unlicense/MIT",
+              "dependency": "walkdir",
+              "reason": "Dependency 'walkdir' (Unlicense/MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "writeable",
+              "reason": "Dependency 'writeable' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "yoke",
+              "reason": "Dependency 'yoke' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "yoke-derive",
+              "reason": "Dependency 'yoke-derive' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "zerofrom",
+              "reason": "Dependency 'zerofrom' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "zerofrom-derive",
+              "reason": "Dependency 'zerofrom-derive' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "zerotrie",
+              "reason": "Dependency 'zerotrie' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "zerovec",
+              "reason": "Dependency 'zerovec' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "zerovec-derive",
+              "reason": "Dependency 'zerovec-derive' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            }
+          ],
+          "total_deps": 255,
+          "warnings": 33
+        },
+        "detected_license": null,
+        "findings": [
+          {
+            "code": "MISSING_LICENSE_FILE",
+            "level": "error",
+            "message": "LICENSE not found at /home/sal/cheapwatch/LICENSE",
+            "path": "LICENSE"
+          },
+          {
+            "code": "MISSING_SPDX_MANIFEST",
+            "level": "warning",
+            "message": "SPDX manifest not found at .lwoodz/manifest.json — run `lwoodz generate`",
+            "path": ".lwoodz/manifest.json"
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'android_system_properties' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'criterion-plot' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'fallible-iterator' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'fallible-streaming-iterator' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'fnv' (Apache-2.0 / MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'foreign-types' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'foreign-types-shared' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'hyper-tls' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'icu_collections' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'icu_locale_core' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'icu_normalizer' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'icu_normalizer_data' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'icu_properties' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'icu_properties_data' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'icu_provider' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'itertools' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'litemap' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'openssl-macros' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'potential_utf' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'same-file' (Unlicense/MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'serde_urlencoded' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'tinystr' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'vcpkg' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'version_check' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'walkdir' (Unlicense/MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'writeable' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'yoke' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'yoke-derive' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'zerofrom' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'zerofrom-derive' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'zerotrie' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'zerovec' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'zerovec-derive' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "MISSING_HEADERS",
+            "level": "warning",
+            "message": "9 of 9 source files missing copyright/SPDX headers",
+            "path": null
+          }
+        ],
+        "generated_at": "2026-08-27T13:18:55.910040152+00:00",
+        "has_license_file": false,
+        "header_coverage": {
+          "missing": 9,
+          "total_files": 9,
+          "with_header": 0
+        },
+        "holder": "Your Name",
+        "passed": false,
+        "project_license": "MIT",
+        "spdx_manifest_exists": false,
+        "spdx_valid": true,
+        "year": 2026
+      }
+    },
+    {
+      "tool": "tempcheq",
+      "purpose": "LLM sampling-temperature correctness",
+      "status": "not_applicable",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 0
+      },
+      "binary": "/home/sal/.local/bin/tempcheq",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 37,
+      "summary": "not applicable: no inference actions found",
+      "findings": [],
+      "note": "zero observations do not establish project health and are excluded from scoring",
+      "raw": {
+        "actions": [],
+        "implicit_default": 0,
+        "inapplicable": 0,
+        "material_deviations": 0,
+        "temperature_controlled": 0,
+        "total_actions": 0,
+        "workspace": "/home/sal/cheapwatch"
+      }
+    },
+    {
+      "tool": "traci",
+      "purpose": "observability/telemetry completeness",
+      "status": "fail",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 79
+      },
+      "binary": "/home/sal/.local/bin/traci",
+      "score": null,
+      "grade": null,
+      "exit_code": 2,
+      "duration_ms": 34,
+      "summary": "9 files, 79 observability diagnostics: 40 critical, 13 error-severity, 26 warning-severity, 0 info",
+      "findings": [
+        "[observability/critical] TRC007 /home/sal/cheapwatch/benches/bench.rs:11 — panic path cannot be reconstructed from telemetry",
+        "[observability/critical] TRC007 /home/sal/cheapwatch/benches/bench.rs:13 — panic path cannot be reconstructed from telemetry",
+        "[observability/critical] TRC007 /home/sal/cheapwatch/benches/bench.rs:16 — panic path cannot be reconstructed from telemetry",
+        "[observability/critical] TRC007 /home/sal/cheapwatch/benches/bench.rs:24 — panic path cannot be reconstructed from telemetry",
+        "[observability/critical] TRC007 /home/sal/cheapwatch/benches/bench.rs:46 — panic path cannot be reconstructed from telemetry"
+      ],
+      "note": "observability diagnostics are not assigned a project-health score because Traci does not expose a total opportunity/coverage denominator; Poka's stale generator was repaired with the current native `traci` initializer; created traci.toml",
+      "raw": {
+        "diagnostics": [
+          {
+            "column": 5,
+            "line": 11,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/benches/bench.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let dir = TempDir::new().unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 13,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/benches/bench.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "std::fs::create_dir_all(&sessions).unwrap();"
+          },
+          {
+            "column": 9,
+            "line": 16,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/benches/bench.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let file = File::create(&log).unwrap();"
+          },
+          {
+            "column": 13,
+            "line": 24,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/benches/bench.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".unwrap();"
+          },
+          {
+            "column": 13,
+            "line": 46,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/benches/bench.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let store = Store::open_in_memory().unwrap();"
+          },
+          {
+            "column": 13,
+            "line": 48,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/cheapwatch/benches/bench.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let _ = black_box(scan_once(&cfg, &store));"
+          },
+          {
+            "column": 17,
+            "line": 39,
+            "message": "event has no structured contextual fields",
+            "path": "/home/sal/cheapwatch/src/api.rs",
+            "rule": "TRC004",
+            "severity": "warning",
+            "snippet": "warn!(\"store error in api: {}\", e);"
+          },
+          {
+            "column": 1,
+            "line": 75,
+            "message": "public async boundary exposes no configured correlation field",
+            "path": "/home/sal/cheapwatch/src/api.rs",
+            "rule": "TRC008",
+            "severity": "warning",
+            "snippet": "pub async fn serve<F>(listener: TcpListener, state: AppState, shutdown: F) -> crate::Result<()>"
+          },
+          {
+            "column": 5,
+            "line": 80,
+            "message": "event has no structured contextual fields",
+            "path": "/home/sal/cheapwatch/src/api.rs",
+            "rule": "TRC004",
+            "severity": "warning",
+            "snippet": "info!(\"cheapwatch api listening on http://{}\", addr);"
+          },
+          {
+            "column": 9,
+            "line": 96,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/cheapwatch/src/api.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": ".and_then(|v| v.parse().ok())"
+          },
+          {
+            "column": 13,
+            "line": 122,
+            "message": "event has no structured contextual fields",
+            "path": "/home/sal/cheapwatch/src/config.rs",
+            "rule": "TRC004",
+            "severity": "warning",
+            "snippet": "warn!(\"no session_dirs configured; cheapwatch will not scan any logs\");"
+          },
+          {
+            "column": 5,
+            "line": 53,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/cheapwatch/src/main.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let _ = tracing::subscriber::set_global_default(subscriber);"
+          },
+          {
+            "column": 5,
+            "line": 66,
+            "message": "event has no structured contextual fields",
+            "path": "/home/sal/cheapwatch/src/main.rs",
+            "rule": "TRC004",
+            "severity": "warning",
+            "snippet": "info!(\"starting cheapwatch daemon v{}\", cheapwatch::VERSION);"
+          },
+          {
+            "column": 5,
+            "line": 87,
+            "message": "event has no structured contextual fields",
+            "path": "/home/sal/cheapwatch/src/main.rs",
+            "rule": "TRC004",
+            "severity": "warning",
+            "snippet": "info!(\"daemon bound to http://{}\", bound_addr);"
+          },
+          {
+            "column": 5,
+            "line": 90,
+            "message": "spawned task does not explicitly preserve trace context",
+            "path": "/home/sal/cheapwatch/src/main.rs",
+            "rule": "TRC005",
+            "severity": "error",
+            "snippet": "let watcher_handle = tokio::spawn(watcher.run(shutdown_rx));"
+          },
+          {
+            "column": 9,
+            "line": 93,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/cheapwatch/src/main.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let _ = tokio::signal::ctrl_c().await;"
+          },
+          {
+            "column": 9,
+            "line": 94,
+            "message": "event has no structured contextual fields",
+            "path": "/home/sal/cheapwatch/src/main.rs",
+            "rule": "TRC004",
+            "severity": "warning",
+            "snippet": "info!(\"ctrl-c received, shutting down\");"
+          },
+          {
+            "column": 5,
+            "line": 99,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/cheapwatch/src/main.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let _ = state.shutdown_tx.send(true);"
+          },
+          {
+            "column": 9,
+            "line": 101,
+            "message": "event has no structured contextual fields",
+            "path": "/home/sal/cheapwatch/src/main.rs",
+            "rule": "TRC004",
+            "severity": "warning",
+            "snippet": "error!(\"watcher task failed: {}\", e);"
+          },
+          {
+            "column": 17,
+            "line": 61,
+            "message": "event has no structured contextual fields",
+            "path": "/home/sal/cheapwatch/src/scanner.rs",
+            "rule": "TRC004",
+            "severity": "warning",
+            "snippet": "debug!(\"session dir does not exist: {}\", dir.display());"
+          },
+          {
+            "column": 17,
+            "line": 67,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/cheapwatch/src/scanner.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": ".filter_map(|e| e.ok())"
+          },
+          {
+            "column": 29,
+            "line": 80,
+            "message": "event has no structured contextual fields",
+            "path": "/home/sal/cheapwatch/src/scanner.rs",
+            "rule": "TRC004",
+            "severity": "warning",
+            "snippet": "warn!(\"failed to scan {}: {}\", path.display(), e);"
+          },
+          {
+            "column": 9,
+            "line": 86,
+            "message": "event has no structured contextual fields",
+            "path": "/home/sal/cheapwatch/src/scanner.rs",
+            "rule": "TRC004",
+            "severity": "warning",
+            "snippet": "info!("
+          },
+          {
+            "column": 13,
+            "line": 108,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/cheapwatch/src/scanner.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": ".ok()"
+          },
+          {
+            "column": 13,
+            "line": 109,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/cheapwatch/src/scanner.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": ".and_then(|t| t.duration_since(std::time::UNIX_EPOCH).ok())"
+          },
+          {
+            "column": 17,
+            "line": 164,
+            "message": "event has no structured contextual fields",
+            "path": "/home/sal/cheapwatch/src/scanner.rs",
+            "rule": "TRC004",
+            "severity": "warning",
+            "snippet": "trace!(\"skipping non-json line: {e}\");"
+          },
+          {
+            "column": 13,
+            "line": 157,
+            "message": "event has no structured contextual fields",
+            "path": "/home/sal/cheapwatch/src/store.rs",
+            "rule": "TRC004",
+            "severity": "warning",
+            "snippet": "debug!(\"suppressing duplicate alert for {:?}\", alert);"
+          },
+          {
+            "column": 13,
+            "line": 313,
+            "message": "event has no structured contextual fields",
+            "path": "/home/sal/cheapwatch/src/store.rs",
+            "rule": "TRC004",
+            "severity": "warning",
+            "snippet": "error!(\"unknown alert kind in db: {s}, defaulting to Slow\");"
+          },
+          {
+            "column": 5,
+            "line": 31,
+            "message": "public async boundary exposes no configured correlation field",
+            "path": "/home/sal/cheapwatch/src/watcher.rs",
+            "rule": "TRC008",
+            "severity": "warning",
+            "snippet": "pub async fn scans_completed(&self) -> u64 {"
+          },
+          {
+            "column": 5,
+            "line": 36,
+            "message": "public async boundary exposes no configured correlation field",
+            "path": "/home/sal/cheapwatch/src/watcher.rs",
+            "rule": "TRC008",
+            "severity": "warning",
+            "snippet": "pub async fn run(self, mut shutdown: tokio::sync::watch::Receiver<bool>) -> crate::Result<()> {"
+          },
+          {
+            "column": 9,
+            "line": 52,
+            "message": "spawned task does not explicitly preserve trace context",
+            "path": "/home/sal/cheapwatch/src/watcher.rs",
+            "rule": "TRC005",
+            "severity": "error",
+            "snippet": "let timer_handle = tokio::spawn(async move {"
+          },
+          {
+            "column": 9,
+            "line": 61,
+            "message": "event has no structured contextual fields",
+            "path": "/home/sal/cheapwatch/src/watcher.rs",
+            "rule": "TRC004",
+            "severity": "warning",
+            "snippet": "info!("
+          },
+          {
+            "column": 29,
+            "line": 74,
+            "message": "event has no structured contextual fields",
+            "path": "/home/sal/cheapwatch/src/watcher.rs",
+            "rule": "TRC004",
+            "severity": "warning",
+            "snippet": "error!(\"scan failed: {}\", e);"
+          },
+          {
+            "column": 25,
+            "line": 78,
+            "message": "event has no structured contextual fields",
+            "path": "/home/sal/cheapwatch/src/watcher.rs",
+            "rule": "TRC004",
+            "severity": "warning",
+            "snippet": "debug!(\"scan debounced\");"
+          },
+          {
+            "column": 25,
+            "line": 83,
+            "message": "event has no structured contextual fields",
+            "path": "/home/sal/cheapwatch/src/watcher.rs",
+            "rule": "TRC004",
+            "severity": "warning",
+            "snippet": "info!(\"shutdown signal received, stopping watcher\");"
+          },
+          {
+            "column": 9,
+            "line": 92,
+            "message": "event has no structured contextual fields",
+            "path": "/home/sal/cheapwatch/src/watcher.rs",
+            "rule": "TRC004",
+            "severity": "warning",
+            "snippet": "info!(\"cheapwatch watcher stopped\");"
+          },
+          {
+            "column": 9,
+            "line": 108,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/cheapwatch/src/watcher.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let _ = store.set_meta(\"scans_completed\", &c.to_string());"
+          },
+          {
+            "column": 9,
+            "line": 109,
+            "message": "event has no structured contextual fields",
+            "path": "/home/sal/cheapwatch/src/watcher.rs",
+            "rule": "TRC004",
+            "severity": "warning",
+            "snippet": "debug!(\"scan completed: {:?}\", stats);"
+          },
+          {
+            "column": 21,
+            "line": 121,
+            "message": "event has no structured contextual fields",
+            "path": "/home/sal/cheapwatch/src/watcher.rs",
+            "rule": "TRC004",
+            "severity": "warning",
+            "snippet": "debug!(\"fs event: {:?}\", event);"
+          },
+          {
+            "column": 25,
+            "line": 127,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/cheapwatch/src/watcher.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let _ = tx.try_send(());"
+          },
+          {
+            "column": 21,
+            "line": 131,
+            "message": "event has no structured contextual fields",
+            "path": "/home/sal/cheapwatch/src/watcher.rs",
+            "rule": "TRC004",
+            "severity": "warning",
+            "snippet": "warn!(\"notify error: {}\", e);"
+          },
+          {
+            "column": 17,
+            "line": 142,
+            "message": "event has no structured contextual fields",
+            "path": "/home/sal/cheapwatch/src/watcher.rs",
+            "rule": "TRC004",
+            "severity": "warning",
+            "snippet": "info!(\"watching {}\", dir.display());"
+          },
+          {
+            "column": 17,
+            "line": 144,
+            "message": "event has no structured contextual fields",
+            "path": "/home/sal/cheapwatch/src/watcher.rs",
+            "rule": "TRC004",
+            "severity": "warning",
+            "snippet": "warn!("
+          },
+          {
+            "column": 5,
+            "line": 37,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "std::fs::create_dir_all(&sessions).unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 39,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let file = File::create(&path).unwrap();"
+          },
+          {
+            "column": 9,
+            "line": 41,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "writeln!(&file, \"{line}\").unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 46,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let store = Store::open(&config.db_path).unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 53,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let listener = TcpListener::bind(\"127.0.0.1:0\").await.unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 54,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let addr = listener.local_addr().unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 56,
+            "message": "spawned task does not explicitly preserve trace context",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC005",
+            "severity": "error",
+            "snippet": "tokio::spawn(async move {"
+          },
+          {
+            "column": 9,
+            "line": 57,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "axum::serve(listener, app).await.unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 64,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let dir = TempDir::new().unwrap();"
+          },
+          {
+            "column": 9,
+            "line": 73,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 75,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let body: serde_json::Value = res.json().await.unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 81,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let dir = TempDir::new().unwrap();"
+          },
+          {
+            "column": 9,
+            "line": 90,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 92,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let body: serde_json::Value = res.json().await.unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 99,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let dir = TempDir::new().unwrap();"
+          },
+          {
+            "column": 9,
+            "line": 119,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 121,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let body: ScanResponse = res.json().await.unwrap();"
+          },
+          {
+            "column": 9,
+            "line": 129,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".unwrap()"
+          },
+          {
+            "column": 9,
+            "line": 132,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 133,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "assert!(alerts.as_array().unwrap().len() >= 2);"
+          },
+          {
+            "column": 5,
+            "line": 138,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let dir = TempDir::new().unwrap();"
+          },
+          {
+            "column": 9,
+            "line": 152,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".unwrap();"
+          },
+          {
+            "column": 9,
+            "line": 158,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 160,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let body = res.text().await.unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 167,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let dir = TempDir::new().unwrap();"
+          },
+          {
+            "column": 9,
+            "line": 176,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 178,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let body: Config = res.json().await.unwrap();"
+          },
+          {
+            "column": 13,
+            "line": 187,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let mut path = std::env::current_dir().unwrap();"
+          },
+          {
+            "column": 9,
+            "line": 198,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".expect(\"failed to execute cheapwatch binary\");"
+          },
+          {
+            "column": 5,
+            "line": 210,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let dir = TempDir::new().unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 212,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "std::fs::create_dir_all(&sessions).unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 214,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let file = File::create(&log).unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 219,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 229,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".unwrap();"
+          },
+          {
+            "column": 9,
+            "line": 232,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".args([\"-c\", config_path.to_str().unwrap(), \"check\"])"
+          },
+          {
+            "column": 9,
+            "line": 234,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/cheapwatch/tests/integration.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".expect(\"failed to execute cheapwatch binary\");"
+          }
+        ],
+        "summary": {
+          "critical": 40,
+          "diagnostics": 79,
+          "errors": 13,
+          "files": 9,
+          "info": 0,
+          "warnings": 26
+        }
+      }
+    },
+    {
+      "tool": "vamos",
+      "purpose": "nominal vs. validated action completion",
+      "status": "skipped",
+      "availability": "not_checked",
+      "execution": "skipped",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": null,
+      "duration_ms": null,
+      "summary": "skipped",
+      "findings": [],
+      "note": "no vamos.toml in project root; vamos hasn't been adopted here yet — run `vamos init` in the target to start tracking action lifecycles",
+      "raw": null
+    }
+  ],
+  "overall": {
+    "score": 70.48225152129818,
+    "grade": "C-",
+    "graded_tools": 4,
+    "total_tools": 12,
+    "weights": [
+      [
+        "amber",
+        1.0
+      ],
+      [
+        "chakra",
+        1.0
+      ],
+      [
+        "fract",
+        1.0
+      ],
+      [
+        "lwoodz",
+        1.0
+      ]
+    ],
+    "provisional": true
+  },
+  "suite": {
+    "required_tools": 9,
+    "available_tools": 9,
+    "executed_tools": 8,
+    "valid_results": 8,
+    "analysis_coverage": 0.3103448275862069,
+    "confidence": 1.0
+  },
+  "integrity": {
+    "status": "degraded",
+    "score": 88.88888888888889,
+    "grade": "B+",
+    "defects": [
+      "ferret: error"
+    ]
+  }
+}

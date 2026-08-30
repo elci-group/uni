@@ -1,0 +1,223 @@
+{
+  "header": {
+    "spec_version": "0.1.0"
+  },
+  "identity": null,
+  "metadata": {
+    "name": null,
+    "aliases": [],
+    "tags": []
+  },
+  "canvas": {
+    "size": 1024
+  },
+  "layers": [
+    {
+      "name": "folders",
+      "opacity": 255,
+      "blend": "normal",
+      "paths": [
+        {
+          "feature": "bottom_folder",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 150,
+              "y": 850
+            },
+            {
+              "op": "line_to",
+              "x": 874,
+              "y": 850
+            },
+            {
+              "op": "line_to",
+              "x": 874,
+              "y": 650
+            },
+            {
+              "op": "line_to",
+              "x": 724,
+              "y": 650
+            },
+            {
+              "op": "line_to",
+              "x": 724,
+              "y": 550
+            },
+            {
+              "op": "line_to",
+              "x": 624,
+              "y": 550
+            },
+            {
+              "op": "line_to",
+              "x": 624,
+              "y": 650
+            },
+            {
+              "op": "line_to",
+              "x": 150,
+              "y": 650
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 70,
+              "g": 130,
+              "b": 180,
+              "a": 255
+            }
+          },
+          "stroke": null,
+          "opacity": 255
+        },
+        {
+          "feature": "middle_folder",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 200,
+              "y": 750
+            },
+            {
+              "op": "line_to",
+              "x": 824,
+              "y": 750
+            },
+            {
+              "op": "line_to",
+              "x": 824,
+              "y": 570
+            },
+            {
+              "op": "line_to",
+              "x": 724,
+              "y": 570
+            },
+            {
+              "op": "line_to",
+              "x": 724,
+              "y": 470
+            },
+            {
+              "op": "line_to",
+              "x": 624,
+              "y": 470
+            },
+            {
+              "op": "line_to",
+              "x": 624,
+              "y": 570
+            },
+            {
+              "op": "line_to",
+              "x": 200,
+              "y": 570
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 70,
+              "g": 130,
+              "b": 180,
+              "a": 255
+            }
+          },
+          "stroke": null,
+          "opacity": 255
+        },
+        {
+          "feature": "top_folder",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 250,
+              "y": 650
+            },
+            {
+              "op": "line_to",
+              "x": 774,
+              "y": 650
+            },
+            {
+              "op": "line_to",
+              "x": 774,
+              "y": 500
+            },
+            {
+              "op": "line_to",
+              "x": 724,
+              "y": 500
+            },
+            {
+              "op": "line_to",
+              "x": 724,
+              "y": 430
+            },
+            {
+              "op": "line_to",
+              "x": 624,
+              "y": 430
+            },
+            {
+              "op": "line_to",
+              "x": 624,
+              "y": 500
+            },
+            {
+              "op": "line_to",
+              "x": 250,
+              "y": 500
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 255,
+              "g": 69,
+              "b": 0,
+              "a": 255
+            }
+          },
+          "stroke": {
+            "color": {
+              "r": 255,
+              "g": 69,
+              "b": 0,
+              "a": 255
+            },
+            "width": 12,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        }
+      ]
+    }
+  ],
+  "semantics": {
+    "description": "a stack of file folders shaped like a small mountain, with the topmost folder glowing hot orange-red and the lower folders in cool blue",
+    "emotion": "calm",
+    "intensity": 70
+  },
+  "variants": {
+    "tiny": null,
+    "text": null,
+    "standard": null,
+    "large": null,
+    "full": null
+  },
+  "compatibility": {
+    "min_spec_version": "0.1.0"
+  },
+  "provenance": null
+}

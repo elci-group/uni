@@ -17,6 +17,7 @@ mod lwoodz;
 mod tempcheq;
 mod traci;
 mod vamos;
+mod viva_palestina;
 
 use crate::report::Status;
 use crate::tool::ToolId;
@@ -58,6 +59,7 @@ pub fn parse(tool: ToolId, stdout: &str, exit_code: Option<i32>) -> ParseOutcome
         ToolId::Tempcheq => tempcheq::parse(stdout, exit_code),
         ToolId::Traci => traci::parse(stdout, exit_code),
         ToolId::Vamos => vamos::parse(stdout, exit_code),
+        ToolId::VivaPalestina => viva_palestina::parse(stdout, exit_code),
     }
 }
 

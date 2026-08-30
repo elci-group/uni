@@ -1,0 +1,393 @@
+{
+  "header": {
+    "spec_version": "0.1.0"
+  },
+  "identity": null,
+  "metadata": {
+    "name": null,
+    "aliases": [],
+    "tags": []
+  },
+  "canvas": {
+    "size": 1024
+  },
+  "layers": [
+    {
+      "name": "crystal",
+      "opacity": 255,
+      "blend": "normal",
+      "paths": [
+        {
+          "feature": "core",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 512,
+              "y": 392
+            },
+            {
+              "op": "line_to",
+              "x": 592,
+              "y": 452
+            },
+            {
+              "op": "line_to",
+              "x": 592,
+              "y": 572
+            },
+            {
+              "op": "line_to",
+              "x": 512,
+              "y": 632
+            },
+            {
+              "op": "line_to",
+              "x": 432,
+              "y": 572
+            },
+            {
+              "op": "line_to",
+              "x": 432,
+              "y": 452
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 100,
+              "g": 80,
+              "b": 240,
+              "a": 255
+            }
+          },
+          "stroke": {
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 255
+            },
+            "width": 4,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "aura",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 212,
+              "y": 512
+            },
+            {
+              "op": "line_to",
+              "x": 312,
+              "y": 312
+            },
+            {
+              "op": "line_to",
+              "x": 512,
+              "y": 212
+            },
+            {
+              "op": "line_to",
+              "x": 712,
+              "y": 312
+            },
+            {
+              "op": "line_to",
+              "x": 812,
+              "y": 512
+            },
+            {
+              "op": "line_to",
+              "x": 712,
+              "y": 712
+            },
+            {
+              "op": "line_to",
+              "x": 512,
+              "y": 812
+            },
+            {
+              "op": "line_to",
+              "x": 312,
+              "y": 712
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 80,
+              "g": 0,
+              "b": 180,
+              "a": 255
+            }
+          },
+          "stroke": {
+            "color": {
+              "r": 80,
+              "g": 0,
+              "b": 180,
+              "a": 255
+            },
+            "width": 0,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 30
+        },
+        {
+          "feature": "shard",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 200,
+              "y": 200
+            },
+            {
+              "op": "line_to",
+              "x": 300,
+              "y": 250
+            },
+            {
+              "op": "line_to",
+              "x": 250,
+              "y": 350
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 70,
+              "g": 100,
+              "b": 255,
+              "a": 255
+            }
+          },
+          "stroke": {
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 255
+            },
+            "width": 2,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 220
+        },
+        {
+          "feature": "shard",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 824,
+              "y": 200
+            },
+            {
+              "op": "line_to",
+              "x": 724,
+              "y": 250
+            },
+            {
+              "op": "line_to",
+              "x": 774,
+              "y": 350
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 90,
+              "g": 80,
+              "b": 250,
+              "a": 255
+            }
+          },
+          "stroke": {
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 255
+            },
+            "width": 2,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 210
+        },
+        {
+          "feature": "shard",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 800,
+              "y": 500
+            },
+            {
+              "op": "line_to",
+              "x": 720,
+              "y": 460
+            },
+            {
+              "op": "line_to",
+              "x": 720,
+              "y": 560
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 110,
+              "g": 70,
+              "b": 240,
+              "a": 255
+            }
+          },
+          "stroke": {
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 255
+            },
+            "width": 2,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 200
+        },
+        {
+          "feature": "shard",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 824,
+              "y": 800
+            },
+            {
+              "op": "line_to",
+              "x": 724,
+              "y": 750
+            },
+            {
+              "op": "line_to",
+              "x": 774,
+              "y": 650
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 130,
+              "g": 60,
+              "b": 230,
+              "a": 255
+            }
+          },
+          "stroke": {
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 255
+            },
+            "width": 2,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 190
+        },
+        {
+          "feature": "motion",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 250,
+              "y": 350
+            },
+            {
+              "op": "line_to",
+              "x": 512,
+              "y": 512
+            }
+          ],
+          "fill": null,
+          "stroke": {
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 255
+            },
+            "width": 2,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 150
+        },
+        {
+          "feature": "motion",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 720,
+              "y": 560
+            },
+            {
+              "op": "line_to",
+              "x": 512,
+              "y": 512
+            }
+          ],
+          "fill": null,
+          "stroke": {
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 255
+            },
+            "width": 2,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 150
+        }
+      ]
+    }
+  ],
+  "semantics": {
+    "description": "A crystal mid‑shatter re‑assembling into a clean faceted gem. Multiple shards of varying blue‑to‑purple hues converge toward a hexagonal core, with subtle motion lines indicating movement and a soft halo aura that glows outward.",
+    "emotion": "hopeful",
+    "intensity": 75
+  },
+  "variants": {
+    "tiny": null,
+    "text": null,
+    "standard": null,
+    "large": null,
+    "full": null
+  },
+  "compatibility": {
+    "min_spec_version": "0.1.0"
+  },
+  "provenance": null
+}

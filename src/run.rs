@@ -42,6 +42,8 @@ pub async fn execute_with_admitter(
     let target = std::fs::canonicalize(&opts.target)
         .map_err(|e| format!("target path {:?} is not accessible: {e}", opts.target))?;
 
+    generate_bound_snapshot(&target);
+
     let tools_dir = opts
         .tools_dir
         .clone()
@@ -950,6 +952,9 @@ fn build_command(tool: ToolId, bin: &Path, target: &Path) -> tokio::process::Com
         }
         ToolId::Jeenome => unreachable!("jeenome is built by run_jeenome"),
         ToolId::Vamos => unreachable!("vamos is built by run_vamos"),
+        ToolId::VivaPalestina => {
+            cmd.arg("scan").arg(target).arg("--detailed");
+        }
     }
     cmd
 }
@@ -1030,6 +1035,11 @@ async fn run_one(
     cmd.stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .stdin(Stdio::null());
+    // Captured for error/incompatible reports and debug logs so a failure is
+    // reproducible by copy-pasting the exact invocation, rather than making
+    // someone reconstruct it from `build_command`'s per-tool branches.
+    let cmd_display = format!("{cmd:?}");
+    tracing::debug!(tool = tool.key(), command = %cmd_display, "spawning tool");
 
     let start = Instant::now();
     let outcome = tokio::time::timeout(timeout, cmd.output()).await;
@@ -1042,26 +1052,34 @@ async fn run_one(
     let output = match outcome {
         Ok(Ok(o)) => o,
         Ok(Err(e)) => {
-            eprintln!(
-                "uni: tool={} stage=spawn outcome=failed error={e}",
-                tool.key()
+            tracing::error!(
+                tool = tool.key(),
+                stage = "spawn",
+                command = %cmd_display,
+                error = %e,
+                "tool failed to spawn"
             );
             return error_report(
                 tool,
-                format!("failed to spawn: {e}"),
+                format!("failed to spawn `{cmd_display}`: {e}"),
                 None,
                 Some(duration_ms),
             );
         }
         Err(_) => {
-            eprintln!(
-                "uni: tool={} stage=run outcome=timeout timeout_s={}",
-                tool.key(),
-                timeout.as_secs()
+            tracing::error!(
+                tool = tool.key(),
+                stage = "run",
+                command = %cmd_display,
+                timeout_s = timeout.as_secs(),
+                "tool timed out"
             );
             return error_report(
                 tool,
-                format!("timed out after {}s", timeout.as_secs()),
+                format!(
+                    "timed out after {}s running `{cmd_display}`",
+                    timeout.as_secs()
+                ),
                 None,
                 Some(duration_ms),
             );
@@ -1073,16 +1091,48 @@ async fn run_one(
     let exit_code = output.status.code();
 
     if stdout.trim().is_empty() {
-        let stderr_snippet: String = stderr.chars().take(300).collect();
+        // Cap well above the old 300 chars: clap/usage errors (the shape
+        // ferret produces when its CLI contract drifts from what uni
+        // invokes) are often a multi-line usage block, and truncating too
+        // early was hiding the actual cause line.
+        let stderr_snippet: String = stderr.chars().take(4000).collect();
+        tracing::error!(
+            tool = tool.key(),
+            stage = "run",
+            command = %cmd_display,
+            ?exit_code,
+            stderr = %stderr,
+            "tool produced no stdout"
+        );
         return error_report(
             tool,
-            format!("produced no stdout; stderr: {stderr_snippet}"),
+            format!(
+                "`{cmd_display}` produced no stdout (exit {exit_code:?}); stderr: {stderr_snippet}"
+            ),
             exit_code,
             Some(duration_ms),
         );
     }
 
     let parsed = parsers::parse(tool, &stdout, exit_code);
+    if parsed.status == Status::Error {
+        tracing::error!(
+            tool = tool.key(),
+            command = %cmd_display,
+            ?exit_code,
+            note = parsed.note.as_deref().unwrap_or(""),
+            stderr = %stderr,
+            "tool ran but its output could not be parsed into a graded result"
+        );
+    } else {
+        tracing::debug!(
+            tool = tool.key(),
+            ?exit_code,
+            duration_ms,
+            status = ?parsed.status,
+            "tool run complete"
+        );
+    }
     let evidence = evidence_for(tool, parsed.raw.as_ref());
     ToolReport {
         tool: tool.key(),
@@ -1164,23 +1214,31 @@ async fn lwoodz_audit_args(bin: &Path) -> Option<Vec<String>> {
 
 /// Ferret has shipped the project-wide review under both names: prefer the
 /// requested `hunt` spelling and retain compatibility with builds that expose
-/// it as `track`. A help probe is side-effect free and avoids guessing from a
-/// version string.
+/// it as `track`.
+///
+/// This must NOT be probed as `ferret <subcommand> --help` exiting
+/// successfully: current ferret builds accept an optional `[TARGET]`
+/// positional ahead of the subcommand at the top level, so clap happily
+/// parses an unrecognized word like `hunt` as TARGET and then `--help`
+/// short-circuits with exit 0 regardless — the probe "succeeds" for a
+/// subcommand that doesn't exist, uni then invokes it, and ferret fails with
+/// `unexpected argument '<target>' found`. Instead, parse the `Commands:`
+/// section of ferret's own top-level `--help` and match against real listed
+/// subcommand names, the same way `ami_machine_args`/`lwoodz_audit_args`
+/// sniff capability from help text rather than from a probe's exit code.
 async fn ferret_hunt_subcommand(bin: &Path) -> Option<&'static str> {
-    for subcommand in ["hunt", "track"] {
-        let mut cmd = tokio::process::Command::new(bin);
-        cmd.args([subcommand, "--help"])
-            .stdout(Stdio::null())
-            .stderr(Stdio::null())
-            .stdin(Stdio::null());
-        if matches!(
-            tokio::time::timeout(Duration::from_secs(5), cmd.status()).await,
-            Ok(Ok(status)) if status.success()
-        ) {
-            return Some(subcommand);
-        }
-    }
-    None
+    let help = help_output(bin, &["--help"]).await?;
+    let listed: Vec<&str> = help
+        .lines()
+        .skip_while(|line| !line.trim_start().starts_with("Commands:"))
+        .skip(1)
+        .take_while(|line| !line.trim().is_empty())
+        .filter_map(|line| line.split_whitespace().next())
+        .collect();
+    tracing::debug!(binary = %bin.display(), ?listed, "ferret capability probe: listed subcommands");
+    ["hunt", "track"]
+        .into_iter()
+        .find(|subcommand| listed.contains(subcommand))
 }
 
 async fn run_jeenome(
@@ -1512,6 +1570,12 @@ fn unavailable_report(tool: ToolId, note: String) -> ToolReport {
 }
 
 fn incompatible_report(tool: ToolId, bin: &Path, note: String) -> ToolReport {
+    tracing::warn!(
+        tool = tool.key(),
+        binary = %bin.display(),
+        reason = %note,
+        "installed binary is incompatible with uni's invocation contract"
+    );
     ToolReport {
         tool: tool.key(),
         purpose: tool.purpose(),
@@ -1634,6 +1698,44 @@ fn evidence_for(tool: ToolId, raw: Option<&serde_json::Value>) -> Evidence {
     }
 }
 
+/// Generate a deterministic `bound-snapshot/v1` of the target project and
+/// persist it under `<target>/.uni/snapshot-v1.json`. Failure is logged but
+/// does not abort the uni run: downstream tools may still fall back to their
+/// own directory walking.
+fn generate_bound_snapshot(target: &Path) {
+    use bound_core::{bundle, BundleOptions};
+
+    let options = BundleOptions {
+        directory: target.to_path_buf(),
+        include_meta: true,
+        include_meta_hash: true,
+        include_tree: true,
+        ..BundleOptions::default()
+    };
+
+    match bundle(&options) {
+        Ok(output) => {
+            let uni_dir = target.join(".uni");
+            if let Err(e) = std::fs::create_dir_all(&uni_dir) {
+                eprintln!("uni: warning: could not create .uni directory: {e}");
+                return;
+            }
+            let path = uni_dir.join("snapshot-v1.json");
+            match serde_json::to_string_pretty(&output.snapshot) {
+                Ok(json) => {
+                    if let Err(e) = std::fs::write(&path, json) {
+                        eprintln!("uni: warning: could not write bound snapshot: {e}");
+                    } else {
+                        eprintln!("uni: bound snapshot written to {}", path.display());
+                    }
+                }
+                Err(e) => eprintln!("uni: warning: could not serialize bound snapshot: {e}"),
+            }
+        }
+        Err(e) => eprintln!("uni: warning: bound snapshot generation failed: {e}"),
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1690,6 +1792,35 @@ mod tests {
     }
 
     #[tokio::test]
+    #[cfg(unix)]
+    async fn ferret_capability_probe_reads_the_commands_list_not_help_exit_status() {
+        use std::os::unix::fs::PermissionsExt;
+
+        // Mirrors current ferret: an optional top-level [TARGET] positional
+        // means `ferret hunt --help` parses "hunt" as TARGET and still exits
+        // 0 via clap's --help short-circuit, even though "hunt" is not a
+        // real subcommand. Only `--help` with no other args prints the real
+        // `Commands:` list (which has `track`, not `hunt`). A probe that
+        // trusts `<subcommand> --help`'s exit code (as this used to) would
+        // wrongly pick "hunt"; the fix must read the Commands: section.
+        let root =
+            std::env::temp_dir().join(format!("uni-ferret-probe-test-{}", uuid::Uuid::new_v4()));
+        std::fs::create_dir_all(&root).unwrap();
+        let ferret = root.join("ferret");
+        std::fs::write(
+            &ferret,
+            "#!/bin/sh\nif [ \"$#\" -eq 1 ] && [ \"$1\" = \"--help\" ]; then\n  cat <<'EOF'\nUsage: ferret [OPTIONS] [TARGET] [COMMAND]\n\nCommands:\n  business  Discover and independently scan coherent projects beneath ROOT\n  track     Track a CodeRabbit review on the target directory (or pwd) and learn from it\n  help      Print this message or the help of the given subcommand(s)\nEOF\n  exit 0\nfi\n# Any other args (e.g. `hunt --help`) still exit 0, same as real ferret's\n# --help short-circuit swallowing an unrecognized TARGET.\nexit 0\n",
+        )
+        .unwrap();
+        let mut permissions = std::fs::metadata(&ferret).unwrap().permissions();
+        permissions.set_mode(0o755);
+        std::fs::set_permissions(&ferret, permissions).unwrap();
+
+        assert_eq!(ferret_hunt_subcommand(&ferret).await, Some("track"));
+        std::fs::remove_dir_all(root).unwrap();
+    }
+
+    #[tokio::test]
     async fn poka_is_not_required_when_inputs_already_exist() {
         let root = std::env::temp_dir().join(format!("uni-poka-test-{}", uuid::Uuid::new_v4()));
         std::fs::create_dir_all(&root).unwrap();
@@ -1716,6 +1847,17 @@ mod tests {
         let args: Vec<_> = cmd.as_std().get_args().collect();
         assert_eq!(args, ["--json", "audit"]);
         assert_eq!(cmd.as_std().get_current_dir(), Some(Path::new("/project")));
+    }
+
+    #[test]
+    fn viva_palestina_analysis_uses_scan_detailed() {
+        let cmd = build_command(
+            ToolId::VivaPalestina,
+            Path::new("/bin/viva-palestina"),
+            Path::new("/project"),
+        );
+        let args: Vec<_> = cmd.as_std().get_args().collect();
+        assert_eq!(args, ["scan", "/project", "--detailed"]);
     }
 
     #[test]
