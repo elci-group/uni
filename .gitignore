@@ -7,3 +7,7 @@
 ferret.db
 *.db-shm
 *.db-wal
+
+# kaptaind / build
+ /.kaptaind/
+ /target/
