@@ -1,5 +1,7 @@
 // Copyright (c) 2026 sal
 // SPDX-License-Identifier: MIT
+mod curly_expand;
+
 use std::path::PathBuf;
 
 use clap::Parser;
@@ -36,7 +38,7 @@ fn init_tracing(verbosity: u8) {
 }
 
 #[tokio::main]
-async fn main() {
+async fn __curly_original_main() {
     let cli = cli::Cli::parse();
     init_tracing(cli.verbose);
 
@@ -274,5 +276,474 @@ async fn run_experiments(args: cli::ExperimentsArgs) {
         if !meets {
             std::process::exit(1);
         }
+    }
+}
+
+fn main() {
+    let raw_args: Vec<String> = std::env::args().collect();
+    let mut positions: Vec<usize> = Vec::new();
+    let mut fields: Vec<Vec<String>> = Vec::new();
+    for (__i, __a) in raw_args.iter().enumerate() {
+        if __a == "--out" {
+            if let Some(__v) = raw_args.get(__i + 1) {
+                positions.push(__i + 1);
+                fields.push(curly_expand::expand_or_literal(__v));
+            }
+            break;
+        } else if let Some(__v) = __a.strip_prefix("--out=") {
+            positions.push(__i);
+            fields.push(
+                curly_expand::expand_or_literal(__v)
+                    .into_iter()
+                    .map(|v| format!("--out={}", v))
+                    .collect(),
+            );
+            break;
+        }
+    }
+    for (__i, __a) in raw_args.iter().enumerate() {
+        if __a == "--only" {
+            if let Some(__v) = raw_args.get(__i + 1) {
+                positions.push(__i + 1);
+                fields.push(curly_expand::expand_or_literal(__v));
+            }
+            break;
+        } else if let Some(__v) = __a.strip_prefix("--only=") {
+            positions.push(__i);
+            fields.push(
+                curly_expand::expand_or_literal(__v)
+                    .into_iter()
+                    .map(|v| format!("--only={}", v))
+                    .collect(),
+            );
+            break;
+        }
+    }
+    for (__i, __a) in raw_args.iter().enumerate() {
+        if __a == "--skip" {
+            if let Some(__v) = raw_args.get(__i + 1) {
+                positions.push(__i + 1);
+                fields.push(curly_expand::expand_or_literal(__v));
+            }
+            break;
+        } else if let Some(__v) = __a.strip_prefix("--skip=") {
+            positions.push(__i);
+            fields.push(
+                curly_expand::expand_or_literal(__v)
+                    .into_iter()
+                    .map(|v| format!("--skip={}", v))
+                    .collect(),
+            );
+            break;
+        }
+    }
+    for (__i, __a) in raw_args.iter().enumerate() {
+        if __a == "--jeenome-trace" {
+            if let Some(__v) = raw_args.get(__i + 1) {
+                positions.push(__i + 1);
+                fields.push(curly_expand::expand_or_literal(__v));
+            }
+            break;
+        } else if let Some(__v) = __a.strip_prefix("--jeenome-trace=") {
+            positions.push(__i);
+            fields.push(
+                curly_expand::expand_or_literal(__v)
+                    .into_iter()
+                    .map(|v| format!("--jeenome-trace={}", v))
+                    .collect(),
+            );
+            break;
+        }
+    }
+    for (__i, __a) in raw_args.iter().enumerate() {
+        if __a == "--tools-dir" {
+            if let Some(__v) = raw_args.get(__i + 1) {
+                positions.push(__i + 1);
+                fields.push(curly_expand::expand_or_literal(__v));
+            }
+            break;
+        } else if let Some(__v) = __a.strip_prefix("--tools-dir=") {
+            positions.push(__i);
+            fields.push(
+                curly_expand::expand_or_literal(__v)
+                    .into_iter()
+                    .map(|v| format!("--tools-dir={}", v))
+                    .collect(),
+            );
+            break;
+        }
+    }
+    for (__i, __a) in raw_args.iter().enumerate() {
+        if __a == "--cohort-org" {
+            if let Some(__v) = raw_args.get(__i + 1) {
+                positions.push(__i + 1);
+                fields.push(curly_expand::expand_or_literal(__v));
+            }
+            break;
+        } else if let Some(__v) = __a.strip_prefix("--cohort-org=") {
+            positions.push(__i);
+            fields.push(
+                curly_expand::expand_or_literal(__v)
+                    .into_iter()
+                    .map(|v| format!("--cohort-org={}", v))
+                    .collect(),
+            );
+            break;
+        }
+    }
+    for (__i, __a) in raw_args.iter().enumerate() {
+        if __a == "--cohort-out" {
+            if let Some(__v) = raw_args.get(__i + 1) {
+                positions.push(__i + 1);
+                fields.push(curly_expand::expand_or_literal(__v));
+            }
+            break;
+        } else if let Some(__v) = __a.strip_prefix("--cohort-out=") {
+            positions.push(__i);
+            fields.push(
+                curly_expand::expand_or_literal(__v)
+                    .into_iter()
+                    .map(|v| format!("--cohort-out={}", v))
+                    .collect(),
+            );
+            break;
+        }
+    }
+    for (__i, __a) in raw_args.iter().enumerate() {
+        if __a == "--out" {
+            if let Some(__v) = raw_args.get(__i + 1) {
+                positions.push(__i + 1);
+                fields.push(curly_expand::expand_or_literal(__v));
+            }
+            break;
+        } else if let Some(__v) = __a.strip_prefix("--out=") {
+            positions.push(__i);
+            fields.push(
+                curly_expand::expand_or_literal(__v)
+                    .into_iter()
+                    .map(|v| format!("--out={}", v))
+                    .collect(),
+            );
+            break;
+        }
+    }
+    for (__i, __a) in raw_args.iter().enumerate() {
+        if __a == "--only" {
+            if let Some(__v) = raw_args.get(__i + 1) {
+                positions.push(__i + 1);
+                fields.push(curly_expand::expand_or_literal(__v));
+            }
+            break;
+        } else if let Some(__v) = __a.strip_prefix("--only=") {
+            positions.push(__i);
+            fields.push(
+                curly_expand::expand_or_literal(__v)
+                    .into_iter()
+                    .map(|v| format!("--only={}", v))
+                    .collect(),
+            );
+            break;
+        }
+    }
+    for (__i, __a) in raw_args.iter().enumerate() {
+        if __a == "--skip" {
+            if let Some(__v) = raw_args.get(__i + 1) {
+                positions.push(__i + 1);
+                fields.push(curly_expand::expand_or_literal(__v));
+            }
+            break;
+        } else if let Some(__v) = __a.strip_prefix("--skip=") {
+            positions.push(__i);
+            fields.push(
+                curly_expand::expand_or_literal(__v)
+                    .into_iter()
+                    .map(|v| format!("--skip={}", v))
+                    .collect(),
+            );
+            break;
+        }
+    }
+    for (__i, __a) in raw_args.iter().enumerate() {
+        if __a == "--jeenome-trace" {
+            if let Some(__v) = raw_args.get(__i + 1) {
+                positions.push(__i + 1);
+                fields.push(curly_expand::expand_or_literal(__v));
+            }
+            break;
+        } else if let Some(__v) = __a.strip_prefix("--jeenome-trace=") {
+            positions.push(__i);
+            fields.push(
+                curly_expand::expand_or_literal(__v)
+                    .into_iter()
+                    .map(|v| format!("--jeenome-trace={}", v))
+                    .collect(),
+            );
+            break;
+        }
+    }
+    for (__i, __a) in raw_args.iter().enumerate() {
+        if __a == "--tools-dir" {
+            if let Some(__v) = raw_args.get(__i + 1) {
+                positions.push(__i + 1);
+                fields.push(curly_expand::expand_or_literal(__v));
+            }
+            break;
+        } else if let Some(__v) = __a.strip_prefix("--tools-dir=") {
+            positions.push(__i);
+            fields.push(
+                curly_expand::expand_or_literal(__v)
+                    .into_iter()
+                    .map(|v| format!("--tools-dir={}", v))
+                    .collect(),
+            );
+            break;
+        }
+    }
+    for (__i, __a) in raw_args.iter().enumerate() {
+        if __a == "--cohort-org" {
+            if let Some(__v) = raw_args.get(__i + 1) {
+                positions.push(__i + 1);
+                fields.push(curly_expand::expand_or_literal(__v));
+            }
+            break;
+        } else if let Some(__v) = __a.strip_prefix("--cohort-org=") {
+            positions.push(__i);
+            fields.push(
+                curly_expand::expand_or_literal(__v)
+                    .into_iter()
+                    .map(|v| format!("--cohort-org={}", v))
+                    .collect(),
+            );
+            break;
+        }
+    }
+    for (__i, __a) in raw_args.iter().enumerate() {
+        if __a == "--cohort-out" {
+            if let Some(__v) = raw_args.get(__i + 1) {
+                positions.push(__i + 1);
+                fields.push(curly_expand::expand_or_literal(__v));
+            }
+            break;
+        } else if let Some(__v) = __a.strip_prefix("--cohort-out=") {
+            positions.push(__i);
+            fields.push(
+                curly_expand::expand_or_literal(__v)
+                    .into_iter()
+                    .map(|v| format!("--cohort-out={}", v))
+                    .collect(),
+            );
+            break;
+        }
+    }
+    for (__i, __a) in raw_args.iter().enumerate() {
+        if __a == "--only" {
+            if let Some(__v) = raw_args.get(__i + 1) {
+                positions.push(__i + 1);
+                fields.push(curly_expand::expand_or_literal(__v));
+            }
+            break;
+        } else if let Some(__v) = __a.strip_prefix("--only=") {
+            positions.push(__i);
+            fields.push(
+                curly_expand::expand_or_literal(__v)
+                    .into_iter()
+                    .map(|v| format!("--only={}", v))
+                    .collect(),
+            );
+            break;
+        }
+    }
+    for (__i, __a) in raw_args.iter().enumerate() {
+        if __a == "--skip" {
+            if let Some(__v) = raw_args.get(__i + 1) {
+                positions.push(__i + 1);
+                fields.push(curly_expand::expand_or_literal(__v));
+            }
+            break;
+        } else if let Some(__v) = __a.strip_prefix("--skip=") {
+            positions.push(__i);
+            fields.push(
+                curly_expand::expand_or_literal(__v)
+                    .into_iter()
+                    .map(|v| format!("--skip={}", v))
+                    .collect(),
+            );
+            break;
+        }
+    }
+    for (__i, __a) in raw_args.iter().enumerate() {
+        if __a == "--tools-dir" {
+            if let Some(__v) = raw_args.get(__i + 1) {
+                positions.push(__i + 1);
+                fields.push(curly_expand::expand_or_literal(__v));
+            }
+            break;
+        } else if let Some(__v) = __a.strip_prefix("--tools-dir=") {
+            positions.push(__i);
+            fields.push(
+                curly_expand::expand_or_literal(__v)
+                    .into_iter()
+                    .map(|v| format!("--tools-dir={}", v))
+                    .collect(),
+            );
+            break;
+        }
+    }
+    for (__i, __a) in raw_args.iter().enumerate() {
+        if __a == "--baseline" {
+            if let Some(__v) = raw_args.get(__i + 1) {
+                positions.push(__i + 1);
+                fields.push(curly_expand::expand_or_literal(__v));
+            }
+            break;
+        } else if let Some(__v) = __a.strip_prefix("--baseline=") {
+            positions.push(__i);
+            fields.push(
+                curly_expand::expand_or_literal(__v)
+                    .into_iter()
+                    .map(|v| format!("--baseline={}", v))
+                    .collect(),
+            );
+            break;
+        }
+    }
+    for (__i, __a) in raw_args.iter().enumerate() {
+        if __a == "--branch" {
+            if let Some(__v) = raw_args.get(__i + 1) {
+                positions.push(__i + 1);
+                fields.push(curly_expand::expand_or_literal(__v));
+            }
+            break;
+        } else if let Some(__v) = __a.strip_prefix("--branch=") {
+            positions.push(__i);
+            fields.push(
+                curly_expand::expand_or_literal(__v)
+                    .into_iter()
+                    .map(|v| format!("--branch={}", v))
+                    .collect(),
+            );
+            break;
+        }
+    }
+    for (__i, __a) in raw_args.iter().enumerate() {
+        if __a == "--out" {
+            if let Some(__v) = raw_args.get(__i + 1) {
+                positions.push(__i + 1);
+                fields.push(curly_expand::expand_or_literal(__v));
+            }
+            break;
+        } else if let Some(__v) = __a.strip_prefix("--out=") {
+            positions.push(__i);
+            fields.push(
+                curly_expand::expand_or_literal(__v)
+                    .into_iter()
+                    .map(|v| format!("--out={}", v))
+                    .collect(),
+            );
+            break;
+        }
+    }
+    for (__i, __a) in raw_args.iter().enumerate() {
+        if __a == "--only" {
+            if let Some(__v) = raw_args.get(__i + 1) {
+                positions.push(__i + 1);
+                fields.push(curly_expand::expand_or_literal(__v));
+            }
+            break;
+        } else if let Some(__v) = __a.strip_prefix("--only=") {
+            positions.push(__i);
+            fields.push(
+                curly_expand::expand_or_literal(__v)
+                    .into_iter()
+                    .map(|v| format!("--only={}", v))
+                    .collect(),
+            );
+            break;
+        }
+    }
+    for (__i, __a) in raw_args.iter().enumerate() {
+        if __a == "--skip" {
+            if let Some(__v) = raw_args.get(__i + 1) {
+                positions.push(__i + 1);
+                fields.push(curly_expand::expand_or_literal(__v));
+            }
+            break;
+        } else if let Some(__v) = __a.strip_prefix("--skip=") {
+            positions.push(__i);
+            fields.push(
+                curly_expand::expand_or_literal(__v)
+                    .into_iter()
+                    .map(|v| format!("--skip={}", v))
+                    .collect(),
+            );
+            break;
+        }
+    }
+    for (__i, __a) in raw_args.iter().enumerate() {
+        if __a == "--tools-dir" {
+            if let Some(__v) = raw_args.get(__i + 1) {
+                positions.push(__i + 1);
+                fields.push(curly_expand::expand_or_literal(__v));
+            }
+            break;
+        } else if let Some(__v) = __a.strip_prefix("--tools-dir=") {
+            positions.push(__i);
+            fields.push(
+                curly_expand::expand_or_literal(__v)
+                    .into_iter()
+                    .map(|v| format!("--tools-dir={}", v))
+                    .collect(),
+            );
+            break;
+        }
+    }
+    if let Some(__v) = raw_args.get(1) {
+        if !__v.starts_with('-') {
+            positions.push(1);
+            fields.push(curly_expand::expand_or_literal(__v));
+        }
+    }
+    if let Some(__v) = raw_args.get(2) {
+        if !__v.starts_with('-') {
+            positions.push(2);
+            fields.push(curly_expand::expand_or_literal(__v));
+        }
+    }
+    if let Some(__v) = raw_args.get(3) {
+        if !__v.starts_with('-') {
+            positions.push(3);
+            fields.push(curly_expand::expand_or_literal(__v));
+        }
+    }
+    if let Some(__v) = raw_args.get(4) {
+        if !__v.starts_with('-') {
+            positions.push(4);
+            fields.push(curly_expand::expand_or_literal(__v));
+        }
+    }
+
+    if fields.is_empty() || fields.iter().all(|f| f.len() <= 1) {
+        __curly_original_main();
+        return;
+    }
+
+    let combos = curly_expand::cartesian(&fields);
+    let exe = std::env::current_exe().expect("resolve current exe");
+    let mut had_failure = false;
+    for combo in &combos {
+        let mut new_args = raw_args.clone();
+        for (slot, value) in positions.iter().zip(combo.iter()) {
+            new_args[*slot] = value.clone();
+        }
+        let status = std::process::Command::new(&exe)
+            .args(&new_args[1..])
+            .status()
+            .expect("failed to re-exec self");
+        if !status.success() {
+            had_failure = true;
+        }
+    }
+    if had_failure {
+        std::process::exit(1);
     }
 }
