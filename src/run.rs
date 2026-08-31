@@ -1703,7 +1703,7 @@ fn evidence_for(tool: ToolId, raw: Option<&serde_json::Value>) -> Evidence {
 /// does not abort the uni run: downstream tools may still fall back to their
 /// own directory walking.
 fn generate_bound_snapshot(target: &Path) {
-    use bound_core::{bundle, BundleOptions};
+    use bound_core::{bundle, BundleOptions, LogLevel, Logger};
 
     let options = BundleOptions {
         directory: target.to_path_buf(),
@@ -1712,8 +1712,9 @@ fn generate_bound_snapshot(target: &Path) {
         include_tree: true,
         ..BundleOptions::default()
     };
+    let logger = Logger::new(LogLevel::Info, None);
 
-    match bundle(&options) {
+    match bundle(&options, &logger) {
         Ok(output) => {
             let uni_dir = target.join(".uni");
             if let Err(e) = std::fs::create_dir_all(&uni_dir) {
