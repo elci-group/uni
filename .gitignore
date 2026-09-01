@@ -1,8 +1,13 @@
 /target/
 .kaptaind/
+.uni/
 .claude/scheduled_tasks.lock
 .lwoodz/audit.jsonl
 .skillastic/state.json
 ferret.db
 *.db-shm
 *.db-wal
+
+# kaptaind / build
+ /.kaptaind/
+ /target/

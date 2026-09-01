@@ -51,7 +51,13 @@ pub fn parse(stdout: &str, exit_code: Option<i32>) -> ParseOutcome {
     let score = if total == 0 {
         100.0
     } else {
-        let penalty = propose.len() as f64 * 4.0;
+        // Deduction scales with the *fraction* of the tree flagged for
+        // replacement, not the raw count. A flat per-dependency deduction
+        // punishes a handful of "propose" hits in a 200-dependency tree as
+        // hard as the same count in a 10-dependency tree, while barely
+        // touching a small tree where most of its dependencies are flagged.
+        let ratio = propose.len() as f64 / total as f64;
+        let penalty = ratio * 60.0;
         clamp_score(100.0 - penalty)
     };
 
@@ -115,8 +121,31 @@ mod tests {
         let out = parse(&stdout, Some(1));
         assert_eq!(out.status, Status::Warn);
         // Only the replaceable/proposed dependency is a reduction finding.
-        assert!((out.score.unwrap() - 96.0).abs() < 1e-9);
+        // 1 of 2 deps proposed => ratio 0.5 => penalty 30 => score 70.
+        assert!((out.score.unwrap() - 70.0).abs() < 1e-9);
         assert!(out.findings[0].contains("anyhow"));
+    }
+
+    #[test]
+    fn penalty_is_proportional_to_dependency_tree_size() {
+        let small = format!(
+            r#"{{"amber_version":"0.3.0","total_dependencies":2,"results":[{}]}}"#,
+            dep("clap", 61, "propose"),
+        );
+        let mut large_results: Vec<String> = (0..20)
+            .map(|i| dep(&format!("dep{i}"), 61, "proceed"))
+            .collect();
+        large_results.push(dep("clap", 61, "propose"));
+        let large = format!(
+            r#"{{"amber_version":"0.3.0","total_dependencies":21,"results":[{}]}}"#,
+            large_results.join(",")
+        );
+
+        let small_out = parse(&small, Some(1));
+        let large_out = parse(&large, Some(1));
+        // Same single "propose" hit, but it's half of a 2-dependency tree
+        // versus 1/21 of a larger one — the small tree should score worse.
+        assert!(small_out.score.unwrap() < large_out.score.unwrap());
     }
 
     #[test]

@@ -1,0 +1,1545 @@
+{
+  "schema": "uni.report/v3",
+  "target": "/home/sal/turnsignal",
+  "generated_at": "2026-08-27T13:19:46.985581139+00:00",
+  "tools_dir": "/home/sal",
+  "tools": [
+    {
+      "tool": "amber",
+      "purpose": "dependency bloat / replaceability",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 3
+      },
+      "binary": "/home/sal/.local/bin/amber",
+      "score": 60.0,
+      "grade": "D-",
+      "exit_code": 1,
+      "duration_ms": 10322,
+      "summary": "3 dependencies analyzed: 1 keep/security-block, 2 propose, 0 proceed",
+      "findings": [
+        "serde: security_block (replaceability 20)",
+        "clap: propose (replaceability 68)",
+        "serde_json: propose (replaceability 53)"
+      ],
+      "note": null,
+      "raw": {
+        "amber_version": "0.3.0",
+        "results": [
+          {
+            "crate": "clap",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 85% (2 unique APIs from 2 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 50% (category: cli)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 80,
+                "transitive_value": 65,
+                "usage_simplicity": 85
+              },
+              "overall": 68,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 2,
+              "imported_items": 2,
+              "is_trivial": true,
+              "unique_apis": 2
+            },
+            "version": "4.6.6"
+          },
+          {
+            "crate": "serde",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 65% (2 unique APIs from 33 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 0% (category: serialization)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 65% (1 affected files)",
+              "API surface: 90% (using ~7% of public APIs)",
+              "Category rule applied: NEVER_REPLACE list match",
+              "Confidence: 70% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 70,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 0,
+                "testability": 65,
+                "transitive_value": 55,
+                "usage_simplicity": 65
+              },
+              "overall": 20,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 33,
+              "imported_items": 2,
+              "is_trivial": false,
+              "unique_apis": 2
+            },
+            "version": "1.0.229"
+          },
+          {
+            "crate": "serde_json",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 35% (0 unique APIs from 7 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 50% (category: serialization)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 55% (2 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 75% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Medium Risk",
+              "classification_stars": "★★★☆☆",
+              "confidence": 75,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 55,
+                "transitive_value": 65,
+                "usage_simplicity": 35
+              },
+              "overall": 53,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 2,
+              "call_sites": 7,
+              "imported_items": 0,
+              "is_trivial": false,
+              "unique_apis": 0
+            },
+            "version": "1.0.151"
+          }
+        ],
+        "total_dependencies": 3
+      }
+    },
+    {
+      "tool": "ami",
+      "purpose": "project profile completeness (market-intelligence readiness)",
+      "status": "skipped",
+      "availability": "not_checked",
+      "execution": "skipped",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": null,
+      "duration_ms": null,
+      "summary": "skipped",
+      "findings": [],
+      "note": "ami is opt-in because project profiling is not code health; use `--only ami` when its installed build exposes JSON output",
+      "raw": null
+    },
+    {
+      "tool": "bart",
+      "purpose": "filesystem size & hotspots (informational)",
+      "status": "ok",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/usr/bin/bart",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 977,
+      "summary": "15 files, 47.8 KB under root",
+      "findings": [
+        "/home/sal/turnsignal/src: 25.4 KB",
+        "/home/sal/turnsignal/Cargo.lock: 6.3 KB",
+        "/home/sal/turnsignal/tests: 5.3 KB",
+        "/home/sal/turnsignal/README.md: 3.7 KB",
+        "/home/sal/turnsignal/traci.toml: 955 B"
+      ],
+      "note": "informational only — bart measures disk usage, not code health",
+      "raw": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786305146,
+                "path": "/home/sal/turnsignal/src/engine.rs",
+                "size": 11580
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786305146,
+                "path": "/home/sal/turnsignal/src/model.rs",
+                "size": 3600
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786305146,
+                "path": "/home/sal/turnsignal/src/main.rs",
+                "size": 3045
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786305192,
+                "path": "/home/sal/turnsignal/src/router.rs",
+                "size": 2003
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786305146,
+                "path": "/home/sal/turnsignal/src/render.rs",
+                "size": 1253
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786305146,
+                "path": "/home/sal/turnsignal/src/lib.rs",
+                "size": 467
+              }
+            ],
+            "depth": 1,
+            "file_count": 6,
+            "is_dir": true,
+            "modified": 1786305105,
+            "path": "/home/sal/turnsignal/src",
+            "size": 26044
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1786305196,
+            "path": "/home/sal/turnsignal/Cargo.lock",
+            "size": 6488
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786305146,
+                "path": "/home/sal/turnsignal/tests/cli.rs",
+                "size": 1307
+              }
+            ],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": true,
+            "modified": 1786305105,
+            "path": "/home/sal/turnsignal/tests",
+            "size": 5403
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1786305106,
+            "path": "/home/sal/turnsignal/README.md",
+            "size": 3788
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787836775,
+            "path": "/home/sal/turnsignal/traci.toml",
+            "size": 955
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1786306042,
+            "path": "/home/sal/turnsignal/deliver.toml",
+            "size": 772
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1786572932,
+            "path": "/home/sal/turnsignal/PADAGONIA_INTEGRATION.md",
+            "size": 734
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1786305192,
+            "path": "/home/sal/turnsignal/Cargo.toml",
+            "size": 523
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787836771,
+            "path": "/home/sal/turnsignal/poka.toml",
+            "size": 127
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1786306027,
+            "path": "/home/sal/turnsignal/.gitignore",
+            "size": 26
+          }
+        ],
+        "depth": 0,
+        "file_count": 15,
+        "is_dir": true,
+        "modified": 1787836775,
+        "path": "/home/sal/turnsignal",
+        "size": 48956
+      }
+    },
+    {
+      "tool": "chakra",
+      "purpose": "data-flow / architecture map coverage",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": 0.4666666666666667,
+        "confidence": 1.0,
+        "observations": 26
+      },
+      "binary": "/home/sal/.local/bin/chakra",
+      "score": 73.33333333333334,
+      "grade": "C",
+      "exit_code": 0,
+      "duration_ms": 2973,
+      "summary": "15 nodes, 26 flows; coverage 46.7% (7/15 files), confidence 100.0%",
+      "findings": [
+        "26 flow(s) with provenance=observed"
+      ],
+      "note": null,
+      "raw": {
+        "boundaries": [],
+        "events": [],
+        "evidence": [
+          {
+            "detail": "std::process::",
+            "file": "tests/cli.rs",
+            "id": "ev-0001",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "std::io::Write",
+            "file": "tests/cli.rs",
+            "id": "ev-0002",
+            "kind": "rust_use",
+            "line": 34
+          },
+          {
+            "detail": "engine::",
+            "file": "src/lib.rs",
+            "id": "ev-0003",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "model::",
+            "file": "src/lib.rs",
+            "id": "ev-0004",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "render::",
+            "file": "src/lib.rs",
+            "id": "ev-0005",
+            "kind": "rust_use",
+            "line": 13
+          },
+          {
+            "detail": "router::",
+            "file": "src/lib.rs",
+            "id": "ev-0006",
+            "kind": "rust_use",
+            "line": 14
+          },
+          {
+            "detail": "engine",
+            "file": "src/lib.rs",
+            "id": "ev-0007",
+            "kind": "rust_mod",
+            "line": 2
+          },
+          {
+            "detail": "model",
+            "file": "src/lib.rs",
+            "id": "ev-0008",
+            "kind": "rust_mod",
+            "line": 4
+          },
+          {
+            "detail": "render",
+            "file": "src/lib.rs",
+            "id": "ev-0009",
+            "kind": "rust_mod",
+            "line": 5
+          },
+          {
+            "detail": "router",
+            "file": "src/lib.rs",
+            "id": "ev-0010",
+            "kind": "rust_mod",
+            "line": 6
+          },
+          {
+            "detail": "clap::",
+            "file": "src/main.rs",
+            "id": "ev-0011",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "std::io::",
+            "file": "src/main.rs",
+            "id": "ev-0012",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "std::process::ExitCode",
+            "file": "src/main.rs",
+            "id": "ev-0013",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "turnsignal::",
+            "file": "src/main.rs",
+            "id": "ev-0014",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "crate::model::",
+            "file": "src/engine.rs",
+            "id": "ev-0015",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "crate::render::",
+            "file": "src/engine.rs",
+            "id": "ev-0016",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "crate::router::",
+            "file": "src/engine.rs",
+            "id": "ev-0017",
+            "kind": "rust_use",
+            "line": 6
+          },
+          {
+            "detail": "super::",
+            "file": "src/engine.rs",
+            "id": "ev-0018",
+            "kind": "rust_use",
+            "line": 307
+          },
+          {
+            "detail": "crate::",
+            "file": "src/router.rs",
+            "id": "ev-0019",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "super::",
+            "file": "src/router.rs",
+            "id": "ev-0020",
+            "kind": "rust_use",
+            "line": 43
+          },
+          {
+            "detail": "crate::Priority",
+            "file": "src/router.rs",
+            "id": "ev-0021",
+            "kind": "rust_use",
+            "line": 44
+          },
+          {
+            "detail": "serde::",
+            "file": "src/model.rs",
+            "id": "ev-0022",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "std::collections::BTreeMap",
+            "file": "src/model.rs",
+            "id": "ev-0023",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "std::fmt",
+            "file": "src/model.rs",
+            "id": "ev-0024",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "std::str::FromStr",
+            "file": "src/model.rs",
+            "id": "ev-0025",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "crate::Signal",
+            "file": "src/render.rs",
+            "id": "ev-0026",
+            "kind": "rust_use",
+            "line": 1
+          }
+        ],
+        "flows": [
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0001"
+            ],
+            "id": "flow-0001",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:tests/cli.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0002"
+            ],
+            "id": "flow-0002",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:tests/cli.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0003"
+            ],
+            "id": "flow-0003",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/engine.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0004"
+            ],
+            "id": "flow-0004",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/model.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0005"
+            ],
+            "id": "flow-0005",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/render.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0006"
+            ],
+            "id": "flow-0006",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/router.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0007"
+            ],
+            "id": "flow-0007",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/engine.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0008"
+            ],
+            "id": "flow-0008",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/model.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0009"
+            ],
+            "id": "flow-0009",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/render.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0010"
+            ],
+            "id": "flow-0010",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/router.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0011"
+            ],
+            "id": "flow-0011",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:clap"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0012"
+            ],
+            "id": "flow-0012",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0013"
+            ],
+            "id": "flow-0013",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0014"
+            ],
+            "id": "flow-0014",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:turnsignal"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0015"
+            ],
+            "id": "flow-0015",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/engine.rs",
+            "target": "file:src/model.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0016"
+            ],
+            "id": "flow-0016",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/engine.rs",
+            "target": "file:src/render.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0017"
+            ],
+            "id": "flow-0017",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/engine.rs",
+            "target": "file:src/router.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0018"
+            ],
+            "id": "flow-0018",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/engine.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0019"
+            ],
+            "id": "flow-0019",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/router.rs",
+            "target": "mod:rust:crate::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0020"
+            ],
+            "id": "flow-0020",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/router.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0021"
+            ],
+            "id": "flow-0021",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/router.rs",
+            "target": "mod:rust:crate::Priority"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0022"
+            ],
+            "id": "flow-0022",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/model.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0023"
+            ],
+            "id": "flow-0023",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/model.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0024"
+            ],
+            "id": "flow-0024",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/model.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0025"
+            ],
+            "id": "flow-0025",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/model.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0026"
+            ],
+            "id": "flow-0026",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/render.rs",
+            "target": "mod:rust:crate::Signal"
+          }
+        ],
+        "inferences": [],
+        "metadata": {
+          "analyzed_file_count": 7,
+          "analyzers": [
+            "rust",
+            "javascript",
+            "typescript",
+            "python",
+            "go"
+          ],
+          "chakra_version": "0.3.33",
+          "duration_ms": 2016,
+          "file_count": 15,
+          "languages": {
+            "rust": 7
+          }
+        },
+        "nodes": [
+          {
+            "id": "ext:rust:clap",
+            "kind": "external",
+            "language": "rust",
+            "name": "clap"
+          },
+          {
+            "id": "ext:rust:serde",
+            "kind": "external",
+            "language": "rust",
+            "name": "serde"
+          },
+          {
+            "id": "ext:rust:std",
+            "kind": "external",
+            "language": "rust",
+            "name": "std"
+          },
+          {
+            "id": "ext:rust:turnsignal",
+            "kind": "external",
+            "language": "rust",
+            "name": "turnsignal"
+          },
+          {
+            "id": "file:src/engine.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/engine.rs"
+          },
+          {
+            "id": "file:src/lib.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/lib.rs"
+          },
+          {
+            "id": "file:src/main.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/main.rs"
+          },
+          {
+            "id": "file:src/model.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/model.rs"
+          },
+          {
+            "id": "file:src/render.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/render.rs"
+          },
+          {
+            "id": "file:src/router.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/router.rs"
+          },
+          {
+            "id": "file:tests/cli.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "tests/cli.rs"
+          },
+          {
+            "id": "mod:rust:crate::",
+            "kind": "module",
+            "language": "rust",
+            "name": "crate::"
+          },
+          {
+            "id": "mod:rust:crate::Priority",
+            "kind": "module",
+            "language": "rust",
+            "name": "crate::Priority"
+          },
+          {
+            "id": "mod:rust:crate::Signal",
+            "kind": "module",
+            "language": "rust",
+            "name": "crate::Signal"
+          },
+          {
+            "id": "mod:rust:super::",
+            "kind": "module",
+            "language": "rust",
+            "name": "super::"
+          }
+        ],
+        "schema": "chakra.flow/v1",
+        "subject": {
+          "generated_at": "2026-08-27T13:19:39.687650637Z",
+          "path": "/home/sal/turnsignal"
+        }
+      }
+    },
+    {
+      "tool": "ferret",
+      "purpose": "repository-specific review findings (hunt)",
+      "status": "error",
+      "availability": "installed",
+      "execution": "failed",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": 2,
+      "duration_ms": 339,
+      "summary": "error",
+      "findings": [],
+      "note": "produced no stdout; stderr: error: unexpected argument '/home/sal/turnsignal' found\n\nUsage: ferret [OPTIONS] [TARGET] [COMMAND]\n\nFor more information, try '--help'.\n",
+      "raw": null
+    },
+    {
+      "tool": "fract",
+      "purpose": "module entropy, cohesion, duplication",
+      "status": "ok",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/home/sal/.local/bin/fract",
+      "score": 100.0,
+      "grade": "A+",
+      "exit_code": 0,
+      "duration_ms": 2249,
+      "summary": "7 modules indexed: 0 excellent, 7 healthy, 0 warning, 0 critical",
+      "findings": [
+        "src/engine.rs: entropy 0.62 — Within entropy budget (0.62)",
+        "src/model.rs: entropy 0.61 — Within entropy budget (0.61)",
+        "src/main.rs: entropy 0.54 — Within entropy budget (0.54)",
+        "src/render.rs: entropy 0.51 — Within entropy budget (0.51)",
+        "src/router.rs: entropy 0.50 — Within entropy budget (0.50)"
+      ],
+      "note": null,
+      "raw": {
+        "findings": [
+          {
+            "confidence": null,
+            "entropy": 0.6175697383467375,
+            "evidence": {
+              "cyclomatic": "28",
+              "duplicates": "14",
+              "fan_in": "0",
+              "fan_out": "4",
+              "functions": "17",
+              "health": "Healthy",
+              "lines": "357",
+              "public_api": "15"
+            },
+            "id": "src/engine.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.62)",
+            "module": "src/engine.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.62 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6139304067746328,
+            "evidence": {
+              "cyclomatic": "3",
+              "duplicates": "14",
+              "fan_in": "1",
+              "fan_out": "4",
+              "functions": "6",
+              "health": "Healthy",
+              "lines": "147",
+              "public_api": "41"
+            },
+            "id": "src/model.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.61)",
+            "module": "src/model.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.61 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5421694395251929,
+            "evidence": {
+              "cyclomatic": "13",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "4",
+              "functions": "3",
+              "health": "Healthy",
+              "lines": "111",
+              "public_api": "0"
+            },
+            "id": "src/main.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.54)",
+            "module": "src/main.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.54 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5063031704929803,
+            "evidence": {
+              "cyclomatic": "0",
+              "duplicates": "3",
+              "fan_in": "1",
+              "fan_out": "1",
+              "functions": "5",
+              "health": "Healthy",
+              "lines": "45",
+              "public_api": "3"
+            },
+            "id": "src/render.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.51)",
+            "module": "src/render.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.51 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.49544614467205234,
+            "evidence": {
+              "cyclomatic": "11",
+              "duplicates": "0",
+              "fan_in": "1",
+              "fan_out": "3",
+              "functions": "4",
+              "health": "Healthy",
+              "lines": "58",
+              "public_api": "2"
+            },
+            "id": "src/router.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.50)",
+            "module": "src/router.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.50 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.4649338451474272,
+            "evidence": {
+              "cyclomatic": "0",
+              "duplicates": "1",
+              "fan_in": "0",
+              "fan_out": "2",
+              "functions": "2",
+              "health": "Healthy",
+              "lines": "44",
+              "public_api": "0"
+            },
+            "id": "tests/cli.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.46)",
+            "module": "tests/cli.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.46 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.45209182406037624,
+            "evidence": {
+              "cyclomatic": "0",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "0",
+              "functions": "0",
+              "health": "Healthy",
+              "lines": "14",
+              "public_api": "4"
+            },
+            "id": "src/lib.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.45)",
+            "module": "src/lib.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.45 below threshold 0.82"
+          }
+        ],
+        "root": "/home/sal/turnsignal",
+        "schema": "fract.report/v1",
+        "summary": {
+          "critical": 0,
+          "excellent": 0,
+          "healthy": 7,
+          "score": 100,
+          "total": 7,
+          "warning": 0
+        }
+      }
+    },
+    {
+      "tool": "isopod",
+      "purpose": "ISO27001/27002 compliance posture",
+      "status": "no_data",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 0
+      },
+      "binary": "/home/sal/.local/bin/isopod",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 3838,
+      "summary": "0/0 controls assessed (0.0% coverage): 0 pass, 0 warn, 0 fail, 0 unknown",
+      "findings": [],
+      "note": "coverage is 0.0%; compliance is ungraded below the 80% evidence threshold, and UNKNOWN controls are not treated as failures",
+      "raw": []
+    },
+    {
+      "tool": "jeenome",
+      "purpose": "behavioural trace analysis (opt-in)",
+      "status": "skipped",
+      "availability": "not_checked",
+      "execution": "skipped",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": null,
+      "duration_ms": null,
+      "summary": "skipped",
+      "findings": [],
+      "note": "jeenome is opt-in (needs an strace trace, not just a project path); pass --jeenome to include it",
+      "raw": null
+    },
+    {
+      "tool": "lwoodz",
+      "purpose": "license / SPDX compliance",
+      "status": "fail",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/home/sal/lwoodz/target/debug/lwoodz",
+      "score": 55.0,
+      "grade": "F",
+      "exit_code": 0,
+      "duration_ms": 2495,
+      "summary": "license=unknown, spdx_valid=true, header coverage 0/7, 0 incompatible / 0 warning issues among 28 deps",
+      "findings": [],
+      "note": "advisory warning deductions are proportional to dependency count; missing licenses and incompatible dependencies remain hard findings; lwoodz.toml was missing; `poka apply` failed (poka apply exited Some(101): thread 'main' (249136) panicked at crates/poka-core/src/index.rs:99:33: external generator 'lwoodz' failed: external generator 'lwoodz' exited with exit status: 2: error: unexpected argument '--init' found Usage: lwoodz [OPTIONS] [COMMAND] ); assessment still ran",
+      "raw": {
+        "compatibility": {
+          "incompatible": 0,
+          "issues": [],
+          "total_deps": 28,
+          "warnings": 0
+        },
+        "detected_license": null,
+        "findings": [
+          {
+            "code": "MISSING_LICENSE_FILE",
+            "level": "error",
+            "message": "LICENSE not found at /home/sal/turnsignal/LICENSE",
+            "path": "LICENSE"
+          },
+          {
+            "code": "MISSING_SPDX_MANIFEST",
+            "level": "warning",
+            "message": "SPDX manifest not found at .lwoodz/manifest.json — run `lwoodz generate`",
+            "path": ".lwoodz/manifest.json"
+          },
+          {
+            "code": "MISSING_HEADERS",
+            "level": "warning",
+            "message": "7 of 7 source files missing copyright/SPDX headers",
+            "path": null
+          }
+        ],
+        "generated_at": "2026-08-27T13:19:41.005844836+00:00",
+        "has_license_file": false,
+        "header_coverage": {
+          "missing": 7,
+          "total_files": 7,
+          "with_header": 0
+        },
+        "holder": "Your Name",
+        "passed": false,
+        "project_license": "MIT",
+        "spdx_manifest_exists": false,
+        "spdx_valid": true,
+        "year": 2026
+      }
+    },
+    {
+      "tool": "tempcheq",
+      "purpose": "LLM sampling-temperature correctness",
+      "status": "not_applicable",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 0
+      },
+      "binary": "/home/sal/.local/bin/tempcheq",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 2236,
+      "summary": "not applicable: no inference actions found",
+      "findings": [],
+      "note": "zero observations do not establish project health and are excluded from scoring",
+      "raw": {
+        "actions": [],
+        "implicit_default": 0,
+        "inapplicable": 0,
+        "material_deviations": 0,
+        "temperature_controlled": 0,
+        "total_actions": 0,
+        "workspace": "/home/sal/turnsignal"
+      }
+    },
+    {
+      "tool": "traci",
+      "purpose": "observability/telemetry completeness",
+      "status": "fail",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 10
+      },
+      "binary": "/home/sal/.local/bin/traci",
+      "score": null,
+      "grade": null,
+      "exit_code": 2,
+      "duration_ms": 945,
+      "summary": "7 files, 10 observability diagnostics: 6 critical, 4 error-severity, 0 warning-severity, 0 info",
+      "findings": [
+        "[observability/critical] TRC007 /home/sal/turnsignal/tests/cli.rs:13 — panic path cannot be reconstructed from telemetry",
+        "[observability/critical] TRC007 /home/sal/turnsignal/tests/cli.rs:17 — panic path cannot be reconstructed from telemetry",
+        "[observability/critical] TRC007 /home/sal/turnsignal/tests/cli.rs:33 — panic path cannot be reconstructed from telemetry",
+        "[observability/critical] TRC007 /home/sal/turnsignal/tests/cli.rs:38 — panic path cannot be reconstructed from telemetry",
+        "[observability/critical] TRC007 /home/sal/turnsignal/tests/cli.rs:40 — panic path cannot be reconstructed from telemetry"
+      ],
+      "note": "observability diagnostics are not assigned a project-health score because Traci does not expose a total opportunity/coverage denominator; Poka's stale generator was repaired with the current native `traci` initializer; created traci.toml",
+      "raw": {
+        "diagnostics": [
+          {
+            "column": 9,
+            "line": 69,
+            "message": "failure path has no nearby structured diagnostic event",
+            "path": "/home/sal/turnsignal/src/main.rs",
+            "rule": "TRC001",
+            "severity": "error",
+            "snippet": "Some(_) => return Err(\"observation cannot be empty\".into()),"
+          },
+          {
+            "column": 13,
+            "line": 71,
+            "message": "failure path has no nearby structured diagnostic event",
+            "path": "/home/sal/turnsignal/src/main.rs",
+            "rule": "TRC001",
+            "severity": "error",
+            "snippet": "return Err(\"provide an observation argument or pipe one on stdin\".into());"
+          },
+          {
+            "column": 17,
+            "line": 79,
+            "message": "failure path has no nearby structured diagnostic event",
+            "path": "/home/sal/turnsignal/src/main.rs",
+            "rule": "TRC001",
+            "severity": "error",
+            "snippet": "return Err(\"observation cannot be empty\".into());"
+          },
+          {
+            "column": 13,
+            "line": 69,
+            "message": "failure path has no nearby structured diagnostic event",
+            "path": "/home/sal/turnsignal/src/model.rs",
+            "rule": "TRC001",
+            "severity": "error",
+            "snippet": "_ => Err(format!(\"unknown mode `{value}`\")),"
+          },
+          {
+            "column": 9,
+            "line": 13,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/turnsignal/tests/cli.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".expect(\"turnsignal should execute\");"
+          },
+          {
+            "column": 9,
+            "line": 17,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/turnsignal/tests/cli.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "serde_json::from_slice(&output.stdout).expect(\"stdout should be JSON\");"
+          },
+          {
+            "column": 9,
+            "line": 33,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/turnsignal/tests/cli.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".expect(\"turnsignal should start\");"
+          },
+          {
+            "column": 9,
+            "line": 38,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/turnsignal/tests/cli.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".unwrap()"
+          },
+          {
+            "column": 9,
+            "line": 40,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/turnsignal/tests/cli.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 41,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/turnsignal/tests/cli.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let output = child.wait_with_output().unwrap();"
+          }
+        ],
+        "summary": {
+          "critical": 6,
+          "diagnostics": 10,
+          "errors": 4,
+          "files": 7,
+          "info": 0,
+          "warnings": 0
+        }
+      }
+    },
+    {
+      "tool": "vamos",
+      "purpose": "nominal vs. validated action completion",
+      "status": "skipped",
+      "availability": "not_checked",
+      "execution": "skipped",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": null,
+      "duration_ms": null,
+      "summary": "skipped",
+      "findings": [],
+      "note": "no vamos.toml in project root; vamos hasn't been adopted here yet — run `vamos init` in the target to start tracking action lifecycles",
+      "raw": null
+    }
+  ],
+  "overall": {
+    "score": 72.08333333333334,
+    "grade": "C-",
+    "graded_tools": 4,
+    "total_tools": 12,
+    "weights": [
+      [
+        "amber",
+        1.0
+      ],
+      [
+        "chakra",
+        1.0
+      ],
+      [
+        "fract",
+        1.0
+      ],
+      [
+        "lwoodz",
+        1.0
+      ]
+    ],
+    "provisional": true
+  },
+  "suite": {
+    "required_tools": 9,
+    "available_tools": 9,
+    "executed_tools": 8,
+    "valid_results": 8,
+    "analysis_coverage": 0.4666666666666667,
+    "confidence": 1.0
+  },
+  "integrity": {
+    "status": "degraded",
+    "score": 88.88888888888889,
+    "grade": "B+",
+    "defects": [
+      "ferret: error"
+    ]
+  }
+}

@@ -1,0 +1,4341 @@
+{
+  "schema": "uni.report/v3",
+  "target": "/home/sal/ami",
+  "generated_at": "2026-08-27T13:08:38.149817928+00:00",
+  "tools_dir": "/home/sal",
+  "tools": [
+    {
+      "tool": "amber",
+      "purpose": "dependency bloat / replaceability",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 19
+      },
+      "binary": "/home/sal/.local/bin/amber",
+      "score": 65.26315789473685,
+      "grade": "D",
+      "exit_code": 1,
+      "duration_ms": 4309,
+      "summary": "19 dependencies analyzed: 2 keep/security-block, 11 propose, 6 proceed",
+      "findings": [
+        "serde: security_block (replaceability 20)",
+        "tokio: security_block (replaceability 20)",
+        "async-trait: propose (replaceability 62)",
+        "chrono: propose (replaceability 74)",
+        "clap: propose (replaceability 68)"
+      ],
+      "note": null,
+      "raw": {
+        "amber_version": "0.3.0",
+        "results": [
+          {
+            "crate": "anyhow",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 85% (3 unique APIs from 3 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 65% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 60% (8 affected files)",
+              "API surface: 90% (using ~1% of public APIs)",
+              "Category rule applied: FREQUENTLY_REPLACEABLE list match",
+              "Confidence: 70% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Safe to Replace",
+              "classification_stars": "★★★★★",
+              "confidence": 70,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 65,
+                "testability": 60,
+                "transitive_value": 55,
+                "usage_simplicity": 85
+              },
+              "overall": 78,
+              "recommendation": "proceed"
+            },
+            "usage": {
+              "affected_files": 8,
+              "call_sites": 3,
+              "imported_items": 16,
+              "is_trivial": true,
+              "unique_apis": 3
+            },
+            "version": "1.0.104"
+          },
+          {
+            "crate": "async-trait",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 75% (1 unique APIs from 6 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: async-runtime)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 65% (1 affected files)",
+              "API surface: 90% (using ~2% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 80% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 80,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 65,
+                "transitive_value": 55,
+                "usage_simplicity": 75
+              },
+              "overall": 62,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 6,
+              "imported_items": 1,
+              "is_trivial": false,
+              "unique_apis": 1
+            },
+            "version": "0.1.91"
+          },
+          {
+            "crate": "chrono",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 65% (2 unique APIs from 26 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 65% (category: datetime)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 45% (8 affected files)",
+              "API surface: 90% (using ~3% of public APIs)",
+              "Category rule applied: FREQUENTLY_REPLACEABLE list match",
+              "Confidence: 55% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 55,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 65,
+                "testability": 45,
+                "transitive_value": 65,
+                "usage_simplicity": 65
+              },
+              "overall": 74,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 8,
+              "call_sites": 26,
+              "imported_items": 5,
+              "is_trivial": false,
+              "unique_apis": 2
+            },
+            "version": "0.4.45"
+          },
+          {
+            "crate": "clap",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 85% (2 unique APIs from 3 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 50% (category: cli)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 80,
+                "transitive_value": 65,
+                "usage_simplicity": 85
+              },
+              "overall": 68,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 3,
+              "imported_items": 2,
+              "is_trivial": true,
+              "unique_apis": 2
+            },
+            "version": "4.6.6"
+          },
+          {
+            "crate": "csv",
+            "metadata": {
+              "cve_count": 0,
+              "license": "Unlicense",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 90% (1 unique APIs from 4 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 80,
+                "transitive_value": 55,
+                "usage_simplicity": 90
+              },
+              "overall": 68,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 4,
+              "imported_items": 1,
+              "is_trivial": true,
+              "unique_apis": 1
+            },
+            "version": "1.4.0"
+          },
+          {
+            "crate": "form3",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 65% (7 unique APIs from 0 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 65% (1 affected files)",
+              "API surface: 70% (using ~16% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 75% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 75,
+              "dimensions": {
+                "api_surface": 70,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 65,
+                "transitive_value": 55,
+                "usage_simplicity": 65
+              },
+              "overall": 58,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 0,
+              "imported_items": 7,
+              "is_trivial": false,
+              "unique_apis": 7
+            },
+            "version": "0.1.0"
+          },
+          {
+            "crate": "futures",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 70% (0 unique APIs from 0 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 50% (category: async-runtime)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 85% (0 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 100% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Safe to Replace",
+              "classification_stars": "★★★★★",
+              "confidence": 100,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 85,
+                "transitive_value": 65,
+                "usage_simplicity": 70
+              },
+              "overall": 65,
+              "recommendation": "proceed"
+            },
+            "usage": {
+              "affected_files": 0,
+              "call_sites": 0,
+              "imported_items": 0,
+              "is_trivial": true,
+              "unique_apis": 0
+            },
+            "version": "0.3.33"
+          },
+          {
+            "crate": "git2",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 50% (0 unique APIs from 4 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 80,
+                "transitive_value": 55,
+                "usage_simplicity": 50
+              },
+              "overall": 58,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 4,
+              "imported_items": 0,
+              "is_trivial": true,
+              "unique_apis": 0
+            },
+            "version": "0.18.3"
+          },
+          {
+            "crate": "regex",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 70% (0 unique APIs from 0 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 50% (category: parsing)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 85% (0 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 100% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Safe to Replace",
+              "classification_stars": "★★★★★",
+              "confidence": 100,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 85,
+                "transitive_value": 65,
+                "usage_simplicity": 70
+              },
+              "overall": 65,
+              "recommendation": "proceed"
+            },
+            "usage": {
+              "affected_files": 0,
+              "call_sites": 0,
+              "imported_items": 0,
+              "is_trivial": true,
+              "unique_apis": 0
+            },
+            "version": "1.13.1"
+          },
+          {
+            "crate": "reqwest",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 90% (1 unique APIs from 2 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 50% (category: networking)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 70% (3 affected files)",
+              "API surface: 90% (using ~7% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 80% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 80,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 70,
+                "transitive_value": 65,
+                "usage_simplicity": 90
+              },
+              "overall": 69,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 3,
+              "call_sites": 2,
+              "imported_items": 3,
+              "is_trivial": true,
+              "unique_apis": 1
+            },
+            "version": "0.12.28"
+          },
+          {
+            "crate": "scraper",
+            "metadata": {
+              "cve_count": 0,
+              "license": "ISC",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 70% (0 unique APIs from 0 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 85% (0 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 100% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Safe to Replace",
+              "classification_stars": "★★★★★",
+              "confidence": 100,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 85,
+                "transitive_value": 55,
+                "usage_simplicity": 70
+              },
+              "overall": 63,
+              "recommendation": "proceed"
+            },
+            "usage": {
+              "affected_files": 0,
+              "call_sites": 0,
+              "imported_items": 0,
+              "is_trivial": true,
+              "unique_apis": 0
+            },
+            "version": "0.19.1"
+          },
+          {
+            "crate": "serde",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 55% (5 unique APIs from 59 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 0% (category: serialization)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 55% (4 affected files)",
+              "API surface: 70% (using ~17% of public APIs)",
+              "Category rule applied: NEVER_REPLACE list match",
+              "Confidence: 55% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 55,
+              "dimensions": {
+                "api_surface": 70,
+                "maintenance_burden": 45,
+                "security_safety": 0,
+                "testability": 55,
+                "transitive_value": 55,
+                "usage_simplicity": 55
+              },
+              "overall": 20,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 4,
+              "call_sites": 59,
+              "imported_items": 12,
+              "is_trivial": false,
+              "unique_apis": 5
+            },
+            "version": "1.0.229"
+          },
+          {
+            "crate": "serde_json",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 65% (2 unique APIs from 23 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 50% (category: serialization)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 45% (6 affected files)",
+              "API surface: 90% (using ~1% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 55% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 55,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 45,
+                "transitive_value": 65,
+                "usage_simplicity": 65
+              },
+              "overall": 60,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 6,
+              "call_sites": 23,
+              "imported_items": 3,
+              "is_trivial": false,
+              "unique_apis": 2
+            },
+            "version": "1.0.151"
+          },
+          {
+            "crate": "serde_yaml",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 50% (0 unique APIs from 4 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: serialization)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 80,
+                "transitive_value": 55,
+                "usage_simplicity": 50
+              },
+              "overall": 58,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 4,
+              "imported_items": 0,
+              "is_trivial": true,
+              "unique_apis": 0
+            },
+            "version": "0.9.34+deprecated"
+          },
+          {
+            "crate": "tempfile",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 90% (1 unique APIs from 0 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~1% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 80,
+                "transitive_value": 55,
+                "usage_simplicity": 90
+              },
+              "overall": 68,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 0,
+              "imported_items": 1,
+              "is_trivial": true,
+              "unique_apis": 1
+            },
+            "version": "3.27.0"
+          },
+          {
+            "crate": "thiserror",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 70% (0 unique APIs from 0 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 65% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 85% (0 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: FREQUENTLY_REPLACEABLE list match",
+              "Confidence: 100% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Safe to Replace",
+              "classification_stars": "★★★★★",
+              "confidence": 100,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 65,
+                "testability": 85,
+                "transitive_value": 55,
+                "usage_simplicity": 70
+              },
+              "overall": 77,
+              "recommendation": "proceed"
+            },
+            "usage": {
+              "affected_files": 0,
+              "call_sites": 0,
+              "imported_items": 0,
+              "is_trivial": true,
+              "unique_apis": 0
+            },
+            "version": "1.0.69"
+          },
+          {
+            "crate": "tokio",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 40% (0 unique APIs from 5 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 0% (category: async-runtime)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 55% (2 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: NEVER_REPLACE list match",
+              "Confidence: 80% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 80,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 0,
+                "testability": 55,
+                "transitive_value": 65,
+                "usage_simplicity": 40
+              },
+              "overall": 20,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 2,
+              "call_sites": 5,
+              "imported_items": 0,
+              "is_trivial": false,
+              "unique_apis": 0
+            },
+            "version": "1.53.1"
+          },
+          {
+            "crate": "toml",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 50% (0 unique APIs from 1 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: serialization)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 80,
+                "transitive_value": 55,
+                "usage_simplicity": 50
+              },
+              "overall": 58,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 1,
+              "imported_items": 0,
+              "is_trivial": true,
+              "unique_apis": 0
+            },
+            "version": "0.8.23"
+          },
+          {
+            "crate": "urlencoding",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 70% (0 unique APIs from 0 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 85% (0 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 100% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Safe to Replace",
+              "classification_stars": "★★★★★",
+              "confidence": 100,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 85,
+                "transitive_value": 55,
+                "usage_simplicity": 70
+              },
+              "overall": 63,
+              "recommendation": "proceed"
+            },
+            "usage": {
+              "affected_files": 0,
+              "call_sites": 0,
+              "imported_items": 0,
+              "is_trivial": true,
+              "unique_apis": 0
+            },
+            "version": "2.1.3"
+          }
+        ],
+        "total_dependencies": 19
+      }
+    },
+    {
+      "tool": "ami",
+      "purpose": "project profile completeness (market-intelligence readiness)",
+      "status": "skipped",
+      "availability": "not_checked",
+      "execution": "skipped",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": null,
+      "duration_ms": null,
+      "summary": "skipped",
+      "findings": [],
+      "note": "ami is opt-in because project profiling is not code health; use `--only ami` when its installed build exposes JSON output",
+      "raw": null
+    },
+    {
+      "tool": "bart",
+      "purpose": "filesystem size & hotspots (informational)",
+      "status": "ok",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/usr/bin/bart",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 99,
+      "summary": "32 files, 180.2 KB under root",
+      "findings": [
+        "/home/sal/ami/src: 112.3 KB",
+        "/home/sal/ami/.devin: 15.2 KB",
+        "/home/sal/ami/.dreams: 15.1 KB",
+        "/home/sal/ami/tests: 9.3 KB",
+        "/home/sal/ami/README.md: 7.9 KB"
+      ],
+      "note": "informational only — bart measures disk usage, not code health",
+      "raw": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787589574,
+                "path": "/home/sal/ami/src/main.rs",
+                "size": 19449
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787589574,
+                "path": "/home/sal/ami/src/project_reader.rs",
+                "size": 15124
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787589574,
+                "path": "/home/sal/ami/src/discovery.rs",
+                "size": 13958
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787589574,
+                "path": "/home/sal/ami/src/search_generator.rs",
+                "size": 10189
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787589574,
+                "path": "/home/sal/ami/src/brandi.rs",
+                "size": 9504
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787589574,
+                "path": "/home/sal/ami/src/types.rs",
+                "size": 9360
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787589574,
+                "path": "/home/sal/ami/src/scoring.rs",
+                "size": 8287
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787589574,
+                "path": "/home/sal/ami/src/database.rs",
+                "size": 8224
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787589574,
+                "path": "/home/sal/ami/src/padagonia.rs",
+                "size": 5228
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787589574,
+                "path": "/home/sal/ami/src/inference.rs",
+                "size": 5174
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787835261,
+                "path": "/home/sal/ami/src/output.rs",
+                "size": 4701
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787589574,
+                "path": "/home/sal/ami/src/goblin.rs",
+                "size": 1455
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787589574,
+                "path": "/home/sal/ami/src/lib.rs",
+                "size": 205
+              }
+            ],
+            "depth": 1,
+            "file_count": 13,
+            "is_dir": true,
+            "modified": 1787835261,
+            "path": "/home/sal/ami/src",
+            "size": 114954
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "depth": 4,
+                        "file_count": 1,
+                        "is_dir": false,
+                        "modified": 1786054478,
+                        "path": "/home/sal/ami/.devin/skills/ami/SKILL.md",
+                        "size": 3320
+                      }
+                    ],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": true,
+                    "modified": 1786054478,
+                    "path": "/home/sal/ami/.devin/skills/ami",
+                    "size": 7416
+                  }
+                ],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": true,
+                "modified": 1786054468,
+                "path": "/home/sal/ami/.devin/skills",
+                "size": 11512
+              }
+            ],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": true,
+            "modified": 1786054468,
+            "path": "/home/sal/ami/.devin",
+            "size": 15608
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1786261962,
+                    "path": "/home/sal/ami/.dreams/history/2026-08-09.dreams",
+                    "size": 2428
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1786145455,
+                    "path": "/home/sal/ami/.dreams/history/2026-08-07.dreams",
+                    "size": 2348
+                  }
+                ],
+                "depth": 2,
+                "file_count": 2,
+                "is_dir": true,
+                "modified": 1786261962,
+                "path": "/home/sal/ami/.dreams/history",
+                "size": 8872
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786261962,
+                "path": "/home/sal/ami/.dreams/active.dreams",
+                "size": 2428
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786092827,
+                "path": "/home/sal/ami/.dreams/rejected.dreams",
+                "size": 22
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786092827,
+                "path": "/home/sal/ami/.dreams/completed.dreams",
+                "size": 22
+              }
+            ],
+            "depth": 1,
+            "file_count": 5,
+            "is_dir": true,
+            "modified": 1786092827,
+            "path": "/home/sal/ami/.dreams",
+            "size": 15440
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787589574,
+                "path": "/home/sal/ami/tests/integration_test.rs",
+                "size": 5381
+              }
+            ],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": true,
+            "modified": 1787589574,
+            "path": "/home/sal/ami/tests",
+            "size": 9477
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787589574,
+            "path": "/home/sal/ami/README.md",
+            "size": 8093
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787408761,
+                "path": "/home/sal/ami/.lwoodz/audit.jsonl",
+                "size": 798
+              }
+            ],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": true,
+            "modified": 1787397770,
+            "path": "/home/sal/ami/.lwoodz",
+            "size": 4894
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 0,
+            "is_dir": true,
+            "modified": 1787835302,
+            "path": "/home/sal/ami/examples",
+            "size": 4096
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787834743,
+            "path": "/home/sal/ami/vamos.toml",
+            "size": 2703
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1786059190,
+            "path": "/home/sal/ami/kaptaind.toml",
+            "size": 2049
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787407620,
+            "path": "/home/sal/ami/LICENSE",
+            "size": 1060
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787835139,
+            "path": "/home/sal/ami/Cargo.toml",
+            "size": 864
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787407711,
+            "path": "/home/sal/ami/lwoodz.toml",
+            "size": 732
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1786059094,
+            "path": "/home/sal/ami/.gitignore",
+            "size": 180
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787834743,
+            "path": "/home/sal/ami/poka.toml",
+            "size": 134
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1786059068,
+            "path": "/home/sal/ami/.kaptainignore",
+            "size": 61
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787405506,
+            "path": "/home/sal/ami/traci.toml",
+            "size": 34
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787761145,
+            "path": "/home/sal/ami/VERSION",
+            "size": 5
+          }
+        ],
+        "depth": 0,
+        "file_count": 32,
+        "is_dir": true,
+        "modified": 1787835301,
+        "path": "/home/sal/ami",
+        "size": 184480
+      }
+    },
+    {
+      "tool": "chakra",
+      "purpose": "data-flow / architecture map coverage",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": 0.4375,
+        "confidence": 1.0,
+        "observations": 86
+      },
+      "binary": "/home/sal/.local/bin/chakra",
+      "score": 71.875,
+      "grade": "C-",
+      "exit_code": 0,
+      "duration_ms": 153,
+      "summary": "28 nodes, 86 flows; coverage 43.8% (14/32 files), confidence 100.0%",
+      "findings": [
+        "86 flow(s) with provenance=observed"
+      ],
+      "note": null,
+      "raw": {
+        "boundaries": [],
+        "events": [],
+        "evidence": [
+          {
+            "detail": "std::fs",
+            "file": "tests/integration_test.rs",
+            "id": "ev-0001",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "tempfile::TempDir",
+            "file": "tests/integration_test.rs",
+            "id": "ev-0002",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "anyhow::",
+            "file": "src/goblin.rs",
+            "id": "ev-0003",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "serde_json::json",
+            "file": "src/goblin.rs",
+            "id": "ev-0004",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "std::env",
+            "file": "src/goblin.rs",
+            "id": "ev-0005",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "std::process::",
+            "file": "src/goblin.rs",
+            "id": "ev-0006",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "std::io::Write",
+            "file": "src/goblin.rs",
+            "id": "ev-0007",
+            "kind": "rust_use",
+            "line": 22
+          },
+          {
+            "detail": "brandi",
+            "file": "src/lib.rs",
+            "id": "ev-0008",
+            "kind": "rust_mod",
+            "line": 1
+          },
+          {
+            "detail": "database",
+            "file": "src/lib.rs",
+            "id": "ev-0009",
+            "kind": "rust_mod",
+            "line": 2
+          },
+          {
+            "detail": "discovery",
+            "file": "src/lib.rs",
+            "id": "ev-0010",
+            "kind": "rust_mod",
+            "line": 3
+          },
+          {
+            "detail": "goblin",
+            "file": "src/lib.rs",
+            "id": "ev-0011",
+            "kind": "rust_mod",
+            "line": 4
+          },
+          {
+            "detail": "inference",
+            "file": "src/lib.rs",
+            "id": "ev-0012",
+            "kind": "rust_mod",
+            "line": 5
+          },
+          {
+            "detail": "output",
+            "file": "src/lib.rs",
+            "id": "ev-0013",
+            "kind": "rust_mod",
+            "line": 6
+          },
+          {
+            "detail": "padagonia",
+            "file": "src/lib.rs",
+            "id": "ev-0014",
+            "kind": "rust_mod",
+            "line": 7
+          },
+          {
+            "detail": "project_reader",
+            "file": "src/lib.rs",
+            "id": "ev-0015",
+            "kind": "rust_mod",
+            "line": 8
+          },
+          {
+            "detail": "scoring",
+            "file": "src/lib.rs",
+            "id": "ev-0016",
+            "kind": "rust_mod",
+            "line": 9
+          },
+          {
+            "detail": "search_generator",
+            "file": "src/lib.rs",
+            "id": "ev-0017",
+            "kind": "rust_mod",
+            "line": 10
+          },
+          {
+            "detail": "types",
+            "file": "src/lib.rs",
+            "id": "ev-0018",
+            "kind": "rust_mod",
+            "line": 11
+          },
+          {
+            "detail": "ami::brandi",
+            "file": "src/main.rs",
+            "id": "ev-0019",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "ami::database::ContactDatabase",
+            "file": "src/main.rs",
+            "id": "ev-0020",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "ami::discovery::",
+            "file": "src/main.rs",
+            "id": "ev-0021",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "ami::inference::GroqInference",
+            "file": "src/main.rs",
+            "id": "ev-0022",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "ami::output::Output",
+            "file": "src/main.rs",
+            "id": "ev-0023",
+            "kind": "rust_use",
+            "line": 8
+          },
+          {
+            "detail": "ami::padagonia::PadagoniaClient",
+            "file": "src/main.rs",
+            "id": "ev-0024",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "ami::project_reader::ProjectReader",
+            "file": "src/main.rs",
+            "id": "ev-0025",
+            "kind": "rust_use",
+            "line": 10
+          },
+          {
+            "detail": "ami::scoring::ScoringModel",
+            "file": "src/main.rs",
+            "id": "ev-0026",
+            "kind": "rust_use",
+            "line": 11
+          },
+          {
+            "detail": "ami::search_generator::SearchGenerator",
+            "file": "src/main.rs",
+            "id": "ev-0027",
+            "kind": "rust_use",
+            "line": 12
+          },
+          {
+            "detail": "anyhow::",
+            "file": "src/main.rs",
+            "id": "ev-0028",
+            "kind": "rust_use",
+            "line": 13
+          },
+          {
+            "detail": "clap::",
+            "file": "src/main.rs",
+            "id": "ev-0029",
+            "kind": "rust_use",
+            "line": 14
+          },
+          {
+            "detail": "std::collections::HashSet",
+            "file": "src/main.rs",
+            "id": "ev-0030",
+            "kind": "rust_use",
+            "line": 15
+          },
+          {
+            "detail": "std::path::PathBuf",
+            "file": "src/main.rs",
+            "id": "ev-0031",
+            "kind": "rust_use",
+            "line": 16
+          },
+          {
+            "detail": "chrono::",
+            "file": "src/types.rs",
+            "id": "ev-0032",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "serde::",
+            "file": "src/types.rs",
+            "id": "ev-0033",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "serde::de::DeserializeOwned",
+            "file": "src/types.rs",
+            "id": "ev-0034",
+            "kind": "rust_use",
+            "line": 8
+          },
+          {
+            "detail": "serde::",
+            "file": "src/types.rs",
+            "id": "ev-0035",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "crate::types::",
+            "file": "src/discovery.rs",
+            "id": "ev-0036",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "anyhow::Result",
+            "file": "src/discovery.rs",
+            "id": "ev-0037",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "async_trait::async_trait",
+            "file": "src/discovery.rs",
+            "id": "ev-0038",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "chrono::Utc",
+            "file": "src/discovery.rs",
+            "id": "ev-0039",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "reqwest::Client",
+            "file": "src/discovery.rs",
+            "id": "ev-0040",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "crate::types::",
+            "file": "src/padagonia.rs",
+            "id": "ev-0041",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "anyhow::",
+            "file": "src/padagonia.rs",
+            "id": "ev-0042",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "reqwest::Client",
+            "file": "src/padagonia.rs",
+            "id": "ev-0043",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "serde::Serialize",
+            "file": "src/padagonia.rs",
+            "id": "ev-0044",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "serde_json::",
+            "file": "src/padagonia.rs",
+            "id": "ev-0045",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "std::env",
+            "file": "src/padagonia.rs",
+            "id": "ev-0046",
+            "kind": "rust_use",
+            "line": 6
+          },
+          {
+            "detail": "std::time::",
+            "file": "src/padagonia.rs",
+            "id": "ev-0047",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "crate::types::",
+            "file": "src/scoring.rs",
+            "id": "ev-0048",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "super::",
+            "file": "src/scoring.rs",
+            "id": "ev-0049",
+            "kind": "rust_use",
+            "line": 185
+          },
+          {
+            "detail": "crate::types::",
+            "file": "src/scoring.rs",
+            "id": "ev-0050",
+            "kind": "rust_use",
+            "line": 186
+          },
+          {
+            "detail": "crate::types::",
+            "file": "src/project_reader.rs",
+            "id": "ev-0051",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "anyhow::",
+            "file": "src/project_reader.rs",
+            "id": "ev-0052",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "chrono::Utc",
+            "file": "src/project_reader.rs",
+            "id": "ev-0053",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "std::path::Path",
+            "file": "src/project_reader.rs",
+            "id": "ev-0054",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "crate::types::",
+            "file": "src/search_generator.rs",
+            "id": "ev-0055",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "std::collections::HashMap",
+            "file": "src/search_generator.rs",
+            "id": "ev-0056",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "super::",
+            "file": "src/search_generator.rs",
+            "id": "ev-0057",
+            "kind": "rust_use",
+            "line": 242
+          },
+          {
+            "detail": "crate::types::",
+            "file": "src/search_generator.rs",
+            "id": "ev-0058",
+            "kind": "rust_use",
+            "line": 243
+          },
+          {
+            "detail": "crate::types::",
+            "file": "src/inference.rs",
+            "id": "ev-0059",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "anyhow::",
+            "file": "src/inference.rs",
+            "id": "ev-0060",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "reqwest::Client",
+            "file": "src/inference.rs",
+            "id": "ev-0061",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "serde::",
+            "file": "src/inference.rs",
+            "id": "ev-0062",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "std::env",
+            "file": "src/inference.rs",
+            "id": "ev-0063",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "std::time::Duration",
+            "file": "src/inference.rs",
+            "id": "ev-0064",
+            "kind": "rust_use",
+            "line": 6
+          },
+          {
+            "detail": "super::",
+            "file": "src/inference.rs",
+            "id": "ev-0065",
+            "kind": "rust_use",
+            "line": 160
+          },
+          {
+            "detail": "crate::types::",
+            "file": "src/database.rs",
+            "id": "ev-0066",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "anyhow::",
+            "file": "src/database.rs",
+            "id": "ev-0067",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "csv::WriterBuilder",
+            "file": "src/database.rs",
+            "id": "ev-0068",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "std::fs",
+            "file": "src/database.rs",
+            "id": "ev-0069",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "std::path::Path",
+            "file": "src/database.rs",
+            "id": "ev-0070",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "form3::ansi::Color",
+            "file": "src/output.rs",
+            "id": "ev-0071",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "form3::compat::Colorize",
+            "file": "src/output.rs",
+            "id": "ev-0072",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "form3::table::",
+            "file": "src/output.rs",
+            "id": "ev-0073",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "form3::term::ColorSupport",
+            "file": "src/output.rs",
+            "id": "ev-0074",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "std::env",
+            "file": "src/output.rs",
+            "id": "ev-0075",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "std::io::",
+            "file": "src/output.rs",
+            "id": "ev-0076",
+            "kind": "rust_use",
+            "line": 6
+          },
+          {
+            "detail": "super::Output",
+            "file": "src/output.rs",
+            "id": "ev-0077",
+            "kind": "rust_use",
+            "line": 139
+          },
+          {
+            "detail": "crate::types::",
+            "file": "src/brandi.rs",
+            "id": "ev-0078",
+            "kind": "rust_use",
+            "line": 1
+          },
+          {
+            "detail": "anyhow::",
+            "file": "src/brandi.rs",
+            "id": "ev-0079",
+            "kind": "rust_use",
+            "line": 2
+          },
+          {
+            "detail": "serde::",
+            "file": "src/brandi.rs",
+            "id": "ev-0080",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "std::collections::BTreeSet",
+            "file": "src/brandi.rs",
+            "id": "ev-0081",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "std::fs",
+            "file": "src/brandi.rs",
+            "id": "ev-0082",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "std::path::",
+            "file": "src/brandi.rs",
+            "id": "ev-0083",
+            "kind": "rust_use",
+            "line": 6
+          },
+          {
+            "detail": "super::",
+            "file": "src/brandi.rs",
+            "id": "ev-0084",
+            "kind": "rust_use",
+            "line": 215
+          },
+          {
+            "detail": "crate::types::",
+            "file": "src/brandi.rs",
+            "id": "ev-0085",
+            "kind": "rust_use",
+            "line": 216
+          },
+          {
+            "detail": "chrono::Utc",
+            "file": "src/brandi.rs",
+            "id": "ev-0086",
+            "kind": "rust_use",
+            "line": 219
+          }
+        ],
+        "flows": [
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0001"
+            ],
+            "id": "flow-0001",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:tests/integration_test.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0002"
+            ],
+            "id": "flow-0002",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:tests/integration_test.rs",
+            "target": "ext:rust:tempfile"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0003"
+            ],
+            "id": "flow-0003",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/goblin.rs",
+            "target": "ext:rust:anyhow"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0004"
+            ],
+            "id": "flow-0004",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/goblin.rs",
+            "target": "ext:rust:serde_json"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0005"
+            ],
+            "id": "flow-0005",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/goblin.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0006"
+            ],
+            "id": "flow-0006",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/goblin.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0007"
+            ],
+            "id": "flow-0007",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/goblin.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0008"
+            ],
+            "id": "flow-0008",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/brandi.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0009"
+            ],
+            "id": "flow-0009",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/database.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0010"
+            ],
+            "id": "flow-0010",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/discovery.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0011"
+            ],
+            "id": "flow-0011",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/goblin.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0012"
+            ],
+            "id": "flow-0012",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/inference.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0013"
+            ],
+            "id": "flow-0013",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/output.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0014"
+            ],
+            "id": "flow-0014",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/padagonia.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0015"
+            ],
+            "id": "flow-0015",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/project_reader.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0016"
+            ],
+            "id": "flow-0016",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/scoring.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0017"
+            ],
+            "id": "flow-0017",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/search_generator.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0018"
+            ],
+            "id": "flow-0018",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/types.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0019"
+            ],
+            "id": "flow-0019",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:ami"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0020"
+            ],
+            "id": "flow-0020",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:ami"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0021"
+            ],
+            "id": "flow-0021",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:ami"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0022"
+            ],
+            "id": "flow-0022",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:ami"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0023"
+            ],
+            "id": "flow-0023",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:ami"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0024"
+            ],
+            "id": "flow-0024",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:ami"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0025"
+            ],
+            "id": "flow-0025",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:ami"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0026"
+            ],
+            "id": "flow-0026",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:ami"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0027"
+            ],
+            "id": "flow-0027",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:ami"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0028"
+            ],
+            "id": "flow-0028",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:anyhow"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0029"
+            ],
+            "id": "flow-0029",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:clap"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0030"
+            ],
+            "id": "flow-0030",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0031"
+            ],
+            "id": "flow-0031",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0032"
+            ],
+            "id": "flow-0032",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/types.rs",
+            "target": "ext:rust:chrono"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0033"
+            ],
+            "id": "flow-0033",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/types.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0034"
+            ],
+            "id": "flow-0034",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/types.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0035"
+            ],
+            "id": "flow-0035",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/types.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0036"
+            ],
+            "id": "flow-0036",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/discovery.rs",
+            "target": "file:src/types.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0037"
+            ],
+            "id": "flow-0037",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/discovery.rs",
+            "target": "ext:rust:anyhow"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0038"
+            ],
+            "id": "flow-0038",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/discovery.rs",
+            "target": "ext:rust:async_trait"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0039"
+            ],
+            "id": "flow-0039",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/discovery.rs",
+            "target": "ext:rust:chrono"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0040"
+            ],
+            "id": "flow-0040",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/discovery.rs",
+            "target": "ext:rust:reqwest"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0041"
+            ],
+            "id": "flow-0041",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/padagonia.rs",
+            "target": "file:src/types.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0042"
+            ],
+            "id": "flow-0042",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/padagonia.rs",
+            "target": "ext:rust:anyhow"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0043"
+            ],
+            "id": "flow-0043",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/padagonia.rs",
+            "target": "ext:rust:reqwest"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0044"
+            ],
+            "id": "flow-0044",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/padagonia.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0045"
+            ],
+            "id": "flow-0045",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/padagonia.rs",
+            "target": "ext:rust:serde_json"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0046"
+            ],
+            "id": "flow-0046",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/padagonia.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0047"
+            ],
+            "id": "flow-0047",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/padagonia.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0048"
+            ],
+            "id": "flow-0048",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/scoring.rs",
+            "target": "file:src/types.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0049"
+            ],
+            "id": "flow-0049",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/scoring.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0050"
+            ],
+            "id": "flow-0050",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/scoring.rs",
+            "target": "file:src/types.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0051"
+            ],
+            "id": "flow-0051",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/project_reader.rs",
+            "target": "file:src/types.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0052"
+            ],
+            "id": "flow-0052",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/project_reader.rs",
+            "target": "ext:rust:anyhow"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0053"
+            ],
+            "id": "flow-0053",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/project_reader.rs",
+            "target": "ext:rust:chrono"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0054"
+            ],
+            "id": "flow-0054",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/project_reader.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0055"
+            ],
+            "id": "flow-0055",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/search_generator.rs",
+            "target": "file:src/types.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0056"
+            ],
+            "id": "flow-0056",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/search_generator.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0057"
+            ],
+            "id": "flow-0057",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/search_generator.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0058"
+            ],
+            "id": "flow-0058",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/search_generator.rs",
+            "target": "file:src/types.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0059"
+            ],
+            "id": "flow-0059",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/inference.rs",
+            "target": "file:src/types.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0060"
+            ],
+            "id": "flow-0060",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/inference.rs",
+            "target": "ext:rust:anyhow"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0061"
+            ],
+            "id": "flow-0061",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/inference.rs",
+            "target": "ext:rust:reqwest"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0062"
+            ],
+            "id": "flow-0062",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/inference.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0063"
+            ],
+            "id": "flow-0063",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/inference.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0064"
+            ],
+            "id": "flow-0064",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/inference.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0065"
+            ],
+            "id": "flow-0065",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/inference.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0066"
+            ],
+            "id": "flow-0066",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/database.rs",
+            "target": "file:src/types.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0067"
+            ],
+            "id": "flow-0067",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/database.rs",
+            "target": "ext:rust:anyhow"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0068"
+            ],
+            "id": "flow-0068",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/database.rs",
+            "target": "ext:rust:csv"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0069"
+            ],
+            "id": "flow-0069",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/database.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0070"
+            ],
+            "id": "flow-0070",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/database.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0071"
+            ],
+            "id": "flow-0071",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/output.rs",
+            "target": "ext:rust:form3"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0072"
+            ],
+            "id": "flow-0072",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/output.rs",
+            "target": "ext:rust:form3"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0073"
+            ],
+            "id": "flow-0073",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/output.rs",
+            "target": "ext:rust:form3"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0074"
+            ],
+            "id": "flow-0074",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/output.rs",
+            "target": "ext:rust:form3"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0075"
+            ],
+            "id": "flow-0075",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/output.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0076"
+            ],
+            "id": "flow-0076",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/output.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0077"
+            ],
+            "id": "flow-0077",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/output.rs",
+            "target": "mod:rust:super::Output"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0078"
+            ],
+            "id": "flow-0078",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/brandi.rs",
+            "target": "file:src/types.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0079"
+            ],
+            "id": "flow-0079",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/brandi.rs",
+            "target": "ext:rust:anyhow"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0080"
+            ],
+            "id": "flow-0080",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/brandi.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0081"
+            ],
+            "id": "flow-0081",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/brandi.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0082"
+            ],
+            "id": "flow-0082",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/brandi.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0083"
+            ],
+            "id": "flow-0083",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/brandi.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0084"
+            ],
+            "id": "flow-0084",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/brandi.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0085"
+            ],
+            "id": "flow-0085",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/brandi.rs",
+            "target": "file:src/types.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0086"
+            ],
+            "id": "flow-0086",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/brandi.rs",
+            "target": "ext:rust:chrono"
+          }
+        ],
+        "inferences": [],
+        "metadata": {
+          "analyzed_file_count": 14,
+          "analyzers": [
+            "rust",
+            "javascript",
+            "typescript",
+            "python",
+            "go"
+          ],
+          "chakra_version": "0.3.33",
+          "duration_ms": 81,
+          "file_count": 32,
+          "languages": {
+            "rust": 14
+          }
+        },
+        "nodes": [
+          {
+            "id": "ext:rust:ami",
+            "kind": "external",
+            "language": "rust",
+            "name": "ami"
+          },
+          {
+            "id": "ext:rust:anyhow",
+            "kind": "external",
+            "language": "rust",
+            "name": "anyhow"
+          },
+          {
+            "id": "ext:rust:async_trait",
+            "kind": "external",
+            "language": "rust",
+            "name": "async_trait"
+          },
+          {
+            "id": "ext:rust:chrono",
+            "kind": "external",
+            "language": "rust",
+            "name": "chrono"
+          },
+          {
+            "id": "ext:rust:clap",
+            "kind": "external",
+            "language": "rust",
+            "name": "clap"
+          },
+          {
+            "id": "ext:rust:csv",
+            "kind": "external",
+            "language": "rust",
+            "name": "csv"
+          },
+          {
+            "id": "ext:rust:form3",
+            "kind": "external",
+            "language": "rust",
+            "name": "form3"
+          },
+          {
+            "id": "ext:rust:reqwest",
+            "kind": "external",
+            "language": "rust",
+            "name": "reqwest"
+          },
+          {
+            "id": "ext:rust:serde",
+            "kind": "external",
+            "language": "rust",
+            "name": "serde"
+          },
+          {
+            "id": "ext:rust:serde_json",
+            "kind": "external",
+            "language": "rust",
+            "name": "serde_json"
+          },
+          {
+            "id": "ext:rust:std",
+            "kind": "external",
+            "language": "rust",
+            "name": "std"
+          },
+          {
+            "id": "ext:rust:tempfile",
+            "kind": "external",
+            "language": "rust",
+            "name": "tempfile"
+          },
+          {
+            "id": "file:src/brandi.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/brandi.rs"
+          },
+          {
+            "id": "file:src/database.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/database.rs"
+          },
+          {
+            "id": "file:src/discovery.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/discovery.rs"
+          },
+          {
+            "id": "file:src/goblin.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/goblin.rs"
+          },
+          {
+            "id": "file:src/inference.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/inference.rs"
+          },
+          {
+            "id": "file:src/lib.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/lib.rs"
+          },
+          {
+            "id": "file:src/main.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/main.rs"
+          },
+          {
+            "id": "file:src/output.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/output.rs"
+          },
+          {
+            "id": "file:src/padagonia.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/padagonia.rs"
+          },
+          {
+            "id": "file:src/project_reader.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/project_reader.rs"
+          },
+          {
+            "id": "file:src/scoring.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/scoring.rs"
+          },
+          {
+            "id": "file:src/search_generator.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/search_generator.rs"
+          },
+          {
+            "id": "file:src/types.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/types.rs"
+          },
+          {
+            "id": "file:tests/integration_test.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "tests/integration_test.rs"
+          },
+          {
+            "id": "mod:rust:super::",
+            "kind": "module",
+            "language": "rust",
+            "name": "super::"
+          },
+          {
+            "id": "mod:rust:super::Output",
+            "kind": "module",
+            "language": "rust",
+            "name": "super::Output"
+          }
+        ],
+        "schema": "chakra.flow/v1",
+        "subject": {
+          "generated_at": "2026-08-27T13:08:33.926882959Z",
+          "path": "/home/sal/ami"
+        }
+      }
+    },
+    {
+      "tool": "ferret",
+      "purpose": "repository-specific review findings (hunt)",
+      "status": "error",
+      "availability": "installed",
+      "execution": "failed",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": 2,
+      "duration_ms": 15,
+      "summary": "error",
+      "findings": [],
+      "note": "produced no stdout; stderr: error: unexpected argument '/home/sal/ami' found\n\nUsage: ferret [OPTIONS] [TARGET] [COMMAND]\n\nFor more information, try '--help'.\n",
+      "raw": null
+    },
+    {
+      "tool": "fract",
+      "purpose": "module entropy, cohesion, duplication",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/home/sal/.local/bin/fract",
+      "score": 85.71428571428571,
+      "grade": "B",
+      "exit_code": 0,
+      "duration_ms": 138,
+      "summary": "14 modules indexed: 0 excellent, 9 healthy, 5 warning, 0 critical",
+      "findings": [
+        "src/main.rs: entropy 0.75 — Within entropy budget (0.75)",
+        "src/project_reader.rs: entropy 0.72 — Within entropy budget (0.72)",
+        "src/types.rs: entropy 0.72 — Within entropy budget (0.72)",
+        "src/brandi.rs: entropy 0.67 — Within entropy budget (0.67)",
+        "src/search_generator.rs: entropy 0.66 — Within entropy budget (0.66)"
+      ],
+      "note": null,
+      "raw": {
+        "findings": [
+          {
+            "confidence": null,
+            "entropy": 0.7482740456145226,
+            "evidence": {
+              "cyclomatic": "22",
+              "duplicates": "45",
+              "fan_in": "0",
+              "fan_out": "13",
+              "functions": "8",
+              "health": "Warning",
+              "lines": "646",
+              "public_api": "0"
+            },
+            "id": "src/main.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.75)",
+            "module": "src/main.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.75 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.7218431155852731,
+            "evidence": {
+              "cyclomatic": "84",
+              "duplicates": "32",
+              "fan_in": "0",
+              "fan_out": "4",
+              "functions": "8",
+              "health": "Warning",
+              "lines": "443",
+              "public_api": "2"
+            },
+            "id": "src/project_reader.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.72)",
+            "module": "src/project_reader.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.72 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.7196115384379835,
+            "evidence": {
+              "cyclomatic": "5",
+              "duplicates": "36",
+              "fan_in": "11",
+              "fan_out": "4",
+              "functions": "6",
+              "health": "Warning",
+              "lines": "336",
+              "public_api": "74"
+            },
+            "id": "src/types.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.72)",
+            "module": "src/types.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.72 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6697340535357753,
+            "evidence": {
+              "cyclomatic": "17",
+              "duplicates": "6",
+              "fan_in": "0",
+              "fan_out": "9",
+              "functions": "8",
+              "health": "Warning",
+              "lines": "296",
+              "public_api": "26"
+            },
+            "id": "src/brandi.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.67)",
+            "module": "src/brandi.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.67 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6621229780146554,
+            "evidence": {
+              "cyclomatic": "16",
+              "duplicates": "44",
+              "fan_in": "0",
+              "fan_out": "4",
+              "functions": "5",
+              "health": "Warning",
+              "lines": "278",
+              "public_api": "2"
+            },
+            "id": "src/search_generator.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.66)",
+            "module": "src/search_generator.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.66 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6283412775872648,
+            "evidence": {
+              "cyclomatic": "17",
+              "duplicates": "19",
+              "fan_in": "0",
+              "fan_out": "5",
+              "functions": "10",
+              "health": "Healthy",
+              "lines": "248",
+              "public_api": "16"
+            },
+            "id": "src/database.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.63)",
+            "module": "src/database.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.63 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6118440492028392,
+            "evidence": {
+              "cyclomatic": "17",
+              "duplicates": "71",
+              "fan_in": "0",
+              "fan_out": "5",
+              "functions": "36",
+              "health": "Healthy",
+              "lines": "466",
+              "public_api": "15"
+            },
+            "id": "src/discovery.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.61)",
+            "module": "src/discovery.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.61 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6013114112168323,
+            "evidence": {
+              "cyclomatic": "5",
+              "duplicates": "5",
+              "fan_in": "0",
+              "fan_out": "7",
+              "functions": "3",
+              "health": "Healthy",
+              "lines": "171",
+              "public_api": "3"
+            },
+            "id": "src/inference.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.60)",
+            "module": "src/inference.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.60 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5658169883078685,
+            "evidence": {
+              "cyclomatic": "1",
+              "duplicates": "18",
+              "fan_in": "0",
+              "fan_out": "2",
+              "functions": "4",
+              "health": "Healthy",
+              "lines": "172",
+              "public_api": "0"
+            },
+            "id": "tests/integration_test.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.57)",
+            "module": "tests/integration_test.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.57 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5542490503544801,
+            "evidence": {
+              "cyclomatic": "19",
+              "duplicates": "2",
+              "fan_in": "0",
+              "fan_out": "7",
+              "functions": "14",
+              "health": "Healthy",
+              "lines": "159",
+              "public_api": "8"
+            },
+            "id": "src/output.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.55)",
+            "module": "src/output.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.55 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5497156788630738,
+            "evidence": {
+              "cyclomatic": "16",
+              "duplicates": "5",
+              "fan_in": "0",
+              "fan_out": "3",
+              "functions": "11",
+              "health": "Healthy",
+              "lines": "237",
+              "public_api": "5"
+            },
+            "id": "src/scoring.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.55)",
+            "module": "src/scoring.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.55 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5418795381732948,
+            "evidence": {
+              "cyclomatic": "4",
+              "duplicates": "1",
+              "fan_in": "0",
+              "fan_out": "5",
+              "functions": "1",
+              "health": "Healthy",
+              "lines": "39",
+              "public_api": "1"
+            },
+            "id": "src/goblin.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.54)",
+            "module": "src/goblin.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.54 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5304886572248855,
+            "evidence": {
+              "cyclomatic": "3",
+              "duplicates": "5",
+              "fan_in": "0",
+              "fan_out": "7",
+              "functions": "6",
+              "health": "Healthy",
+              "lines": "165",
+              "public_api": "3"
+            },
+            "id": "src/padagonia.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.53)",
+            "module": "src/padagonia.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.53 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.45164993345322085,
+            "evidence": {
+              "cyclomatic": "0",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "0",
+              "functions": "0",
+              "health": "Healthy",
+              "lines": "11",
+              "public_api": "11"
+            },
+            "id": "src/lib.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.45)",
+            "module": "src/lib.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.45 below threshold 0.82"
+          }
+        ],
+        "root": "/home/sal/ami",
+        "schema": "fract.report/v1",
+        "summary": {
+          "critical": 0,
+          "excellent": 0,
+          "healthy": 9,
+          "score": 85.71428571428571,
+          "total": 14,
+          "warning": 5
+        }
+      }
+    },
+    {
+      "tool": "isopod",
+      "purpose": "ISO27001/27002 compliance posture",
+      "status": "no_data",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 0
+      },
+      "binary": "/home/sal/.local/bin/isopod",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 343,
+      "summary": "0/0 controls assessed (0.0% coverage): 0 pass, 0 warn, 0 fail, 0 unknown",
+      "findings": [],
+      "note": "coverage is 0.0%; compliance is ungraded below the 80% evidence threshold, and UNKNOWN controls are not treated as failures",
+      "raw": []
+    },
+    {
+      "tool": "jeenome",
+      "purpose": "behavioural trace analysis (opt-in)",
+      "status": "skipped",
+      "availability": "not_checked",
+      "execution": "skipped",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": null,
+      "duration_ms": null,
+      "summary": "skipped",
+      "findings": [],
+      "note": "jeenome is opt-in (needs an strace trace, not just a project path); pass --jeenome to include it",
+      "raw": null
+    },
+    {
+      "tool": "lwoodz",
+      "purpose": "license / SPDX compliance",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/home/sal/lwoodz/target/debug/lwoodz",
+      "score": 81.80327868852459,
+      "grade": "B-",
+      "exit_code": 0,
+      "duration_ms": 4216,
+      "summary": "license=MIT, spdx_valid=true, header coverage 0/14, 0 incompatible / 39 warning issues among 244 deps",
+      "findings": [
+        "cssparser [warning]: Dependency 'cssparser' (MPL-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+        "cssparser-macros [warning]: Dependency 'cssparser-macros' (MPL-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+        "csv [warning]: Dependency 'csv' (Unlicense/MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+        "csv-core [warning]: Dependency 'csv-core' (Unlicense/MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+        "dtoa-short [warning]: Dependency 'dtoa-short' (MPL-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements."
+      ],
+      "note": "advisory warning deductions are proportional to dependency count; missing licenses and incompatible dependencies remain hard findings",
+      "raw": {
+        "compatibility": {
+          "incompatible": 0,
+          "issues": [
+            {
+              "dep_license": "MPL-2.0",
+              "dependency": "cssparser",
+              "reason": "Dependency 'cssparser' (MPL-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MPL-2.0",
+              "dependency": "cssparser-macros",
+              "reason": "Dependency 'cssparser-macros' (MPL-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unlicense/MIT",
+              "dependency": "csv",
+              "reason": "Dependency 'csv' (Unlicense/MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unlicense/MIT",
+              "dependency": "csv-core",
+              "reason": "Dependency 'csv-core' (Unlicense/MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MPL-2.0",
+              "dependency": "dtoa-short",
+              "reason": "Dependency 'dtoa-short' (MPL-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Apache-2.0 / MIT",
+              "dependency": "fnv",
+              "reason": "Dependency 'fnv' (Apache-2.0 / MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "foreign-types",
+              "reason": "Dependency 'foreign-types' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "foreign-types-shared",
+              "reason": "Dependency 'foreign-types-shared' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT / Apache-2.0",
+              "dependency": "futf",
+              "reason": "Dependency 'futf' (MIT / Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Apache-2.0/MIT",
+              "dependency": "fxhash",
+              "reason": "Dependency 'fxhash' (Apache-2.0/MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "hyper-tls",
+              "reason": "Dependency 'hyper-tls' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "icu_collections",
+              "reason": "Dependency 'icu_collections' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "icu_locale_core",
+              "reason": "Dependency 'icu_locale_core' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "icu_normalizer",
+              "reason": "Dependency 'icu_normalizer' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "icu_normalizer_data",
+              "reason": "Dependency 'icu_normalizer_data' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "icu_properties",
+              "reason": "Dependency 'icu_properties' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "icu_properties_data",
+              "reason": "Dependency 'icu_properties_data' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "icu_provider",
+              "reason": "Dependency 'icu_provider' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "litemap",
+              "reason": "Dependency 'litemap' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "mac",
+              "reason": "Dependency 'mac' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "openssl-macros",
+              "reason": "Dependency 'openssl-macros' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "openssl-probe",
+              "reason": "Dependency 'openssl-probe' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "potential_utf",
+              "reason": "Dependency 'potential_utf' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MPL-2.0",
+              "dependency": "selectors",
+              "reason": "Dependency 'selectors' (MPL-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "serde_urlencoded",
+              "reason": "Dependency 'serde_urlencoded' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "servo_arc",
+              "reason": "Dependency 'servo_arc' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "siphasher",
+              "reason": "Dependency 'siphasher' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "tendril",
+              "reason": "Dependency 'tendril' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "tinystr",
+              "reason": "Dependency 'tinystr' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "vcpkg",
+              "reason": "Dependency 'vcpkg' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "version_check",
+              "reason": "Dependency 'version_check' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "writeable",
+              "reason": "Dependency 'writeable' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "yoke",
+              "reason": "Dependency 'yoke' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "yoke-derive",
+              "reason": "Dependency 'yoke-derive' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "zerofrom",
+              "reason": "Dependency 'zerofrom' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "zerofrom-derive",
+              "reason": "Dependency 'zerofrom-derive' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "zerotrie",
+              "reason": "Dependency 'zerotrie' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "zerovec",
+              "reason": "Dependency 'zerovec' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "zerovec-derive",
+              "reason": "Dependency 'zerovec-derive' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            }
+          ],
+          "total_deps": 244,
+          "warnings": 39
+        },
+        "detected_license": "MIT",
+        "findings": [
+          {
+            "code": "MISSING_SPDX_MANIFEST",
+            "level": "warning",
+            "message": "SPDX manifest not found at .lwoodz/manifest.json — run `lwoodz generate`",
+            "path": ".lwoodz/manifest.json"
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'cssparser' (MPL-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'cssparser-macros' (MPL-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'csv' (Unlicense/MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'csv-core' (Unlicense/MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'dtoa-short' (MPL-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'fnv' (Apache-2.0 / MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'foreign-types' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'foreign-types-shared' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'futf' (MIT / Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'fxhash' (Apache-2.0/MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'hyper-tls' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'icu_collections' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'icu_locale_core' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'icu_normalizer' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'icu_normalizer_data' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'icu_properties' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'icu_properties_data' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'icu_provider' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'litemap' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'mac' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'openssl-macros' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'openssl-probe' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'potential_utf' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'selectors' (MPL-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'serde_urlencoded' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'servo_arc' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'siphasher' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'tendril' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'tinystr' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'vcpkg' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'version_check' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'writeable' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'yoke' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'yoke-derive' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'zerofrom' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'zerofrom-derive' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'zerotrie' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'zerovec' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'zerovec-derive' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "MISSING_HEADERS",
+            "level": "warning",
+            "message": "14 of 14 source files missing copyright/SPDX headers",
+            "path": null
+          }
+        ],
+        "generated_at": "2026-08-27T13:08:38.140070790+00:00",
+        "has_license_file": true,
+        "header_coverage": {
+          "missing": 14,
+          "total_files": 14,
+          "with_header": 0
+        },
+        "holder": "sal",
+        "passed": true,
+        "project_license": "MIT",
+        "spdx_manifest_exists": false,
+        "spdx_valid": true,
+        "year": 2026
+      }
+    },
+    {
+      "tool": "tempcheq",
+      "purpose": "LLM sampling-temperature correctness",
+      "status": "fail",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 2
+      },
+      "binary": "/home/sal/.local/bin/tempcheq",
+      "score": 50.0,
+      "grade": "F",
+      "exit_code": 0,
+      "duration_ms": 152,
+      "summary": "2 inference actions: 1 material deviations, 1 implicit/default temperatures",
+      "findings": [
+        "infer_search_phrases (src/inference.rs:95): verdict +0.20"
+      ],
+      "note": null,
+      "raw": {
+        "actions": [
+          {
+            "band_high": 0.15000000596046448,
+            "band_ideal": 0.0,
+            "band_low": 0.0,
+            "class": "deterministic-extraction",
+            "confidence": 0.7300000190734863,
+            "file": "src/inference.rs",
+            "line": 8,
+            "material_deviation": false,
+            "name": "GROQ_API_URL",
+            "reasons": [
+              "classified as deterministic-extraction on keywords: deterministic, inference",
+              "a structured response_format is enforced",
+              "no explicit temperature set; provider default is in effect"
+            ],
+            "source_kind": "api-call",
+            "temperature": null,
+            "temperature_precision": null,
+            "temperature_state": "implicit",
+            "verdict": null
+          },
+          {
+            "band_high": 0.15000000596046448,
+            "band_ideal": 0.0,
+            "band_low": 0.0,
+            "class": "deterministic-extraction",
+            "confidence": 0.7300000190734863,
+            "file": "src/inference.rs",
+            "line": 95,
+            "material_deviation": true,
+            "name": "infer_search_phrases",
+            "reasons": [
+              "classified as deterministic-extraction on keywords: infer, inference",
+              "a structured response_format is enforced"
+            ],
+            "source_kind": "sdk-invocation",
+            "temperature": 0.20000000298023224,
+            "temperature_precision": 1,
+            "temperature_state": "explicit",
+            "verdict": 0.20000000298023224
+          }
+        ],
+        "implicit_default": 1,
+        "inapplicable": 0,
+        "material_deviations": 1,
+        "temperature_controlled": 1,
+        "total_actions": 2,
+        "workspace": "/home/sal/ami"
+      }
+    },
+    {
+      "tool": "traci",
+      "purpose": "observability/telemetry completeness",
+      "status": "fail",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 12
+      },
+      "binary": "/home/sal/.local/bin/traci",
+      "score": null,
+      "grade": null,
+      "exit_code": 2,
+      "duration_ms": 102,
+      "summary": "13 files, 12 observability diagnostics: 1 critical, 11 error-severity, 0 warning-severity, 0 info",
+      "findings": [
+        "[observability/critical] TRC007 /home/sal/ami/src/discovery.rs:11 — panic path cannot be reconstructed from telemetry",
+        "[observability/error] TRC002 /home/sal/ami/src/brandi.rs:74 — result is discarded without a diagnostic record",
+        "[observability/error] TRC002 /home/sal/ami/src/brandi.rs:163 — result is discarded without a diagnostic record",
+        "[observability/error] TRC002 /home/sal/ami/src/database.rs:226 — result is discarded without a diagnostic record",
+        "[observability/error] TRC001 /home/sal/ami/src/goblin.rs:19 — failure path has no nearby structured diagnostic event"
+      ],
+      "note": "observability diagnostics are not assigned a project-health score because Traci does not expose a total opportunity/coverage denominator",
+      "raw": {
+        "diagnostics": [
+          {
+            "column": 9,
+            "line": 74,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/ami/src/brandi.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": ".ok()"
+          },
+          {
+            "column": 13,
+            "line": 163,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/ami/src/brandi.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": ".ok()"
+          },
+          {
+            "column": 17,
+            "line": 226,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/ami/src/database.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": ".filter_map(|e| e.ok())"
+          },
+          {
+            "column": 9,
+            "line": 11,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/ami/src/discovery.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".expect(\"discovery HTTP client configuration is valid\")"
+          },
+          {
+            "column": 9,
+            "line": 19,
+            "message": "failure path has no nearby structured diagnostic event",
+            "path": "/home/sal/ami/src/goblin.rs",
+            "rule": "TRC001",
+            "severity": "error",
+            "snippet": "Err(_) => return Ok(None),"
+          },
+          {
+            "column": 13,
+            "line": 65,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/ami/src/inference.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": ".ok()"
+          },
+          {
+            "column": 13,
+            "line": 128,
+            "message": "failure path has no nearby structured diagnostic event",
+            "path": "/home/sal/ami/src/inference.rs",
+            "rule": "TRC001",
+            "severity": "error",
+            "snippet": "return Err(anyhow!(\"Groq inference returned {}: {}\", status, body));"
+          },
+          {
+            "column": 9,
+            "line": 20,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/ami/src/output.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let forced = env::var(\"AMI_COLOR\").ok().as_deref() == Some(\"1\");"
+          },
+          {
+            "column": 17,
+            "line": 23,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/ami/src/output.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "|| env::var(\"TERM\").ok().as_deref() == Some(\"dumb\"));"
+          },
+          {
+            "column": 13,
+            "line": 37,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/ami/src/padagonia.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "api_key: env::var(\"PADAGONIA_API_KEY\").ok(),"
+          },
+          {
+            "column": 17,
+            "line": 94,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/ami/src/project_reader.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": ".ok()"
+          },
+          {
+            "column": 17,
+            "line": 96,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/ami/src/project_reader.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": ".and_then(|value| value.into_string().ok())"
+          }
+        ],
+        "summary": {
+          "critical": 1,
+          "diagnostics": 12,
+          "errors": 11,
+          "files": 13,
+          "info": 0,
+          "warnings": 0
+        }
+      }
+    },
+    {
+      "tool": "vamos",
+      "purpose": "nominal vs. validated action completion",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/home/sal/vamos/target/debug/vamos",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 223,
+      "summary": "no action instances recorded yet",
+      "findings": [],
+      "note": "vamos.toml is present but no instances have been triggered yet; run `vamos trigger`/`step`/`fact` against real usage to start scoring completion",
+      "raw": null
+    }
+  ],
+  "overall": {
+    "score": 70.93114445950943,
+    "grade": "C-",
+    "graded_tools": 5,
+    "total_tools": 12,
+    "weights": [
+      [
+        "amber",
+        1.0
+      ],
+      [
+        "chakra",
+        1.0
+      ],
+      [
+        "fract",
+        1.0
+      ],
+      [
+        "lwoodz",
+        1.0
+      ],
+      [
+        "tempcheq",
+        1.0
+      ]
+    ],
+    "provisional": true
+  },
+  "suite": {
+    "required_tools": 10,
+    "available_tools": 10,
+    "executed_tools": 9,
+    "valid_results": 9,
+    "analysis_coverage": 0.4375,
+    "confidence": 1.0
+  },
+  "integrity": {
+    "status": "degraded",
+    "score": 90.0,
+    "grade": "A-",
+    "defects": [
+      "ferret: error"
+    ]
+  }
+}

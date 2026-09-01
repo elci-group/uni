@@ -36,7 +36,7 @@
 //!     `verify_remediation` afterward re-diagnoses the *actual* flagged
 //!     tool (chakra/fract), independent of whatever traci itself checked.
 //!
-//!   ami, bart, ferret, jeenome, and vamos have no entry here. isopod's
+//!   ami, bart, ferret, jeenome, vamos, and viva-palestina have no entry here. isopod's
 //!   unmet controls are deliberately *not* delegated to `traci enforce`
 //!   either, despite chakra/fract being: they're organizational/policy
 //!   findings (security testing procedure, backup policy,
@@ -374,10 +374,6 @@ pub async fn execute(args: &ReviseArgs) -> Result<ReviseReport, String> {
 
     let plan = build_plan(&diagnosis, &target, wants);
 
-    // Store Kaptaind plan and transaction ID when building plan
-    let mut kaptaind_plan: Option<crate::kaptaind::RemediationPlan> = None;
-    let mut kaptaind_transaction: Option<crate::kaptaind::RemediationTransaction> = None;
-
     if args.apply && !plan.is_empty() {
         // Check worktree status for warnings (not blocking anymore)
         match check_worktree(&target).await {
@@ -619,7 +615,7 @@ pub async fn execute(args: &ReviseArgs) -> Result<ReviseReport, String> {
                     .await
                     .unwrap_or_else(|_| "unknown".to_string());
 
-                let mut txn = crate::kaptaind::RemediationTransaction::from_plan(
+                let txn = crate::kaptaind::RemediationTransaction::from_plan(
                     plan,
                     diagnosis.target.clone(),
                     current_head,
@@ -807,17 +803,6 @@ pub async fn build_kaptaind_plan(
         total_complexity,
         risk_assessment,
     })
-}
-
-/// Check if remediation plan is stale and needs re-analysis.
-#[tracing::instrument(skip_all)]
-pub async fn check_plan_staleness(
-    target: &Path,
-    plan: &crate::kaptaind::RemediationPlan,
-) -> Result<bool, String> {
-    let staleness =
-        crate::kaptaind::check_plan_staleness(target, &plan.analysis_fingerprint).await?;
-    Ok(staleness.is_stale)
 }
 
 struct PlannedRemediation {

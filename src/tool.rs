@@ -32,11 +32,12 @@ pub enum ToolId {
     Tempcheq,
     Traci,
     Vamos,
+    VivaPalestina,
 }
 
 impl ToolId {
     /// Every tool, in canonical (alphabetical) order.
-    pub const ALL: [ToolId; 12] = [
+    pub const ALL: [ToolId; 13] = [
         ToolId::Amber,
         ToolId::Ami,
         ToolId::Bart,
@@ -49,6 +50,7 @@ impl ToolId {
         ToolId::Tempcheq,
         ToolId::Traci,
         ToolId::Vamos,
+        ToolId::VivaPalestina,
     ];
 
     /// CLI/report key, lowercase.
@@ -66,6 +68,7 @@ impl ToolId {
             ToolId::Tempcheq => "tempcheq",
             ToolId::Traci => "traci",
             ToolId::Vamos => "vamos",
+            ToolId::VivaPalestina => "viva-palestina",
         }
     }
 
@@ -99,6 +102,7 @@ impl ToolId {
             ToolId::Tempcheq => "https://github.com/elci-group/tempcheq.git",
             ToolId::Traci => "https://github.com/elci-group/traci.git",
             ToolId::Vamos => return None,
+            ToolId::VivaPalestina => "https://github.com/elci-group/viva-palestina.git",
         })
     }
 
@@ -137,6 +141,7 @@ impl ToolId {
             ToolId::Tempcheq => "LLM sampling-temperature correctness",
             ToolId::Traci => "observability/telemetry completeness",
             ToolId::Vamos => "nominal vs. validated action completion",
+            ToolId::VivaPalestina => "ethical vendor / dependency policy compliance",
         }
     }
 }

@@ -1,0 +1,269 @@
+{
+  "header": {
+    "spec_version": "0.1.0"
+  },
+  "identity": null,
+  "metadata": {
+    "name": null,
+    "aliases": [],
+    "tags": []
+  },
+  "canvas": {
+    "size": 1024
+  },
+  "layers": [
+    {
+      "name": "gemstone",
+      "opacity": 255,
+      "blend": "normal",
+      "paths": [
+        {
+          "feature": "gemstone",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 212,
+              "y": 512
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 212,
+              "c1y": 312,
+              "c2x": 312,
+              "c2y": 212,
+              "x": 512,
+              "y": 212
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 712,
+              "c1y": 212,
+              "c2x": 812,
+              "c2y": 312,
+              "x": 812,
+              "y": 512
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 812,
+              "c1y": 712,
+              "c2x": 712,
+              "c2y": 812,
+              "x": 512,
+              "y": 812
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 312,
+              "c1y": 812,
+              "c2x": 212,
+              "c2y": 712,
+              "x": 212,
+              "y": 512
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 255,
+              "g": 180,
+              "b": 80,
+              "a": 255
+            }
+          },
+          "stroke": {
+            "color": {
+              "r": 120,
+              "g": 70,
+              "b": 30,
+              "a": 255
+            },
+            "width": 8,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        }
+      ]
+    },
+    {
+      "name": "details",
+      "opacity": 255,
+      "blend": "normal",
+      "paths": [
+        {
+          "feature": "insect",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 460,
+              "y": 460
+            },
+            {
+              "op": "line_to",
+              "x": 560,
+              "y": 460
+            },
+            {
+              "op": "line_to",
+              "x": 560,
+              "y": 540
+            },
+            {
+              "op": "line_to",
+              "x": 460,
+              "y": 540
+            },
+            {
+              "op": "close"
+            },
+            {
+              "op": "move_to",
+              "x": 460,
+              "y": 460
+            },
+            {
+              "op": "quad_to",
+              "cx": 420,
+              "cy": 420,
+              "x": 460,
+              "y": 440
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 80,
+              "g": 40,
+              "b": 20,
+              "a": 255
+            }
+          },
+          "stroke": null,
+          "opacity": 255
+        },
+        {
+          "feature": "highlight",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 300,
+              "y": 250
+            },
+            {
+              "op": "quad_to",
+              "cx": 350,
+              "cy": 200,
+              "x": 400,
+              "y": 250
+            },
+            {
+              "op": "line_to",
+              "x": 380,
+              "y": 270
+            },
+            {
+              "op": "quad_to",
+              "cx": 350,
+              "cy": 230,
+              "x": 300,
+              "y": 250
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 200,
+              "a": 255
+            }
+          },
+          "stroke": null,
+          "opacity": 220
+        },
+        {
+          "feature": "shading",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 252,
+              "y": 512
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 252,
+              "c1y": 332,
+              "c2x": 332,
+              "c2y": 252,
+              "x": 512,
+              "y": 252
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 692,
+              "c1y": 252,
+              "c2x": 752,
+              "c2y": 332,
+              "x": 752,
+              "y": 512
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 752,
+              "c1y": 692,
+              "c2x": 692,
+              "c2y": 752,
+              "x": 512,
+              "y": 752
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 332,
+              "c1y": 752,
+              "c2x": 252,
+              "c2y": 692,
+              "x": 252,
+              "y": 512
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 200,
+              "g": 130,
+              "b": 60,
+              "a": 255
+            }
+          },
+          "stroke": null,
+          "opacity": 100
+        }
+      ]
+    }
+  ],
+  "semantics": {
+    "description": "a warm glowing amber gemstone with a tiny fossilized insect trapped inside, catching golden light",
+    "emotion": "wonder",
+    "intensity": 80
+  },
+  "variants": {
+    "tiny": null,
+    "text": null,
+    "standard": null,
+    "large": null,
+    "full": null
+  },
+  "compatibility": {
+    "min_spec_version": "0.1.0"
+  },
+  "provenance": null
+}

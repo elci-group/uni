@@ -1,0 +1,220 @@
+{
+  "header": {
+    "spec_version": "0.1.0"
+  },
+  "identity": null,
+  "metadata": {
+    "name": null,
+    "aliases": [],
+    "tags": []
+  },
+  "canvas": {
+    "size": 1024
+  },
+  "layers": [
+    {
+      "name": "main",
+      "opacity": 255,
+      "blend": "normal",
+      "paths": [
+        {
+          "feature": "helix",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 200,
+              "y": 800
+            },
+            {
+              "op": "quad_to",
+              "cx": 250,
+              "cy": 650,
+              "x": 200,
+              "y": 500
+            },
+            {
+              "op": "quad_to",
+              "cx": 150,
+              "cy": 350,
+              "x": 200,
+              "y": 200
+            }
+          ],
+          "fill": null,
+          "stroke": {
+            "color": {
+              "r": 0,
+              "g": 128,
+              "b": 128,
+              "a": 255
+            },
+            "width": 3,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "helix",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 300,
+              "y": 800
+            },
+            {
+              "op": "quad_to",
+              "cx": 350,
+              "cy": 650,
+              "x": 300,
+              "y": 500
+            },
+            {
+              "op": "quad_to",
+              "cx": 250,
+              "cy": 350,
+              "x": 300,
+              "y": 200
+            }
+          ],
+          "fill": null,
+          "stroke": {
+            "color": {
+              "r": 0,
+              "g": 128,
+              "b": 128,
+              "a": 255
+            },
+            "width": 3,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "trace",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 200,
+              "y": 200
+            },
+            {
+              "op": "line_to",
+              "x": 400,
+              "y": 100
+            }
+          ],
+          "fill": null,
+          "stroke": {
+            "color": {
+              "r": 0,
+              "g": 255,
+              "b": 255,
+              "a": 255
+            },
+            "width": 2,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "magnifier",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 450,
+              "y": 120
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 460,
+              "c1y": 90,
+              "c2x": 480,
+              "c2y": 90,
+              "x": 490,
+              "y": 120
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 500,
+              "c1y": 150,
+              "c2x": 480,
+              "c2y": 150,
+              "x": 450,
+              "y": 120
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 0,
+              "g": 200,
+              "b": 200,
+              "a": 255
+            }
+          },
+          "stroke": {
+            "color": {
+              "r": 80,
+              "g": 80,
+              "b": 80,
+              "a": 255
+            },
+            "width": 2,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "magnifier",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 485,
+              "y": 150
+            },
+            {
+              "op": "line_to",
+              "x": 540,
+              "y": 210
+            }
+          ],
+          "fill": null,
+          "stroke": {
+            "color": {
+              "r": 80,
+              "g": 80,
+              "b": 80,
+              "a": 255
+            },
+            "width": 2,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        }
+      ]
+    }
+  ],
+  "semantics": {
+    "description": "a DNA double helix unwinding into a glowing cyan trace line, followed by a tiny teal magnifying glass",
+    "emotion": "curious",
+    "intensity": 70
+  },
+  "variants": {
+    "tiny": null,
+    "text": null,
+    "standard": null,
+    "large": null,
+    "full": null
+  },
+  "compatibility": {
+    "min_spec_version": "0.1.0"
+  },
+  "provenance": null
+}

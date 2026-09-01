@@ -15,6 +15,12 @@ const MAX_FRAMES: usize = 18;
 const WAVE_FRONT_WIDTH: f64 = 0.16;
 const SHARDS: [char; 8] = ['◇', '◈', '◆', '⋄', '✧', '✦', '⋆', '░'];
 
+#[derive(Clone)]
+enum Token {
+    Ansi(String),
+    Char(char),
+}
+
 pub async fn present(report: &HumanReport) -> io::Result<()> {
     let Some(section) = report.fract_section.clone().filter(|_| animation_enabled()) else {
         return write_static(&report.text);
@@ -64,10 +70,17 @@ fn write_static(text: &str) -> io::Result<()> {
 }
 
 fn wave_frames(text: &str, max_frames: usize) -> Vec<String> {
-    let lines: Vec<Vec<char>> = text.lines().map(|line| line.chars().collect()).collect();
+    let lines: Vec<Vec<Token>> = text.lines().map(tokenize_ansi).collect();
     let max_width = lines
         .iter()
-        .map(|line| line.iter().map(|ch| char_width(*ch)).sum())
+        .map(|line| {
+            line.iter()
+                .map(|token| match token {
+                    Token::Ansi(_) => 0,
+                    Token::Char(ch) => char_width(*ch),
+                })
+                .sum()
+        })
         .max()
         .unwrap_or(0);
     if text.is_empty() || max_width == 0 || max_frames < 2 {
@@ -88,22 +101,28 @@ fn wave_frames(text: &str, max_frames: usize) -> Vec<String> {
                 output.push('\n');
             }
             let mut column = 0usize;
-            for ch in line {
-                let width = char_width(*ch);
-                let distance = (column as f64 + width as f64 / 2.0 - center_x)
-                    .hypot(row as f64 - center_y)
-                    / max_distance;
-                if ch.is_whitespace() || width == 0 || distance <= progress {
-                    output.push(*ch);
-                } else if distance <= progress + WAVE_FRONT_WIDTH {
-                    output.push(
-                        SHARDS[(row.wrapping_mul(31) + column.wrapping_mul(17)) % SHARDS.len()],
-                    );
-                    output.push_str(&" ".repeat(width.saturating_sub(1)));
-                } else {
-                    output.push_str(&" ".repeat(width));
+            for token in line {
+                match token {
+                    Token::Ansi(sequence) => output.push_str(sequence),
+                    Token::Char(ch) => {
+                        let width = char_width(*ch);
+                        let distance = (column as f64 + width as f64 / 2.0 - center_x)
+                            .hypot(row as f64 - center_y)
+                            / max_distance;
+                        if ch.is_whitespace() || width == 0 || distance <= progress {
+                            output.push(*ch);
+                        } else if distance <= progress + WAVE_FRONT_WIDTH {
+                            output.push(
+                                SHARDS[(row.wrapping_mul(31) + column.wrapping_mul(17))
+                                    % SHARDS.len()],
+                            );
+                            output.push_str(&" ".repeat(width.saturating_sub(1)));
+                        } else {
+                            output.push_str(&" ".repeat(width));
+                        }
+                        column += width;
+                    }
                 }
-                column += width;
             }
             output.push_str(&" ".repeat(max_width.saturating_sub(column)));
         }
@@ -111,6 +130,29 @@ fn wave_frames(text: &str, max_frames: usize) -> Vec<String> {
     }
     frames.push(text.to_string());
     frames
+}
+
+fn tokenize_ansi(line: &str) -> Vec<Token> {
+    let mut tokens = Vec::new();
+    let mut chars = line.chars().peekable();
+    while let Some(ch) = chars.next() {
+        if ch == '\x1b' && chars.peek() == Some(&'[') {
+            let mut sequence = String::from(ch);
+            if let Some(introducer) = chars.next() {
+                sequence.push(introducer);
+            }
+            while let Some(part) = chars.next() {
+                sequence.push(part);
+                if ('@'..='~').contains(&part) {
+                    break;
+                }
+            }
+            tokens.push(Token::Ansi(sequence));
+        } else {
+            tokens.push(Token::Char(ch));
+        }
+    }
+    tokens
 }
 
 fn char_width(ch: char) -> usize {
@@ -170,6 +212,15 @@ mod tests {
         assert!(frames.len() > 2);
         assert_eq!(frames.last().map(String::as_str), Some(text));
         assert!(SHARDS.iter().any(|shard| frames[0].contains(*shard)));
+    }
+
+    #[test]
+    fn wave_preserves_ansi_sequences_without_counting_them_as_width() {
+        let text = "\x1b[33m⚠ warning\x1b[0m\n";
+        let frames = wave_frames(text, 12);
+        assert_eq!(frames.last().map(String::as_str), Some(text));
+        assert!(frames.iter().all(|frame| frame.contains("\x1b[33m")));
+        assert!(frames.iter().all(|frame| frame.contains("\x1b[0m")));
     }
 
     #[test]

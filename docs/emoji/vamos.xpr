@@ -1,0 +1,821 @@
+{
+  "header": {
+    "spec_version": "0.1.0"
+  },
+  "identity": {
+    "namespace": "example",
+    "asset_id": "run001"
+  },
+  "metadata": {
+    "name": "Running Figure Burst",
+    "aliases": [],
+    "tags": [
+      "running",
+      "figure",
+      "finish",
+      "checkered",
+      "motion"
+    ]
+  },
+  "canvas": {
+    "size": 1024
+  },
+  "layers": [
+    {
+      "name": "figure",
+      "opacity": 255,
+      "blend": "normal",
+      "paths": [
+        {
+          "feature": "body",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 230,
+              "y": 380
+            },
+            {
+              "op": "quad_to",
+              "cx": 230,
+              "cy": 350,
+              "x": 200,
+              "y": 350
+            },
+            {
+              "op": "quad_to",
+              "cx": 170,
+              "cy": 350,
+              "x": 170,
+              "y": 380
+            },
+            {
+              "op": "quad_to",
+              "cx": 170,
+              "cy": 410,
+              "x": 200,
+              "y": 410
+            },
+            {
+              "op": "quad_to",
+              "cx": 230,
+              "cy": 410,
+              "x": 230,
+              "y": 380
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": null,
+          "stroke": {
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 255
+            },
+            "width": 4,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "left_eye",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 190,
+              "y": 370
+            },
+            {
+              "op": "line_to",
+              "x": 202,
+              "y": 370
+            },
+            {
+              "op": "line_to",
+              "x": 202,
+              "y": 382
+            },
+            {
+              "op": "line_to",
+              "x": 190,
+              "y": 382
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 255
+            }
+          },
+          "stroke": {
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 255
+            },
+            "width": 2,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "right_eye",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 208,
+              "y": 370
+            },
+            {
+              "op": "line_to",
+              "x": 220,
+              "y": 370
+            },
+            {
+              "op": "line_to",
+              "x": 220,
+              "y": 382
+            },
+            {
+              "op": "line_to",
+              "x": 208,
+              "y": 382
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 255
+            }
+          },
+          "stroke": {
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 255
+            },
+            "width": 2,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "mouth",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 185,
+              "y": 395
+            },
+            {
+              "op": "quad_to",
+              "cx": 200,
+              "cy": 410,
+              "x": 215,
+              "y": 395
+            }
+          ],
+          "fill": null,
+          "stroke": {
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 255
+            },
+            "width": 3,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "motion",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 200,
+              "y": 410
+            },
+            {
+              "op": "line_to",
+              "x": 200,
+              "y": 460
+            },
+            {
+              "op": "line_to",
+              "x": 180,
+              "y": 500
+            },
+            {
+              "op": "move_to",
+              "x": 200,
+              "y": 460
+            },
+            {
+              "op": "line_to",
+              "x": 220,
+              "y": 500
+            },
+            {
+              "op": "move_to",
+              "x": 200,
+              "y": 430
+            },
+            {
+              "op": "line_to",
+              "x": 170,
+              "y": 420
+            },
+            {
+              "op": "move_to",
+              "x": 200,
+              "y": 430
+            },
+            {
+              "op": "line_to",
+              "x": 230,
+              "y": 420
+            }
+          ],
+          "fill": null,
+          "stroke": {
+            "color": {
+              "r": 0,
+              "g": 200,
+              "b": 0,
+              "a": 255
+            },
+            "width": 4,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        }
+      ]
+    },
+    {
+      "name": "finish",
+      "opacity": 255,
+      "blend": "normal",
+      "paths": [
+        {
+          "feature": "background",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 400,
+              "y": 380
+            },
+            {
+              "op": "line_to",
+              "x": 800,
+              "y": 380
+            },
+            {
+              "op": "line_to",
+              "x": 800,
+              "y": 420
+            },
+            {
+              "op": "line_to",
+              "x": 400,
+              "y": 420
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 0,
+              "g": 200,
+              "b": 0,
+              "a": 255
+            }
+          },
+          "stroke": {
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 255
+            },
+            "width": 4,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "checkered",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 400,
+              "y": 380
+            },
+            {
+              "op": "line_to",
+              "x": 420,
+              "y": 380
+            },
+            {
+              "op": "line_to",
+              "x": 420,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 400,
+              "y": 400
+            },
+            {
+              "op": "close"
+            },
+            {
+              "op": "move_to",
+              "x": 440,
+              "y": 380
+            },
+            {
+              "op": "line_to",
+              "x": 460,
+              "y": 380
+            },
+            {
+              "op": "line_to",
+              "x": 460,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 440,
+              "y": 400
+            },
+            {
+              "op": "close"
+            },
+            {
+              "op": "move_to",
+              "x": 480,
+              "y": 380
+            },
+            {
+              "op": "line_to",
+              "x": 500,
+              "y": 380
+            },
+            {
+              "op": "line_to",
+              "x": 500,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 480,
+              "y": 400
+            },
+            {
+              "op": "close"
+            },
+            {
+              "op": "move_to",
+              "x": 520,
+              "y": 380
+            },
+            {
+              "op": "line_to",
+              "x": 540,
+              "y": 380
+            },
+            {
+              "op": "line_to",
+              "x": 540,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 520,
+              "y": 400
+            },
+            {
+              "op": "close"
+            },
+            {
+              "op": "move_to",
+              "x": 560,
+              "y": 380
+            },
+            {
+              "op": "line_to",
+              "x": 580,
+              "y": 380
+            },
+            {
+              "op": "line_to",
+              "x": 580,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 560,
+              "y": 400
+            },
+            {
+              "op": "close"
+            },
+            {
+              "op": "move_to",
+              "x": 600,
+              "y": 380
+            },
+            {
+              "op": "line_to",
+              "x": 620,
+              "y": 380
+            },
+            {
+              "op": "line_to",
+              "x": 620,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 600,
+              "y": 400
+            },
+            {
+              "op": "close"
+            },
+            {
+              "op": "move_to",
+              "x": 640,
+              "y": 380
+            },
+            {
+              "op": "line_to",
+              "x": 660,
+              "y": 380
+            },
+            {
+              "op": "line_to",
+              "x": 660,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 640,
+              "y": 400
+            },
+            {
+              "op": "close"
+            },
+            {
+              "op": "move_to",
+              "x": 680,
+              "y": 380
+            },
+            {
+              "op": "line_to",
+              "x": 700,
+              "y": 380
+            },
+            {
+              "op": "line_to",
+              "x": 700,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 680,
+              "y": 400
+            },
+            {
+              "op": "close"
+            },
+            {
+              "op": "move_to",
+              "x": 720,
+              "y": 380
+            },
+            {
+              "op": "line_to",
+              "x": 740,
+              "y": 380
+            },
+            {
+              "op": "line_to",
+              "x": 740,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 720,
+              "y": 400
+            },
+            {
+              "op": "close"
+            },
+            {
+              "op": "move_to",
+              "x": 760,
+              "y": 380
+            },
+            {
+              "op": "line_to",
+              "x": 780,
+              "y": 380
+            },
+            {
+              "op": "line_to",
+              "x": 780,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 760,
+              "y": 400
+            },
+            {
+              "op": "close"
+            },
+            {
+              "op": "move_to",
+              "x": 420,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 440,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 440,
+              "y": 420
+            },
+            {
+              "op": "line_to",
+              "x": 420,
+              "y": 420
+            },
+            {
+              "op": "close"
+            },
+            {
+              "op": "move_to",
+              "x": 460,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 480,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 480,
+              "y": 420
+            },
+            {
+              "op": "line_to",
+              "x": 460,
+              "y": 420
+            },
+            {
+              "op": "close"
+            },
+            {
+              "op": "move_to",
+              "x": 500,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 520,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 520,
+              "y": 420
+            },
+            {
+              "op": "line_to",
+              "x": 500,
+              "y": 420
+            },
+            {
+              "op": "close"
+            },
+            {
+              "op": "move_to",
+              "x": 540,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 560,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 560,
+              "y": 420
+            },
+            {
+              "op": "line_to",
+              "x": 540,
+              "y": 420
+            },
+            {
+              "op": "close"
+            },
+            {
+              "op": "move_to",
+              "x": 580,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 600,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 600,
+              "y": 420
+            },
+            {
+              "op": "line_to",
+              "x": 580,
+              "y": 420
+            },
+            {
+              "op": "close"
+            },
+            {
+              "op": "move_to",
+              "x": 620,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 640,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 640,
+              "y": 420
+            },
+            {
+              "op": "line_to",
+              "x": 620,
+              "y": 420
+            },
+            {
+              "op": "close"
+            },
+            {
+              "op": "move_to",
+              "x": 660,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 680,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 680,
+              "y": 420
+            },
+            {
+              "op": "line_to",
+              "x": 660,
+              "y": 420
+            },
+            {
+              "op": "close"
+            },
+            {
+              "op": "move_to",
+              "x": 700,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 720,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 720,
+              "y": 420
+            },
+            {
+              "op": "line_to",
+              "x": 700,
+              "y": 420
+            },
+            {
+              "op": "close"
+            },
+            {
+              "op": "move_to",
+              "x": 740,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 760,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 760,
+              "y": 420
+            },
+            {
+              "op": "line_to",
+              "x": 740,
+              "y": 420
+            },
+            {
+              "op": "close"
+            },
+            {
+              "op": "move_to",
+              "x": 780,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 800,
+              "y": 400
+            },
+            {
+              "op": "line_to",
+              "x": 800,
+              "y": 420
+            },
+            {
+              "op": "line_to",
+              "x": 780,
+              "y": 420
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 255
+            }
+          },
+          "stroke": null,
+          "opacity": 255
+        }
+      ]
+    }
+  ],
+  "semantics": {
+    "description": "A small running figure mid‑stride bursts through a checkered finish‑line ribbon, with energetic green‑accented motion lines and larger facial features for clarity.",
+    "emotion": "energetic",
+    "intensity": 85
+  },
+  "variants": {
+    "tiny": null,
+    "text": null,
+    "standard": null,
+    "large": null,
+    "full": null
+  },
+  "compatibility": {
+    "min_spec_version": "0.1.0"
+  },
+  "provenance": null
+}

@@ -1,15 +1,17 @@
 // Copyright (c) 2026 sal
 // SPDX-License-Identifier: MIT
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 use clap::{Parser, Subcommand};
+
+pub use crate::experiments::cli::ExperimentsArgs;
 
 #[derive(Parser, Debug)]
 #[command(
     name = "uni",
     version,
     about = "Unified analysis snapshot with separate project-health and analysis-integrity verdicts.",
-    long_about = "uni runs amber, bart, chakra, ferret hunt (`ferret hunt`, with `ferret track` compatibility), fract, isopod, lwoodz, tempcheq, traci, and vamos concurrently, then reports project findings separately from analyzer defects. AMI is opt-in via --only ami because profile completeness is not code health and requires a JSON-capable build. Jeenome is opt-in (--jeenome) because it audits an strace trace. Missing public applications are classified without mutation by default; pass --install-missing to opt into validated, serialized installation through Baby."
+    long_about = "uni runs amber, bart, chakra, ferret hunt (`ferret hunt`, with `ferret track` compatibility), fract, isopod, lwoodz, tempcheq, traci, vamos, and viva-palestina concurrently, then reports project findings separately from analyzer defects. AMI is opt-in via --only ami because profile completeness is not code health and requires a JSON-capable build. Jeenome is opt-in (--jeenome) because it audits an strace trace. Missing public applications are classified without mutation by default; pass --install-missing to opt into validated, serialized installation through Baby."
 )]
 pub struct Cli {
     #[command(subcommand)]
@@ -22,6 +24,19 @@ pub struct Cli {
     /// Print the report as JSON instead of a human-readable table.
     #[arg(long)]
     pub json: bool,
+
+    /// Show the detailed technical report (tool names, raw findings,
+    /// severity tables) instead of the concise plain-language summary that
+    /// non-technical readers get by default. Pairs well with --json for
+    /// programmatic/model consumption; ignored when --json is also given.
+    #[arg(long)]
+    pub technical: bool,
+
+    /// Increase diagnostic logging (-v for info, -vv for debug, -vvv for
+    /// trace). Logs go to stderr and never mix into --json/--out output.
+    /// RUST_LOG, if set, overrides this entirely.
+    #[arg(short = 'v', long = "verbose", action = clap::ArgAction::Count, global = true)]
+    pub verbose: u8,
 
     /// Also write the JSON report to this file (independent of --json).
     #[arg(long)]
@@ -62,12 +77,39 @@ pub struct Cli {
     /// snapshot tool by default, not a gate).
     #[arg(long)]
     pub fail_under: Option<f64>,
+
+    /// Assess every first-party elci-group repository instead of one
+    /// project. `target` becomes the discovery root override (rarely
+    /// needed) rather than a single project path.
+    #[arg(long)]
+    pub cohort: bool,
+
+    /// GitHub account to discover first-party repos from.
+    #[arg(long, default_value = "elci-group")]
+    pub cohort_org: String,
+
+    /// How many repos to analyze concurrently per cycle.
+    #[arg(long, default_value_t = 4)]
+    pub cohort_batch_size: usize,
+
+    /// Seconds to pause between batches.
+    #[arg(long, default_value_t = 30)]
+    pub cohort_cycle_seconds: u64,
+
+    /// Directory to write per-repo reports and the rollup summary into
+    /// (default: `./uni-cohort-<timestamp>/`).
+    #[arg(long)]
+    pub cohort_out: Option<PathBuf>,
 }
 
 #[derive(Subcommand, Debug)]
 pub enum Command {
     /// Run the concurrent analysis snapshot (same as passing no subcommand).
     Analyze(AnalyzeArgs),
+
+    /// Discover, evaluate, and compare candidate branches against a baseline.
+    /// Read-only: no branches are merged or modified.
+    Experiments(ExperimentsArgs),
 
     /// Diagnose issues, then run each flagged tool's own fix/remediation
     /// command (amber --propose, isopod harden, lwoodz remedy,
@@ -83,6 +125,11 @@ pub struct AnalyzeArgs {
 
     #[arg(long)]
     pub json: bool,
+
+    /// Show the detailed technical report instead of the concise
+    /// plain-language summary that's the default.
+    #[arg(long)]
+    pub technical: bool,
 
     #[arg(long)]
     pub out: Option<PathBuf>,
@@ -111,6 +158,21 @@ pub struct AnalyzeArgs {
 
     #[arg(long)]
     pub fail_under: Option<f64>,
+
+    #[arg(long)]
+    pub cohort: bool,
+
+    #[arg(long, default_value = "elci-group")]
+    pub cohort_org: String,
+
+    #[arg(long, default_value_t = 4)]
+    pub cohort_batch_size: usize,
+
+    #[arg(long, default_value_t = 30)]
+    pub cohort_cycle_seconds: u64,
+
+    #[arg(long)]
+    pub cohort_out: Option<PathBuf>,
 }
 
 #[derive(Parser, Debug)]
@@ -187,7 +249,9 @@ pub enum RunFailLevel {
 }
 
 /// The subset of options `run::execute` needs, shared by the bare
-/// `uni <target>` invocation and `uni analyze`.
+/// `uni <target>` invocation and `uni analyze`. Clone so cohort mode can
+/// reuse one base template per repo, overriding just `target`.
+#[derive(Clone)]
 pub struct AnalyzeOptions {
     pub target: PathBuf,
     pub only: Vec<String>,
@@ -197,6 +261,16 @@ pub struct AnalyzeOptions {
     pub timeout: u64,
     pub tools_dir: Option<PathBuf>,
     pub install_missing: bool,
+}
+
+/// Cohort-mode discovery/pacing options, shared by the bare `uni --cohort`
+/// invocation and `uni analyze --cohort`.
+pub struct CohortOptions {
+    pub root: Option<PathBuf>,
+    pub org: String,
+    pub batch_size: usize,
+    pub cycle_seconds: u64,
+    pub out: Option<PathBuf>,
 }
 
 impl Cli {
@@ -212,6 +286,16 @@ impl Cli {
             install_missing: self.install_missing,
         }
     }
+
+    pub fn cohort_options(&self) -> CohortOptions {
+        CohortOptions {
+            root: (self.target.as_path() != Path::new(".")).then(|| self.target.clone()),
+            org: self.cohort_org.clone(),
+            batch_size: self.cohort_batch_size,
+            cycle_seconds: self.cohort_cycle_seconds,
+            out: self.cohort_out.clone(),
+        }
+    }
 }
 
 impl AnalyzeArgs {
@@ -225,6 +309,16 @@ impl AnalyzeArgs {
             timeout: self.timeout,
             tools_dir: self.tools_dir.clone(),
             install_missing: self.install_missing,
+        }
+    }
+
+    pub fn cohort_options(&self) -> CohortOptions {
+        CohortOptions {
+            root: (self.target.as_path() != Path::new(".")).then(|| self.target.clone()),
+            org: self.cohort_org.clone(),
+            batch_size: self.cohort_batch_size,
+            cycle_seconds: self.cohort_cycle_seconds,
+            out: self.cohort_out.clone(),
         }
     }
 }

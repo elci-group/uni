@@ -1,0 +1,5003 @@
+{
+  "schema": "uni.report/v3",
+  "target": "/home/sal/dreamcatcher",
+  "generated_at": "2026-08-27T13:10:01.996349515+00:00",
+  "tools_dir": "/home/sal",
+  "tools": [
+    {
+      "tool": "amber",
+      "purpose": "dependency bloat / replaceability",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 14
+      },
+      "binary": "/home/sal/.local/bin/amber",
+      "score": 74.28571428571429,
+      "grade": "C",
+      "exit_code": 1,
+      "duration_ms": 2125,
+      "summary": "14 dependencies analyzed: 7 keep/security-block, 6 propose, 1 proceed",
+      "findings": [
+        "anyhow: security_block (replaceability 61)",
+        "chrono: security_block (replaceability 55)",
+        "serde: security_block (replaceability 20)",
+        "serde_yaml: security_block (replaceability 48)",
+        "sha2: security_block (replaceability 20)"
+      ],
+      "note": null,
+      "raw": {
+        "amber_version": "0.3.0",
+        "results": [
+          {
+            "crate": "anyhow",
+            "metadata": {
+              "cve_count": 1,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 75% (1 unique APIs from 10 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 15% (category: general)",
+              "Maintenance burden: 35% (1 CVEs, score: 50)",
+              "Testability: 45% (6 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: FREQUENTLY_REPLACEABLE list match",
+              "Confidence: 65% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 65,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 35,
+                "security_safety": 15,
+                "testability": 45,
+                "transitive_value": 55,
+                "usage_simplicity": 75
+              },
+              "overall": 61,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 6,
+              "call_sites": 10,
+              "imported_items": 1,
+              "is_trivial": false,
+              "unique_apis": 1
+            },
+            "version": "1.0.104"
+          },
+          {
+            "crate": "chrono",
+            "metadata": {
+              "cve_count": 1,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 40% (0 unique APIs from 5 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 15% (category: datetime)",
+              "Maintenance burden: 35% (1 CVEs, score: 50)",
+              "Testability: 55% (3 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: FREQUENTLY_REPLACEABLE list match",
+              "Confidence: 80% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 80,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 35,
+                "security_safety": 15,
+                "testability": 55,
+                "transitive_value": 65,
+                "usage_simplicity": 40
+              },
+              "overall": 55,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 3,
+              "call_sites": 5,
+              "imported_items": 0,
+              "is_trivial": false,
+              "unique_apis": 0
+            },
+            "version": "0.4.45"
+          },
+          {
+            "crate": "clap",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 65% (4 unique APIs from 3 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 50% (category: cli)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 55% (3 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 70% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 70,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 55,
+                "transitive_value": 65,
+                "usage_simplicity": 65
+              },
+              "overall": 61,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 3,
+              "call_sites": 3,
+              "imported_items": 5,
+              "is_trivial": false,
+              "unique_apis": 4
+            },
+            "version": "4.6.6"
+          },
+          {
+            "crate": "clap_complete",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 50% (0 unique APIs from 3 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: cli)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 70% (2 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 80% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 80,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 70,
+                "transitive_value": 55,
+                "usage_simplicity": 50
+              },
+              "overall": 57,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 2,
+              "call_sites": 3,
+              "imported_items": 0,
+              "is_trivial": true,
+              "unique_apis": 0
+            },
+            "version": "4.6.9"
+          },
+          {
+            "crate": "serde",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 65% (2 unique APIs from 66 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 0% (category: serialization)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 45% (8 affected files)",
+              "API surface: 90% (using ~7% of public APIs)",
+              "Category rule applied: NEVER_REPLACE list match",
+              "Confidence: 55% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 55,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 0,
+                "testability": 45,
+                "transitive_value": 55,
+                "usage_simplicity": 65
+              },
+              "overall": 20,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 8,
+              "call_sites": 66,
+              "imported_items": 14,
+              "is_trivial": false,
+              "unique_apis": 2
+            },
+            "version": "1.0.229"
+          },
+          {
+            "crate": "serde_json",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 65% (2 unique APIs from 24 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 50% (category: serialization)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 45% (6 affected files)",
+              "API surface: 90% (using ~1% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 55% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 55,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 45,
+                "transitive_value": 65,
+                "usage_simplicity": 65
+              },
+              "overall": 60,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 6,
+              "call_sites": 24,
+              "imported_items": 2,
+              "is_trivial": false,
+              "unique_apis": 2
+            },
+            "version": "1.0.151"
+          },
+          {
+            "crate": "serde_yaml",
+            "metadata": {
+              "cve_count": 1,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 70% (1 unique APIs from 26 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 0% (category: serialization)",
+              "Maintenance burden: 35% (1 CVEs, score: 50)",
+              "Testability: 65% (1 affected files)",
+              "API surface: 90% (using ~1% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 70% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 70,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 35,
+                "security_safety": 0,
+                "testability": 65,
+                "transitive_value": 55,
+                "usage_simplicity": 70
+              },
+              "overall": 48,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 26,
+              "imported_items": 1,
+              "is_trivial": false,
+              "unique_apis": 1
+            },
+            "version": "0.9.34+deprecated"
+          },
+          {
+            "crate": "sha2",
+            "metadata": {
+              "cve_count": 1,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 85% (2 unique APIs from 0 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 0% (category: cryptography)",
+              "Maintenance burden: 35% (1 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~4% of public APIs)",
+              "Category rule applied: NEVER_REPLACE list match",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 35,
+                "security_safety": 0,
+                "testability": 80,
+                "transitive_value": 55,
+                "usage_simplicity": 85
+              },
+              "overall": 20,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 0,
+              "imported_items": 2,
+              "is_trivial": true,
+              "unique_apis": 2
+            },
+            "version": "0.10.9"
+          },
+          {
+            "crate": "tempfile",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 30% (0 unique APIs from 34 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 55% (3 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 65% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Medium Risk",
+              "classification_stars": "★★★☆☆",
+              "confidence": 65,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 55,
+                "transitive_value": 55,
+                "usage_simplicity": 30
+              },
+              "overall": 50,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 3,
+              "call_sites": 34,
+              "imported_items": 0,
+              "is_trivial": false,
+              "unique_apis": 0
+            },
+            "version": "3.27.0"
+          },
+          {
+            "crate": "thiserror",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 90% (1 unique APIs from 1 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 65% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: FREQUENTLY_REPLACEABLE list match",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Safe to Replace",
+              "classification_stars": "★★★★★",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 65,
+                "testability": 80,
+                "transitive_value": 55,
+                "usage_simplicity": 90
+              },
+              "overall": 81,
+              "recommendation": "proceed"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 1,
+              "imported_items": 1,
+              "is_trivial": true,
+              "unique_apis": 1
+            },
+            "version": "2.0.20"
+          },
+          {
+            "crate": "toml",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 50% (0 unique APIs from 4 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: serialization)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 70% (2 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 80% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 80,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 70,
+                "transitive_value": 55,
+                "usage_simplicity": 50
+              },
+              "overall": 57,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 2,
+              "call_sites": 4,
+              "imported_items": 0,
+              "is_trivial": true,
+              "unique_apis": 0
+            },
+            "version": "0.8.23"
+          },
+          {
+            "crate": "tracing",
+            "metadata": {
+              "cve_count": 1,
+              "license": "MIT",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 50% (0 unique APIs from 4 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 0% (category: logging)",
+              "Maintenance burden: 35% (1 CVEs, score: 50)",
+              "Testability: 70% (2 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 80% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 80,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 35,
+                "security_safety": 0,
+                "testability": 70,
+                "transitive_value": 55,
+                "usage_simplicity": 50
+              },
+              "overall": 43,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 2,
+              "call_sites": 4,
+              "imported_items": 0,
+              "is_trivial": true,
+              "unique_apis": 0
+            },
+            "version": "0.1.44"
+          },
+          {
+            "crate": "tracing-subscriber",
+            "metadata": {
+              "cve_count": 1,
+              "license": "MIT",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 35% (0 unique APIs from 6 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 0% (category: logging)",
+              "Maintenance burden: 35% (1 CVEs, score: 50)",
+              "Testability: 65% (1 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 80% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 80,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 35,
+                "security_safety": 0,
+                "testability": 65,
+                "transitive_value": 55,
+                "usage_simplicity": 35
+              },
+              "overall": 39,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 6,
+              "imported_items": 0,
+              "is_trivial": false,
+              "unique_apis": 0
+            },
+            "version": "0.3.23"
+          },
+          {
+            "crate": "walkdir",
+            "metadata": {
+              "cve_count": 0,
+              "license": "Unlicense",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 50% (0 unique APIs from 2 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 80% (1 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 85% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 85,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 80,
+                "transitive_value": 55,
+                "usage_simplicity": 50
+              },
+              "overall": 58,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 1,
+              "call_sites": 2,
+              "imported_items": 0,
+              "is_trivial": true,
+              "unique_apis": 0
+            },
+            "version": "2.5.0"
+          }
+        ],
+        "total_dependencies": 14
+      }
+    },
+    {
+      "tool": "ami",
+      "purpose": "project profile completeness (market-intelligence readiness)",
+      "status": "skipped",
+      "availability": "not_checked",
+      "execution": "skipped",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": null,
+      "duration_ms": null,
+      "summary": "skipped",
+      "findings": [],
+      "note": "ami is opt-in because project profiling is not code health; use `--only ami` when its installed build exposes JSON output",
+      "raw": null
+    },
+    {
+      "tool": "bart",
+      "purpose": "filesystem size & hotspots (informational)",
+      "status": "ok",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/usr/bin/bart",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 54,
+      "summary": "81 files, 772.0 KB under root",
+      "findings": [
+        "/home/sal/dreamcatcher/.kaptaind: 583.7 KB",
+        "/home/sal/dreamcatcher/src: 100.6 KB",
+        "/home/sal/dreamcatcher/Cargo.lock: 25.1 KB",
+        "/home/sal/dreamcatcher/.zcode: 15.0 KB",
+        "/home/sal/dreamcatcher/tests: 13.3 KB"
+      ],
+      "note": "informational only — bart measures disk usage, not code health",
+      "raw": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787394965,
+                "path": "/home/sal/dreamcatcher/.kaptaind/daemon.out",
+                "size": 521830
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787378640,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/d5a2e86d-9753-4cf8-8c12-593607adc935.json",
+                    "size": 3800
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787378440,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/bb7c27e4-9ed0-4ddb-ba3b-fa32714e411d.json",
+                    "size": 1277
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787378781,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/581f2cb1-753b-4d09-803c-66c733f7c04e.json",
+                    "size": 1270
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787378761,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/135f22c1-497d-42af-ac48-1f25e4d690e2.json",
+                    "size": 1262
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787378708,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/efa57497-3bc4-4795-862e-4b01ef1ebd18.json",
+                    "size": 1262
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787378134,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/7407fbd7-178d-4a23-aa0a-95ced702f329.json",
+                    "size": 1258
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787378120,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/30ad7664-5965-47b6-af81-6e2f5fe5fbc3.json",
+                    "size": 1254
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787378263,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/cbcbb8e9-ab8a-4bdb-a652-a64d5f2a76b8.json",
+                    "size": 1251
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787378491,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/b5c38a40-e401-4fd7-960a-1a75e62185f9.json",
+                    "size": 801
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787378789,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/64381123-3d38-4d57-8ef9-c4fdfbf8b0ae.json",
+                    "size": 801
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787378730,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/a6d213ce-5d3e-4fa6-a20f-4b4b0b648a2e.json",
+                    "size": 801
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787379271,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/c53dc3be-5534-4e56-8f28-b1126b0fb2cf.json",
+                    "size": 801
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787378670,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/e64a67c3-e2c5-480d-81f3-e97ef3a2f343.json",
+                    "size": 801
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787362905,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/f10b4761-333f-4674-b61d-44040bf1f0f6.json",
+                    "size": 801
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787378649,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/a4d68a38-2142-47f0-b6d5-cb7f622578cd.json",
+                    "size": 801
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787378688,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/5363b4a0-fa93-4060-b24b-954b50d112ae.json",
+                    "size": 800
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787362877,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/65b93743-6caa-4de7-b487-fd5662062105.json",
+                    "size": 799
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787378589,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/774f0965-2166-45e6-9b31-c31b9e000c6b.json",
+                    "size": 799
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787362925,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/05bc7761-a31c-48b7-8fef-04dd46d0f063.json",
+                    "size": 799
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787361593,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/2fda5e16-0264-4255-b9cf-7edb14946007.json",
+                    "size": 798
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787379208,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/f30b437e-40f5-465a-bb6c-8e84a1d463ce.json",
+                    "size": 791
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787362012,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/ee28d0fa-df24-4e53-accf-dba13692ed0f.json",
+                    "size": 791
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787379259,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/01d598e2-b755-4ec6-81ec-c9d33e065b19.json",
+                    "size": 791
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787362860,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/61005806-fdbb-4fbc-a950-b9ea3dffa940.json",
+                    "size": 790
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787361812,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/95b49020-ccbe-4ddc-9bbe-e72c157e47d8.json",
+                    "size": 790
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787361579,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/db7ac17b-23b7-49cb-9b16-5ea96c302437.json",
+                    "size": 790
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787362268,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/ea163457-bd8f-4f12-bc48-34ddbfc8d847.json",
+                    "size": 789
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787362149,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/378902da-a006-4a87-ad29-07377cfdc579.json",
+                    "size": 789
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787361408,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/9022e178-ba39-4b17-9026-e0248d55364a.json",
+                    "size": 788
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787361975,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/c6de017a-ce20-401f-8eba-e7a8ed0818a2.json",
+                    "size": 787
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787362107,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/analysis/84e5602a-d659-405d-ad73-78ba4b74e868.json",
+                    "size": 786
+                  }
+                ],
+                "depth": 2,
+                "file_count": 31,
+                "is_dir": true,
+                "modified": 1787379271,
+                "path": "/home/sal/dreamcatcher/.kaptaind/analysis",
+                "size": 35014
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787361213,
+                "path": "/home/sal/dreamcatcher/.kaptaind/traces.db",
+                "size": 16384
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 0,
+                    "is_dir": true,
+                    "modified": 1787361213,
+                    "path": "/home/sal/dreamcatcher/.kaptaind/vacs/assets",
+                    "size": 4096
+                  }
+                ],
+                "depth": 2,
+                "file_count": 0,
+                "is_dir": true,
+                "modified": 1787361213,
+                "path": "/home/sal/dreamcatcher/.kaptaind/vacs",
+                "size": 8192
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787379271,
+                "path": "/home/sal/dreamcatcher/.kaptaind/audit.jsonl",
+                "size": 8045
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787379073,
+                "path": "/home/sal/dreamcatcher/.kaptaind/ast_cache.json",
+                "size": 3256
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787394960,
+                "path": "/home/sal/dreamcatcher/.kaptaind/telemetry.json",
+                "size": 559
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787394966,
+                "path": "/home/sal/dreamcatcher/.kaptaind/status.json",
+                "size": 192
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787394960,
+                "path": "/home/sal/dreamcatcher/.kaptaind/version_cache.json",
+                "size": 134
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787361286,
+                "path": "/home/sal/dreamcatcher/.kaptaind/daemon.pid",
+                "size": 7
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787361286,
+                "path": "/home/sal/dreamcatcher/.kaptaind/daemon.err",
+                "size": 0
+              }
+            ],
+            "depth": 1,
+            "file_count": 40,
+            "is_dir": true,
+            "modified": 1787394966,
+            "path": "/home/sal/dreamcatcher/.kaptaind",
+            "size": 597709
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787360664,
+                    "path": "/home/sal/dreamcatcher/src/analyze/synthesize.rs",
+                    "size": 7275
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787360599,
+                    "path": "/home/sal/dreamcatcher/src/analyze/cluster.rs",
+                    "size": 4507
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787359866,
+                    "path": "/home/sal/dreamcatcher/src/analyze/prioritise.rs",
+                    "size": 3027
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787360599,
+                    "path": "/home/sal/dreamcatcher/src/analyze/mod.rs",
+                    "size": 3021
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787359827,
+                    "path": "/home/sal/dreamcatcher/src/analyze/dependency.rs",
+                    "size": 2846
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787360599,
+                    "path": "/home/sal/dreamcatcher/src/analyze/conflict.rs",
+                    "size": 2116
+                  }
+                ],
+                "depth": 2,
+                "file_count": 6,
+                "is_dir": true,
+                "modified": 1787360664,
+                "path": "/home/sal/dreamcatcher/src/analyze",
+                "size": 26888
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787360599,
+                    "path": "/home/sal/dreamcatcher/src/emit/yaml.rs",
+                    "size": 4378
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787360599,
+                    "path": "/home/sal/dreamcatcher/src/emit/mod.rs",
+                    "size": 4133
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787360599,
+                    "path": "/home/sal/dreamcatcher/src/emit/json.rs",
+                    "size": 3247
+                  }
+                ],
+                "depth": 2,
+                "file_count": 3,
+                "is_dir": true,
+                "modified": 1787360593,
+                "path": "/home/sal/dreamcatcher/src/emit",
+                "size": 15854
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787359687,
+                    "path": "/home/sal/dreamcatcher/src/dream/model.rs",
+                    "size": 4888
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787360599,
+                    "path": "/home/sal/dreamcatcher/src/dream/parse.rs",
+                    "size": 4774
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787360599,
+                    "path": "/home/sal/dreamcatcher/src/dream/mod.rs",
+                    "size": 291
+                  }
+                ],
+                "depth": 2,
+                "file_count": 3,
+                "is_dir": true,
+                "modified": 1787360202,
+                "path": "/home/sal/dreamcatcher/src/dream",
+                "size": 14049
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787378523,
+                "path": "/home/sal/dreamcatcher/src/lib.rs",
+                "size": 9632
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787378523,
+                "path": "/home/sal/dreamcatcher/src/report.rs",
+                "size": 8636
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787378733,
+                "path": "/home/sal/dreamcatcher/src/discover.rs",
+                "size": 6799
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787360599,
+                "path": "/home/sal/dreamcatcher/src/ir.rs",
+                "size": 5403
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787378523,
+                "path": "/home/sal/dreamcatcher/src/spinner.rs",
+                "size": 3426
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787359937,
+                "path": "/home/sal/dreamcatcher/src/schema.rs",
+                "size": 2331
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787378208,
+                "path": "/home/sal/dreamcatcher/src/cli.rs",
+                "size": 2031
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787359784,
+                "path": "/home/sal/dreamcatcher/src/config.rs",
+                "size": 1963
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787378115,
+                "path": "/home/sal/dreamcatcher/src/style.rs",
+                "size": 1528
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787379067,
+                "path": "/home/sal/dreamcatcher/src/main.rs",
+                "size": 335
+              }
+            ],
+            "depth": 1,
+            "file_count": 22,
+            "is_dir": true,
+            "modified": 1787378718,
+            "path": "/home/sal/dreamcatcher/src",
+            "size": 102971
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787380233,
+            "path": "/home/sal/dreamcatcher/Cargo.lock",
+            "size": 25705
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787359626,
+                    "path": "/home/sal/dreamcatcher/.zcode/plans/plan-sess_0158fbf0-a559-4f43-a502-9e3696908cc7.md",
+                    "size": 7213
+                  }
+                ],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": true,
+                "modified": 1787359626,
+                "path": "/home/sal/dreamcatcher/.zcode/plans",
+                "size": 11309
+              }
+            ],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": true,
+            "modified": 1787359626,
+            "path": "/home/sal/dreamcatcher/.zcode",
+            "size": 15405
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787378523,
+                "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+                "size": 9501
+              }
+            ],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": true,
+            "modified": 1787378300,
+            "path": "/home/sal/dreamcatcher/tests",
+            "size": 13597
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787359648,
+                    "path": "/home/sal/dreamcatcher/.github/workflows/secret-scan.yml",
+                    "size": 260
+                  }
+                ],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": true,
+                "modified": 1787359648,
+                "path": "/home/sal/dreamcatcher/.github/workflows",
+                "size": 4356
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787359648,
+                "path": "/home/sal/dreamcatcher/.github/copilot-instructions.md",
+                "size": 427
+              }
+            ],
+            "depth": 1,
+            "file_count": 2,
+            "is_dir": true,
+            "modified": 1787359648,
+            "path": "/home/sal/dreamcatcher/.github",
+            "size": 8879
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787378478,
+            "path": "/home/sal/dreamcatcher/README.md",
+            "size": 6312
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787378518,
+                "path": "/home/sal/dreamcatcher/man/dreamcatcher.1",
+                "size": 2212
+              }
+            ],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": true,
+            "modified": 1787378518,
+            "path": "/home/sal/dreamcatcher/man",
+            "size": 6308
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787359648,
+                "path": "/home/sal/dreamcatcher/.claude/CLAUDE.md",
+                "size": 416
+              }
+            ],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": true,
+            "modified": 1787359648,
+            "path": "/home/sal/dreamcatcher/.claude",
+            "size": 4512
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787836199,
+            "path": "/home/sal/dreamcatcher/traci.toml",
+            "size": 955
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787379271,
+            "path": "/home/sal/dreamcatcher/Cargo.toml",
+            "size": 949
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787361549,
+            "path": "/home/sal/dreamcatcher/deliver.toml",
+            "size": 724
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787360001,
+            "path": "/home/sal/dreamcatcher/dreamcatcher.toml.example",
+            "size": 613
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787361281,
+            "path": "/home/sal/dreamcatcher/kaptaind.toml",
+            "size": 538
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787359648,
+            "path": "/home/sal/dreamcatcher/poka.lock",
+            "size": 536
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787359648,
+            "path": "/home/sal/dreamcatcher/AGENTS.md",
+            "size": 416
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787836199,
+            "path": "/home/sal/dreamcatcher/poka.toml",
+            "size": 171
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787361176,
+            "path": "/home/sal/dreamcatcher/.kaptainignore",
+            "size": 45
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787360698,
+            "path": "/home/sal/dreamcatcher/.gitignore",
+            "size": 37
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787379271,
+            "path": "/home/sal/dreamcatcher/VERSION",
+            "size": 6
+          }
+        ],
+        "depth": 0,
+        "file_count": 81,
+        "is_dir": true,
+        "modified": 1787836199,
+        "path": "/home/sal/dreamcatcher",
+        "size": 790484
+      }
+    },
+    {
+      "tool": "chakra",
+      "purpose": "data-flow / architecture map coverage",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": 0.2839506172839506,
+        "confidence": 1.0,
+        "observations": 102
+      },
+      "binary": "/home/sal/.local/bin/chakra",
+      "score": 64.19753086419753,
+      "grade": "D",
+      "exit_code": 0,
+      "duration_ms": 80,
+      "summary": "37 nodes, 102 flows; coverage 28.4% (23/81 files), confidence 100.0%",
+      "findings": [
+        "102 flow(s) with provenance=observed"
+      ],
+      "note": null,
+      "raw": {
+        "boundaries": [],
+        "events": [],
+        "evidence": [
+          {
+            "detail": "std::path::Path",
+            "file": "tests/integration_test.rs",
+            "id": "ev-0001",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "std::process::Command",
+            "file": "tests/integration_test.rs",
+            "id": "ev-0002",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "std::sync::OnceLock",
+            "file": "src/style.rs",
+            "id": "ev-0003",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "serde::",
+            "file": "src/config.rs",
+            "id": "ev-0004",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "std::io::IsTerminal",
+            "file": "src/lib.rs",
+            "id": "ev-0005",
+            "kind": "rust_use",
+            "line": 22
+          },
+          {
+            "detail": "std::time::Instant",
+            "file": "src/lib.rs",
+            "id": "ev-0006",
+            "kind": "rust_use",
+            "line": 24
+          },
+          {
+            "detail": "style::Color",
+            "file": "src/lib.rs",
+            "id": "ev-0007",
+            "kind": "rust_use",
+            "line": 25
+          },
+          {
+            "detail": "clap::CommandFactory",
+            "file": "src/lib.rs",
+            "id": "ev-0008",
+            "kind": "rust_use",
+            "line": 36
+          },
+          {
+            "detail": "cli::Command",
+            "file": "src/lib.rs",
+            "id": "ev-0009",
+            "kind": "rust_use",
+            "line": 37
+          },
+          {
+            "detail": "std::io::Write",
+            "file": "src/lib.rs",
+            "id": "ev-0010",
+            "kind": "rust_use",
+            "line": 79
+          },
+          {
+            "detail": "cli::Format",
+            "file": "src/lib.rs",
+            "id": "ev-0011",
+            "kind": "rust_use",
+            "line": 193
+          },
+          {
+            "detail": "analyze",
+            "file": "src/lib.rs",
+            "id": "ev-0012",
+            "kind": "rust_mod",
+            "line": 10
+          },
+          {
+            "detail": "cli",
+            "file": "src/lib.rs",
+            "id": "ev-0013",
+            "kind": "rust_mod",
+            "line": 12
+          },
+          {
+            "detail": "config",
+            "file": "src/lib.rs",
+            "id": "ev-0014",
+            "kind": "rust_mod",
+            "line": 13
+          },
+          {
+            "detail": "discover",
+            "file": "src/lib.rs",
+            "id": "ev-0015",
+            "kind": "rust_mod",
+            "line": 14
+          },
+          {
+            "detail": "dream",
+            "file": "src/lib.rs",
+            "id": "ev-0016",
+            "kind": "rust_mod",
+            "line": 15
+          },
+          {
+            "detail": "emit",
+            "file": "src/lib.rs",
+            "id": "ev-0017",
+            "kind": "rust_mod",
+            "line": 16
+          },
+          {
+            "detail": "ir",
+            "file": "src/lib.rs",
+            "id": "ev-0018",
+            "kind": "rust_mod",
+            "line": 17
+          },
+          {
+            "detail": "report",
+            "file": "src/lib.rs",
+            "id": "ev-0019",
+            "kind": "rust_mod",
+            "line": 18
+          },
+          {
+            "detail": "schema",
+            "file": "src/lib.rs",
+            "id": "ev-0020",
+            "kind": "rust_mod",
+            "line": 19
+          },
+          {
+            "detail": "spinner",
+            "file": "src/lib.rs",
+            "id": "ev-0021",
+            "kind": "rust_mod",
+            "line": 20
+          },
+          {
+            "detail": "style",
+            "file": "src/lib.rs",
+            "id": "ev-0022",
+            "kind": "rust_mod",
+            "line": 21
+          },
+          {
+            "detail": "anyhow::Result",
+            "file": "src/main.rs",
+            "id": "ev-0023",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "clap::Parser",
+            "file": "src/main.rs",
+            "id": "ev-0024",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "dreamcatcher::cli::Cli",
+            "file": "src/main.rs",
+            "id": "ev-0025",
+            "kind": "rust_use",
+            "line": 8
+          },
+          {
+            "detail": "std::collections::BTreeSet",
+            "file": "src/analyze/synthesize.rs",
+            "id": "ev-0026",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "crate::analyze::",
+            "file": "src/analyze/synthesize.rs",
+            "id": "ev-0027",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "crate::config::Config",
+            "file": "src/analyze/synthesize.rs",
+            "id": "ev-0028",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "crate::dream::",
+            "file": "src/analyze/synthesize.rs",
+            "id": "ev-0029",
+            "kind": "rust_use",
+            "line": 10
+          },
+          {
+            "detail": "crate::ir::DreamIr",
+            "file": "src/analyze/synthesize.rs",
+            "id": "ev-0030",
+            "kind": "rust_use",
+            "line": 11
+          },
+          {
+            "detail": "std::collections::BTreeSet",
+            "file": "src/analyze/dependency.rs",
+            "id": "ev-0031",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "crate::ir::",
+            "file": "src/analyze/dependency.rs",
+            "id": "ev-0032",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "super::",
+            "file": "src/analyze/dependency.rs",
+            "id": "ev-0033",
+            "kind": "rust_use",
+            "line": 54
+          },
+          {
+            "detail": "crate::dream::",
+            "file": "src/analyze/dependency.rs",
+            "id": "ev-0034",
+            "kind": "rust_use",
+            "line": 55
+          },
+          {
+            "detail": "std::collections::",
+            "file": "src/analyze/cluster.rs",
+            "id": "ev-0035",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "crate::config::Config",
+            "file": "src/analyze/cluster.rs",
+            "id": "ev-0036",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "crate::ir::",
+            "file": "src/analyze/cluster.rs",
+            "id": "ev-0037",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "super::",
+            "file": "src/analyze/cluster.rs",
+            "id": "ev-0038",
+            "kind": "rust_use",
+            "line": 131
+          },
+          {
+            "detail": "crate::analyze::Candidate",
+            "file": "src/analyze/prioritise.rs",
+            "id": "ev-0039",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "crate::config::Weights",
+            "file": "src/analyze/prioritise.rs",
+            "id": "ev-0040",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "crate::dream::Priority",
+            "file": "src/analyze/prioritise.rs",
+            "id": "ev-0041",
+            "kind": "rust_use",
+            "line": 8
+          },
+          {
+            "detail": "super::",
+            "file": "src/analyze/prioritise.rs",
+            "id": "ev-0042",
+            "kind": "rust_use",
+            "line": 65
+          },
+          {
+            "detail": "serde::",
+            "file": "src/analyze/mod.rs",
+            "id": "ev-0043",
+            "kind": "rust_use",
+            "line": 11
+          },
+          {
+            "detail": "crate::config::Config",
+            "file": "src/analyze/mod.rs",
+            "id": "ev-0044",
+            "kind": "rust_use",
+            "line": 13
+          },
+          {
+            "detail": "crate::dream::",
+            "file": "src/analyze/mod.rs",
+            "id": "ev-0045",
+            "kind": "rust_use",
+            "line": 15
+          },
+          {
+            "detail": "crate::ir::DreamIr",
+            "file": "src/analyze/mod.rs",
+            "id": "ev-0046",
+            "kind": "rust_use",
+            "line": 16
+          },
+          {
+            "detail": "cluster",
+            "file": "src/analyze/mod.rs",
+            "id": "ev-0047",
+            "kind": "rust_mod",
+            "line": 5
+          },
+          {
+            "detail": "conflict",
+            "file": "src/analyze/mod.rs",
+            "id": "ev-0048",
+            "kind": "rust_mod",
+            "line": 7
+          },
+          {
+            "detail": "dependency",
+            "file": "src/analyze/mod.rs",
+            "id": "ev-0049",
+            "kind": "rust_mod",
+            "line": 8
+          },
+          {
+            "detail": "prioritise",
+            "file": "src/analyze/mod.rs",
+            "id": "ev-0050",
+            "kind": "rust_mod",
+            "line": 9
+          },
+          {
+            "detail": "synthesize",
+            "file": "src/analyze/mod.rs",
+            "id": "ev-0051",
+            "kind": "rust_mod",
+            "line": 10
+          },
+          {
+            "detail": "crate::dream::IntentKind",
+            "file": "src/analyze/conflict.rs",
+            "id": "ev-0052",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "crate::ir::",
+            "file": "src/analyze/conflict.rs",
+            "id": "ev-0053",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "std::path::",
+            "file": "src/discover.rs",
+            "id": "ev-0054",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "crate::dream::",
+            "file": "src/discover.rs",
+            "id": "ev-0055",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "super::",
+            "file": "src/discover.rs",
+            "id": "ev-0056",
+            "kind": "rust_use",
+            "line": 133
+          },
+          {
+            "detail": "std::io::Write",
+            "file": "src/spinner.rs",
+            "id": "ev-0057",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "std::sync::atomic::",
+            "file": "src/spinner.rs",
+            "id": "ev-0058",
+            "kind": "rust_use",
+            "line": 11
+          },
+          {
+            "detail": "std::sync::",
+            "file": "src/spinner.rs",
+            "id": "ev-0059",
+            "kind": "rust_use",
+            "line": 12
+          },
+          {
+            "detail": "std::thread::",
+            "file": "src/spinner.rs",
+            "id": "ev-0060",
+            "kind": "rust_use",
+            "line": 13
+          },
+          {
+            "detail": "std::time::Duration",
+            "file": "src/spinner.rs",
+            "id": "ev-0061",
+            "kind": "rust_use",
+            "line": 14
+          },
+          {
+            "detail": "super::",
+            "file": "src/spinner.rs",
+            "id": "ev-0062",
+            "kind": "rust_use",
+            "line": 85
+          },
+          {
+            "detail": "std::path::PathBuf",
+            "file": "src/cli.rs",
+            "id": "ev-0063",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "clap::",
+            "file": "src/cli.rs",
+            "id": "ev-0064",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "std::path::Path",
+            "file": "src/dream/parse.rs",
+            "id": "ev-0065",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "serde::Deserialize",
+            "file": "src/dream/parse.rs",
+            "id": "ev-0066",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "sha2::",
+            "file": "src/dream/parse.rs",
+            "id": "ev-0067",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "thiserror::Error",
+            "file": "src/dream/parse.rs",
+            "id": "ev-0068",
+            "kind": "rust_use",
+            "line": 10
+          },
+          {
+            "detail": "super::model::",
+            "file": "src/dream/parse.rs",
+            "id": "ev-0069",
+            "kind": "rust_use",
+            "line": 11
+          },
+          {
+            "detail": "super::",
+            "file": "src/dream/parse.rs",
+            "id": "ev-0070",
+            "kind": "rust_use",
+            "line": 132
+          },
+          {
+            "detail": "serde::",
+            "file": "src/dream/model.rs",
+            "id": "ev-0071",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "IntentKind::",
+            "file": "src/dream/model.rs",
+            "id": "ev-0072",
+            "kind": "rust_use",
+            "line": 40
+          },
+          {
+            "detail": "model::",
+            "file": "src/dream/mod.rs",
+            "id": "ev-0073",
+            "kind": "rust_use",
+            "line": 8
+          },
+          {
+            "detail": "parse::",
+            "file": "src/dream/mod.rs",
+            "id": "ev-0074",
+            "kind": "rust_use",
+            "line": 12
+          },
+          {
+            "detail": "model",
+            "file": "src/dream/mod.rs",
+            "id": "ev-0075",
+            "kind": "rust_mod",
+            "line": 5
+          },
+          {
+            "detail": "parse",
+            "file": "src/dream/mod.rs",
+            "id": "ev-0076",
+            "kind": "rust_mod",
+            "line": 7
+          },
+          {
+            "detail": "std::collections::BTreeMap",
+            "file": "src/ir.rs",
+            "id": "ev-0077",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "serde::",
+            "file": "src/ir.rs",
+            "id": "ev-0078",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "crate::dream::Dream",
+            "file": "src/ir.rs",
+            "id": "ev-0079",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "super::",
+            "file": "src/ir.rs",
+            "id": "ev-0080",
+            "kind": "rust_use",
+            "line": 135
+          },
+          {
+            "detail": "serde_json::",
+            "file": "src/emit/json.rs",
+            "id": "ev-0081",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "crate::analyze::Candidate",
+            "file": "src/emit/json.rs",
+            "id": "ev-0082",
+            "kind": "rust_use",
+            "line": 11
+          },
+          {
+            "detail": "crate::emit::provenance_for",
+            "file": "src/emit/json.rs",
+            "id": "ev-0083",
+            "kind": "rust_use",
+            "line": 13
+          },
+          {
+            "detail": "crate::ir::DreamIr",
+            "file": "src/emit/json.rs",
+            "id": "ev-0084",
+            "kind": "rust_use",
+            "line": 14
+          },
+          {
+            "detail": "serde::",
+            "file": "src/emit/yaml.rs",
+            "id": "ev-0085",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "serde_yaml::Mapping",
+            "file": "src/emit/yaml.rs",
+            "id": "ev-0086",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "crate::analyze::Candidate",
+            "file": "src/emit/yaml.rs",
+            "id": "ev-0087",
+            "kind": "rust_use",
+            "line": 8
+          },
+          {
+            "detail": "crate::emit::provenance_for",
+            "file": "src/emit/yaml.rs",
+            "id": "ev-0088",
+            "kind": "rust_use",
+            "line": 10
+          },
+          {
+            "detail": "crate::ir::DreamIr",
+            "file": "src/emit/yaml.rs",
+            "id": "ev-0089",
+            "kind": "rust_use",
+            "line": 11
+          },
+          {
+            "detail": "std::path::Path",
+            "file": "src/emit/mod.rs",
+            "id": "ev-0090",
+            "kind": "rust_use",
+            "line": 8
+          },
+          {
+            "detail": "serde::",
+            "file": "src/emit/mod.rs",
+            "id": "ev-0091",
+            "kind": "rust_use",
+            "line": 10
+          },
+          {
+            "detail": "crate::analyze::Candidate",
+            "file": "src/emit/mod.rs",
+            "id": "ev-0092",
+            "kind": "rust_use",
+            "line": 12
+          },
+          {
+            "detail": "crate::dream::Dream",
+            "file": "src/emit/mod.rs",
+            "id": "ev-0093",
+            "kind": "rust_use",
+            "line": 14
+          },
+          {
+            "detail": "crate::ir::DreamIr",
+            "file": "src/emit/mod.rs",
+            "id": "ev-0094",
+            "kind": "rust_use",
+            "line": 15
+          },
+          {
+            "detail": "json",
+            "file": "src/emit/mod.rs",
+            "id": "ev-0095",
+            "kind": "rust_mod",
+            "line": 5
+          },
+          {
+            "detail": "yaml",
+            "file": "src/emit/mod.rs",
+            "id": "ev-0096",
+            "kind": "rust_mod",
+            "line": 7
+          },
+          {
+            "detail": "serde::Serialize",
+            "file": "src/report.rs",
+            "id": "ev-0097",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "crate::analyze::Analysis",
+            "file": "src/report.rs",
+            "id": "ev-0098",
+            "kind": "rust_use",
+            "line": 11
+          },
+          {
+            "detail": "crate::discover::DiscoveryStats",
+            "file": "src/report.rs",
+            "id": "ev-0099",
+            "kind": "rust_use",
+            "line": 13
+          },
+          {
+            "detail": "crate::ir::DreamIr",
+            "file": "src/report.rs",
+            "id": "ev-0100",
+            "kind": "rust_use",
+            "line": 14
+          },
+          {
+            "detail": "crate::style::",
+            "file": "src/report.rs",
+            "id": "ev-0101",
+            "kind": "rust_use",
+            "line": 15
+          },
+          {
+            "detail": "super::",
+            "file": "src/report.rs",
+            "id": "ev-0102",
+            "kind": "rust_use",
+            "line": 225
+          }
+        ],
+        "flows": [
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0001"
+            ],
+            "id": "flow-0001",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:tests/integration_test.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0002"
+            ],
+            "id": "flow-0002",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:tests/integration_test.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0003"
+            ],
+            "id": "flow-0003",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/style.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0004"
+            ],
+            "id": "flow-0004",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/config.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0005"
+            ],
+            "id": "flow-0005",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/lib.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0006"
+            ],
+            "id": "flow-0006",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/lib.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0007"
+            ],
+            "id": "flow-0007",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/style.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0008"
+            ],
+            "id": "flow-0008",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/lib.rs",
+            "target": "ext:rust:clap"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0009"
+            ],
+            "id": "flow-0009",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/cli.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0010"
+            ],
+            "id": "flow-0010",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/lib.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0011"
+            ],
+            "id": "flow-0011",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/cli.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0012"
+            ],
+            "id": "flow-0012",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/analyze/mod.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0013"
+            ],
+            "id": "flow-0013",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/cli.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0014"
+            ],
+            "id": "flow-0014",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/config.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0015"
+            ],
+            "id": "flow-0015",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/discover.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0016"
+            ],
+            "id": "flow-0016",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/dream/mod.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0017"
+            ],
+            "id": "flow-0017",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/emit/mod.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0018"
+            ],
+            "id": "flow-0018",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/ir.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0019"
+            ],
+            "id": "flow-0019",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/report.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0020"
+            ],
+            "id": "flow-0020",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/schema.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0021"
+            ],
+            "id": "flow-0021",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/spinner.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0022"
+            ],
+            "id": "flow-0022",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/lib.rs",
+            "target": "file:src/style.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0023"
+            ],
+            "id": "flow-0023",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:anyhow"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0024"
+            ],
+            "id": "flow-0024",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:clap"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0025"
+            ],
+            "id": "flow-0025",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:dreamcatcher"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0026"
+            ],
+            "id": "flow-0026",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/analyze/synthesize.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0027"
+            ],
+            "id": "flow-0027",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/analyze/synthesize.rs",
+            "target": "file:src/analyze/mod.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0028"
+            ],
+            "id": "flow-0028",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/analyze/synthesize.rs",
+            "target": "file:src/config.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0029"
+            ],
+            "id": "flow-0029",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/analyze/synthesize.rs",
+            "target": "file:src/dream/mod.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0030"
+            ],
+            "id": "flow-0030",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/analyze/synthesize.rs",
+            "target": "file:src/ir.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0031"
+            ],
+            "id": "flow-0031",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/analyze/dependency.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0032"
+            ],
+            "id": "flow-0032",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/analyze/dependency.rs",
+            "target": "file:src/ir.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0033"
+            ],
+            "id": "flow-0033",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/analyze/dependency.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0034"
+            ],
+            "id": "flow-0034",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/analyze/dependency.rs",
+            "target": "file:src/dream/mod.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0035"
+            ],
+            "id": "flow-0035",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/analyze/cluster.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0036"
+            ],
+            "id": "flow-0036",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/analyze/cluster.rs",
+            "target": "file:src/config.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0037"
+            ],
+            "id": "flow-0037",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/analyze/cluster.rs",
+            "target": "file:src/ir.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0038"
+            ],
+            "id": "flow-0038",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/analyze/cluster.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0039"
+            ],
+            "id": "flow-0039",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/analyze/prioritise.rs",
+            "target": "file:src/analyze/mod.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0040"
+            ],
+            "id": "flow-0040",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/analyze/prioritise.rs",
+            "target": "file:src/config.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0041"
+            ],
+            "id": "flow-0041",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/analyze/prioritise.rs",
+            "target": "file:src/dream/mod.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0042"
+            ],
+            "id": "flow-0042",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/analyze/prioritise.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0043"
+            ],
+            "id": "flow-0043",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/analyze/mod.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0044"
+            ],
+            "id": "flow-0044",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/analyze/mod.rs",
+            "target": "file:src/config.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0045"
+            ],
+            "id": "flow-0045",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/analyze/mod.rs",
+            "target": "file:src/dream/mod.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0046"
+            ],
+            "id": "flow-0046",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/analyze/mod.rs",
+            "target": "file:src/ir.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0047"
+            ],
+            "id": "flow-0047",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/analyze/mod.rs",
+            "target": "file:src/analyze/cluster.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0048"
+            ],
+            "id": "flow-0048",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/analyze/mod.rs",
+            "target": "file:src/analyze/conflict.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0049"
+            ],
+            "id": "flow-0049",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/analyze/mod.rs",
+            "target": "file:src/analyze/dependency.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0050"
+            ],
+            "id": "flow-0050",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/analyze/mod.rs",
+            "target": "file:src/analyze/prioritise.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0051"
+            ],
+            "id": "flow-0051",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/analyze/mod.rs",
+            "target": "file:src/analyze/synthesize.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0052"
+            ],
+            "id": "flow-0052",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/analyze/conflict.rs",
+            "target": "file:src/dream/mod.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0053"
+            ],
+            "id": "flow-0053",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/analyze/conflict.rs",
+            "target": "file:src/ir.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0054"
+            ],
+            "id": "flow-0054",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/discover.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0055"
+            ],
+            "id": "flow-0055",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/discover.rs",
+            "target": "file:src/dream/mod.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0056"
+            ],
+            "id": "flow-0056",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/discover.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0057"
+            ],
+            "id": "flow-0057",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/spinner.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0058"
+            ],
+            "id": "flow-0058",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/spinner.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0059"
+            ],
+            "id": "flow-0059",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/spinner.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0060"
+            ],
+            "id": "flow-0060",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/spinner.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0061"
+            ],
+            "id": "flow-0061",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/spinner.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0062"
+            ],
+            "id": "flow-0062",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/spinner.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0063"
+            ],
+            "id": "flow-0063",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/cli.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0064"
+            ],
+            "id": "flow-0064",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/cli.rs",
+            "target": "ext:rust:clap"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0065"
+            ],
+            "id": "flow-0065",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/dream/parse.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0066"
+            ],
+            "id": "flow-0066",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/dream/parse.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0067"
+            ],
+            "id": "flow-0067",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/dream/parse.rs",
+            "target": "ext:rust:sha2"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0068"
+            ],
+            "id": "flow-0068",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/dream/parse.rs",
+            "target": "ext:rust:thiserror"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0069"
+            ],
+            "id": "flow-0069",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/dream/parse.rs",
+            "target": "mod:rust:super::model::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0070"
+            ],
+            "id": "flow-0070",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/dream/parse.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0071"
+            ],
+            "id": "flow-0071",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/dream/model.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0072"
+            ],
+            "id": "flow-0072",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/dream/model.rs",
+            "target": "ext:rust:IntentKind"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0073"
+            ],
+            "id": "flow-0073",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/dream/mod.rs",
+            "target": "ext:rust:model"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0074"
+            ],
+            "id": "flow-0074",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/dream/mod.rs",
+            "target": "ext:rust:parse"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0075"
+            ],
+            "id": "flow-0075",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/dream/mod.rs",
+            "target": "file:src/dream/model.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0076"
+            ],
+            "id": "flow-0076",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/dream/mod.rs",
+            "target": "file:src/dream/parse.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0077"
+            ],
+            "id": "flow-0077",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/ir.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0078"
+            ],
+            "id": "flow-0078",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/ir.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0079"
+            ],
+            "id": "flow-0079",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/ir.rs",
+            "target": "file:src/dream/mod.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0080"
+            ],
+            "id": "flow-0080",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/ir.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0081"
+            ],
+            "id": "flow-0081",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/emit/json.rs",
+            "target": "ext:rust:serde_json"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0082"
+            ],
+            "id": "flow-0082",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/emit/json.rs",
+            "target": "file:src/analyze/mod.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0083"
+            ],
+            "id": "flow-0083",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/emit/json.rs",
+            "target": "file:src/emit/mod.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0084"
+            ],
+            "id": "flow-0084",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/emit/json.rs",
+            "target": "file:src/ir.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0085"
+            ],
+            "id": "flow-0085",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/emit/yaml.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0086"
+            ],
+            "id": "flow-0086",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/emit/yaml.rs",
+            "target": "ext:rust:serde_yaml"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0087"
+            ],
+            "id": "flow-0087",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/emit/yaml.rs",
+            "target": "file:src/analyze/mod.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0088"
+            ],
+            "id": "flow-0088",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/emit/yaml.rs",
+            "target": "file:src/emit/mod.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0089"
+            ],
+            "id": "flow-0089",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/emit/yaml.rs",
+            "target": "file:src/ir.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0090"
+            ],
+            "id": "flow-0090",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/emit/mod.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0091"
+            ],
+            "id": "flow-0091",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/emit/mod.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0092"
+            ],
+            "id": "flow-0092",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/emit/mod.rs",
+            "target": "file:src/analyze/mod.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0093"
+            ],
+            "id": "flow-0093",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/emit/mod.rs",
+            "target": "file:src/dream/mod.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0094"
+            ],
+            "id": "flow-0094",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/emit/mod.rs",
+            "target": "file:src/ir.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0095"
+            ],
+            "id": "flow-0095",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/emit/mod.rs",
+            "target": "file:src/emit/json.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0096"
+            ],
+            "id": "flow-0096",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/emit/mod.rs",
+            "target": "file:src/emit/yaml.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0097"
+            ],
+            "id": "flow-0097",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/report.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0098"
+            ],
+            "id": "flow-0098",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/report.rs",
+            "target": "file:src/analyze/mod.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0099"
+            ],
+            "id": "flow-0099",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/report.rs",
+            "target": "file:src/discover.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0100"
+            ],
+            "id": "flow-0100",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/report.rs",
+            "target": "file:src/ir.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0101"
+            ],
+            "id": "flow-0101",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/report.rs",
+            "target": "file:src/style.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0102"
+            ],
+            "id": "flow-0102",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/report.rs",
+            "target": "mod:rust:super::"
+          }
+        ],
+        "inferences": [],
+        "metadata": {
+          "analyzed_file_count": 23,
+          "analyzers": [
+            "rust",
+            "javascript",
+            "typescript",
+            "python",
+            "go"
+          ],
+          "chakra_version": "0.3.33",
+          "duration_ms": 66,
+          "file_count": 81,
+          "languages": {
+            "rust": 23
+          }
+        },
+        "nodes": [
+          {
+            "id": "ext:rust:IntentKind",
+            "kind": "external",
+            "language": "rust",
+            "name": "IntentKind"
+          },
+          {
+            "id": "ext:rust:anyhow",
+            "kind": "external",
+            "language": "rust",
+            "name": "anyhow"
+          },
+          {
+            "id": "ext:rust:clap",
+            "kind": "external",
+            "language": "rust",
+            "name": "clap"
+          },
+          {
+            "id": "ext:rust:dreamcatcher",
+            "kind": "external",
+            "language": "rust",
+            "name": "dreamcatcher"
+          },
+          {
+            "id": "ext:rust:model",
+            "kind": "external",
+            "language": "rust",
+            "name": "model"
+          },
+          {
+            "id": "ext:rust:parse",
+            "kind": "external",
+            "language": "rust",
+            "name": "parse"
+          },
+          {
+            "id": "ext:rust:serde",
+            "kind": "external",
+            "language": "rust",
+            "name": "serde"
+          },
+          {
+            "id": "ext:rust:serde_json",
+            "kind": "external",
+            "language": "rust",
+            "name": "serde_json"
+          },
+          {
+            "id": "ext:rust:serde_yaml",
+            "kind": "external",
+            "language": "rust",
+            "name": "serde_yaml"
+          },
+          {
+            "id": "ext:rust:sha2",
+            "kind": "external",
+            "language": "rust",
+            "name": "sha2"
+          },
+          {
+            "id": "ext:rust:std",
+            "kind": "external",
+            "language": "rust",
+            "name": "std"
+          },
+          {
+            "id": "ext:rust:thiserror",
+            "kind": "external",
+            "language": "rust",
+            "name": "thiserror"
+          },
+          {
+            "id": "file:src/analyze/cluster.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/analyze/cluster.rs"
+          },
+          {
+            "id": "file:src/analyze/conflict.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/analyze/conflict.rs"
+          },
+          {
+            "id": "file:src/analyze/dependency.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/analyze/dependency.rs"
+          },
+          {
+            "id": "file:src/analyze/mod.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/analyze/mod.rs"
+          },
+          {
+            "id": "file:src/analyze/prioritise.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/analyze/prioritise.rs"
+          },
+          {
+            "id": "file:src/analyze/synthesize.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/analyze/synthesize.rs"
+          },
+          {
+            "id": "file:src/cli.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/cli.rs"
+          },
+          {
+            "id": "file:src/config.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/config.rs"
+          },
+          {
+            "id": "file:src/discover.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/discover.rs"
+          },
+          {
+            "id": "file:src/dream/mod.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/dream/mod.rs"
+          },
+          {
+            "id": "file:src/dream/model.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/dream/model.rs"
+          },
+          {
+            "id": "file:src/dream/parse.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/dream/parse.rs"
+          },
+          {
+            "id": "file:src/emit/json.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/emit/json.rs"
+          },
+          {
+            "id": "file:src/emit/mod.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/emit/mod.rs"
+          },
+          {
+            "id": "file:src/emit/yaml.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/emit/yaml.rs"
+          },
+          {
+            "id": "file:src/ir.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/ir.rs"
+          },
+          {
+            "id": "file:src/lib.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/lib.rs"
+          },
+          {
+            "id": "file:src/main.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/main.rs"
+          },
+          {
+            "id": "file:src/report.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/report.rs"
+          },
+          {
+            "id": "file:src/schema.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/schema.rs"
+          },
+          {
+            "id": "file:src/spinner.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/spinner.rs"
+          },
+          {
+            "id": "file:src/style.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/style.rs"
+          },
+          {
+            "id": "file:tests/integration_test.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "tests/integration_test.rs"
+          },
+          {
+            "id": "mod:rust:super::",
+            "kind": "module",
+            "language": "rust",
+            "name": "super::"
+          },
+          {
+            "id": "mod:rust:super::model::",
+            "kind": "module",
+            "language": "rust",
+            "name": "super::model::"
+          }
+        ],
+        "schema": "chakra.flow/v1",
+        "subject": {
+          "generated_at": "2026-08-27T13:09:59.948713361Z",
+          "path": "/home/sal/dreamcatcher"
+        }
+      }
+    },
+    {
+      "tool": "ferret",
+      "purpose": "repository-specific review findings (hunt)",
+      "status": "error",
+      "availability": "installed",
+      "execution": "failed",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": 2,
+      "duration_ms": 19,
+      "summary": "error",
+      "findings": [],
+      "note": "produced no stdout; stderr: error: unexpected argument '/home/sal/dreamcatcher' found\n\nUsage: ferret [OPTIONS] [TARGET] [COMMAND]\n\nFor more information, try '--help'.\n",
+      "raw": null
+    },
+    {
+      "tool": "fract",
+      "purpose": "module entropy, cohesion, duplication",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/home/sal/.local/bin/fract",
+      "score": 93.04347826086956,
+      "grade": "A",
+      "exit_code": 0,
+      "duration_ms": 62,
+      "summary": "23 modules indexed: 0 excellent, 19 healthy, 4 warning, 0 critical",
+      "findings": [
+        "src/lib.rs: entropy 0.71 — Within entropy budget (0.71)",
+        "src/dream/model.rs: entropy 0.67 — Within entropy budget (0.67)",
+        "src/analyze/mod.rs: entropy 0.66 — Within entropy budget (0.66)",
+        "src/emit/yaml.rs: entropy 0.66 — Within entropy budget (0.66)",
+        "src/report.rs: entropy 0.64 — Within entropy budget (0.64)"
+      ],
+      "note": null,
+      "raw": {
+        "findings": [
+          {
+            "confidence": null,
+            "entropy": 0.7141806608682812,
+            "evidence": {
+              "cyclomatic": "29",
+              "duplicates": "18",
+              "fan_in": "0",
+              "fan_out": "7",
+              "functions": "5",
+              "health": "Warning",
+              "lines": "303",
+              "public_api": "13"
+            },
+            "id": "src/lib.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.71)",
+            "module": "src/lib.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.71 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6706970351802998,
+            "evidence": {
+              "cyclomatic": "3",
+              "duplicates": "20",
+              "fan_in": "0",
+              "fan_out": "2",
+              "functions": "4",
+              "health": "Warning",
+              "lines": "188",
+              "public_api": "35"
+            },
+            "id": "src/dream/model.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.67)",
+            "module": "src/dream/model.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.67 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6644343797283149,
+            "evidence": {
+              "cyclomatic": "0",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "4",
+              "functions": "1",
+              "health": "Warning",
+              "lines": "91",
+              "public_api": "28"
+            },
+            "id": "src/analyze/mod.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.66)",
+            "module": "src/analyze/mod.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.66 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6580776632049159,
+            "evidence": {
+              "cyclomatic": "5",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "5",
+              "functions": "2",
+              "health": "Warning",
+              "lines": "131",
+              "public_api": "14"
+            },
+            "id": "src/emit/yaml.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.66)",
+            "module": "src/emit/yaml.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.66 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6427264348983163,
+            "evidence": {
+              "cyclomatic": "10",
+              "duplicates": "9",
+              "fan_in": "0",
+              "fan_out": "6",
+              "functions": "8",
+              "health": "Healthy",
+              "lines": "270",
+              "public_api": "25"
+            },
+            "id": "src/report.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.64)",
+            "module": "src/report.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.64 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6224219689510191,
+            "evidence": {
+              "cyclomatic": "15",
+              "duplicates": "6",
+              "fan_in": "9",
+              "fan_out": "4",
+              "functions": "5",
+              "health": "Healthy",
+              "lines": "167",
+              "public_api": "12"
+            },
+            "id": "src/ir.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.62)",
+            "module": "src/ir.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.62 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6185981580032879,
+            "evidence": {
+              "cyclomatic": "28",
+              "duplicates": "3",
+              "fan_in": "0",
+              "fan_out": "5",
+              "functions": "5",
+              "health": "Healthy",
+              "lines": "219",
+              "public_api": "2"
+            },
+            "id": "src/analyze/synthesize.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.62)",
+            "module": "src/analyze/synthesize.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.62 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6081918902439828,
+            "evidence": {
+              "cyclomatic": "10",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "4",
+              "functions": "1",
+              "health": "Healthy",
+              "lines": "87",
+              "public_api": "1"
+            },
+            "id": "src/emit/json.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.61)",
+            "module": "src/emit/json.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.61 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5987264336886878,
+            "evidence": {
+              "cyclomatic": "2",
+              "duplicates": "2",
+              "fan_in": "0",
+              "fan_out": "5",
+              "functions": "4",
+              "health": "Healthy",
+              "lines": "127",
+              "public_api": "23"
+            },
+            "id": "src/emit/mod.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.60)",
+            "module": "src/emit/mod.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.60 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.57976095413695,
+            "evidence": {
+              "cyclomatic": "14",
+              "duplicates": "8",
+              "fan_in": "1",
+              "fan_out": "3",
+              "functions": "6",
+              "health": "Healthy",
+              "lines": "186",
+              "public_api": "6"
+            },
+            "id": "src/discover.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.58)",
+            "module": "src/discover.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.58 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.575332816408326,
+            "evidence": {
+              "cyclomatic": "3",
+              "duplicates": "3",
+              "fan_in": "4",
+              "fan_out": "1",
+              "functions": "3",
+              "health": "Healthy",
+              "lines": "71",
+              "public_api": "12"
+            },
+            "id": "src/config.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.58)",
+            "module": "src/config.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.58 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5653868605146738,
+            "evidence": {
+              "cyclomatic": "0",
+              "duplicates": "4",
+              "fan_in": "0",
+              "fan_out": "0",
+              "functions": "1",
+              "health": "Healthy",
+              "lines": "54",
+              "public_api": "1"
+            },
+            "id": "src/schema.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.57)",
+            "module": "src/schema.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.57 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5426102580659397,
+            "evidence": {
+              "cyclomatic": "10",
+              "duplicates": "7",
+              "fan_in": "0",
+              "fan_out": "6",
+              "functions": "8",
+              "health": "Healthy",
+              "lines": "172",
+              "public_api": "4"
+            },
+            "id": "src/dream/parse.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.54)",
+            "module": "src/dream/parse.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.54 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.532171017511107,
+            "evidence": {
+              "cyclomatic": "4",
+              "duplicates": "33",
+              "fan_in": "0",
+              "fan_out": "2",
+              "functions": "15",
+              "health": "Healthy",
+              "lines": "275",
+              "public_api": "0"
+            },
+            "id": "tests/integration_test.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.53)",
+            "module": "tests/integration_test.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.53 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5251032783125837,
+            "evidence": {
+              "cyclomatic": "14",
+              "duplicates": "1",
+              "fan_in": "0",
+              "fan_out": "4",
+              "functions": "7",
+              "health": "Healthy",
+              "lines": "146",
+              "public_api": "3"
+            },
+            "id": "src/analyze/cluster.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.53)",
+            "module": "src/analyze/cluster.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.53 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5129554239029945,
+            "evidence": {
+              "cyclomatic": "8",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "4",
+              "functions": "3",
+              "health": "Healthy",
+              "lines": "89",
+              "public_api": "1"
+            },
+            "id": "src/analyze/dependency.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.51)",
+            "module": "src/analyze/dependency.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.51 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5123220887719571,
+            "evidence": {
+              "cyclomatic": "13",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "2",
+              "functions": "3",
+              "health": "Healthy",
+              "lines": "65",
+              "public_api": "2"
+            },
+            "id": "src/analyze/conflict.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.51)",
+            "module": "src/analyze/conflict.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.51 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5108455077316637,
+            "evidence": {
+              "cyclomatic": "8",
+              "duplicates": "1",
+              "fan_in": "0",
+              "fan_out": "6",
+              "functions": "7",
+              "health": "Healthy",
+              "lines": "108",
+              "public_api": "4"
+            },
+            "id": "src/spinner.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.51)",
+            "module": "src/spinner.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.51 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5084226353818712,
+            "evidence": {
+              "cyclomatic": "4",
+              "duplicates": "0",
+              "fan_in": "1",
+              "fan_out": "1",
+              "functions": "5",
+              "health": "Healthy",
+              "lines": "65",
+              "public_api": "5"
+            },
+            "id": "src/style.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.51)",
+            "module": "src/style.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.51 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.4782219937178748,
+            "evidence": {
+              "cyclomatic": "5",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "4",
+              "functions": "6",
+              "health": "Healthy",
+              "lines": "94",
+              "public_api": "2"
+            },
+            "id": "src/analyze/prioritise.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.48)",
+            "module": "src/analyze/prioritise.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.48 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.4641042062131234,
+            "evidence": {
+              "cyclomatic": "0",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "2",
+              "functions": "0",
+              "health": "Healthy",
+              "lines": "78",
+              "public_api": "11"
+            },
+            "id": "src/cli.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.46)",
+            "module": "src/cli.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.46 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.45179871689014217,
+            "evidence": {
+              "cyclomatic": "0",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "0",
+              "functions": "0",
+              "health": "Healthy",
+              "lines": "12",
+              "public_api": "4"
+            },
+            "id": "src/dream/mod.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.45)",
+            "module": "src/dream/mod.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.45 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.4434525344009129,
+            "evidence": {
+              "cyclomatic": "1",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "3",
+              "functions": "1",
+              "health": "Healthy",
+              "lines": "17",
+              "public_api": "0"
+            },
+            "id": "src/main.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.44)",
+            "module": "src/main.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.44 below threshold 0.82"
+          }
+        ],
+        "root": "/home/sal/dreamcatcher",
+        "schema": "fract.report/v1",
+        "summary": {
+          "critical": 0,
+          "excellent": 0,
+          "healthy": 19,
+          "score": 93.04347826086956,
+          "total": 23,
+          "warning": 4
+        }
+      }
+    },
+    {
+      "tool": "isopod",
+      "purpose": "ISO27001/27002 compliance posture",
+      "status": "no_data",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 0
+      },
+      "binary": "/home/sal/.local/bin/isopod",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 265,
+      "summary": "0/0 controls assessed (0.0% coverage): 0 pass, 0 warn, 0 fail, 0 unknown",
+      "findings": [],
+      "note": "coverage is 0.0%; compliance is ungraded below the 80% evidence threshold, and UNKNOWN controls are not treated as failures",
+      "raw": []
+    },
+    {
+      "tool": "jeenome",
+      "purpose": "behavioural trace analysis (opt-in)",
+      "status": "skipped",
+      "availability": "not_checked",
+      "execution": "skipped",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": null,
+      "duration_ms": null,
+      "summary": "skipped",
+      "findings": [],
+      "note": "jeenome is opt-in (needs an strace trace, not just a project path); pass --jeenome to include it",
+      "raw": null
+    },
+    {
+      "tool": "lwoodz",
+      "purpose": "license / SPDX compliance",
+      "status": "fail",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/home/sal/lwoodz/target/debug/lwoodz",
+      "score": 69.44954128440367,
+      "grade": "D+",
+      "exit_code": 0,
+      "duration_ms": 700,
+      "summary": "license=unknown, spdx_valid=true, header coverage 23/23, 0 incompatible / 3 warning issues among 109 deps",
+      "findings": [
+        "same-file [warning]: Dependency 'same-file' (Unlicense/MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+        "version_check [warning]: Dependency 'version_check' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+        "walkdir [warning]: Dependency 'walkdir' (Unlicense/MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements."
+      ],
+      "note": "advisory warning deductions are proportional to dependency count; missing licenses and incompatible dependencies remain hard findings; lwoodz.toml was missing; `poka apply` failed (poka apply exited Some(101): thread 'main' (214706) panicked at crates/poka-core/src/index.rs:99:33: external generator 'lwoodz' failed: external generator 'lwoodz' exited with exit status: 2: error: unexpected argument '--init' found Usage: lwoodz [OPTIONS] [COMMAND] ); assessment still ran",
+      "raw": {
+        "compatibility": {
+          "incompatible": 0,
+          "issues": [
+            {
+              "dep_license": "Unlicense/MIT",
+              "dependency": "same-file",
+              "reason": "Dependency 'same-file' (Unlicense/MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "version_check",
+              "reason": "Dependency 'version_check' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unlicense/MIT",
+              "dependency": "walkdir",
+              "reason": "Dependency 'walkdir' (Unlicense/MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            }
+          ],
+          "total_deps": 109,
+          "warnings": 3
+        },
+        "detected_license": null,
+        "findings": [
+          {
+            "code": "MISSING_LICENSE_FILE",
+            "level": "error",
+            "message": "LICENSE not found at /home/sal/dreamcatcher/LICENSE",
+            "path": "LICENSE"
+          },
+          {
+            "code": "MISSING_SPDX_MANIFEST",
+            "level": "warning",
+            "message": "SPDX manifest not found at .lwoodz/manifest.json — run `lwoodz generate`",
+            "path": ".lwoodz/manifest.json"
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'same-file' (Unlicense/MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'version_check' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'walkdir' (Unlicense/MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          }
+        ],
+        "generated_at": "2026-08-27T13:10:00.649318089+00:00",
+        "has_license_file": false,
+        "header_coverage": {
+          "missing": 0,
+          "total_files": 23,
+          "with_header": 23
+        },
+        "holder": "Your Name",
+        "passed": false,
+        "project_license": "MIT",
+        "spdx_manifest_exists": false,
+        "spdx_valid": true,
+        "year": 2026
+      }
+    },
+    {
+      "tool": "tempcheq",
+      "purpose": "LLM sampling-temperature correctness",
+      "status": "not_applicable",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 0
+      },
+      "binary": "/home/sal/.local/bin/tempcheq",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 112,
+      "summary": "not applicable: no inference actions found",
+      "findings": [],
+      "note": "zero observations do not establish project health and are excluded from scoring",
+      "raw": {
+        "actions": [],
+        "implicit_default": 0,
+        "inapplicable": 0,
+        "material_deviations": 0,
+        "temperature_controlled": 0,
+        "total_actions": 0,
+        "workspace": "/home/sal/dreamcatcher"
+      }
+    },
+    {
+      "tool": "traci",
+      "purpose": "observability/telemetry completeness",
+      "status": "fail",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 46
+      },
+      "binary": "/home/sal/.local/bin/traci",
+      "score": null,
+      "grade": null,
+      "exit_code": 2,
+      "duration_ms": 68,
+      "summary": "23 files, 46 observability diagnostics: 38 critical, 8 error-severity, 0 warning-severity, 0 info",
+      "findings": [
+        "[observability/critical] TRC007 /home/sal/dreamcatcher/tests/integration_test.rs:14 — panic path cannot be reconstructed from telemetry",
+        "[observability/critical] TRC007 /home/sal/dreamcatcher/tests/integration_test.rs:22 — panic path cannot be reconstructed from telemetry",
+        "[observability/critical] TRC007 /home/sal/dreamcatcher/tests/integration_test.rs:40 — panic path cannot be reconstructed from telemetry",
+        "[observability/critical] TRC007 /home/sal/dreamcatcher/tests/integration_test.rs:50 — panic path cannot be reconstructed from telemetry",
+        "[observability/critical] TRC007 /home/sal/dreamcatcher/tests/integration_test.rs:58 — panic path cannot be reconstructed from telemetry"
+      ],
+      "note": "observability diagnostics are not assigned a project-health score because Traci does not expose a total opportunity/coverage denominator; Poka's stale generator was repaired with the current native `traci` initializer; created traci.toml",
+      "raw": {
+        "diagnostics": [
+          {
+            "column": 17,
+            "line": 66,
+            "message": "failure path has no nearby structured diagnostic event",
+            "path": "/home/sal/dreamcatcher/src/discover.rs",
+            "rule": "TRC001",
+            "severity": "error",
+            "snippet": "Err(e) => {"
+          },
+          {
+            "column": 17,
+            "line": 93,
+            "message": "failure path has no nearby structured diagnostic event",
+            "path": "/home/sal/dreamcatcher/src/discover.rs",
+            "rule": "TRC001",
+            "severity": "error",
+            "snippet": "return Err(ParseError::Schema {"
+          },
+          {
+            "column": 9,
+            "line": 90,
+            "message": "failure path has no nearby structured diagnostic event",
+            "path": "/home/sal/dreamcatcher/src/dream/parse.rs",
+            "rule": "TRC001",
+            "severity": "error",
+            "snippet": "return Err(ParseError::Schema {"
+          },
+          {
+            "column": 13,
+            "line": 160,
+            "message": "failure path has no nearby structured diagnostic event",
+            "path": "/home/sal/dreamcatcher/src/lib.rs",
+            "rule": "TRC001",
+            "severity": "error",
+            "snippet": "Err(code) => return Ok(code),"
+          },
+          {
+            "column": 21,
+            "line": 39,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/dreamcatcher/src/spinner.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let _ = std::io::stderr().flush();"
+          },
+          {
+            "column": 17,
+            "line": 44,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/dreamcatcher/src/spinner.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let _ = std::io::stderr().flush();"
+          },
+          {
+            "column": 13,
+            "line": 65,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/dreamcatcher/src/spinner.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let _ = h.join();"
+          },
+          {
+            "column": 5,
+            "line": 45,
+            "message": "result is discarded without a diagnostic record",
+            "path": "/home/sal/dreamcatcher/src/style.rs",
+            "rule": "TRC002",
+            "severity": "error",
+            "snippet": "let _ = ENABLED.set(enabled);"
+          },
+          {
+            "column": 5,
+            "line": 14,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "std::fs::write(dir.join(format!(\"{name}.dream\")), body).unwrap();"
+          },
+          {
+            "column": 9,
+            "line": 22,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".expect(\"run dreamcatcher\");"
+          },
+          {
+            "column": 9,
+            "line": 40,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".expect(\"run dreamcatcher\");"
+          },
+          {
+            "column": 5,
+            "line": 50,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let tmp = tempfile::tempdir().unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 58,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let manifest = std::fs::read_to_string(tmp.path().join(\"deliverables/manifest.json\")).unwrap();"
+          },
+          {
+            "column": 9,
+            "line": 62,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".unwrap()"
+          },
+          {
+            "column": 9,
+            "line": 63,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".map(|e| e.unwrap().path())"
+          },
+          {
+            "column": 5,
+            "line": 67,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let side = std::fs::read_to_string(&sidecar[0]).unwrap();"
+          },
+          {
+            "column": 9,
+            "line": 71,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".unwrap()"
+          },
+          {
+            "column": 9,
+            "line": 72,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".map(|e| e.unwrap().path())"
+          },
+          {
+            "column": 5,
+            "line": 79,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let tmp = tempfile::tempdir().unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 92,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let manifest = std::fs::read_to_string(tmp.path().join(\"deliverables/manifest.json\")).unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 93,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let v: serde_json::Value = serde_json::from_str(&manifest).unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 94,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let dels = v[\"deliverables\"].as_array().unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 96,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "assert_eq!(dels[0][\"source_dreams\"].as_array().unwrap().len(), 3);"
+          },
+          {
+            "column": 5,
+            "line": 101,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let tmp = tempfile::tempdir().unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 114,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let manifest = std::fs::read_to_string(tmp.path().join(\"deliverables/manifest.json\")).unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 121,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let v: serde_json::Value = serde_json::from_str(&manifest).unwrap();"
+          },
+          {
+            "column": 9,
+            "line": 124,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".unwrap()"
+          },
+          {
+            "column": 9,
+            "line": 126,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".map(|d| d[\"slug\"].as_str().unwrap().to_string())"
+          },
+          {
+            "column": 5,
+            "line": 144,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let tmp = tempfile::tempdir().unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 157,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let tmp = tempfile::tempdir().unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 175,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let tmp = tempfile::tempdir().unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 176,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "std::fs::write(tmp.path().join(\"bad.dream\"), \"not [valid toml\").unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 183,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let tmp = tempfile::tempdir().unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 193,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "for entry in std::fs::read_dir(tmp.path().join(\"d1\")).unwrap() {"
+          },
+          {
+            "column": 9,
+            "line": 194,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let p = entry.unwrap().path();"
+          },
+          {
+            "column": 9,
+            "line": 195,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "if p.file_name().unwrap() == \"manifest.json\" {"
+          },
+          {
+            "column": 9,
+            "line": 198,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let q = tmp.path().join(\"d2\").join(p.file_name().unwrap());"
+          },
+          {
+            "column": 13,
+            "line": 200,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "std::fs::read(&p).unwrap(),"
+          },
+          {
+            "column": 13,
+            "line": 201,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "std::fs::read(&q).unwrap(),"
+          },
+          {
+            "column": 5,
+            "line": 210,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let tmp = tempfile::tempdir().unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 227,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let tmp = tempfile::tempdir().unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 248,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let tmp = tempfile::tempdir().unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 249,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "std::fs::create_dir(tmp.path().join(\".rustup-huge\")).unwrap();"
+          },
+          {
+            "column": 5,
+            "line": 254,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": ".unwrap();"
+          },
+          {
+            "column": 9,
+            "line": 260,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "v[\"dreams\"].as_u64().unwrap(),"
+          },
+          {
+            "column": 5,
+            "line": 268,
+            "message": "panic path cannot be reconstructed from telemetry",
+            "path": "/home/sal/dreamcatcher/tests/integration_test.rs",
+            "rule": "TRC007",
+            "severity": "critical",
+            "snippet": "let tmp = tempfile::tempdir().unwrap();"
+          }
+        ],
+        "summary": {
+          "critical": 38,
+          "diagnostics": 46,
+          "errors": 8,
+          "files": 23,
+          "info": 0,
+          "warnings": 0
+        }
+      }
+    },
+    {
+      "tool": "vamos",
+      "purpose": "nominal vs. validated action completion",
+      "status": "skipped",
+      "availability": "not_checked",
+      "execution": "skipped",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": null,
+      "duration_ms": null,
+      "summary": "skipped",
+      "findings": [],
+      "note": "no vamos.toml in project root; vamos hasn't been adopted here yet — run `vamos init` in the target to start tracking action lifecycles",
+      "raw": null
+    }
+  ],
+  "overall": {
+    "score": 73.0,
+    "grade": "C",
+    "graded_tools": 4,
+    "total_tools": 12,
+    "weights": [
+      [
+        "amber",
+        1.0
+      ],
+      [
+        "chakra",
+        1.0
+      ],
+      [
+        "fract",
+        1.0
+      ],
+      [
+        "lwoodz",
+        1.0
+      ]
+    ],
+    "provisional": true
+  },
+  "suite": {
+    "required_tools": 9,
+    "available_tools": 9,
+    "executed_tools": 8,
+    "valid_results": 8,
+    "analysis_coverage": 0.2839506172839506,
+    "confidence": 1.0
+  },
+  "integrity": {
+    "status": "degraded",
+    "score": 88.88888888888889,
+    "grade": "B+",
+    "defects": [
+      "ferret: error"
+    ]
+  }
+}

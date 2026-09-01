@@ -1,0 +1,5393 @@
+{
+  "schema": "uni.report/v3",
+  "target": "/home/sal/uni",
+  "generated_at": "2026-08-27T13:06:38.809792552+00:00",
+  "tools_dir": "/home/sal",
+  "tools": [
+    {
+      "tool": "amber",
+      "purpose": "dependency bloat / replaceability",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 9
+      },
+      "binary": "/home/sal/.local/bin/amber",
+      "score": 80.0,
+      "grade": "B-",
+      "exit_code": 1,
+      "duration_ms": 3514,
+      "summary": "9 dependencies analyzed: 5 keep/security-block, 3 propose, 1 proceed",
+      "findings": [
+        "chrono: security_block (replaceability 54)",
+        "serde: security_block (replaceability 20)",
+        "tokio: security_block (replaceability 20)",
+        "tracing: security_block (replaceability 44)",
+        "uuid: security_block (replaceability 20)"
+      ],
+      "note": null,
+      "raw": {
+        "amber_version": "0.3.0",
+        "results": [
+          {
+            "crate": "chrono",
+            "metadata": {
+              "cve_count": 1,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 35% (0 unique APIs from 8 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 15% (category: datetime)",
+              "Maintenance burden: 35% (1 CVEs, score: 50)",
+              "Testability: 55% (4 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: FREQUENTLY_REPLACEABLE list match",
+              "Confidence: 75% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 75,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 35,
+                "security_safety": 15,
+                "testability": 55,
+                "transitive_value": 65,
+                "usage_simplicity": 35
+              },
+              "overall": 54,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 4,
+              "call_sites": 8,
+              "imported_items": 0,
+              "is_trivial": false,
+              "unique_apis": 0
+            },
+            "version": "0.4.45"
+          },
+          {
+            "crate": "clap",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 85% (2 unique APIs from 4 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 50% (category: cli)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 70% (2 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 80% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 80,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 70,
+                "transitive_value": 65,
+                "usage_simplicity": 85
+              },
+              "overall": 67,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 2,
+              "call_sites": 4,
+              "imported_items": 3,
+              "is_trivial": true,
+              "unique_apis": 2
+            },
+            "version": "4.6.6"
+          },
+          {
+            "crate": "ingauge-gate",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 90% (1 unique APIs from 0 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 70% (2 affected files)",
+              "API surface: 90% (using ~7% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 80% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 80,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 70,
+                "transitive_value": 55,
+                "usage_simplicity": 90
+              },
+              "overall": 67,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 2,
+              "call_sites": 0,
+              "imported_items": 2,
+              "is_trivial": true,
+              "unique_apis": 1
+            },
+            "version": "0.1.0"
+          },
+          {
+            "crate": "md5",
+            "metadata": {
+              "cve_count": 0,
+              "license": "Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 70% (0 unique APIs from 0 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 50% (category: general)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 85% (0 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 100% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Safe to Replace",
+              "classification_stars": "★★★★★",
+              "confidence": 100,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 85,
+                "transitive_value": 55,
+                "usage_simplicity": 70
+              },
+              "overall": 63,
+              "recommendation": "proceed"
+            },
+            "usage": {
+              "affected_files": 0,
+              "call_sites": 0,
+              "imported_items": 0,
+              "is_trivial": true,
+              "unique_apis": 0
+            },
+            "version": "0.7.0"
+          },
+          {
+            "crate": "serde",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 65% (2 unique APIs from 71 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 0% (category: serialization)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 55% (4 affected files)",
+              "API surface: 90% (using ~7% of public APIs)",
+              "Category rule applied: NEVER_REPLACE list match",
+              "Confidence: 65% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 65,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 0,
+                "testability": 55,
+                "transitive_value": 55,
+                "usage_simplicity": 65
+              },
+              "overall": 20,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 4,
+              "call_sites": 71,
+              "imported_items": 6,
+              "is_trivial": false,
+              "unique_apis": 2
+            },
+            "version": "1.0.229"
+          },
+          {
+            "crate": "serde_json",
+            "metadata": {
+              "cve_count": 0,
+              "license": "MIT OR Apache-2.0",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 70% (1 unique APIs from 51 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 50% (category: serialization)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 35% (17 affected files)",
+              "API surface: 90% (using ~1% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 45% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Low Risk",
+              "classification_stars": "★★★★☆",
+              "confidence": 45,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 50,
+                "testability": 35,
+                "transitive_value": 65,
+                "usage_simplicity": 70
+              },
+              "overall": 60,
+              "recommendation": "propose"
+            },
+            "usage": {
+              "affected_files": 17,
+              "call_sites": 51,
+              "imported_items": 12,
+              "is_trivial": false,
+              "unique_apis": 1
+            },
+            "version": "1.0.151"
+          },
+          {
+            "crate": "tokio",
+            "metadata": {
+              "cve_count": 5,
+              "license": "MIT",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 25% (0 unique APIs from 144 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 0% (category: async-runtime)",
+              "Maintenance burden: 0% (5 CVEs, score: 50)",
+              "Testability: 55% (5 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: NEVER_REPLACE list match",
+              "Confidence: 55% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 55,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 0,
+                "security_safety": 0,
+                "testability": 55,
+                "transitive_value": 65,
+                "usage_simplicity": 25
+              },
+              "overall": 20,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 5,
+              "call_sites": 144,
+              "imported_items": 0,
+              "is_trivial": false,
+              "unique_apis": 0
+            },
+            "version": "1.53.1"
+          },
+          {
+            "crate": "tracing",
+            "metadata": {
+              "cve_count": 1,
+              "license": "MIT",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 65% (1 unique APIs from 180 call sites)",
+              "Transitive value: 55% (removes 0 transitive deps)",
+              "Security safety: 0% (category: logging)",
+              "Maintenance burden: 35% (1 CVEs, score: 50)",
+              "Testability: 45% (7 affected files)",
+              "API surface: 90% (using ~0% of public APIs)",
+              "Category rule applied: No special category rule",
+              "Confidence: 45% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 45,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 35,
+                "security_safety": 0,
+                "testability": 45,
+                "transitive_value": 55,
+                "usage_simplicity": 65
+              },
+              "overall": 44,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 7,
+              "call_sites": 180,
+              "imported_items": 1,
+              "is_trivial": false,
+              "unique_apis": 1
+            },
+            "version": "0.1.44"
+          },
+          {
+            "crate": "uuid",
+            "metadata": {
+              "cve_count": 0,
+              "license": "Apache-2.0 OR MIT",
+              "maintenance_score": 50,
+              "transitive_deps": 0
+            },
+            "reasoning": [
+              "Usage simplicity: 90% (1 unique APIs from 0 call sites)",
+              "Transitive value: 65% (removes 0 transitive deps)",
+              "Security safety: 0% (category: randomness)",
+              "Maintenance burden: 45% (0 CVEs, score: 50)",
+              "Testability: 70% (2 affected files)",
+              "API surface: 90% (using ~7% of public APIs)",
+              "Category rule applied: NEVER_REPLACE list match",
+              "Confidence: 80% (based on usage visibility)"
+            ],
+            "score": {
+              "classification": "Security Critical",
+              "classification_stars": "◆◆◆◆◆",
+              "confidence": 80,
+              "dimensions": {
+                "api_surface": 90,
+                "maintenance_burden": 45,
+                "security_safety": 0,
+                "testability": 70,
+                "transitive_value": 65,
+                "usage_simplicity": 90
+              },
+              "overall": 20,
+              "recommendation": "security_block"
+            },
+            "usage": {
+              "affected_files": 2,
+              "call_sites": 0,
+              "imported_items": 2,
+              "is_trivial": true,
+              "unique_apis": 1
+            },
+            "version": "1.25.0"
+          }
+        ],
+        "total_dependencies": 9
+      }
+    },
+    {
+      "tool": "ami",
+      "purpose": "project profile completeness (market-intelligence readiness)",
+      "status": "skipped",
+      "availability": "not_checked",
+      "execution": "skipped",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": null,
+      "duration_ms": null,
+      "summary": "skipped",
+      "findings": [],
+      "note": "ami is opt-in because project profiling is not code health; use `--only ami` when its installed build exposes JSON output",
+      "raw": null
+    },
+    {
+      "tool": "bart",
+      "purpose": "filesystem size & hotspots (informational)",
+      "status": "ok",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/usr/bin/bart",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 37,
+      "summary": "56 files, 484.1 KB under root",
+      "findings": [
+        "/home/sal/uni/src: 345.2 KB",
+        "/home/sal/uni/Cargo.lock: 39.0 KB",
+        "/home/sal/uni/docs: 31.0 KB",
+        "/home/sal/uni/.skillastic: 16.1 KB",
+        "/home/sal/uni/.github: 9.0 KB"
+      ],
+      "note": "informational only — bart measures disk usage, not code health",
+      "raw": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787598488,
+                "path": "/home/sal/uni/src/revise.rs",
+                "size": 112093
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787833179,
+                "path": "/home/sal/uni/src/run.rs",
+                "size": 61407
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787780848,
+                    "path": "/home/sal/uni/src/parsers/vamos.rs",
+                    "size": 7421
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787761420,
+                    "path": "/home/sal/uni/src/parsers/isopod.rs",
+                    "size": 6306
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787780925,
+                    "path": "/home/sal/uni/src/parsers/amber.rs",
+                    "size": 5678
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787594965,
+                    "path": "/home/sal/uni/src/parsers/ferret.rs",
+                    "size": 5423
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787780925,
+                    "path": "/home/sal/uni/src/parsers/chakra.rs",
+                    "size": 4306
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787594916,
+                    "path": "/home/sal/uni/src/parsers/ami.rs",
+                    "size": 4229
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787434332,
+                    "path": "/home/sal/uni/src/parsers/traci.rs",
+                    "size": 3984
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787431529,
+                    "path": "/home/sal/uni/src/parsers/tempcheq.rs",
+                    "size": 3841
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787595145,
+                    "path": "/home/sal/uni/src/parsers/lwoodz.rs",
+                    "size": 3599
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787400921,
+                    "path": "/home/sal/uni/src/parsers/fract.rs",
+                    "size": 2571
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787400999,
+                    "path": "/home/sal/uni/src/parsers/jeenome.rs",
+                    "size": 2318
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787400401,
+                    "path": "/home/sal/uni/src/parsers/mod.rs",
+                    "size": 2091
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787400916,
+                    "path": "/home/sal/uni/src/parsers/bart.rs",
+                    "size": 2081
+                  }
+                ],
+                "depth": 2,
+                "file_count": 13,
+                "is_dir": true,
+                "modified": 1787780924,
+                "path": "/home/sal/uni/src/parsers",
+                "size": 57944
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787595149,
+                "path": "/home/sal/uni/src/kaptaind.rs",
+                "size": 34061
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787833390,
+                "path": "/home/sal/uni/src/render.rs",
+                "size": 21362
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787833445,
+                "path": "/home/sal/uni/src/report.rs",
+                "size": 16620
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787833607,
+                "path": "/home/sal/uni/src/cli.rs",
+                "size": 10775
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787833448,
+                "path": "/home/sal/uni/src/cohort.rs",
+                "size": 9341
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787780124,
+                "path": "/home/sal/uni/src/animation.rs",
+                "size": 7954
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787594706,
+                "path": "/home/sal/uni/src/tool.rs",
+                "size": 7475
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787595076,
+                "path": "/home/sal/uni/src/kaptaind_cli.rs",
+                "size": 6005
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787833350,
+                "path": "/home/sal/uni/src/main.rs",
+                "size": 4394
+              }
+            ],
+            "depth": 1,
+            "file_count": 24,
+            "is_dir": true,
+            "modified": 1787833607,
+            "path": "/home/sal/uni/src",
+            "size": 353527
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787780969,
+            "path": "/home/sal/uni/Cargo.lock",
+            "size": 39934
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787483827,
+                "path": "/home/sal/uni/docs/kaptaind-integration-progress.md",
+                "size": 10763
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787475867,
+                "path": "/home/sal/uni/docs/NEXT-SESSION.md",
+                "size": 6533
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787449348,
+                "path": "/home/sal/uni/docs/remediation-protocol.md",
+                "size": 5935
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787833588,
+                "path": "/home/sal/uni/docs/result-protocol.md",
+                "size": 4398
+              }
+            ],
+            "depth": 1,
+            "file_count": 4,
+            "is_dir": true,
+            "modified": 1787833588,
+            "path": "/home/sal/uni/docs",
+            "size": 31725
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787595021,
+                    "path": "/home/sal/uni/.skillastic/skills/uni.md",
+                    "size": 7216
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787400859,
+                    "path": "/home/sal/uni/.skillastic/skills/uni.json",
+                    "size": 649
+                  }
+                ],
+                "depth": 2,
+                "file_count": 2,
+                "is_dir": true,
+                "modified": 1787400859,
+                "path": "/home/sal/uni/.skillastic/skills",
+                "size": 11961
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787833913,
+                "path": "/home/sal/uni/.skillastic/daemon.out",
+                "size": 393
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787400823,
+                "path": "/home/sal/uni/.skillastic/config.json",
+                "size": 73
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787827911,
+                "path": "/home/sal/uni/.skillastic/daemon.pid",
+                "size": 4
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787827911,
+                "path": "/home/sal/uni/.skillastic/daemon.err",
+                "size": 0
+              }
+            ],
+            "depth": 1,
+            "file_count": 6,
+            "is_dir": true,
+            "modified": 1787835715,
+            "path": "/home/sal/uni/.skillastic",
+            "size": 16527
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1787386580,
+                    "path": "/home/sal/uni/.github/workflows/secret-scan.yml",
+                    "size": 260
+                  }
+                ],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": true,
+                "modified": 1787386580,
+                "path": "/home/sal/uni/.github/workflows",
+                "size": 4356
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787401987,
+                "path": "/home/sal/uni/.github/copilot-instructions.md",
+                "size": 645
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787597802,
+                "path": "/home/sal/uni/.github/dependabot.yml",
+                "size": 109
+              }
+            ],
+            "depth": 1,
+            "file_count": 3,
+            "is_dir": true,
+            "modified": 1787597802,
+            "path": "/home/sal/uni/.github",
+            "size": 9206
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787483783,
+                "path": "/home/sal/uni/tests/kaptaind_integration.rs",
+                "size": 4549
+              }
+            ],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": true,
+            "modified": 1787483783,
+            "path": "/home/sal/uni/tests",
+            "size": 8645
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787833576,
+            "path": "/home/sal/uni/README.md",
+            "size": 6104
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1787401987,
+                "path": "/home/sal/uni/.claude/CLAUDE.md",
+                "size": 634
+              }
+            ],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": true,
+            "modified": 1787386580,
+            "path": "/home/sal/uni/.claude",
+            "size": 4730
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 0,
+            "is_dir": true,
+            "modified": 1787399903,
+            "path": "/home/sal/uni/.lwoodz",
+            "size": 4096
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 0,
+            "is_dir": true,
+            "modified": 1787835995,
+            "path": "/home/sal/uni/uni-cohort-20260827T130635Z",
+            "size": 4096
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787609676,
+            "path": "/home/sal/uni/kaptaind.toml",
+            "size": 2703
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787593220,
+            "path": "/home/sal/uni/vamos.toml",
+            "size": 2703
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787687257,
+            "path": "/home/sal/uni/lwoodz.toml",
+            "size": 1635
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787401987,
+            "path": "/home/sal/uni/AGENTS.md",
+            "size": 1111
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787400390,
+            "path": "/home/sal/uni/LICENSE",
+            "size": 1060
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787687257,
+            "path": "/home/sal/uni/traci.toml",
+            "size": 955
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787780969,
+            "path": "/home/sal/uni/Cargo.toml",
+            "size": 867
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787401987,
+            "path": "/home/sal/uni/poka.lock",
+            "size": 536
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787493487,
+            "path": "/home/sal/uni/fract.toml",
+            "size": 507
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787597802,
+            "path": "/home/sal/uni/SECURITY.md",
+            "size": 455
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787653394,
+            "path": "/home/sal/uni/poka.toml",
+            "size": 161
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787431521,
+            "path": "/home/sal/uni/.baby.toml",
+            "size": 158
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787598556,
+            "path": "/home/sal/uni/.gitignore",
+            "size": 126
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787598556,
+            "path": "/home/sal/uni/.kaptainignore",
+            "size": 66
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787780969,
+            "path": "/home/sal/uni/VERSION",
+            "size": 5
+          }
+        ],
+        "depth": 0,
+        "file_count": 56,
+        "is_dir": true,
+        "modified": 1787835995,
+        "path": "/home/sal/uni",
+        "size": 495734
+      }
+    },
+    {
+      "tool": "chakra",
+      "purpose": "data-flow / architecture map coverage",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": 0.44642857142857145,
+        "confidence": 1.0,
+        "observations": 144
+      },
+      "binary": "/home/sal/.local/bin/chakra",
+      "score": 72.32142857142857,
+      "grade": "C-",
+      "exit_code": 0,
+      "duration_ms": 127,
+      "summary": "36 nodes, 144 flows; coverage 44.6% (25/56 files), confidence 100.0%",
+      "findings": [
+        "144 flow(s) with provenance=observed"
+      ],
+      "note": null,
+      "raw": {
+        "boundaries": [],
+        "events": [],
+        "evidence": [
+          {
+            "detail": "std::path::PathBuf",
+            "file": "src/main.rs",
+            "id": "ev-0001",
+            "kind": "rust_use",
+            "line": 13
+          },
+          {
+            "detail": "clap::Parser",
+            "file": "src/main.rs",
+            "id": "ev-0002",
+            "kind": "rust_use",
+            "line": 15
+          },
+          {
+            "detail": "cli::",
+            "file": "src/main.rs",
+            "id": "ev-0003",
+            "kind": "rust_use",
+            "line": 17
+          },
+          {
+            "detail": "animation",
+            "file": "src/main.rs",
+            "id": "ev-0004",
+            "kind": "rust_mod",
+            "line": 3
+          },
+          {
+            "detail": "cli",
+            "file": "src/main.rs",
+            "id": "ev-0005",
+            "kind": "rust_mod",
+            "line": 4
+          },
+          {
+            "detail": "cohort",
+            "file": "src/main.rs",
+            "id": "ev-0006",
+            "kind": "rust_mod",
+            "line": 5
+          },
+          {
+            "detail": "kaptaind",
+            "file": "src/main.rs",
+            "id": "ev-0007",
+            "kind": "rust_mod",
+            "line": 6
+          },
+          {
+            "detail": "parsers",
+            "file": "src/main.rs",
+            "id": "ev-0008",
+            "kind": "rust_mod",
+            "line": 7
+          },
+          {
+            "detail": "render",
+            "file": "src/main.rs",
+            "id": "ev-0009",
+            "kind": "rust_mod",
+            "line": 8
+          },
+          {
+            "detail": "report",
+            "file": "src/main.rs",
+            "id": "ev-0010",
+            "kind": "rust_mod",
+            "line": 9
+          },
+          {
+            "detail": "revise",
+            "file": "src/main.rs",
+            "id": "ev-0011",
+            "kind": "rust_mod",
+            "line": 10
+          },
+          {
+            "detail": "run",
+            "file": "src/main.rs",
+            "id": "ev-0012",
+            "kind": "rust_mod",
+            "line": 11
+          },
+          {
+            "detail": "tool",
+            "file": "src/main.rs",
+            "id": "ev-0013",
+            "kind": "rust_mod",
+            "line": 12
+          },
+          {
+            "detail": "md5",
+            "file": "src/kaptaind.rs",
+            "id": "ev-0014",
+            "kind": "rust_use",
+            "line": 11
+          },
+          {
+            "detail": "serde::",
+            "file": "src/kaptaind.rs",
+            "id": "ev-0015",
+            "kind": "rust_use",
+            "line": 13
+          },
+          {
+            "detail": "std::collections::HashMap",
+            "file": "src/kaptaind.rs",
+            "id": "ev-0016",
+            "kind": "rust_use",
+            "line": 14
+          },
+          {
+            "detail": "std::path::PathBuf",
+            "file": "src/kaptaind.rs",
+            "id": "ev-0017",
+            "kind": "rust_use",
+            "line": 15
+          },
+          {
+            "detail": "std::process::Command",
+            "file": "src/kaptaind.rs",
+            "id": "ev-0018",
+            "kind": "rust_use",
+            "line": 16
+          },
+          {
+            "detail": "std::time::",
+            "file": "src/kaptaind.rs",
+            "id": "ev-0019",
+            "kind": "rust_use",
+            "line": 17
+          },
+          {
+            "detail": "uuid::Uuid",
+            "file": "src/kaptaind.rs",
+            "id": "ev-0020",
+            "kind": "rust_use",
+            "line": 18
+          },
+          {
+            "detail": "super::",
+            "file": "src/kaptaind.rs",
+            "id": "ev-0021",
+            "kind": "rust_use",
+            "line": 937
+          },
+          {
+            "detail": "std::fs",
+            "file": "src/kaptaind.rs",
+            "id": "ev-0022",
+            "kind": "rust_use",
+            "line": 938
+          },
+          {
+            "detail": "super::",
+            "file": "src/kaptaind.rs",
+            "id": "ev-0023",
+            "kind": "rust_use",
+            "line": 1007
+          },
+          {
+            "detail": "super::",
+            "file": "src/parsers/tempcheq.rs",
+            "id": "ev-0024",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "crate::report::Status",
+            "file": "src/parsers/tempcheq.rs",
+            "id": "ev-0025",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "serde_json::Value",
+            "file": "src/parsers/tempcheq.rs",
+            "id": "ev-0026",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "super::",
+            "file": "src/parsers/tempcheq.rs",
+            "id": "ev-0027",
+            "kind": "rust_use",
+            "line": 89
+          },
+          {
+            "detail": "super::",
+            "file": "src/parsers/chakra.rs",
+            "id": "ev-0028",
+            "kind": "rust_use",
+            "line": 8
+          },
+          {
+            "detail": "crate::report::Status",
+            "file": "src/parsers/chakra.rs",
+            "id": "ev-0029",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "serde_json::Value",
+            "file": "src/parsers/chakra.rs",
+            "id": "ev-0030",
+            "kind": "rust_use",
+            "line": 10
+          },
+          {
+            "detail": "super::",
+            "file": "src/parsers/chakra.rs",
+            "id": "ev-0031",
+            "kind": "rust_use",
+            "line": 116
+          },
+          {
+            "detail": "super::ParseOutcome",
+            "file": "src/parsers/bart.rs",
+            "id": "ev-0032",
+            "kind": "rust_use",
+            "line": 6
+          },
+          {
+            "detail": "crate::report::Status",
+            "file": "src/parsers/bart.rs",
+            "id": "ev-0033",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "serde_json::Value",
+            "file": "src/parsers/bart.rs",
+            "id": "ev-0034",
+            "kind": "rust_use",
+            "line": 8
+          },
+          {
+            "detail": "super::",
+            "file": "src/parsers/amber.rs",
+            "id": "ev-0035",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "crate::report::Status",
+            "file": "src/parsers/amber.rs",
+            "id": "ev-0036",
+            "kind": "rust_use",
+            "line": 8
+          },
+          {
+            "detail": "serde_json::Value",
+            "file": "src/parsers/amber.rs",
+            "id": "ev-0037",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "super::",
+            "file": "src/parsers/amber.rs",
+            "id": "ev-0038",
+            "kind": "rust_use",
+            "line": 98
+          },
+          {
+            "detail": "super::",
+            "file": "src/parsers/lwoodz.rs",
+            "id": "ev-0039",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "crate::report::Status",
+            "file": "src/parsers/lwoodz.rs",
+            "id": "ev-0040",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "serde_json::Value",
+            "file": "src/parsers/lwoodz.rs",
+            "id": "ev-0041",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "super::ParseOutcome",
+            "file": "src/parsers/jeenome.rs",
+            "id": "ev-0042",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "crate::report::Status",
+            "file": "src/parsers/jeenome.rs",
+            "id": "ev-0043",
+            "kind": "rust_use",
+            "line": 8
+          },
+          {
+            "detail": "serde_json::Value",
+            "file": "src/parsers/jeenome.rs",
+            "id": "ev-0044",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "super::ParseOutcome",
+            "file": "src/parsers/fract.rs",
+            "id": "ev-0045",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "crate::report::Status",
+            "file": "src/parsers/fract.rs",
+            "id": "ev-0046",
+            "kind": "rust_use",
+            "line": 6
+          },
+          {
+            "detail": "serde_json::Value",
+            "file": "src/parsers/fract.rs",
+            "id": "ev-0047",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "super::ParseOutcome",
+            "file": "src/parsers/isopod.rs",
+            "id": "ev-0048",
+            "kind": "rust_use",
+            "line": 17
+          },
+          {
+            "detail": "crate::report::Status",
+            "file": "src/parsers/isopod.rs",
+            "id": "ev-0049",
+            "kind": "rust_use",
+            "line": 18
+          },
+          {
+            "detail": "serde_json::Value",
+            "file": "src/parsers/isopod.rs",
+            "id": "ev-0050",
+            "kind": "rust_use",
+            "line": 19
+          },
+          {
+            "detail": "super::",
+            "file": "src/parsers/isopod.rs",
+            "id": "ev-0051",
+            "kind": "rust_use",
+            "line": 115
+          },
+          {
+            "detail": "super::",
+            "file": "src/parsers/ferret.rs",
+            "id": "ev-0052",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "crate::report::Status",
+            "file": "src/parsers/ferret.rs",
+            "id": "ev-0053",
+            "kind": "rust_use",
+            "line": 8
+          },
+          {
+            "detail": "super::",
+            "file": "src/parsers/ferret.rs",
+            "id": "ev-0054",
+            "kind": "rust_use",
+            "line": 129
+          },
+          {
+            "detail": "super::",
+            "file": "src/parsers/ami.rs",
+            "id": "ev-0055",
+            "kind": "rust_use",
+            "line": 6
+          },
+          {
+            "detail": "crate::report::Status",
+            "file": "src/parsers/ami.rs",
+            "id": "ev-0056",
+            "kind": "rust_use",
+            "line": 8
+          },
+          {
+            "detail": "serde_json::Value",
+            "file": "src/parsers/ami.rs",
+            "id": "ev-0057",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "super::",
+            "file": "src/parsers/ami.rs",
+            "id": "ev-0058",
+            "kind": "rust_use",
+            "line": 108
+          },
+          {
+            "detail": "super::ParseOutcome",
+            "file": "src/parsers/traci.rs",
+            "id": "ev-0059",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "crate::report::Status",
+            "file": "src/parsers/traci.rs",
+            "id": "ev-0060",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "serde_json::Value",
+            "file": "src/parsers/traci.rs",
+            "id": "ev-0061",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "super::",
+            "file": "src/parsers/traci.rs",
+            "id": "ev-0062",
+            "kind": "rust_use",
+            "line": 81
+          },
+          {
+            "detail": "crate::report::Status",
+            "file": "src/parsers/mod.rs",
+            "id": "ev-0063",
+            "kind": "rust_use",
+            "line": 20
+          },
+          {
+            "detail": "crate::tool::ToolId",
+            "file": "src/parsers/mod.rs",
+            "id": "ev-0064",
+            "kind": "rust_use",
+            "line": 22
+          },
+          {
+            "detail": "amber",
+            "file": "src/parsers/mod.rs",
+            "id": "ev-0065",
+            "kind": "rust_mod",
+            "line": 7
+          },
+          {
+            "detail": "ami",
+            "file": "src/parsers/mod.rs",
+            "id": "ev-0066",
+            "kind": "rust_mod",
+            "line": 9
+          },
+          {
+            "detail": "bart",
+            "file": "src/parsers/mod.rs",
+            "id": "ev-0067",
+            "kind": "rust_mod",
+            "line": 10
+          },
+          {
+            "detail": "chakra",
+            "file": "src/parsers/mod.rs",
+            "id": "ev-0068",
+            "kind": "rust_mod",
+            "line": 11
+          },
+          {
+            "detail": "ferret",
+            "file": "src/parsers/mod.rs",
+            "id": "ev-0069",
+            "kind": "rust_mod",
+            "line": 12
+          },
+          {
+            "detail": "fract",
+            "file": "src/parsers/mod.rs",
+            "id": "ev-0070",
+            "kind": "rust_mod",
+            "line": 13
+          },
+          {
+            "detail": "isopod",
+            "file": "src/parsers/mod.rs",
+            "id": "ev-0071",
+            "kind": "rust_mod",
+            "line": 14
+          },
+          {
+            "detail": "jeenome",
+            "file": "src/parsers/mod.rs",
+            "id": "ev-0072",
+            "kind": "rust_mod",
+            "line": 15
+          },
+          {
+            "detail": "lwoodz",
+            "file": "src/parsers/mod.rs",
+            "id": "ev-0073",
+            "kind": "rust_mod",
+            "line": 16
+          },
+          {
+            "detail": "tempcheq",
+            "file": "src/parsers/mod.rs",
+            "id": "ev-0074",
+            "kind": "rust_mod",
+            "line": 17
+          },
+          {
+            "detail": "traci",
+            "file": "src/parsers/mod.rs",
+            "id": "ev-0075",
+            "kind": "rust_mod",
+            "line": 18
+          },
+          {
+            "detail": "vamos",
+            "file": "src/parsers/mod.rs",
+            "id": "ev-0076",
+            "kind": "rust_mod",
+            "line": 19
+          },
+          {
+            "detail": "super::",
+            "file": "src/parsers/vamos.rs",
+            "id": "ev-0077",
+            "kind": "rust_use",
+            "line": 17
+          },
+          {
+            "detail": "crate::report::Status",
+            "file": "src/parsers/vamos.rs",
+            "id": "ev-0078",
+            "kind": "rust_use",
+            "line": 18
+          },
+          {
+            "detail": "super::",
+            "file": "src/parsers/vamos.rs",
+            "id": "ev-0079",
+            "kind": "rust_use",
+            "line": 163
+          },
+          {
+            "detail": "std::path::",
+            "file": "src/cohort.rs",
+            "id": "ev-0080",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "std::sync::Arc",
+            "file": "src/cohort.rs",
+            "id": "ev-0081",
+            "kind": "rust_use",
+            "line": 11
+          },
+          {
+            "detail": "std::time::Duration",
+            "file": "src/cohort.rs",
+            "id": "ev-0082",
+            "kind": "rust_use",
+            "line": 12
+          },
+          {
+            "detail": "ingauge_gate::Admitter",
+            "file": "src/cohort.rs",
+            "id": "ev-0083",
+            "kind": "rust_use",
+            "line": 13
+          },
+          {
+            "detail": "serde::",
+            "file": "src/cohort.rs",
+            "id": "ev-0084",
+            "kind": "rust_use",
+            "line": 15
+          },
+          {
+            "detail": "crate::cli::",
+            "file": "src/cohort.rs",
+            "id": "ev-0085",
+            "kind": "rust_use",
+            "line": 16
+          },
+          {
+            "detail": "crate::report::",
+            "file": "src/cohort.rs",
+            "id": "ev-0086",
+            "kind": "rust_use",
+            "line": 18
+          },
+          {
+            "detail": "crate::",
+            "file": "src/cohort.rs",
+            "id": "ev-0087",
+            "kind": "rust_use",
+            "line": 19
+          },
+          {
+            "detail": "super::",
+            "file": "src/cohort.rs",
+            "id": "ev-0088",
+            "kind": "rust_use",
+            "line": 224
+          },
+          {
+            "detail": "std::io::",
+            "file": "src/render.rs",
+            "id": "ev-0089",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "std::ops::Range",
+            "file": "src/render.rs",
+            "id": "ev-0090",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "crate::report::",
+            "file": "src/render.rs",
+            "id": "ev-0091",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "crate::report::CohortRepoStatus",
+            "file": "src/render.rs",
+            "id": "ev-0092",
+            "kind": "rust_use",
+            "line": 445
+          },
+          {
+            "detail": "super::",
+            "file": "src/render.rs",
+            "id": "ev-0093",
+            "kind": "rust_use",
+            "line": 515
+          },
+          {
+            "detail": "crate::report::",
+            "file": "src/render.rs",
+            "id": "ev-0094",
+            "kind": "rust_use",
+            "line": 516
+          },
+          {
+            "detail": "std::path::",
+            "file": "src/revise.rs",
+            "id": "ev-0095",
+            "kind": "rust_use",
+            "line": 112
+          },
+          {
+            "detail": "std::process::Stdio",
+            "file": "src/revise.rs",
+            "id": "ev-0096",
+            "kind": "rust_use",
+            "line": 114
+          },
+          {
+            "detail": "std::time::",
+            "file": "src/revise.rs",
+            "id": "ev-0097",
+            "kind": "rust_use",
+            "line": 115
+          },
+          {
+            "detail": "serde::Serialize",
+            "file": "src/revise.rs",
+            "id": "ev-0098",
+            "kind": "rust_use",
+            "line": 116
+          },
+          {
+            "detail": "serde_json::Value",
+            "file": "src/revise.rs",
+            "id": "ev-0099",
+            "kind": "rust_use",
+            "line": 118
+          },
+          {
+            "detail": "crate::cli::",
+            "file": "src/revise.rs",
+            "id": "ev-0100",
+            "kind": "rust_use",
+            "line": 119
+          },
+          {
+            "detail": "crate::report::",
+            "file": "src/revise.rs",
+            "id": "ev-0101",
+            "kind": "rust_use",
+            "line": 121
+          },
+          {
+            "detail": "crate::run",
+            "file": "src/revise.rs",
+            "id": "ev-0102",
+            "kind": "rust_use",
+            "line": 122
+          },
+          {
+            "detail": "crate::tool::",
+            "file": "src/revise.rs",
+            "id": "ev-0103",
+            "kind": "rust_use",
+            "line": 123
+          },
+          {
+            "detail": "std::io::Write",
+            "file": "src/revise.rs",
+            "id": "ev-0104",
+            "kind": "rust_use",
+            "line": 289
+          },
+          {
+            "detail": "std::collections::HashMap",
+            "file": "src/revise.rs",
+            "id": "ev-0105",
+            "kind": "rust_use",
+            "line": 730
+          },
+          {
+            "detail": "uuid::Uuid",
+            "file": "src/revise.rs",
+            "id": "ev-0106",
+            "kind": "rust_use",
+            "line": 731
+          },
+          {
+            "detail": "super::",
+            "file": "src/revise.rs",
+            "id": "ev-0107",
+            "kind": "rust_use",
+            "line": 1834
+          },
+          {
+            "detail": "crate::report::",
+            "file": "src/revise.rs",
+            "id": "ev-0108",
+            "kind": "rust_use",
+            "line": 1835
+          },
+          {
+            "detail": "std::os::unix::fs::PermissionsExt",
+            "file": "src/revise.rs",
+            "id": "ev-0109",
+            "kind": "rust_use",
+            "line": 2412
+          },
+          {
+            "detail": "std::os::unix::fs::PermissionsExt",
+            "file": "src/revise.rs",
+            "id": "ev-0110",
+            "kind": "rust_use",
+            "line": 2506
+          },
+          {
+            "detail": "std::os::unix::fs::PermissionsExt",
+            "file": "src/revise.rs",
+            "id": "ev-0111",
+            "kind": "rust_use",
+            "line": 2823
+          },
+          {
+            "detail": "std::os::unix::fs::PermissionsExt",
+            "file": "src/revise.rs",
+            "id": "ev-0112",
+            "kind": "rust_use",
+            "line": 2867
+          },
+          {
+            "detail": "std::os::unix::fs::PermissionsExt",
+            "file": "src/revise.rs",
+            "id": "ev-0113",
+            "kind": "rust_use",
+            "line": 2900
+          },
+          {
+            "detail": "std::os::unix::fs::PermissionsExt",
+            "file": "src/revise.rs",
+            "id": "ev-0114",
+            "kind": "rust_use",
+            "line": 2928
+          },
+          {
+            "detail": "std::collections::BTreeMap",
+            "file": "src/run.rs",
+            "id": "ev-0115",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "std::io::",
+            "file": "src/run.rs",
+            "id": "ev-0116",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "std::path::",
+            "file": "src/run.rs",
+            "id": "ev-0117",
+            "kind": "rust_use",
+            "line": 5
+          },
+          {
+            "detail": "std::process::",
+            "file": "src/run.rs",
+            "id": "ev-0118",
+            "kind": "rust_use",
+            "line": 6
+          },
+          {
+            "detail": "std::sync::Arc",
+            "file": "src/run.rs",
+            "id": "ev-0119",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "std::time::",
+            "file": "src/run.rs",
+            "id": "ev-0120",
+            "kind": "rust_use",
+            "line": 8
+          },
+          {
+            "detail": "ingauge_gate::Admitter",
+            "file": "src/run.rs",
+            "id": "ev-0121",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "tracing::Instrument",
+            "file": "src/run.rs",
+            "id": "ev-0122",
+            "kind": "rust_use",
+            "line": 11
+          },
+          {
+            "detail": "crate::cli::AnalyzeOptions",
+            "file": "src/run.rs",
+            "id": "ev-0123",
+            "kind": "rust_use",
+            "line": 12
+          },
+          {
+            "detail": "crate::parsers",
+            "file": "src/run.rs",
+            "id": "ev-0124",
+            "kind": "rust_use",
+            "line": 14
+          },
+          {
+            "detail": "crate::report::",
+            "file": "src/run.rs",
+            "id": "ev-0125",
+            "kind": "rust_use",
+            "line": 15
+          },
+          {
+            "detail": "crate::tool::",
+            "file": "src/run.rs",
+            "id": "ev-0126",
+            "kind": "rust_use",
+            "line": 18
+          },
+          {
+            "detail": "std::io::Write",
+            "file": "src/run.rs",
+            "id": "ev-0127",
+            "kind": "rust_use",
+            "line": 706
+          },
+          {
+            "detail": "serde_json::Value",
+            "file": "src/run.rs",
+            "id": "ev-0128",
+            "kind": "rust_use",
+            "line": 1568
+          },
+          {
+            "detail": "super::",
+            "file": "src/run.rs",
+            "id": "ev-0129",
+            "kind": "rust_use",
+            "line": 1639
+          },
+          {
+            "detail": "std::os::unix::fs::PermissionsExt",
+            "file": "src/run.rs",
+            "id": "ev-0130",
+            "kind": "rust_use",
+            "line": 1661
+          },
+          {
+            "detail": "std::io::",
+            "file": "src/animation.rs",
+            "id": "ev-0131",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "std::time::Duration",
+            "file": "src/animation.rs",
+            "id": "ev-0132",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "crate::render::HumanReport",
+            "file": "src/animation.rs",
+            "id": "ev-0133",
+            "kind": "rust_use",
+            "line": 10
+          },
+          {
+            "detail": "super::",
+            "file": "src/animation.rs",
+            "id": "ev-0134",
+            "kind": "rust_use",
+            "line": 206
+          },
+          {
+            "detail": "std::path::",
+            "file": "src/cli.rs",
+            "id": "ev-0135",
+            "kind": "rust_use",
+            "line": 3
+          },
+          {
+            "detail": "clap::",
+            "file": "src/cli.rs",
+            "id": "ev-0136",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "std::env",
+            "file": "src/tool.rs",
+            "id": "ev-0137",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "std::path::",
+            "file": "src/tool.rs",
+            "id": "ev-0138",
+            "kind": "rust_use",
+            "line": 9
+          },
+          {
+            "detail": "std::os::unix::fs::PermissionsExt",
+            "file": "src/tool.rs",
+            "id": "ev-0139",
+            "kind": "rust_use",
+            "line": 196
+          },
+          {
+            "detail": "super::",
+            "file": "src/tool.rs",
+            "id": "ev-0140",
+            "kind": "rust_use",
+            "line": 209
+          },
+          {
+            "detail": "crate::kaptaind::",
+            "file": "src/kaptaind_cli.rs",
+            "id": "ev-0141",
+            "kind": "rust_use",
+            "line": 4
+          },
+          {
+            "detail": "std::path::Path",
+            "file": "src/kaptaind_cli.rs",
+            "id": "ev-0142",
+            "kind": "rust_use",
+            "line": 6
+          },
+          {
+            "detail": "serde::Serialize",
+            "file": "src/report.rs",
+            "id": "ev-0143",
+            "kind": "rust_use",
+            "line": 7
+          },
+          {
+            "detail": "super::",
+            "file": "src/report.rs",
+            "id": "ev-0144",
+            "kind": "rust_use",
+            "line": 361
+          }
+        ],
+        "flows": [
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0001"
+            ],
+            "id": "flow-0001",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0002"
+            ],
+            "id": "flow-0002",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/main.rs",
+            "target": "ext:rust:clap"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0003"
+            ],
+            "id": "flow-0003",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/main.rs",
+            "target": "file:src/cli.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0004"
+            ],
+            "id": "flow-0004",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/main.rs",
+            "target": "file:src/animation.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0005"
+            ],
+            "id": "flow-0005",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/main.rs",
+            "target": "file:src/cli.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0006"
+            ],
+            "id": "flow-0006",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/main.rs",
+            "target": "file:src/cohort.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0007"
+            ],
+            "id": "flow-0007",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/main.rs",
+            "target": "file:src/kaptaind.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0008"
+            ],
+            "id": "flow-0008",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/main.rs",
+            "target": "file:src/parsers/mod.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0009"
+            ],
+            "id": "flow-0009",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/main.rs",
+            "target": "file:src/render.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0010"
+            ],
+            "id": "flow-0010",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/main.rs",
+            "target": "file:src/report.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0011"
+            ],
+            "id": "flow-0011",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/main.rs",
+            "target": "file:src/revise.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0012"
+            ],
+            "id": "flow-0012",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/main.rs",
+            "target": "file:src/run.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0013"
+            ],
+            "id": "flow-0013",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/main.rs",
+            "target": "file:src/tool.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0014"
+            ],
+            "id": "flow-0014",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/kaptaind.rs",
+            "target": "ext:rust:md5"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0015"
+            ],
+            "id": "flow-0015",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/kaptaind.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0016"
+            ],
+            "id": "flow-0016",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/kaptaind.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0017"
+            ],
+            "id": "flow-0017",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/kaptaind.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0018"
+            ],
+            "id": "flow-0018",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/kaptaind.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0019"
+            ],
+            "id": "flow-0019",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/kaptaind.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0020"
+            ],
+            "id": "flow-0020",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/kaptaind.rs",
+            "target": "ext:rust:uuid"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0021"
+            ],
+            "id": "flow-0021",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/kaptaind.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0022"
+            ],
+            "id": "flow-0022",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/kaptaind.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0023"
+            ],
+            "id": "flow-0023",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/kaptaind.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0024"
+            ],
+            "id": "flow-0024",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/parsers/tempcheq.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0025"
+            ],
+            "id": "flow-0025",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/parsers/tempcheq.rs",
+            "target": "file:src/report.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0026"
+            ],
+            "id": "flow-0026",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/parsers/tempcheq.rs",
+            "target": "ext:rust:serde_json"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0027"
+            ],
+            "id": "flow-0027",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/parsers/tempcheq.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0028"
+            ],
+            "id": "flow-0028",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/parsers/chakra.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0029"
+            ],
+            "id": "flow-0029",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/parsers/chakra.rs",
+            "target": "file:src/report.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0030"
+            ],
+            "id": "flow-0030",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/parsers/chakra.rs",
+            "target": "ext:rust:serde_json"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0031"
+            ],
+            "id": "flow-0031",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/parsers/chakra.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0032"
+            ],
+            "id": "flow-0032",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/parsers/bart.rs",
+            "target": "mod:rust:super::ParseOutcome"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0033"
+            ],
+            "id": "flow-0033",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/parsers/bart.rs",
+            "target": "file:src/report.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0034"
+            ],
+            "id": "flow-0034",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/parsers/bart.rs",
+            "target": "ext:rust:serde_json"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0035"
+            ],
+            "id": "flow-0035",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/parsers/amber.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0036"
+            ],
+            "id": "flow-0036",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/parsers/amber.rs",
+            "target": "file:src/report.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0037"
+            ],
+            "id": "flow-0037",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/parsers/amber.rs",
+            "target": "ext:rust:serde_json"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0038"
+            ],
+            "id": "flow-0038",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/parsers/amber.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0039"
+            ],
+            "id": "flow-0039",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/parsers/lwoodz.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0040"
+            ],
+            "id": "flow-0040",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/parsers/lwoodz.rs",
+            "target": "file:src/report.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0041"
+            ],
+            "id": "flow-0041",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/parsers/lwoodz.rs",
+            "target": "ext:rust:serde_json"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0042"
+            ],
+            "id": "flow-0042",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/parsers/jeenome.rs",
+            "target": "mod:rust:super::ParseOutcome"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0043"
+            ],
+            "id": "flow-0043",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/parsers/jeenome.rs",
+            "target": "file:src/report.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0044"
+            ],
+            "id": "flow-0044",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/parsers/jeenome.rs",
+            "target": "ext:rust:serde_json"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0045"
+            ],
+            "id": "flow-0045",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/parsers/fract.rs",
+            "target": "mod:rust:super::ParseOutcome"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0046"
+            ],
+            "id": "flow-0046",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/parsers/fract.rs",
+            "target": "file:src/report.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0047"
+            ],
+            "id": "flow-0047",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/parsers/fract.rs",
+            "target": "ext:rust:serde_json"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0048"
+            ],
+            "id": "flow-0048",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/parsers/isopod.rs",
+            "target": "mod:rust:super::ParseOutcome"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0049"
+            ],
+            "id": "flow-0049",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/parsers/isopod.rs",
+            "target": "file:src/report.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0050"
+            ],
+            "id": "flow-0050",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/parsers/isopod.rs",
+            "target": "ext:rust:serde_json"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0051"
+            ],
+            "id": "flow-0051",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/parsers/isopod.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0052"
+            ],
+            "id": "flow-0052",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/parsers/ferret.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0053"
+            ],
+            "id": "flow-0053",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/parsers/ferret.rs",
+            "target": "file:src/report.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0054"
+            ],
+            "id": "flow-0054",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/parsers/ferret.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0055"
+            ],
+            "id": "flow-0055",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/parsers/ami.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0056"
+            ],
+            "id": "flow-0056",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/parsers/ami.rs",
+            "target": "file:src/report.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0057"
+            ],
+            "id": "flow-0057",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/parsers/ami.rs",
+            "target": "ext:rust:serde_json"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0058"
+            ],
+            "id": "flow-0058",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/parsers/ami.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0059"
+            ],
+            "id": "flow-0059",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/parsers/traci.rs",
+            "target": "mod:rust:super::ParseOutcome"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0060"
+            ],
+            "id": "flow-0060",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/parsers/traci.rs",
+            "target": "file:src/report.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0061"
+            ],
+            "id": "flow-0061",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/parsers/traci.rs",
+            "target": "ext:rust:serde_json"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0062"
+            ],
+            "id": "flow-0062",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/parsers/traci.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0063"
+            ],
+            "id": "flow-0063",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/parsers/mod.rs",
+            "target": "file:src/report.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0064"
+            ],
+            "id": "flow-0064",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/parsers/mod.rs",
+            "target": "file:src/tool.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0065"
+            ],
+            "id": "flow-0065",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/parsers/mod.rs",
+            "target": "file:src/parsers/amber.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0066"
+            ],
+            "id": "flow-0066",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/parsers/mod.rs",
+            "target": "file:src/parsers/ami.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0067"
+            ],
+            "id": "flow-0067",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/parsers/mod.rs",
+            "target": "file:src/parsers/bart.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0068"
+            ],
+            "id": "flow-0068",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/parsers/mod.rs",
+            "target": "file:src/parsers/chakra.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0069"
+            ],
+            "id": "flow-0069",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/parsers/mod.rs",
+            "target": "file:src/parsers/ferret.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0070"
+            ],
+            "id": "flow-0070",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/parsers/mod.rs",
+            "target": "file:src/parsers/fract.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0071"
+            ],
+            "id": "flow-0071",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/parsers/mod.rs",
+            "target": "file:src/parsers/isopod.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0072"
+            ],
+            "id": "flow-0072",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/parsers/mod.rs",
+            "target": "file:src/parsers/jeenome.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0073"
+            ],
+            "id": "flow-0073",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/parsers/mod.rs",
+            "target": "file:src/parsers/lwoodz.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0074"
+            ],
+            "id": "flow-0074",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/parsers/mod.rs",
+            "target": "file:src/parsers/tempcheq.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0075"
+            ],
+            "id": "flow-0075",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/parsers/mod.rs",
+            "target": "file:src/parsers/traci.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0076"
+            ],
+            "id": "flow-0076",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/parsers/mod.rs",
+            "target": "file:src/parsers/vamos.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0077"
+            ],
+            "id": "flow-0077",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/parsers/vamos.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0078"
+            ],
+            "id": "flow-0078",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/parsers/vamos.rs",
+            "target": "file:src/report.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0079"
+            ],
+            "id": "flow-0079",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/parsers/vamos.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0080"
+            ],
+            "id": "flow-0080",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/cohort.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0081"
+            ],
+            "id": "flow-0081",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/cohort.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0082"
+            ],
+            "id": "flow-0082",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/cohort.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0083"
+            ],
+            "id": "flow-0083",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/cohort.rs",
+            "target": "ext:rust:ingauge_gate"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0084"
+            ],
+            "id": "flow-0084",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/cohort.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0085"
+            ],
+            "id": "flow-0085",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/cohort.rs",
+            "target": "file:src/cli.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0086"
+            ],
+            "id": "flow-0086",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/cohort.rs",
+            "target": "file:src/report.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0087"
+            ],
+            "id": "flow-0087",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/cohort.rs",
+            "target": "mod:rust:crate::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0088"
+            ],
+            "id": "flow-0088",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/cohort.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0089"
+            ],
+            "id": "flow-0089",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/render.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0090"
+            ],
+            "id": "flow-0090",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/render.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0091"
+            ],
+            "id": "flow-0091",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/render.rs",
+            "target": "file:src/report.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0092"
+            ],
+            "id": "flow-0092",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/render.rs",
+            "target": "file:src/report.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0093"
+            ],
+            "id": "flow-0093",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/render.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0094"
+            ],
+            "id": "flow-0094",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/render.rs",
+            "target": "file:src/report.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0095"
+            ],
+            "id": "flow-0095",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/revise.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0096"
+            ],
+            "id": "flow-0096",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/revise.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0097"
+            ],
+            "id": "flow-0097",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/revise.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0098"
+            ],
+            "id": "flow-0098",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/revise.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0099"
+            ],
+            "id": "flow-0099",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/revise.rs",
+            "target": "ext:rust:serde_json"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0100"
+            ],
+            "id": "flow-0100",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/revise.rs",
+            "target": "file:src/cli.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0101"
+            ],
+            "id": "flow-0101",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/revise.rs",
+            "target": "file:src/report.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0102"
+            ],
+            "id": "flow-0102",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/revise.rs",
+            "target": "file:src/run.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0103"
+            ],
+            "id": "flow-0103",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/revise.rs",
+            "target": "file:src/tool.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0104"
+            ],
+            "id": "flow-0104",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/revise.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0105"
+            ],
+            "id": "flow-0105",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/revise.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0106"
+            ],
+            "id": "flow-0106",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/revise.rs",
+            "target": "ext:rust:uuid"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0107"
+            ],
+            "id": "flow-0107",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/revise.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0108"
+            ],
+            "id": "flow-0108",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/revise.rs",
+            "target": "file:src/report.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0109"
+            ],
+            "id": "flow-0109",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/revise.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0110"
+            ],
+            "id": "flow-0110",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/revise.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0111"
+            ],
+            "id": "flow-0111",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/revise.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0112"
+            ],
+            "id": "flow-0112",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/revise.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0113"
+            ],
+            "id": "flow-0113",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/revise.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0114"
+            ],
+            "id": "flow-0114",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/revise.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0115"
+            ],
+            "id": "flow-0115",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/run.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0116"
+            ],
+            "id": "flow-0116",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/run.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0117"
+            ],
+            "id": "flow-0117",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/run.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0118"
+            ],
+            "id": "flow-0118",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/run.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0119"
+            ],
+            "id": "flow-0119",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/run.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0120"
+            ],
+            "id": "flow-0120",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/run.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0121"
+            ],
+            "id": "flow-0121",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/run.rs",
+            "target": "ext:rust:ingauge_gate"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0122"
+            ],
+            "id": "flow-0122",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/run.rs",
+            "target": "ext:rust:tracing"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0123"
+            ],
+            "id": "flow-0123",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/run.rs",
+            "target": "file:src/cli.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0124"
+            ],
+            "id": "flow-0124",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/run.rs",
+            "target": "file:src/parsers/mod.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0125"
+            ],
+            "id": "flow-0125",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/run.rs",
+            "target": "file:src/report.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0126"
+            ],
+            "id": "flow-0126",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/run.rs",
+            "target": "file:src/tool.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0127"
+            ],
+            "id": "flow-0127",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/run.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0128"
+            ],
+            "id": "flow-0128",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/run.rs",
+            "target": "ext:rust:serde_json"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0129"
+            ],
+            "id": "flow-0129",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/run.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0130"
+            ],
+            "id": "flow-0130",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/run.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0131"
+            ],
+            "id": "flow-0131",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/animation.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0132"
+            ],
+            "id": "flow-0132",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/animation.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0133"
+            ],
+            "id": "flow-0133",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/animation.rs",
+            "target": "file:src/render.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0134"
+            ],
+            "id": "flow-0134",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/animation.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0135"
+            ],
+            "id": "flow-0135",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/cli.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0136"
+            ],
+            "id": "flow-0136",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/cli.rs",
+            "target": "ext:rust:clap"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0137"
+            ],
+            "id": "flow-0137",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/tool.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0138"
+            ],
+            "id": "flow-0138",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/tool.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0139"
+            ],
+            "id": "flow-0139",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/tool.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0140"
+            ],
+            "id": "flow-0140",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/tool.rs",
+            "target": "mod:rust:super::"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0141"
+            ],
+            "id": "flow-0141",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import",
+            "source": "file:src/kaptaind_cli.rs",
+            "target": "file:src/kaptaind.rs"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0142"
+            ],
+            "id": "flow-0142",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/kaptaind_cli.rs",
+            "target": "ext:rust:std"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0143"
+            ],
+            "id": "flow-0143",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "dependency",
+            "source": "file:src/report.rs",
+            "target": "ext:rust:serde"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": [
+              "ev-0144"
+            ],
+            "id": "flow-0144",
+            "kind": "import",
+            "provenance": "observed",
+            "relationship": "import_unresolved_module",
+            "source": "file:src/report.rs",
+            "target": "mod:rust:super::"
+          }
+        ],
+        "inferences": [],
+        "metadata": {
+          "analyzed_file_count": 25,
+          "analyzers": [
+            "rust",
+            "javascript",
+            "typescript",
+            "python",
+            "go"
+          ],
+          "chakra_version": "0.3.33",
+          "duration_ms": 98,
+          "file_count": 56,
+          "languages": {
+            "rust": 25
+          }
+        },
+        "nodes": [
+          {
+            "id": "ext:rust:clap",
+            "kind": "external",
+            "language": "rust",
+            "name": "clap"
+          },
+          {
+            "id": "ext:rust:ingauge_gate",
+            "kind": "external",
+            "language": "rust",
+            "name": "ingauge_gate"
+          },
+          {
+            "id": "ext:rust:md5",
+            "kind": "external",
+            "language": "rust",
+            "name": "md5"
+          },
+          {
+            "id": "ext:rust:serde",
+            "kind": "external",
+            "language": "rust",
+            "name": "serde"
+          },
+          {
+            "id": "ext:rust:serde_json",
+            "kind": "external",
+            "language": "rust",
+            "name": "serde_json"
+          },
+          {
+            "id": "ext:rust:std",
+            "kind": "external",
+            "language": "rust",
+            "name": "std"
+          },
+          {
+            "id": "ext:rust:tracing",
+            "kind": "external",
+            "language": "rust",
+            "name": "tracing"
+          },
+          {
+            "id": "ext:rust:uuid",
+            "kind": "external",
+            "language": "rust",
+            "name": "uuid"
+          },
+          {
+            "id": "file:src/animation.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/animation.rs"
+          },
+          {
+            "id": "file:src/cli.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/cli.rs"
+          },
+          {
+            "id": "file:src/cohort.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/cohort.rs"
+          },
+          {
+            "id": "file:src/kaptaind.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/kaptaind.rs"
+          },
+          {
+            "id": "file:src/kaptaind_cli.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/kaptaind_cli.rs"
+          },
+          {
+            "id": "file:src/main.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/main.rs"
+          },
+          {
+            "id": "file:src/parsers/amber.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/parsers/amber.rs"
+          },
+          {
+            "id": "file:src/parsers/ami.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/parsers/ami.rs"
+          },
+          {
+            "id": "file:src/parsers/bart.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/parsers/bart.rs"
+          },
+          {
+            "id": "file:src/parsers/chakra.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/parsers/chakra.rs"
+          },
+          {
+            "id": "file:src/parsers/ferret.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/parsers/ferret.rs"
+          },
+          {
+            "id": "file:src/parsers/fract.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/parsers/fract.rs"
+          },
+          {
+            "id": "file:src/parsers/isopod.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/parsers/isopod.rs"
+          },
+          {
+            "id": "file:src/parsers/jeenome.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/parsers/jeenome.rs"
+          },
+          {
+            "id": "file:src/parsers/lwoodz.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/parsers/lwoodz.rs"
+          },
+          {
+            "id": "file:src/parsers/mod.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/parsers/mod.rs"
+          },
+          {
+            "id": "file:src/parsers/tempcheq.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/parsers/tempcheq.rs"
+          },
+          {
+            "id": "file:src/parsers/traci.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/parsers/traci.rs"
+          },
+          {
+            "id": "file:src/parsers/vamos.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/parsers/vamos.rs"
+          },
+          {
+            "id": "file:src/render.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/render.rs"
+          },
+          {
+            "id": "file:src/report.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/report.rs"
+          },
+          {
+            "id": "file:src/revise.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/revise.rs"
+          },
+          {
+            "id": "file:src/run.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/run.rs"
+          },
+          {
+            "id": "file:src/tool.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "src/tool.rs"
+          },
+          {
+            "id": "file:tests/kaptaind_integration.rs",
+            "kind": "file",
+            "language": "rust",
+            "path": "tests/kaptaind_integration.rs"
+          },
+          {
+            "id": "mod:rust:crate::",
+            "kind": "module",
+            "language": "rust",
+            "name": "crate::"
+          },
+          {
+            "id": "mod:rust:super::",
+            "kind": "module",
+            "language": "rust",
+            "name": "super::"
+          },
+          {
+            "id": "mod:rust:super::ParseOutcome",
+            "kind": "module",
+            "language": "rust",
+            "name": "super::ParseOutcome"
+          }
+        ],
+        "schema": "chakra.flow/v1",
+        "subject": {
+          "generated_at": "2026-08-27T13:06:35.411599178Z",
+          "path": "/home/sal/uni"
+        }
+      }
+    },
+    {
+      "tool": "ferret",
+      "purpose": "repository-specific review findings (hunt)",
+      "status": "error",
+      "availability": "installed",
+      "execution": "failed",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": 2,
+      "duration_ms": 21,
+      "summary": "error",
+      "findings": [],
+      "note": "produced no stdout; stderr: error: unexpected argument '/home/sal/uni' found\n\nUsage: ferret [OPTIONS] [TARGET] [COMMAND]\n\nFor more information, try '--help'.\n",
+      "raw": null
+    },
+    {
+      "tool": "fract",
+      "purpose": "module entropy, cohesion, duplication",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/home/sal/.local/bin/fract",
+      "score": 88.8,
+      "grade": "B+",
+      "exit_code": 0,
+      "duration_ms": 129,
+      "summary": "25 modules indexed: 0 excellent, 18 healthy, 7 warning, 0 critical",
+      "findings": [
+        "src/revise.rs: entropy 0.80 — Within entropy budget (0.80)",
+        "src/kaptaind.rs: entropy 0.80 — Within entropy budget (0.80)",
+        "src/run.rs: entropy 0.79 — Within entropy budget (0.79)",
+        "src/report.rs: entropy 0.73 — Within entropy budget (0.73)",
+        "src/cli.rs: entropy 0.72 — Within entropy budget (0.72)"
+      ],
+      "note": null,
+      "raw": {
+        "findings": [
+          {
+            "confidence": null,
+            "entropy": 0.8020704472217246,
+            "evidence": {
+              "cyclomatic": "127",
+              "duplicates": "379",
+              "fan_in": "0",
+              "fan_out": "20",
+              "functions": "93",
+              "health": "Warning",
+              "lines": "2963",
+              "public_api": "33"
+            },
+            "id": "src/revise.rs",
+            "kind": "Split responsibilities into submodules",
+            "message": "Within entropy budget (0.80)",
+            "module": "src/revise.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.80 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.7965534000456206,
+            "evidence": {
+              "cyclomatic": "33",
+              "duplicates": "117",
+              "fan_in": "1",
+              "fan_out": "10",
+              "functions": "35",
+              "health": "Warning",
+              "lines": "1047",
+              "public_api": "114"
+            },
+            "id": "src/kaptaind.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.80)",
+            "module": "src/kaptaind.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.80 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.7923624600939865,
+            "evidence": {
+              "cyclomatic": "153",
+              "duplicates": "216",
+              "fan_in": "1",
+              "fan_out": "16",
+              "functions": "50",
+              "health": "Warning",
+              "lines": "1767",
+              "public_api": "2"
+            },
+            "id": "src/run.rs",
+            "kind": "Split responsibilities into submodules",
+            "message": "Within entropy budget (0.79)",
+            "module": "src/run.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.79 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.7334229775701656,
+            "evidence": {
+              "cyclomatic": "37",
+              "duplicates": "31",
+              "fan_in": "20",
+              "fan_out": "2",
+              "functions": "17",
+              "health": "Warning",
+              "lines": "521",
+              "public_api": "83"
+            },
+            "id": "src/report.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.73)",
+            "module": "src/report.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.73 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.7243715070581853,
+            "evidence": {
+              "cyclomatic": "2",
+              "duplicates": "67",
+              "fan_in": "3",
+              "fan_out": "2",
+              "functions": "5",
+              "health": "Warning",
+              "lines": "319",
+              "public_api": "68"
+            },
+            "id": "src/cli.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.72)",
+            "module": "src/cli.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.72 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6677478979847421,
+            "evidence": {
+              "cyclomatic": "91",
+              "duplicates": "30",
+              "fan_in": "1",
+              "fan_out": "6",
+              "functions": "25",
+              "health": "Warning",
+              "lines": "585",
+              "public_api": "7"
+            },
+            "id": "src/render.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.67)",
+            "module": "src/render.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.67 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.655557001717619,
+            "evidence": {
+              "cyclomatic": "16",
+              "duplicates": "6",
+              "fan_in": "0",
+              "fan_out": "3",
+              "functions": "1",
+              "health": "Warning",
+              "lines": "113",
+              "public_api": "1"
+            },
+            "id": "src/parsers/lwoodz.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.66)",
+            "module": "src/parsers/lwoodz.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.66 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.6172755747661356,
+            "evidence": {
+              "cyclomatic": "27",
+              "duplicates": "13",
+              "fan_in": "0",
+              "fan_out": "3",
+              "functions": "4",
+              "health": "Healthy",
+              "lines": "160",
+              "public_api": "0"
+            },
+            "id": "src/main.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.62)",
+            "module": "src/main.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.62 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5969403191760597,
+            "evidence": {
+              "cyclomatic": "10",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "3",
+              "functions": "1",
+              "health": "Healthy",
+              "lines": "75",
+              "public_api": "1"
+            },
+            "id": "src/parsers/jeenome.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.60)",
+            "module": "src/parsers/jeenome.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.60 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5886504809307201,
+            "evidence": {
+              "cyclomatic": "7",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "3",
+              "functions": "1",
+              "health": "Healthy",
+              "lines": "75",
+              "public_api": "1"
+            },
+            "id": "src/parsers/fract.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.59)",
+            "module": "src/parsers/fract.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.59 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5701444873251109,
+            "evidence": {
+              "cyclomatic": "14",
+              "duplicates": "18",
+              "fan_in": "0",
+              "fan_out": "2",
+              "functions": "6",
+              "health": "Healthy",
+              "lines": "165",
+              "public_api": "2"
+            },
+            "id": "src/kaptaind_cli.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.57)",
+            "module": "src/kaptaind_cli.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.57 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5699619618134042,
+            "evidence": {
+              "cyclomatic": "17",
+              "duplicates": "4",
+              "fan_in": "3",
+              "fan_out": "4",
+              "functions": "15",
+              "health": "Healthy",
+              "lines": "222",
+              "public_api": "13"
+            },
+            "id": "src/tool.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.57)",
+            "module": "src/tool.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.57 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5698193786575685,
+            "evidence": {
+              "cyclomatic": "1",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "2",
+              "functions": "2",
+              "health": "Healthy",
+              "lines": "66",
+              "public_api": "8"
+            },
+            "id": "src/parsers/mod.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.57)",
+            "module": "src/parsers/mod.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.57 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5686711257284259,
+            "evidence": {
+              "cyclomatic": "20",
+              "duplicates": "11",
+              "fan_in": "0",
+              "fan_out": "4",
+              "functions": "7",
+              "health": "Healthy",
+              "lines": "175",
+              "public_api": "1"
+            },
+            "id": "src/parsers/isopod.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.57)",
+            "module": "src/parsers/isopod.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.57 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5659287611001506,
+            "evidence": {
+              "cyclomatic": "7",
+              "duplicates": "4",
+              "fan_in": "0",
+              "fan_out": "4",
+              "functions": "3",
+              "health": "Healthy",
+              "lines": "135",
+              "public_api": "1"
+            },
+            "id": "src/parsers/chakra.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.57)",
+            "module": "src/parsers/chakra.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.57 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5621180772873992,
+            "evidence": {
+              "cyclomatic": "36",
+              "duplicates": "4",
+              "fan_in": "0",
+              "fan_out": "4",
+              "functions": "15",
+              "health": "Healthy",
+              "lines": "240",
+              "public_api": "1"
+            },
+            "id": "src/animation.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.56)",
+            "module": "src/animation.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.56 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5502346974000174,
+            "evidence": {
+              "cyclomatic": "12",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "9",
+              "functions": "10",
+              "health": "Healthy",
+              "lines": "269",
+              "public_api": "1"
+            },
+            "id": "src/cohort.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.55)",
+            "module": "src/cohort.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.55 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5474661175407012,
+            "evidence": {
+              "cyclomatic": "12",
+              "duplicates": "13",
+              "fan_in": "0",
+              "fan_out": "3",
+              "functions": "9",
+              "health": "Healthy",
+              "lines": "210",
+              "public_api": "1"
+            },
+            "id": "src/parsers/vamos.rs",
+            "kind": "Remove duplicated code",
+            "message": "Within entropy budget (0.55)",
+            "module": "src/parsers/vamos.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.55 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5316616931064013,
+            "evidence": {
+              "cyclomatic": "17",
+              "duplicates": "6",
+              "fan_in": "0",
+              "fan_out": "3",
+              "functions": "9",
+              "health": "Healthy",
+              "lines": "164",
+              "public_api": "1"
+            },
+            "id": "src/parsers/ferret.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.53)",
+            "module": "src/parsers/ferret.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.53 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5290871555397005,
+            "evidence": {
+              "cyclomatic": "6",
+              "duplicates": "5",
+              "fan_in": "0",
+              "fan_out": "4",
+              "functions": "4",
+              "health": "Healthy",
+              "lines": "117",
+              "public_api": "1"
+            },
+            "id": "src/parsers/tempcheq.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.53)",
+            "module": "src/parsers/tempcheq.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.53 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.52350096249106,
+            "evidence": {
+              "cyclomatic": "7",
+              "duplicates": "4",
+              "fan_in": "0",
+              "fan_out": "4",
+              "functions": "4",
+              "health": "Healthy",
+              "lines": "109",
+              "public_api": "1"
+            },
+            "id": "src/parsers/traci.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.52)",
+            "module": "src/parsers/traci.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.52 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5228992734168308,
+            "evidence": {
+              "cyclomatic": "14",
+              "duplicates": "3",
+              "fan_in": "0",
+              "fan_out": "4",
+              "functions": "6",
+              "health": "Healthy",
+              "lines": "126",
+              "public_api": "1"
+            },
+            "id": "src/parsers/ami.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.52)",
+            "module": "src/parsers/ami.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.52 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5226618405223792,
+            "evidence": {
+              "cyclomatic": "12",
+              "duplicates": "2",
+              "fan_in": "0",
+              "fan_out": "4",
+              "functions": "7",
+              "health": "Healthy",
+              "lines": "164",
+              "public_api": "1"
+            },
+            "id": "src/parsers/amber.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.52)",
+            "module": "src/parsers/amber.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.52 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.5055723937540879,
+            "evidence": {
+              "cyclomatic": "5",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "3",
+              "functions": "2",
+              "health": "Healthy",
+              "lines": "63",
+              "public_api": "1"
+            },
+            "id": "src/parsers/bart.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.51)",
+            "module": "src/parsers/bart.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.51 below threshold 0.82"
+          },
+          {
+            "confidence": null,
+            "entropy": 0.430349710567501,
+            "evidence": {
+              "cyclomatic": "0",
+              "duplicates": "0",
+              "fan_in": "0",
+              "fan_out": "0",
+              "functions": "13",
+              "health": "Healthy",
+              "lines": "114",
+              "public_api": "0"
+            },
+            "id": "tests/kaptaind_integration.rs",
+            "kind": "Extract cohesive functions",
+            "message": "Within entropy budget (0.43)",
+            "module": "tests/kaptaind_integration.rs",
+            "next_action": "No action required",
+            "severity": "info",
+            "why": "entropy 0.43 below threshold 0.82"
+          }
+        ],
+        "root": "/home/sal/uni",
+        "schema": "fract.report/v1",
+        "summary": {
+          "critical": 0,
+          "excellent": 0,
+          "healthy": 18,
+          "score": 88.8,
+          "total": 25,
+          "warning": 7
+        }
+      }
+    },
+    {
+      "tool": "isopod",
+      "purpose": "ISO27001/27002 compliance posture",
+      "status": "no_data",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 0
+      },
+      "binary": "/home/sal/.local/bin/isopod",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 357,
+      "summary": "0/0 controls assessed (0.0% coverage): 0 pass, 0 warn, 0 fail, 0 unknown",
+      "findings": [],
+      "note": "coverage is 0.0%; compliance is ungraded below the 80% evidence threshold, and UNKNOWN controls are not treated as failures",
+      "raw": []
+    },
+    {
+      "tool": "jeenome",
+      "purpose": "behavioural trace analysis (opt-in)",
+      "status": "skipped",
+      "availability": "not_checked",
+      "execution": "skipped",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": null,
+      "duration_ms": null,
+      "summary": "skipped",
+      "findings": [],
+      "note": "jeenome is opt-in (needs an strace trace, not just a project path); pass --jeenome to include it",
+      "raw": null
+    },
+    {
+      "tool": "lwoodz",
+      "purpose": "license / SPDX compliance",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/home/sal/lwoodz/target/debug/lwoodz",
+      "score": 97.3913043478261,
+      "grade": "A+",
+      "exit_code": 0,
+      "duration_ms": 1718,
+      "summary": "license=MIT, spdx_valid=true, header coverage 25/25, 0 incompatible / 21 warning issues among 161 deps",
+      "findings": [
+        "icu_collections [warning]: Dependency 'icu_collections' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+        "icu_locale_core [warning]: Dependency 'icu_locale_core' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+        "icu_normalizer [warning]: Dependency 'icu_normalizer' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+        "icu_normalizer_data [warning]: Dependency 'icu_normalizer_data' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+        "icu_properties [warning]: Dependency 'icu_properties' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements."
+      ],
+      "note": "advisory warning deductions are proportional to dependency count; missing licenses and incompatible dependencies remain hard findings",
+      "raw": {
+        "compatibility": {
+          "incompatible": 0,
+          "issues": [
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "icu_collections",
+              "reason": "Dependency 'icu_collections' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "icu_locale_core",
+              "reason": "Dependency 'icu_locale_core' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "icu_normalizer",
+              "reason": "Dependency 'icu_normalizer' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "icu_normalizer_data",
+              "reason": "Dependency 'icu_normalizer_data' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "icu_properties",
+              "reason": "Dependency 'icu_properties' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "icu_properties_data",
+              "reason": "Dependency 'icu_properties_data' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "icu_provider",
+              "reason": "Dependency 'icu_provider' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "litemap",
+              "reason": "Dependency 'litemap' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Apache-2.0/MIT",
+              "dependency": "md5",
+              "reason": "Dependency 'md5' (Apache-2.0/MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "potential_utf",
+              "reason": "Dependency 'potential_utf' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "MIT/Apache-2.0",
+              "dependency": "serde_urlencoded",
+              "reason": "Dependency 'serde_urlencoded' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "tinystr",
+              "reason": "Dependency 'tinystr' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "CDLA-Permissive-2.0",
+              "dependency": "webpki-roots",
+              "reason": "Dependency 'webpki-roots' (CDLA-Permissive-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "writeable",
+              "reason": "Dependency 'writeable' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "yoke",
+              "reason": "Dependency 'yoke' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "yoke-derive",
+              "reason": "Dependency 'yoke-derive' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "zerofrom",
+              "reason": "Dependency 'zerofrom' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "zerofrom-derive",
+              "reason": "Dependency 'zerofrom-derive' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "zerotrie",
+              "reason": "Dependency 'zerotrie' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "zerovec",
+              "reason": "Dependency 'zerovec' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            },
+            {
+              "dep_license": "Unicode-3.0",
+              "dependency": "zerovec-derive",
+              "reason": "Dependency 'zerovec-derive' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+              "severity": "warning"
+            }
+          ],
+          "total_deps": 161,
+          "warnings": 21
+        },
+        "detected_license": "MIT",
+        "findings": [
+          {
+            "code": "MISSING_SPDX_MANIFEST",
+            "level": "warning",
+            "message": "SPDX manifest not found at .lwoodz/manifest.json — run `lwoodz generate`",
+            "path": ".lwoodz/manifest.json"
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'icu_collections' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'icu_locale_core' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'icu_normalizer' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'icu_normalizer_data' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'icu_properties' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'icu_properties_data' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'icu_provider' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'litemap' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'md5' (Apache-2.0/MIT) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'potential_utf' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'serde_urlencoded' (MIT/Apache-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'tinystr' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'webpki-roots' (CDLA-Permissive-2.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'writeable' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'yoke' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'yoke-derive' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'zerofrom' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'zerofrom-derive' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'zerotrie' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'zerovec' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          },
+          {
+            "code": "COMPAT_WARNING",
+            "level": "warning",
+            "message": "Dependency 'zerovec-derive' (Unicode-3.0) may impose additional obligations when combined with 'MIT'. Review copyleft / attribution requirements.",
+            "path": null
+          }
+        ],
+        "generated_at": "2026-08-27T13:06:37.146248211+00:00",
+        "has_license_file": true,
+        "header_coverage": {
+          "missing": 0,
+          "total_files": 25,
+          "with_header": 25
+        },
+        "holder": "sal",
+        "passed": true,
+        "project_license": "MIT",
+        "spdx_manifest_exists": false,
+        "spdx_valid": true,
+        "year": 2026
+      }
+    },
+    {
+      "tool": "tempcheq",
+      "purpose": "LLM sampling-temperature correctness",
+      "status": "not_applicable",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 0
+      },
+      "binary": "/home/sal/.local/bin/tempcheq",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 270,
+      "summary": "not applicable: no inference actions found",
+      "findings": [],
+      "note": "zero observations do not establish project health and are excluded from scoring",
+      "raw": {
+        "actions": [],
+        "implicit_default": 0,
+        "inapplicable": 0,
+        "material_deviations": 0,
+        "temperature_controlled": 0,
+        "total_actions": 0,
+        "workspace": "/home/sal/uni"
+      }
+    },
+    {
+      "tool": "traci",
+      "purpose": "observability/telemetry completeness",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 26
+      },
+      "binary": "/home/sal/.local/bin/traci",
+      "score": null,
+      "grade": null,
+      "exit_code": 2,
+      "duration_ms": 104,
+      "summary": "25 files, 26 observability diagnostics: 0 critical, 2 error-severity, 24 warning-severity, 0 info",
+      "findings": [
+        "[observability/error] TRC001 /home/sal/uni/src/cohort.rs:62 — failure path has no nearby structured diagnostic event",
+        "[observability/error] TRC005 /home/sal/uni/src/cohort.rs:164 — spawned task does not explicitly preserve trace context",
+        "[observability/warning] TRC008 /home/sal/uni/src/animation.rs:24 — public async boundary exposes no configured correlation field",
+        "[observability/warning] TRC008 /home/sal/uni/src/cohort.rs:133 — public async boundary exposes no configured correlation field",
+        "[observability/warning] TRC008 /home/sal/uni/src/kaptaind.rs:371 — public async boundary exposes no configured correlation field"
+      ],
+      "note": "observability diagnostics are not assigned a project-health score because Traci does not expose a total opportunity/coverage denominator",
+      "raw": {
+        "diagnostics": [
+          {
+            "column": 1,
+            "line": 24,
+            "message": "public async boundary exposes no configured correlation field",
+            "path": "/home/sal/uni/src/animation.rs",
+            "rule": "TRC008",
+            "severity": "warning",
+            "snippet": "pub async fn present(report: &HumanReport) -> io::Result<()> {"
+          },
+          {
+            "column": 9,
+            "line": 62,
+            "message": "failure path has no nearby structured diagnostic event",
+            "path": "/home/sal/uni/src/cohort.rs",
+            "rule": "TRC001",
+            "severity": "error",
+            "snippet": "return Err(format!("
+          },
+          {
+            "column": 1,
+            "line": 133,
+            "message": "public async boundary exposes no configured correlation field",
+            "path": "/home/sal/uni/src/cohort.rs",
+            "rule": "TRC008",
+            "severity": "warning",
+            "snippet": "pub async fn run(cohort: &CohortOptions, base: &AnalyzeOptions) -> Result<CohortReport, String> {"
+          },
+          {
+            "column": 13,
+            "line": 164,
+            "message": "spawned task does not explicitly preserve trace context",
+            "path": "/home/sal/uni/src/cohort.rs",
+            "rule": "TRC005",
+            "severity": "error",
+            "snippet": "handles.push(tokio::spawn(async move {"
+          },
+          {
+            "column": 1,
+            "line": 371,
+            "message": "public async boundary exposes no configured correlation field",
+            "path": "/home/sal/uni/src/kaptaind.rs",
+            "rule": "TRC008",
+            "severity": "warning",
+            "snippet": "pub async fn preserve_worktree("
+          },
+          {
+            "column": 1,
+            "line": 417,
+            "message": "public async boundary exposes no configured correlation field",
+            "path": "/home/sal/uni/src/kaptaind.rs",
+            "rule": "TRC008",
+            "severity": "warning",
+            "snippet": "pub async fn restore_worktree("
+          },
+          {
+            "column": 1,
+            "line": 451,
+            "message": "public async boundary exposes no configured correlation field",
+            "path": "/home/sal/uni/src/kaptaind.rs",
+            "rule": "TRC008",
+            "severity": "warning",
+            "snippet": "pub async fn with_isolated_worktree<F, T>("
+          },
+          {
+            "column": 1,
+            "line": 542,
+            "message": "public async boundary exposes no configured correlation field",
+            "path": "/home/sal/uni/src/kaptaind.rs",
+            "rule": "TRC008",
+            "severity": "warning",
+            "snippet": "pub async fn get_current_head(repo_path: &std::path::Path) -> Result<String, String> {"
+          },
+          {
+            "column": 1,
+            "line": 561,
+            "message": "public async boundary exposes no configured correlation field",
+            "path": "/home/sal/uni/src/kaptaind.rs",
+            "rule": "TRC008",
+            "severity": "warning",
+            "snippet": "pub async fn hash_worktree_state(repo_path: &std::path::Path) -> Result<String, String> {"
+          },
+          {
+            "column": 1,
+            "line": 576,
+            "message": "public async boundary exposes no configured correlation field",
+            "path": "/home/sal/uni/src/kaptaind.rs",
+            "rule": "TRC008",
+            "severity": "warning",
+            "snippet": "pub async fn hash_index_state(repo_path: &std::path::Path) -> Result<String, String> {"
+          },
+          {
+            "column": 1,
+            "line": 593,
+            "message": "public async boundary exposes no configured correlation field",
+            "path": "/home/sal/uni/src/kaptaind.rs",
+            "rule": "TRC008",
+            "severity": "warning",
+            "snippet": "pub async fn fingerprint_state("
+          },
+          {
+            "column": 1,
+            "line": 620,
+            "message": "public async boundary exposes no configured correlation field",
+            "path": "/home/sal/uni/src/kaptaind.rs",
+            "rule": "TRC008",
+            "severity": "warning",
+            "snippet": "pub async fn check_plan_staleness("
+          },
+          {
+            "column": 1,
+            "line": 664,
+            "message": "public async boundary exposes no configured correlation field",
+            "path": "/home/sal/uni/src/kaptaind.rs",
+            "rule": "TRC008",
+            "severity": "warning",
+            "snippet": "pub async fn probe_tool_capability("
+          },
+          {
+            "column": 1,
+            "line": 686,
+            "message": "public async boundary exposes no configured correlation field",
+            "path": "/home/sal/uni/src/kaptaind.rs",
+            "rule": "TRC008",
+            "severity": "warning",
+            "snippet": "pub async fn discover_tool_capabilities("
+          },
+          {
+            "column": 1,
+            "line": 742,
+            "message": "public async boundary exposes no configured correlation field",
+            "path": "/home/sal/uni/src/kaptaind.rs",
+            "rule": "TRC008",
+            "severity": "warning",
+            "snippet": "pub async fn can_remediate("
+          },
+          {
+            "column": 1,
+            "line": 797,
+            "message": "public async boundary exposes no configured correlation field",
+            "path": "/home/sal/uni/src/kaptaind.rs",
+            "rule": "TRC008",
+            "severity": "warning",
+            "snippet": "pub async fn rollback_remediation("
+          },
+          {
+            "column": 1,
+            "line": 833,
+            "message": "public async boundary exposes no configured correlation field",
+            "path": "/home/sal/uni/src/kaptaind.rs",
+            "rule": "TRC008",
+            "severity": "warning",
+            "snippet": "pub async fn verify_remediation("
+          },
+          {
+            "column": 1,
+            "line": 865,
+            "message": "public async boundary exposes no configured correlation field",
+            "path": "/home/sal/uni/src/kaptaind.rs",
+            "rule": "TRC008",
+            "severity": "warning",
+            "snippet": "pub async fn merge_remediation("
+          },
+          {
+            "column": 5,
+            "line": 942,
+            "message": "public async boundary exposes no configured correlation field",
+            "path": "/home/sal/uni/src/kaptaind.rs",
+            "rule": "TRC008",
+            "severity": "warning",
+            "snippet": "pub async fn save_transaction("
+          },
+          {
+            "column": 5,
+            "line": 961,
+            "message": "public async boundary exposes no configured correlation field",
+            "path": "/home/sal/uni/src/kaptaind.rs",
+            "rule": "TRC008",
+            "severity": "warning",
+            "snippet": "pub async fn load_transaction("
+          },
+          {
+            "column": 5,
+            "line": 978,
+            "message": "public async boundary exposes no configured correlation field",
+            "path": "/home/sal/uni/src/kaptaind.rs",
+            "rule": "TRC008",
+            "severity": "warning",
+            "snippet": "pub async fn list_transactions("
+          },
+          {
+            "column": 1,
+            "line": 25,
+            "message": "public async boundary exposes no configured correlation field",
+            "path": "/home/sal/uni/src/kaptaind_cli.rs",
+            "rule": "TRC008",
+            "severity": "warning",
+            "snippet": "pub async fn execute_command(cmd: KaptaindCommand, repo_path: &Path) -> Result<String, String> {"
+          },
+          {
+            "column": 1,
+            "line": 351,
+            "message": "public async boundary exposes no configured correlation field",
+            "path": "/home/sal/uni/src/revise.rs",
+            "rule": "TRC008",
+            "severity": "warning",
+            "snippet": "pub async fn execute(args: &ReviseArgs) -> Result<ReviseReport, String> {"
+          },
+          {
+            "column": 1,
+            "line": 725,
+            "message": "public async boundary exposes no configured correlation field",
+            "path": "/home/sal/uni/src/revise.rs",
+            "rule": "TRC008",
+            "severity": "warning",
+            "snippet": "pub async fn build_kaptaind_plan("
+          },
+          {
+            "column": 1,
+            "line": 29,
+            "message": "public async boundary exposes no configured correlation field",
+            "path": "/home/sal/uni/src/run.rs",
+            "rule": "TRC008",
+            "severity": "warning",
+            "snippet": "pub async fn execute(opts: &AnalyzeOptions) -> Result<Report, String> {"
+          },
+          {
+            "column": 1,
+            "line": 38,
+            "message": "public async boundary exposes no configured correlation field",
+            "path": "/home/sal/uni/src/run.rs",
+            "rule": "TRC008",
+            "severity": "warning",
+            "snippet": "pub async fn execute_with_admitter("
+          }
+        ],
+        "summary": {
+          "critical": 0,
+          "diagnostics": 26,
+          "errors": 2,
+          "files": 25,
+          "info": 0,
+          "warnings": 24
+        }
+      }
+    },
+    {
+      "tool": "vamos",
+      "purpose": "nominal vs. validated action completion",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/home/sal/vamos/target/debug/vamos",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 87,
+      "summary": "no action instances recorded yet",
+      "findings": [],
+      "note": "vamos.toml is present but no instances have been triggered yet; run `vamos trigger`/`step`/`fact` against real usage to start scoring completion",
+      "raw": null
+    }
+  ],
+  "overall": {
+    "score": 84.62818322981366,
+    "grade": "B",
+    "graded_tools": 4,
+    "total_tools": 12,
+    "weights": [
+      [
+        "amber",
+        1.0
+      ],
+      [
+        "chakra",
+        1.0
+      ],
+      [
+        "fract",
+        1.0
+      ],
+      [
+        "lwoodz",
+        1.0
+      ]
+    ],
+    "provisional": true
+  },
+  "suite": {
+    "required_tools": 10,
+    "available_tools": 10,
+    "executed_tools": 9,
+    "valid_results": 9,
+    "analysis_coverage": 0.44642857142857145,
+    "confidence": 1.0
+  },
+  "integrity": {
+    "status": "degraded",
+    "score": 90.0,
+    "grade": "A-",
+    "defects": [
+      "ferret: error"
+    ]
+  }
+}

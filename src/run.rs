@@ -27,8 +27,22 @@ async fn tag<F: std::future::Future<Output = ToolReport>>(
 }
 
 pub async fn execute(opts: &AnalyzeOptions) -> Result<Report, String> {
+    execute_with_admitter(opts, None).await
+}
+
+/// Same as [`execute`], but accepts a pre-built [`Admitter`] to share across
+/// multiple targets (used by cohort mode, so every repo in a batch reuses
+/// one ingauge client/connection instead of each building its own). `None`
+/// builds one internally from the environment, same as [`execute`] always
+/// did.
+pub async fn execute_with_admitter(
+    opts: &AnalyzeOptions,
+    shared_admitter: Option<Arc<Admitter>>,
+) -> Result<Report, String> {
     let target = std::fs::canonicalize(&opts.target)
         .map_err(|e| format!("target path {:?} is not accessible: {e}", opts.target))?;
+
+    generate_bound_snapshot(&target);
 
     let tools_dir = opts
         .tools_dir
@@ -55,7 +69,19 @@ pub async fn execute(opts: &AnalyzeOptions) -> Result<Report, String> {
     };
 
     let timeout = Duration::from_secs(opts.timeout);
-    let admitter = Arc::new(Admitter::from_env());
+    let admitter = shared_admitter.unwrap_or_else(|| Arc::new(Admitter::from_env()));
+    let selected_tools: Vec<ToolId> = ToolId::ALL
+        .into_iter()
+        .filter(|tool| selected(*tool))
+        .collect();
+    let poka_notes = prepare_missing_inputs_with_poka(
+        &target,
+        &selected_tools,
+        timeout,
+        tool::resolve_binary_by_name("poka"),
+        &tools_dir,
+    )
+    .await;
 
     let mut handles: Vec<tokio::task::JoinHandle<(ToolId, ToolReport)>> = Vec::new();
     let mut immediate: BTreeMap<&'static str, ToolReport> = BTreeMap::new();
@@ -142,6 +168,12 @@ pub async fn execute(opts: &AnalyzeOptions) -> Result<Report, String> {
         }
     }
 
+    for (tool, note) in poka_notes {
+        if let Some(report) = immediate.get_mut(tool.key()) {
+            append_note(report, note);
+        }
+    }
+
     let tools: Vec<ToolReport> = ToolId::ALL
         .into_iter()
         .map(|t| {
@@ -166,6 +198,317 @@ pub async fn execute(opts: &AnalyzeOptions) -> Result<Report, String> {
         suite,
         integrity,
     })
+}
+
+/// Poka owns project-policy materialization. Before an analyzer whose native
+/// configuration is indexed by Poka runs, make a missing config explicit in
+/// `poka.toml`, ask Poka to materialize it, and only then start assessments.
+/// Existing files are never regenerated.
+async fn prepare_missing_inputs_with_poka(
+    target: &Path,
+    selected: &[ToolId],
+    timeout: Duration,
+    poka_bin: Option<PathBuf>,
+    tools_dir: &Path,
+) -> BTreeMap<ToolId, String> {
+    let missing: Vec<(ToolId, &'static str)> = selected
+        .iter()
+        .filter_map(|tool| poka_managed_input(*tool).map(|path| (*tool, path)))
+        .filter(|(_, path)| !target.join(path).is_file())
+        .collect();
+    if missing.is_empty() {
+        return BTreeMap::new();
+    }
+
+    let mut notes = BTreeMap::new();
+    let Some(poka_bin) = poka_bin else {
+        for (tool, path) in missing {
+            notes.insert(
+                tool,
+                format!(
+                    "{path} was missing; Poka is unavailable, so the assessment ran with the tool's built-in defaults"
+                ),
+            );
+        }
+        return notes;
+    };
+
+    let tools: Vec<&str> = missing.iter().map(|(tool, _)| tool.key()).collect();
+    let manifest = target.join("poka.toml");
+    let preparation = if manifest.is_file() {
+        enable_poka_tools(&manifest, &tools)
+    } else {
+        run_poka_init(&poka_bin, target, &tools, timeout).await
+    };
+
+    if let Err(error) = preparation {
+        tracing::error!(target = %target.display(), %error, "Poka prerequisite configuration failed");
+        for (tool, path) in missing {
+            notes.insert(
+                tool,
+                format!(
+                    "{path} was missing; Poka could not configure the target ({error}); assessment still ran"
+                ),
+            );
+        }
+        return notes;
+    }
+
+    let apply = run_poka_apply(&poka_bin, target, timeout).await;
+    for (tool, path) in missing {
+        let mut compatibility_fallback = false;
+        if !target.join(path).is_file()
+            && apply
+                .as_ref()
+                .err()
+                .is_some_and(|error| error.contains("unexpected argument '--init'"))
+        {
+            if let Some(binary) = tool::resolve_binary(tool, tools_dir) {
+                match run_native_input_init(tool, &binary, target, timeout).await {
+                    Ok(()) if target.join(path).is_file() => compatibility_fallback = true,
+                    Ok(()) => tracing::error!(
+                        tool = tool.key(),
+                        input = path,
+                        "native Poka compatibility initializer exited successfully without creating its input"
+                    ),
+                    Err(error) => tracing::error!(
+                        tool = tool.key(),
+                        input = path,
+                        %error,
+                        "native Poka compatibility initializer failed"
+                    ),
+                }
+            }
+        }
+        let note = match &apply {
+            _ if compatibility_fallback => format!(
+                "Poka's stale generator was repaired with the current native `{}` initializer; created {path}",
+                tool.key()
+            ),
+            Ok(()) if target.join(path).is_file() => {
+                format!("Poka created {path} before the assessment")
+            }
+            Ok(()) => format!(
+                "{path} was missing and remained absent after `poka apply`; assessment still ran"
+            ),
+            Err(error) => {
+                tracing::error!(
+                    tool = tool.key(),
+                    input = path,
+                    %error,
+                    "Poka failed to materialize analyzer input"
+                );
+                format!("{path} was missing; `poka apply` failed ({error}); assessment still ran")
+            }
+        };
+        notes.insert(tool, note);
+    }
+    notes
+}
+
+fn native_input_init_args(tool: ToolId) -> Option<&'static [&'static str]> {
+    match tool {
+        ToolId::Lwoodz => Some(&["init"]),
+        ToolId::Traci => Some(&["init", "--force"]),
+        _ => None,
+    }
+}
+
+async fn run_native_input_init(
+    tool: ToolId,
+    binary: &Path,
+    target: &Path,
+    timeout: Duration,
+) -> Result<(), String> {
+    let Some(args) = native_input_init_args(tool) else {
+        tracing::error!(
+            tool = tool.key(),
+            "no native Poka compatibility initializer is registered"
+        );
+        return Err(format!(
+            "no native initializer is registered for {}",
+            tool.key()
+        ));
+    };
+    let mut command = tokio::process::Command::new(binary);
+    command
+        .current_dir(target)
+        .args(args)
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .stdin(Stdio::null());
+    match tokio::time::timeout(timeout, command.output()).await {
+        Ok(Ok(output)) if output.status.success() => Ok(()),
+        Ok(Ok(output)) => {
+            let exit_code = output.status.code();
+            let detail = compact_diagnostic(&output);
+            tracing::error!(
+                tool = tool.key(),
+                ?exit_code,
+                detail = %detail,
+                "native Poka compatibility initializer failed"
+            );
+            Err(format!(
+                "{} initializer exited {exit_code:?}: {detail}",
+                tool.key()
+            ))
+        }
+        Ok(Err(error)) => {
+            tracing::error!(tool = tool.key(), %error, "native Poka compatibility initializer could not start");
+            Err(format!(
+                "failed to start {} initializer: {error}",
+                tool.key()
+            ))
+        }
+        Err(_) => {
+            tracing::error!(
+                tool = tool.key(),
+                timeout_s = timeout.as_secs(),
+                "native Poka compatibility initializer timed out"
+            );
+            Err(format!("{} initializer timed out", tool.key()))
+        }
+    }
+}
+
+fn poka_managed_input(tool: ToolId) -> Option<&'static str> {
+    match tool {
+        ToolId::Lwoodz => Some("lwoodz.toml"),
+        ToolId::Traci => Some("traci.toml"),
+        _ => None,
+    }
+}
+
+fn enable_poka_tools(manifest: &Path, tools: &[&str]) -> Result<(), String> {
+    let source = std::fs::read_to_string(manifest)
+        .map_err(|error| format!("could not read {}: {error}", manifest.display()))?;
+    let updated = poka_manifest_with_tools(&source, tools);
+    if updated != source {
+        std::fs::write(manifest, updated)
+            .map_err(|error| format!("could not update {}: {error}", manifest.display()))?;
+    }
+    Ok(())
+}
+
+fn poka_manifest_with_tools(source: &str, tools: &[&str]) -> String {
+    let lines: Vec<&str> = source.lines().collect();
+    let tools_start = lines.iter().position(|line| line.trim() == "[tools]");
+    let (insert_at, present) = if let Some(start) = tools_start {
+        let end = lines
+            .iter()
+            .enumerate()
+            .skip(start + 1)
+            .find(|(_, line)| line.trim_start().starts_with('['))
+            .map(|(index, _)| index)
+            .unwrap_or(lines.len());
+        let present = lines[start + 1..end]
+            .iter()
+            .filter_map(|line| line.split_once('=').map(|(key, _)| key.trim()))
+            .collect::<Vec<_>>();
+        (end, present)
+    } else {
+        (lines.len(), Vec::new())
+    };
+    let additions: Vec<&str> = tools
+        .iter()
+        .copied()
+        .filter(|tool| !present.contains(tool))
+        .collect();
+    if additions.is_empty() {
+        return source.to_string();
+    }
+
+    let mut output = String::new();
+    for (index, line) in lines.iter().enumerate() {
+        if index == insert_at {
+            if tools_start.is_none() {
+                output.push_str("\n[tools]\n");
+            }
+            for tool in &additions {
+                output.push_str(&format!("{tool} = true\n"));
+            }
+            output.push('\n');
+        }
+        output.push_str(line);
+        output.push('\n');
+    }
+    if insert_at == lines.len() {
+        if tools_start.is_none() {
+            output.push_str("\n[tools]\n");
+        }
+        for tool in additions {
+            output.push_str(&format!("{tool} = true\n"));
+        }
+    }
+    output
+}
+
+async fn run_poka_init(
+    poka_bin: &Path,
+    target: &Path,
+    tools: &[&str],
+    timeout: Duration,
+) -> Result<(), String> {
+    let name = target
+        .file_name()
+        .and_then(|name| name.to_str())
+        .filter(|name| !name.is_empty())
+        .unwrap_or("project");
+    let mut command = tokio::process::Command::new(poka_bin);
+    command
+        .current_dir(target)
+        .args(["init", "--name", name, "--tools", &tools.join(",")]);
+    run_poka_command(command, "poka init", timeout).await
+}
+
+async fn run_poka_apply(poka_bin: &Path, target: &Path, timeout: Duration) -> Result<(), String> {
+    let mut command = tokio::process::Command::new(poka_bin);
+    command.current_dir(target).arg("apply");
+    run_poka_command(command, "poka apply", timeout).await
+}
+
+async fn run_poka_command(
+    mut command: tokio::process::Command,
+    stage: &str,
+    timeout: Duration,
+) -> Result<(), String> {
+    command
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .stdin(Stdio::null());
+    match tokio::time::timeout(timeout, command.output()).await {
+        Ok(Ok(output)) if output.status.success() => Ok(()),
+        Ok(Ok(output)) => {
+            let exit_code = output.status.code();
+            let detail = compact_diagnostic(&output);
+            tracing::error!(
+                stage = stage,
+                exit_code = ?exit_code,
+                detail = %detail,
+                "Poka command failed"
+            );
+            Err(format!("{stage} exited {exit_code:?}: {detail}"))
+        }
+        Ok(Err(error)) => {
+            tracing::error!(stage = stage, error = %error, "Poka command could not start");
+            Err(format!("failed to start {stage}: {error}"))
+        }
+        Err(_) => {
+            tracing::error!(
+                stage,
+                timeout_s = timeout.as_secs(),
+                "Poka command timed out"
+            );
+            Err(format!("{stage} timed out after {}s", timeout.as_secs()))
+        }
+    }
+}
+
+fn append_note(report: &mut ToolReport, note: String) {
+    report.note = Some(match report.note.take() {
+        Some(existing) => format!("{existing}; {note}"),
+        None => note,
+    });
 }
 
 /// Resolve an installed tool, or bootstrap its associated elci-group checkout
@@ -484,6 +827,16 @@ fn diagnostic(output: &Output) -> String {
         .collect::<String>()
 }
 
+fn compact_diagnostic(output: &Output) -> String {
+    diagnostic(output)
+        .split_whitespace()
+        .collect::<Vec<_>>()
+        .join(" ")
+        .chars()
+        .take(240)
+        .collect()
+}
+
 /// Run one visible bootstrap stage. Interactive terminals get a compact
 /// spinner; redirected/CI output gets one stable start line. Every path emits
 /// local-only telemetry to stderr, including spawn failures.
@@ -599,8 +952,30 @@ fn build_command(tool: ToolId, bin: &Path, target: &Path) -> tokio::process::Com
         }
         ToolId::Jeenome => unreachable!("jeenome is built by run_jeenome"),
         ToolId::Vamos => unreachable!("vamos is built by run_vamos"),
+        ToolId::VivaPalestina => {
+            cmd.arg("scan").arg(target).arg("--detailed");
+        }
     }
     cmd
+}
+
+/// Waits for ingauge admission, logging a stderr telemetry line when a real
+/// delay occurred. `wait_and_admit`'s own cooldown display is a live
+/// terminal timer — presentation output only, invisible in a captured or
+/// redirected log — so a long unattended (e.g. cohort) run's gate
+/// backpressure would otherwise leave no trace.
+async fn admit_with_telemetry(admitter: &Admitter, tool: &str, provider: &str) {
+    let start = Instant::now();
+    let _ = admitter
+        .wait_and_admit(provider, Option::<String>::None, None)
+        .await;
+    let elapsed = start.elapsed();
+    if elapsed > Duration::from_millis(200) {
+        eprintln!(
+            "uni: tool={tool} stage=gate outcome=delayed provider={provider} elapsed_ms={}",
+            elapsed.as_millis()
+        );
+    }
 }
 
 async fn run_one(
@@ -611,9 +986,7 @@ async fn run_one(
     admitter: Arc<Admitter>,
 ) -> ToolReport {
     if let Some(provider) = tool.gate_provider() {
-        let _ = admitter
-            .wait_and_admit(provider, Option::<String>::None, None)
-            .await;
+        admit_with_telemetry(&admitter, tool.key(), provider).await;
     }
 
     let mut cmd = if tool == ToolId::Ferret {
@@ -662,6 +1035,11 @@ async fn run_one(
     cmd.stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .stdin(Stdio::null());
+    // Captured for error/incompatible reports and debug logs so a failure is
+    // reproducible by copy-pasting the exact invocation, rather than making
+    // someone reconstruct it from `build_command`'s per-tool branches.
+    let cmd_display = format!("{cmd:?}");
+    tracing::debug!(tool = tool.key(), command = %cmd_display, "spawning tool");
 
     let start = Instant::now();
     let outcome = tokio::time::timeout(timeout, cmd.output()).await;
@@ -674,26 +1052,34 @@ async fn run_one(
     let output = match outcome {
         Ok(Ok(o)) => o,
         Ok(Err(e)) => {
-            eprintln!(
-                "uni: tool={} stage=spawn outcome=failed error={e}",
-                tool.key()
+            tracing::error!(
+                tool = tool.key(),
+                stage = "spawn",
+                command = %cmd_display,
+                error = %e,
+                "tool failed to spawn"
             );
             return error_report(
                 tool,
-                format!("failed to spawn: {e}"),
+                format!("failed to spawn `{cmd_display}`: {e}"),
                 None,
                 Some(duration_ms),
             );
         }
         Err(_) => {
-            eprintln!(
-                "uni: tool={} stage=run outcome=timeout timeout_s={}",
-                tool.key(),
-                timeout.as_secs()
+            tracing::error!(
+                tool = tool.key(),
+                stage = "run",
+                command = %cmd_display,
+                timeout_s = timeout.as_secs(),
+                "tool timed out"
             );
             return error_report(
                 tool,
-                format!("timed out after {}s", timeout.as_secs()),
+                format!(
+                    "timed out after {}s running `{cmd_display}`",
+                    timeout.as_secs()
+                ),
                 None,
                 Some(duration_ms),
             );
@@ -705,16 +1091,48 @@ async fn run_one(
     let exit_code = output.status.code();
 
     if stdout.trim().is_empty() {
-        let stderr_snippet: String = stderr.chars().take(300).collect();
+        // Cap well above the old 300 chars: clap/usage errors (the shape
+        // ferret produces when its CLI contract drifts from what uni
+        // invokes) are often a multi-line usage block, and truncating too
+        // early was hiding the actual cause line.
+        let stderr_snippet: String = stderr.chars().take(4000).collect();
+        tracing::error!(
+            tool = tool.key(),
+            stage = "run",
+            command = %cmd_display,
+            ?exit_code,
+            stderr = %stderr,
+            "tool produced no stdout"
+        );
         return error_report(
             tool,
-            format!("produced no stdout; stderr: {stderr_snippet}"),
+            format!(
+                "`{cmd_display}` produced no stdout (exit {exit_code:?}); stderr: {stderr_snippet}"
+            ),
             exit_code,
             Some(duration_ms),
         );
     }
 
     let parsed = parsers::parse(tool, &stdout, exit_code);
+    if parsed.status == Status::Error {
+        tracing::error!(
+            tool = tool.key(),
+            command = %cmd_display,
+            ?exit_code,
+            note = parsed.note.as_deref().unwrap_or(""),
+            stderr = %stderr,
+            "tool ran but its output could not be parsed into a graded result"
+        );
+    } else {
+        tracing::debug!(
+            tool = tool.key(),
+            ?exit_code,
+            duration_ms,
+            status = ?parsed.status,
+            "tool run complete"
+        );
+    }
     let evidence = evidence_for(tool, parsed.raw.as_ref());
     ToolReport {
         tool: tool.key(),
@@ -796,23 +1214,31 @@ async fn lwoodz_audit_args(bin: &Path) -> Option<Vec<String>> {
 
 /// Ferret has shipped the project-wide review under both names: prefer the
 /// requested `hunt` spelling and retain compatibility with builds that expose
-/// it as `track`. A help probe is side-effect free and avoids guessing from a
-/// version string.
+/// it as `track`.
+///
+/// This must NOT be probed as `ferret <subcommand> --help` exiting
+/// successfully: current ferret builds accept an optional `[TARGET]`
+/// positional ahead of the subcommand at the top level, so clap happily
+/// parses an unrecognized word like `hunt` as TARGET and then `--help`
+/// short-circuits with exit 0 regardless — the probe "succeeds" for a
+/// subcommand that doesn't exist, uni then invokes it, and ferret fails with
+/// `unexpected argument '<target>' found`. Instead, parse the `Commands:`
+/// section of ferret's own top-level `--help` and match against real listed
+/// subcommand names, the same way `ami_machine_args`/`lwoodz_audit_args`
+/// sniff capability from help text rather than from a probe's exit code.
 async fn ferret_hunt_subcommand(bin: &Path) -> Option<&'static str> {
-    for subcommand in ["hunt", "track"] {
-        let mut cmd = tokio::process::Command::new(bin);
-        cmd.args([subcommand, "--help"])
-            .stdout(Stdio::null())
-            .stderr(Stdio::null())
-            .stdin(Stdio::null());
-        if matches!(
-            tokio::time::timeout(Duration::from_secs(5), cmd.status()).await,
-            Ok(Ok(status)) if status.success()
-        ) {
-            return Some(subcommand);
-        }
-    }
-    None
+    let help = help_output(bin, &["--help"]).await?;
+    let listed: Vec<&str> = help
+        .lines()
+        .skip_while(|line| !line.trim_start().starts_with("Commands:"))
+        .skip(1)
+        .take_while(|line| !line.trim().is_empty())
+        .filter_map(|line| line.split_whitespace().next())
+        .collect();
+    tracing::debug!(binary = %bin.display(), ?listed, "ferret capability probe: listed subcommands");
+    ["hunt", "track"]
+        .into_iter()
+        .find(|subcommand| listed.contains(subcommand))
 }
 
 async fn run_jeenome(
@@ -850,9 +1276,7 @@ async fn run_jeenome(
         },
     };
 
-    let _ = admitter
-        .wait_and_admit("groq", Option::<String>::None, None)
-        .await;
+    admit_with_telemetry(&admitter, ToolId::Jeenome.key(), "groq").await;
 
     let mut cmd = tokio::process::Command::new(&bin);
     cmd.arg("-i")
@@ -1146,6 +1570,12 @@ fn unavailable_report(tool: ToolId, note: String) -> ToolReport {
 }
 
 fn incompatible_report(tool: ToolId, bin: &Path, note: String) -> ToolReport {
+    tracing::warn!(
+        tool = tool.key(),
+        binary = %bin.display(),
+        reason = %note,
+        "installed binary is incompatible with uni's invocation contract"
+    );
     ToolReport {
         tool: tool.key(),
         purpose: tool.purpose(),
@@ -1268,9 +1698,145 @@ fn evidence_for(tool: ToolId, raw: Option<&serde_json::Value>) -> Evidence {
     }
 }
 
+/// Generate a deterministic `bound-snapshot/v1` of the target project and
+/// persist it under `<target>/.uni/snapshot-v1.json`. Failure is logged but
+/// does not abort the uni run: downstream tools may still fall back to their
+/// own directory walking.
+fn generate_bound_snapshot(target: &Path) {
+    use bound_core::{bundle, BundleOptions, LogLevel, Logger};
+
+    let options = BundleOptions {
+        directory: target.to_path_buf(),
+        include_meta: true,
+        include_meta_hash: true,
+        include_tree: true,
+        ..BundleOptions::default()
+    };
+    let logger = Logger::new(LogLevel::Info, None);
+
+    match bundle(&options, &logger) {
+        Ok(output) => {
+            let uni_dir = target.join(".uni");
+            if let Err(e) = std::fs::create_dir_all(&uni_dir) {
+                eprintln!("uni: warning: could not create .uni directory: {e}");
+                return;
+            }
+            let path = uni_dir.join("snapshot-v1.json");
+            match serde_json::to_string_pretty(&output.snapshot) {
+                Ok(json) => {
+                    if let Err(e) = std::fs::write(&path, json) {
+                        eprintln!("uni: warning: could not write bound snapshot: {e}");
+                    } else {
+                        eprintln!("uni: bound snapshot written to {}", path.display());
+                    }
+                }
+                Err(e) => eprintln!("uni: warning: could not serialize bound snapshot: {e}"),
+            }
+        }
+        Err(e) => eprintln!("uni: warning: bound snapshot generation failed: {e}"),
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn poka_manifest_adds_missing_analyzers_without_replacing_existing_tools() {
+        let source =
+            "[project]\nname = \"demo\"\n\n[tools]\ncodex = true\n\n[rules]\ntesting = true\n";
+        let updated = poka_manifest_with_tools(source, &["lwoodz", "traci"]);
+        assert!(updated.contains("codex = true\n"));
+        assert!(updated.contains("lwoodz = true\n"));
+        assert!(updated.contains("traci = true\n"));
+        assert!(updated.find("traci = true").unwrap() < updated.find("[rules]").unwrap());
+    }
+
+    #[test]
+    fn poka_manifest_preserves_explicitly_disabled_tools() {
+        let source = "[tools]\ntraci = false\n";
+        assert_eq!(poka_manifest_with_tools(source, &["traci"]), source);
+    }
+
+    #[tokio::test]
+    #[cfg(unix)]
+    async fn poka_materializes_missing_inputs_before_assessment() {
+        use std::os::unix::fs::PermissionsExt;
+
+        let root = std::env::temp_dir().join(format!("uni-poka-test-{}", uuid::Uuid::new_v4()));
+        std::fs::create_dir_all(&root).unwrap();
+        let poka = root.join("poka");
+        std::fs::write(
+            &poka,
+            "#!/bin/sh\ncase \"$1\" in\n  init) printf '[project]\\nname = \"fixture\"\\n\\n[tools]\\nlwoodz = true\\ntraci = true\\n' > poka.toml ;;\n  apply) printf '# generated\\n' > lwoodz.toml; printf '# generated\\n' > traci.toml ;;\n  *) exit 2 ;;\nesac\n",
+        )
+        .unwrap();
+        let mut permissions = std::fs::metadata(&poka).unwrap().permissions();
+        permissions.set_mode(0o755);
+        std::fs::set_permissions(&poka, permissions).unwrap();
+
+        let notes = prepare_missing_inputs_with_poka(
+            &root,
+            &[ToolId::Lwoodz, ToolId::Traci],
+            Duration::from_secs(5),
+            Some(poka),
+            &root,
+        )
+        .await;
+
+        assert!(root.join("poka.toml").is_file());
+        assert!(root.join("lwoodz.toml").is_file());
+        assert!(root.join("traci.toml").is_file());
+        assert!(notes[&ToolId::Lwoodz].contains("Poka created lwoodz.toml"));
+        assert!(notes[&ToolId::Traci].contains("Poka created traci.toml"));
+        std::fs::remove_dir_all(root).unwrap();
+    }
+
+    #[tokio::test]
+    #[cfg(unix)]
+    async fn ferret_capability_probe_reads_the_commands_list_not_help_exit_status() {
+        use std::os::unix::fs::PermissionsExt;
+
+        // Mirrors current ferret: an optional top-level [TARGET] positional
+        // means `ferret hunt --help` parses "hunt" as TARGET and still exits
+        // 0 via clap's --help short-circuit, even though "hunt" is not a
+        // real subcommand. Only `--help` with no other args prints the real
+        // `Commands:` list (which has `track`, not `hunt`). A probe that
+        // trusts `<subcommand> --help`'s exit code (as this used to) would
+        // wrongly pick "hunt"; the fix must read the Commands: section.
+        let root =
+            std::env::temp_dir().join(format!("uni-ferret-probe-test-{}", uuid::Uuid::new_v4()));
+        std::fs::create_dir_all(&root).unwrap();
+        let ferret = root.join("ferret");
+        std::fs::write(
+            &ferret,
+            "#!/bin/sh\nif [ \"$#\" -eq 1 ] && [ \"$1\" = \"--help\" ]; then\n  cat <<'EOF'\nUsage: ferret [OPTIONS] [TARGET] [COMMAND]\n\nCommands:\n  business  Discover and independently scan coherent projects beneath ROOT\n  track     Track a CodeRabbit review on the target directory (or pwd) and learn from it\n  help      Print this message or the help of the given subcommand(s)\nEOF\n  exit 0\nfi\n# Any other args (e.g. `hunt --help`) still exit 0, same as real ferret's\n# --help short-circuit swallowing an unrecognized TARGET.\nexit 0\n",
+        )
+        .unwrap();
+        let mut permissions = std::fs::metadata(&ferret).unwrap().permissions();
+        permissions.set_mode(0o755);
+        std::fs::set_permissions(&ferret, permissions).unwrap();
+
+        assert_eq!(ferret_hunt_subcommand(&ferret).await, Some("track"));
+        std::fs::remove_dir_all(root).unwrap();
+    }
+
+    #[tokio::test]
+    async fn poka_is_not_required_when_inputs_already_exist() {
+        let root = std::env::temp_dir().join(format!("uni-poka-test-{}", uuid::Uuid::new_v4()));
+        std::fs::create_dir_all(&root).unwrap();
+        std::fs::write(root.join("lwoodz.toml"), "# existing\n").unwrap();
+        let notes = prepare_missing_inputs_with_poka(
+            &root,
+            &[ToolId::Lwoodz],
+            Duration::from_secs(1),
+            None,
+            &root,
+        )
+        .await;
+        assert!(notes.is_empty());
+        std::fs::remove_dir_all(root).unwrap();
+    }
 
     #[test]
     fn lwoodz_analysis_uses_the_audit_subcommand() {
@@ -1282,6 +1848,30 @@ mod tests {
         let args: Vec<_> = cmd.as_std().get_args().collect();
         assert_eq!(args, ["--json", "audit"]);
         assert_eq!(cmd.as_std().get_current_dir(), Some(Path::new("/project")));
+    }
+
+    #[test]
+    fn viva_palestina_analysis_uses_scan_detailed() {
+        let cmd = build_command(
+            ToolId::VivaPalestina,
+            Path::new("/bin/viva-palestina"),
+            Path::new("/project"),
+        );
+        let args: Vec<_> = cmd.as_std().get_args().collect();
+        assert_eq!(args, ["scan", "/project", "--detailed"]);
+    }
+
+    #[test]
+    fn native_poka_compatibility_initializers_follow_current_tool_clis() {
+        assert_eq!(
+            native_input_init_args(ToolId::Lwoodz),
+            Some(["init"].as_slice())
+        );
+        assert_eq!(
+            native_input_init_args(ToolId::Traci),
+            Some(["init", "--force"].as_slice())
+        );
+        assert_eq!(native_input_init_args(ToolId::Vamos), None);
     }
 
     #[test]

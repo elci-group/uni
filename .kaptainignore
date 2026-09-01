@@ -1,6 +1,7 @@
 # Common
 .git
 .kaptaind
+.uni
 .DS_Store
 *.swp
 *.swo

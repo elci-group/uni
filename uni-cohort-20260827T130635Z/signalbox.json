@@ -1,0 +1,823 @@
+{
+  "schema": "uni.report/v3",
+  "target": "/home/sal/signalbox",
+  "generated_at": "2026-08-27T13:19:40.500746280+00:00",
+  "tools_dir": "/home/sal",
+  "tools": [
+    {
+      "tool": "amber",
+      "purpose": "dependency bloat / replaceability",
+      "status": "error",
+      "availability": "installed",
+      "execution": "failed",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": 2,
+      "duration_ms": 3418,
+      "summary": "error",
+      "findings": [],
+      "note": "produced no stdout; stderr: \u001b[32m INFO\u001b[0m starting full repository analysis \u001b[3mmanifest\u001b[0m\u001b[2m=\u001b[0m/home/sal/signalbox \u001b[3moutput\u001b[0m\u001b[2m=\u001b[0mNone\n\u001b[32m INFO\u001b[0m \u001b[1mphase\u001b[0m\u001b[1m{\u001b[0m\u001b[3mphase\u001b[0m\u001b[2m=\u001b[0m\"index\"\u001b[1m}\u001b[0m\u001b[2m:\u001b[0m indexing repository dependencies \u001b[3mphase\u001b[0m\u001b[2m=\u001b[0m\"index\" \u001b[3mmanifest\u001b[0m\u001b[2m=\u001b[0m/home",
+      "raw": null
+    },
+    {
+      "tool": "ami",
+      "purpose": "project profile completeness (market-intelligence readiness)",
+      "status": "skipped",
+      "availability": "not_checked",
+      "execution": "skipped",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": null,
+      "duration_ms": null,
+      "summary": "skipped",
+      "findings": [],
+      "note": "ami is opt-in because project profiling is not code health; use `--only ami` when its installed build exposes JSON output",
+      "raw": null
+    },
+    {
+      "tool": "bart",
+      "purpose": "filesystem size & hotspots (informational)",
+      "status": "ok",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/usr/bin/bart",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 1795,
+      "summary": "27 files, 121.0 KB under root",
+      "findings": [
+        "/home/sal/signalbox/skills: 48.6 KB",
+        "/home/sal/signalbox/lib: 29.2 KB",
+        "/home/sal/signalbox/tests: 7.0 KB",
+        "/home/sal/signalbox/config: 4.7 KB",
+        "/home/sal/signalbox/.codex-plugin: 4.7 KB"
+      ],
+      "note": "informational only — bart measures disk usage, not code health",
+      "raw": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "depth": 4,
+                        "file_count": 1,
+                        "is_dir": false,
+                        "modified": 1786306782,
+                        "path": "/home/sal/signalbox/skills/signalbox-publish/agents/openai.yaml",
+                        "size": 222
+                      }
+                    ],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": true,
+                    "modified": 1786306782,
+                    "path": "/home/sal/signalbox/skills/signalbox-publish/agents",
+                    "size": 4318
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1786307242,
+                    "path": "/home/sal/signalbox/skills/signalbox-publish/SKILL.md",
+                    "size": 870
+                  }
+                ],
+                "depth": 2,
+                "file_count": 2,
+                "is_dir": true,
+                "modified": 1786307242,
+                "path": "/home/sal/signalbox/skills/signalbox-publish",
+                "size": 9284
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "depth": 4,
+                        "file_count": 1,
+                        "is_dir": false,
+                        "modified": 1786306782,
+                        "path": "/home/sal/signalbox/skills/signalbox-audit/agents/openai.yaml",
+                        "size": 232
+                      }
+                    ],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": true,
+                    "modified": 1786306782,
+                    "path": "/home/sal/signalbox/skills/signalbox-audit/agents",
+                    "size": 4328
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1786307242,
+                    "path": "/home/sal/signalbox/skills/signalbox-audit/SKILL.md",
+                    "size": 743
+                  }
+                ],
+                "depth": 2,
+                "file_count": 2,
+                "is_dir": true,
+                "modified": 1786307242,
+                "path": "/home/sal/signalbox/skills/signalbox-audit",
+                "size": 9167
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "depth": 4,
+                        "file_count": 1,
+                        "is_dir": false,
+                        "modified": 1786307253,
+                        "path": "/home/sal/signalbox/skills/signalbox-preflight/agents/openai.yaml",
+                        "size": 237
+                      }
+                    ],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": true,
+                    "modified": 1786307253,
+                    "path": "/home/sal/signalbox/skills/signalbox-preflight/agents",
+                    "size": 4333
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1786307241,
+                    "path": "/home/sal/signalbox/skills/signalbox-preflight/SKILL.md",
+                    "size": 695
+                  }
+                ],
+                "depth": 2,
+                "file_count": 2,
+                "is_dir": true,
+                "modified": 1786307253,
+                "path": "/home/sal/signalbox/skills/signalbox-preflight",
+                "size": 9124
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "depth": 4,
+                        "file_count": 1,
+                        "is_dir": false,
+                        "modified": 1786306782,
+                        "path": "/home/sal/signalbox/skills/signalbox-benchmark/agents/openai.yaml",
+                        "size": 227
+                      }
+                    ],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": true,
+                    "modified": 1786306782,
+                    "path": "/home/sal/signalbox/skills/signalbox-benchmark/agents",
+                    "size": 4323
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1786307243,
+                    "path": "/home/sal/signalbox/skills/signalbox-benchmark/SKILL.md",
+                    "size": 665
+                  }
+                ],
+                "depth": 2,
+                "file_count": 2,
+                "is_dir": true,
+                "modified": 1786307243,
+                "path": "/home/sal/signalbox/skills/signalbox-benchmark",
+                "size": 9084
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "depth": 4,
+                        "file_count": 1,
+                        "is_dir": false,
+                        "modified": 1786306782,
+                        "path": "/home/sal/signalbox/skills/signalbox-verify/agents/openai.yaml",
+                        "size": 202
+                      }
+                    ],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": true,
+                    "modified": 1786306782,
+                    "path": "/home/sal/signalbox/skills/signalbox-verify/agents",
+                    "size": 4298
+                  },
+                  {
+                    "children": [],
+                    "depth": 3,
+                    "file_count": 1,
+                    "is_dir": false,
+                    "modified": 1786307242,
+                    "path": "/home/sal/signalbox/skills/signalbox-verify/SKILL.md",
+                    "size": 614
+                  }
+                ],
+                "depth": 2,
+                "file_count": 2,
+                "is_dir": true,
+                "modified": 1786307242,
+                "path": "/home/sal/signalbox/skills/signalbox-verify",
+                "size": 9008
+              }
+            ],
+            "depth": 1,
+            "file_count": 10,
+            "is_dir": true,
+            "modified": 1786306782,
+            "path": "/home/sal/signalbox/skills",
+            "size": 49763
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786309565,
+                "path": "/home/sal/signalbox/lib/signalbox.sh",
+                "size": 25844
+              }
+            ],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": true,
+            "modified": 1786309565,
+            "path": "/home/sal/signalbox/lib",
+            "size": 29940
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786307179,
+                "path": "/home/sal/signalbox/tests/test.sh",
+                "size": 2389
+              },
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786307179,
+                "path": "/home/sal/signalbox/tests/signalbox.bats",
+                "size": 660
+              }
+            ],
+            "depth": 1,
+            "file_count": 2,
+            "is_dir": true,
+            "modified": 1786307179,
+            "path": "/home/sal/signalbox/tests",
+            "size": 7145
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786307112,
+                "path": "/home/sal/signalbox/config/tools.txt",
+                "size": 695
+              }
+            ],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": true,
+            "modified": 1786307112,
+            "path": "/home/sal/signalbox/config",
+            "size": 4791
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786307111,
+                "path": "/home/sal/signalbox/.codex-plugin/plugin.json",
+                "size": 675
+              }
+            ],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": true,
+            "modified": 1786306782,
+            "path": "/home/sal/signalbox/.codex-plugin",
+            "size": 4771
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786308745,
+                "path": "/home/sal/signalbox/bin/signalbox",
+                "size": 460
+              }
+            ],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": true,
+            "modified": 1786308746,
+            "path": "/home/sal/signalbox/bin",
+            "size": 4556
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786308533,
+                "path": "/home/sal/signalbox/scripts/bats-relocatable",
+                "size": 206
+              }
+            ],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": true,
+            "modified": 1786308534,
+            "path": "/home/sal/signalbox/scripts",
+            "size": 4302
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "depth": 2,
+                "file_count": 1,
+                "is_dir": false,
+                "modified": 1786307179,
+                "path": "/home/sal/signalbox/bench/run.sh",
+                "size": 154
+              }
+            ],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": true,
+            "modified": 1786307179,
+            "path": "/home/sal/signalbox/bench",
+            "size": 4250
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1786309291,
+            "path": "/home/sal/signalbox/README.md",
+            "size": 3447
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1786308746,
+            "path": "/home/sal/signalbox/install.sh",
+            "size": 2360
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1786309291,
+            "path": "/home/sal/signalbox/kaptaind.toml",
+            "size": 2151
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1786308823,
+            "path": "/home/sal/signalbox/deliver.toml",
+            "size": 1032
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787836775,
+            "path": "/home/sal/signalbox/traci.toml",
+            "size": 955
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1787836771,
+            "path": "/home/sal/signalbox/poka.toml",
+            "size": 126
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1786307111,
+            "path": "/home/sal/signalbox/.gitignore",
+            "size": 89
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1786309291,
+            "path": "/home/sal/signalbox/.kaptainignore",
+            "size": 77
+          },
+          {
+            "children": [],
+            "depth": 1,
+            "file_count": 1,
+            "is_dir": false,
+            "modified": 1786309886,
+            "path": "/home/sal/signalbox/VERSION",
+            "size": 5
+          }
+        ],
+        "depth": 0,
+        "file_count": 27,
+        "is_dir": true,
+        "modified": 1787836775,
+        "path": "/home/sal/signalbox",
+        "size": 123856
+      }
+    },
+    {
+      "tool": "chakra",
+      "purpose": "data-flow / architecture map coverage",
+      "status": "warn",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": 0.0,
+        "confidence": null,
+        "observations": 0
+      },
+      "binary": "/home/sal/.local/bin/chakra",
+      "score": 50.0,
+      "grade": "F",
+      "exit_code": 0,
+      "duration_ms": 2961,
+      "summary": "0 nodes, 0 flows; coverage 0.0% (0/27 files), confidence 100.0%",
+      "findings": [],
+      "note": null,
+      "raw": {
+        "boundaries": [],
+        "events": [],
+        "evidence": [],
+        "flows": [],
+        "inferences": [],
+        "metadata": {
+          "analyzed_file_count": 0,
+          "analyzers": [
+            "rust",
+            "javascript",
+            "typescript",
+            "python",
+            "go"
+          ],
+          "chakra_version": "0.3.33",
+          "duration_ms": 2004,
+          "file_count": 27,
+          "languages": {}
+        },
+        "nodes": [],
+        "schema": "chakra.flow/v1",
+        "subject": {
+          "generated_at": "2026-08-27T13:19:39.67570348Z",
+          "path": "/home/sal/signalbox"
+        }
+      }
+    },
+    {
+      "tool": "ferret",
+      "purpose": "repository-specific review findings (hunt)",
+      "status": "error",
+      "availability": "installed",
+      "execution": "failed",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": 2,
+      "duration_ms": 339,
+      "summary": "error",
+      "findings": [],
+      "note": "produced no stdout; stderr: error: unexpected argument '/home/sal/signalbox' found\n\nUsage: ferret [OPTIONS] [TARGET] [COMMAND]\n\nFor more information, try '--help'.\n",
+      "raw": null
+    },
+    {
+      "tool": "fract",
+      "purpose": "module entropy, cohesion, duplication",
+      "status": "ok",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/home/sal/.local/bin/fract",
+      "score": 100.0,
+      "grade": "A+",
+      "exit_code": 0,
+      "duration_ms": 2247,
+      "summary": "0 modules indexed: 0 excellent, 0 healthy, 0 warning, 0 critical",
+      "findings": [],
+      "note": null,
+      "raw": {
+        "findings": [],
+        "root": "/home/sal/signalbox",
+        "schema": "fract.report/v1",
+        "summary": {
+          "critical": 0,
+          "excellent": 0,
+          "healthy": 0,
+          "score": 100,
+          "total": 0,
+          "warning": 0
+        }
+      }
+    },
+    {
+      "tool": "isopod",
+      "purpose": "ISO27001/27002 compliance posture",
+      "status": "no_data",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 0
+      },
+      "binary": "/home/sal/.local/bin/isopod",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 3776,
+      "summary": "0/0 controls assessed (0.0% coverage): 0 pass, 0 warn, 0 fail, 0 unknown",
+      "findings": [],
+      "note": "coverage is 0.0%; compliance is ungraded below the 80% evidence threshold, and UNKNOWN controls are not treated as failures",
+      "raw": []
+    },
+    {
+      "tool": "jeenome",
+      "purpose": "behavioural trace analysis (opt-in)",
+      "status": "skipped",
+      "availability": "not_checked",
+      "execution": "skipped",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": null,
+      "duration_ms": null,
+      "summary": "skipped",
+      "findings": [],
+      "note": "jeenome is opt-in (needs an strace trace, not just a project path); pass --jeenome to include it",
+      "raw": null
+    },
+    {
+      "tool": "lwoodz",
+      "purpose": "license / SPDX compliance",
+      "status": "fail",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": "/home/sal/lwoodz/target/debug/lwoodz",
+      "score": 70.0,
+      "grade": "C-",
+      "exit_code": 0,
+      "duration_ms": 1317,
+      "summary": "license=unknown, spdx_valid=true, header coverage 0/0, 0 incompatible / 0 warning issues among 0 deps",
+      "findings": [],
+      "note": "advisory warning deductions are proportional to dependency count; missing licenses and incompatible dependencies remain hard findings; lwoodz.toml was missing; `poka apply` failed (poka apply exited Some(101): thread 'main' (249135) panicked at crates/poka-core/src/index.rs:99:33: external generator 'lwoodz' failed: external generator 'lwoodz' exited with exit status: 2: error: unexpected argument '--init' found Usage: lwoodz [OPTIONS] [COMMAND] ); assessment still ran",
+      "raw": {
+        "compatibility": {
+          "incompatible": 0,
+          "issues": [],
+          "total_deps": 0,
+          "warnings": 0
+        },
+        "detected_license": null,
+        "findings": [
+          {
+            "code": "MISSING_LICENSE_FILE",
+            "level": "error",
+            "message": "LICENSE not found at /home/sal/signalbox/LICENSE",
+            "path": "LICENSE"
+          },
+          {
+            "code": "MISSING_SPDX_MANIFEST",
+            "level": "warning",
+            "message": "SPDX manifest not found at .lwoodz/manifest.json — run `lwoodz generate`",
+            "path": ".lwoodz/manifest.json"
+          }
+        ],
+        "generated_at": "2026-08-27T13:19:39.823117445+00:00",
+        "has_license_file": false,
+        "header_coverage": null,
+        "holder": "Your Name",
+        "passed": false,
+        "project_license": "MIT",
+        "spdx_manifest_exists": false,
+        "spdx_valid": true,
+        "year": 2026
+      }
+    },
+    {
+      "tool": "tempcheq",
+      "purpose": "LLM sampling-temperature correctness",
+      "status": "not_applicable",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 0
+      },
+      "binary": "/home/sal/.local/bin/tempcheq",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 2893,
+      "summary": "not applicable: no inference actions found",
+      "findings": [],
+      "note": "zero observations do not establish project health and are excluded from scoring",
+      "raw": {
+        "actions": [],
+        "implicit_default": 0,
+        "inapplicable": 0,
+        "material_deviations": 0,
+        "temperature_controlled": 0,
+        "total_actions": 0,
+        "workspace": "/home/sal/signalbox"
+      }
+    },
+    {
+      "tool": "traci",
+      "purpose": "observability/telemetry completeness",
+      "status": "ok",
+      "availability": "installed",
+      "execution": "succeeded",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": 0
+      },
+      "binary": "/home/sal/.local/bin/traci",
+      "score": null,
+      "grade": null,
+      "exit_code": 0,
+      "duration_ms": 959,
+      "summary": "0 files, 0 observability diagnostics: 0 critical, 0 error-severity, 0 warning-severity, 0 info",
+      "findings": [],
+      "note": "observability diagnostics are not assigned a project-health score because Traci does not expose a total opportunity/coverage denominator; Poka's stale generator was repaired with the current native `traci` initializer; created traci.toml",
+      "raw": {
+        "diagnostics": [],
+        "summary": {
+          "critical": 0,
+          "diagnostics": 0,
+          "errors": 0,
+          "files": 0,
+          "info": 0,
+          "warnings": 0
+        }
+      }
+    },
+    {
+      "tool": "vamos",
+      "purpose": "nominal vs. validated action completion",
+      "status": "skipped",
+      "availability": "not_checked",
+      "execution": "skipped",
+      "evidence": {
+        "coverage": null,
+        "confidence": null,
+        "observations": null
+      },
+      "binary": null,
+      "score": null,
+      "grade": null,
+      "exit_code": null,
+      "duration_ms": null,
+      "summary": "skipped",
+      "findings": [],
+      "note": "no vamos.toml in project root; vamos hasn't been adopted here yet — run `vamos init` in the target to start tracking action lifecycles",
+      "raw": null
+    }
+  ],
+  "overall": {
+    "score": 73.0,
+    "grade": "C",
+    "graded_tools": 3,
+    "total_tools": 12,
+    "weights": [
+      [
+        "chakra",
+        1.0
+      ],
+      [
+        "fract",
+        1.0
+      ],
+      [
+        "lwoodz",
+        1.0
+      ]
+    ],
+    "provisional": true
+  },
+  "suite": {
+    "required_tools": 9,
+    "available_tools": 9,
+    "executed_tools": 7,
+    "valid_results": 7,
+    "analysis_coverage": 0.0,
+    "confidence": null
+  },
+  "integrity": {
+    "status": "failed",
+    "score": 77.77777777777779,
+    "grade": "C+",
+    "defects": [
+      "amber: error",
+      "ferret: error"
+    ]
+  }
+}

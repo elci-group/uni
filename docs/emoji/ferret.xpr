@@ -1,0 +1,452 @@
+{
+  "header": {
+    "spec_version": "0.1.0"
+  },
+  "identity": {
+    "namespace": "wildlife",
+    "asset_id": "curious-ferret"
+  },
+  "metadata": {
+    "name": "Curious Ferret",
+    "aliases": [
+      "playful ferret"
+    ],
+    "tags": [
+      "ferret",
+      "burrow",
+      "magnifying-glass",
+      "playful"
+    ]
+  },
+  "canvas": {
+    "size": 1024
+  },
+  "layers": [
+    {
+      "name": "main",
+      "opacity": 255,
+      "blend": "normal",
+      "paths": [
+        {
+          "feature": "burrow",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 150,
+              "y": 800
+            },
+            {
+              "op": "line_to",
+              "x": 350,
+              "y": 800
+            },
+            {
+              "op": "quad_to",
+              "cx": 250,
+              "cy": 650,
+              "x": 150,
+              "y": 800
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 101,
+              "g": 67,
+              "b": 33,
+              "a": 255
+            }
+          },
+          "stroke": {
+            "color": {
+              "r": 60,
+              "g": 40,
+              "b": 20,
+              "a": 255
+            },
+            "width": 5,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "body",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 250,
+              "y": 600
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 200,
+              "c1y": 500,
+              "c2x": 400,
+              "c2y": 500,
+              "x": 450,
+              "y": 600
+            },
+            {
+              "op": "line_to",
+              "x": 500,
+              "y": 650
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 480,
+              "c1y": 700,
+              "c2x": 270,
+              "c2y": 700,
+              "x": 250,
+              "y": 600
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 222,
+              "g": 184,
+              "b": 135,
+              "a": 255
+            }
+          },
+          "stroke": {
+            "color": {
+              "r": 120,
+              "g": 80,
+              "b": 50,
+              "a": 255
+            },
+            "width": 5,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "eyes",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 320,
+              "y": 560
+            },
+            {
+              "op": "quad_to",
+              "cx": 330,
+              "cy": 550,
+              "x": 340,
+              "y": 560
+            },
+            {
+              "op": "quad_to",
+              "cx": 330,
+              "cy": 570,
+              "x": 320,
+              "y": 560
+            },
+            {
+              "op": "close"
+            },
+            {
+              "op": "move_to",
+              "x": 380,
+              "y": 560
+            },
+            {
+              "op": "quad_to",
+              "cx": 390,
+              "cy": 550,
+              "x": 400,
+              "y": 560
+            },
+            {
+              "op": "quad_to",
+              "cx": 390,
+              "cy": 570,
+              "x": 380,
+              "y": 560
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 255
+            }
+          },
+          "stroke": {
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 255
+            },
+            "width": 5,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "pupil",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 328,
+              "y": 560
+            },
+            {
+              "op": "line_to",
+              "x": 332,
+              "y": 560
+            },
+            {
+              "op": "line_to",
+              "x": 330,
+              "y": 562
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 255
+            }
+          },
+          "stroke": {
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 255
+            },
+            "width": 5,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "pupil",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 388,
+              "y": 560
+            },
+            {
+              "op": "line_to",
+              "x": 392,
+              "y": 560
+            },
+            {
+              "op": "line_to",
+              "x": 390,
+              "y": 562
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 255
+            }
+          },
+          "stroke": {
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 255
+            },
+            "width": 5,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "mouth",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 340,
+              "y": 590
+            },
+            {
+              "op": "line_to",
+              "x": 350,
+              "y": 595
+            },
+            {
+              "op": "line_to",
+              "x": 360,
+              "y": 590
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 150,
+              "g": 80,
+              "b": 60,
+              "a": 255
+            }
+          },
+          "stroke": {
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 255
+            },
+            "width": 5,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "tail",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 500,
+              "y": 650
+            },
+            {
+              "op": "cubic_to",
+              "c1x": 540,
+              "c1y": 660,
+              "c2x": 560,
+              "c2y": 720,
+              "x": 540,
+              "y": 750
+            },
+            {
+              "op": "line_to",
+              "x": 500,
+              "y": 650
+            },
+            {
+              "op": "close"
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 222,
+              "g": 184,
+              "b": 135,
+              "a": 255
+            }
+          },
+          "stroke": {
+            "color": {
+              "r": 120,
+              "g": 80,
+              "b": 50,
+              "a": 255
+            },
+            "width": 5,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        },
+        {
+          "feature": "magnifying-glass",
+          "commands": [
+            {
+              "op": "move_to",
+              "x": 460,
+              "y": 620
+            },
+            {
+              "op": "quad_to",
+              "cx": 470,
+              "cy": 610,
+              "x": 480,
+              "y": 620
+            },
+            {
+              "op": "quad_to",
+              "cx": 470,
+              "cy": 630,
+              "x": 460,
+              "y": 620
+            },
+            {
+              "op": "close"
+            },
+            {
+              "op": "move_to",
+              "x": 480,
+              "y": 620
+            },
+            {
+              "op": "line_to",
+              "x": 520,
+              "y": 660
+            }
+          ],
+          "fill": {
+            "color": {
+              "r": 240,
+              "g": 220,
+              "b": 180,
+              "a": 255
+            }
+          },
+          "stroke": {
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 255
+            },
+            "width": 5,
+            "cap": "round",
+            "join": "round"
+          },
+          "opacity": 255
+        }
+      ]
+    }
+  ],
+  "semantics": {
+    "description": "a curious ferret peeking out of a burrow holding a tiny magnifying glass, alert and playful",
+    "emotion": "playful",
+    "intensity": 80
+  },
+  "variants": {
+    "tiny": null,
+    "text": null,
+    "standard": null,
+    "large": null,
+    "full": null
+  },
+  "compatibility": {
+    "min_spec_version": "0.1.0"
+  },
+  "provenance": null
+}
