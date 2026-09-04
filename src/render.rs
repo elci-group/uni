@@ -121,6 +121,10 @@ impl Style {
     fn metaphor(self, text: impl AsRef<str>) -> String {
         self.paint(Some("2;3"), text)
     }
+    /// A section heading: bold, no color.
+    fn heading(self, text: impl AsRef<str>) -> String {
+        self.paint(Some("1"), text)
+    }
 }
 
 fn tool_accent(tool: &str) -> Option<&'static str> {
