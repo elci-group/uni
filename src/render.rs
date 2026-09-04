@@ -136,6 +136,8 @@ fn tool_accent(tool: &str) -> Option<&'static str> {
         "ferret" => Some("1;36"),
         "fract" => Some("1;38;5;147"),
         "isopod" => Some("1;36"),
+        "scrawny" => Some("33"),
+        "wilder" => Some("32"),
         "jeenome" => Some("36"),
         "traci" => Some("36"),
         // These tools intentionally have no native ANSI presentation.
