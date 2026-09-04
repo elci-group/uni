@@ -846,7 +846,7 @@ async fn run_bootstrap_stage(
     stage: &'static str,
     label: String,
 ) -> io::Result<Output> {
-    const FRAMES: [&str; 8] = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧"];
+    let spinner = form3::anim::Spinner::default();
 
     let animated = io::stderr().is_terminal();
     if !animated {
@@ -857,15 +857,15 @@ async fn run_bootstrap_stage(
     let result = if animated {
         let future = cmd.output();
         tokio::pin!(future);
-        let mut ticker = tokio::time::interval(Duration::from_millis(80));
+        let mut ticker = tokio::time::interval(spinner.interval());
         ticker.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Skip);
-        let mut frame = 0usize;
+        let mut frame = 0u64;
 
         loop {
             tokio::select! {
                 result = &mut future => break result,
                 _ = ticker.tick() => {
-                    eprint!("\r\x1b[2K{} {label}", FRAMES[frame % FRAMES.len()]);
+                    eprint!("{}{} {label}", form3::ansi::clear_line(), spinner.frame(frame));
                     if let Err(e) = io::stderr().flush() {
                         eprintln!("uni: stderr flush failed: {e}");
                     }
@@ -879,7 +879,7 @@ async fn run_bootstrap_stage(
     let duration_ms = started.elapsed().as_millis();
 
     if animated {
-        eprint!("\r\x1b[2K");
+        eprint!("{}", form3::ansi::clear_line());
         if let Err(e) = io::stderr().flush() {
             eprintln!("uni: stderr flush failed: {e}");
         }
