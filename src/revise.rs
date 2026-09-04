@@ -2143,18 +2143,21 @@ mod tests {
         let plan = build_plan(&d, Path::new("/proj"), allow_all);
         assert_eq!(plan.len(), 1);
         assert_eq!(plan[0].program, "traci");
-        assert_eq!(plan[0].probe_token, Some("traci enforce"));
+        assert_eq!(plan[0].probe_token, Some("trace"));
+        assert_eq!(plan[0].required_flag, Some("--goal"));
+        assert_eq!(plan[0].apply_flag, Some("--apply"));
         assert_eq!(plan[0].risk, RiskTier::AiGenerated);
-        // Real argv shape: `traci enforce <path> --goal <text>` —
-        // asserted on the exact vec, not just "contains enforce somewhere",
-        // since a missing/misplaced `enforce` subcommand compiles fine but
+        // Real argv shape: `traci trace <path> --goal <text> --apply` —
+        // asserted on the exact vec, not just "contains trace somewhere",
+        // since a missing/misplaced `trace` subcommand compiles fine but
         // fails at runtime with "unknown command '<path>'" (caught live
         // against the real traci binary, not by a looser assertion here).
-        assert_eq!(plan[0].args[0], "enforce");
+        assert_eq!(plan[0].args[0], "trace");
         assert_eq!(plan[0].args[1], "/proj");
         assert_eq!(plan[0].args[2], "--goal");
+        assert_eq!(plan[0].args[4], "--apply");
         let preview_args = plan[0].preview_args.as_ref().unwrap();
-        assert_eq!(preview_args[0], "enforce");
+        assert_eq!(preview_args[0], "trace");
         assert_eq!(preview_args[1], "/proj");
     }
 
