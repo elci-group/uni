@@ -14,10 +14,12 @@ mod fract;
 mod isopod;
 mod jeenome;
 mod lwoodz;
+mod scrawny;
 mod tempcheq;
 mod traci;
 mod vamos;
 mod viva_palestina;
+mod wilder;
 
 use crate::report::Status;
 use crate::tool::ToolId;
@@ -56,10 +58,12 @@ pub fn parse(tool: ToolId, stdout: &str, exit_code: Option<i32>) -> ParseOutcome
         ToolId::Isopod => isopod::parse(stdout, exit_code),
         ToolId::Jeenome => jeenome::parse(stdout, exit_code),
         ToolId::Lwoodz => lwoodz::parse(stdout, exit_code),
+        ToolId::Scrawny => scrawny::parse(stdout, exit_code),
         ToolId::Tempcheq => tempcheq::parse(stdout, exit_code),
         ToolId::Traci => traci::parse(stdout, exit_code),
         ToolId::Vamos => vamos::parse(stdout, exit_code),
         ToolId::VivaPalestina => viva_palestina::parse(stdout, exit_code),
+        ToolId::Wilder => wilder::parse(stdout, exit_code),
     }
 }
 
