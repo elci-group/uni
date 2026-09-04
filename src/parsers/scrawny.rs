@@ -12,3 +12,8 @@ use serde_json::Value;
 
 
 
+    fn fixture(load: f64, cohesion: f64, concerns: &str) -> String {
+        format!(
+            r#"{{"version": "2", "metrics": {{"review_load": {{"total": {load}, "size": 0.0, "concern_multiplicity": 0.0, "file_dispersion": 0.0, "mechanical_noise": 0.0, "behavioural_density": 0.0}}, "cohesion": {cohesion}, "lines_added": 10, "lines_removed": 5, "files_changed": 3}}, "concerns": {concerns}, "clusters": []}}"#
+        )
+    }
