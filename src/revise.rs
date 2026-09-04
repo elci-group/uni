@@ -37,7 +37,7 @@
 //!     tool (chakra/fract), independent of whatever traci itself checked.
 //!
 //!   ami, bart, ferret, jeenome, vamos, and viva-palestina have no entry here. isopod's
-//!   unmet controls are deliberately *not* delegated to `traci enforce`
+//!   unmet controls are deliberately *not* delegated to `traci trace --apply`
 //!   either, despite chakra/fract being: they're organizational/policy
 //!   findings (security testing procedure, backup policy,
 //!   outsourced-development agreements), not something a code-patching
