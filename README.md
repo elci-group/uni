@@ -144,6 +144,17 @@ Viva Palestina flags excluded vendors as hard findings and review vendors as
 warnings; the score scales with the fraction of dependencies affected, and
 unknown vendors are noted but not penalized.
 
+Wilder findings reduce its 100-point score by severity: 25 for critical, 10
+for high, 4 for medium, 1 for low. Coverage gaps are reported in the summary
+but not penalized — an analysis gap is not a failing result — and wilder's
+exit code 2 (analysis incomplete) is noted, not treated as an error.
+
+Scrawny's score is the complement of its normalized review-load index
+(100 − review load). Status mirrors scrawny's own `check` policy: review load
+above 70 or cohesion below 0.55 fails; load above 40 or more than 4 concern
+types warns. A clean working tree scores 100 by construction, since scrawny
+grades the diff, not the project.
+
 ## Experiments
 
 `uni experiments` evaluates candidate branches against an explicit baseline
