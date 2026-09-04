@@ -87,7 +87,8 @@ untouched. If Poka is unavailable or cannot materialize an input, Uni still
 runs the underlying analyzer with its built-in defaults and records the Poka
 failure in that tool's report note.
 
-In an interactive terminal, clone and install stages show a spinner. In CI or
+In an interactive terminal, clone and install stages show a
+[`form3`](https://github.com/elci-group/3form) braille spinner. In CI or
 redirected output, Uni prints stable start lines instead. Each stage also emits
 transparent telemetry to stderr containing only the application name, stage,
 outcome, exit code, and elapsed milliseconds. This telemetry is local output:
