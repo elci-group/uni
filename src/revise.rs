@@ -1067,8 +1067,8 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
 /// something a human asked for, not a placeholder.
 const TRACI_TRACE_GOAL: &str = "resolve traci's own flagged findings: untraced error paths, swallowed results, opaque panics, and detached async trace context";
 
-/// The goal handed to `traci enforce` on chakra's behalf (see the
-/// `ToolId::Chakra` `LEGACY_CATALOG` entry, a delegate to `traci enforce`
+/// The goal handed to `traci trace --apply` on chakra's behalf (see the
+/// `ToolId::Chakra` `LEGACY_CATALOG` entry, a delegate to `traci trace --apply`
 /// since chakra has no remediation command of its own).
 const CHAKRA_TRACE_GOAL: &str = "improve chakra's architecture data-flow map coverage: analyze more of the currently-untouched files and add explicit data-flow evidence so a higher fraction of the codebase is represented in the map";
 
