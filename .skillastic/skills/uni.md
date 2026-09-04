@@ -3,7 +3,8 @@ name: uni
 description: >-
   Use `uni` to run a deterministic, concurrent analysis snapshot of a project
   and get one graded report. It fans out to amber, ami, bart, chakra, ferret
-  hunt, fract, isopod, lwoodz, tempcheq, traci, and vamos (jeenome is
+  hunt, fract, isopod, lwoodz, scrawny, tempcheq, traci, vamos, viva-palestina,
+  and wilder (jeenome is
   opt-in), normalizes each tool's findings, and grades the project overall.
   Reach for it whenever you need a single before/after quality snapshot, a
   CI gate on a numeric score, or a plan for fixing what a run flagged.
