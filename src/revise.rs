@@ -2114,10 +2114,13 @@ mod tests {
         let chakra = plan.iter().find(|p| p.tool.key() == "chakra").unwrap();
         assert_eq!(chakra.binary_tool.key(), "traci");
         assert_eq!(chakra.program, "traci");
-        assert_eq!(chakra.probe_token, Some("traci enforce"));
+        assert_eq!(chakra.probe_token, Some("trace"));
+        assert_eq!(chakra.required_flag, Some("--goal"));
+        assert_eq!(chakra.apply_flag, Some("--apply"));
         assert_eq!(chakra.risk, RiskTier::AiGenerated);
-        assert_eq!(chakra.args[0], "enforce");
+        assert_eq!(chakra.args[0], "trace");
         assert!(chakra.args.contains(&CHAKRA_TRACE_GOAL.to_string()));
+        assert!(chakra.args.contains(&"--apply".to_string()));
 
         let fract = plan.iter().find(|p| p.tool.key() == "fract").unwrap();
         assert_eq!(fract.binary_tool.key(), "traci");
