@@ -1060,12 +1060,12 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
     },
 ];
 
-/// The goal `uni` hands to `traci enforce` on its own findings' behalf.
-/// Deliberately generic — `traci enforce` already runs `traci check`
+/// The goal `uni` hands to `traci trace --apply` on its own findings' behalf.
+/// Deliberately generic — `traci trace --apply` already runs `traci check`
 /// internally to know exactly what's flagged; this just names the rule
 /// families in `src/parsers/traci.rs`'s own findings so the goal reads as
 /// something a human asked for, not a placeholder.
-const TRACI_ENFORCE_GOAL: &str = "resolve traci's own flagged findings: untraced error paths, swallowed results, opaque panics, and detached async trace context";
+const TRACI_TRACE_GOAL: &str = "resolve traci's own flagged findings: untraced error paths, swallowed results, opaque panics, and detached async trace context";
 
 /// The goal handed to `traci enforce` on chakra's behalf (see the
 /// `ToolId::Chakra` `LEGACY_CATALOG` entry, a delegate to `traci enforce`
