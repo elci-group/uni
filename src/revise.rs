@@ -1072,8 +1072,8 @@ const TRACI_TRACE_GOAL: &str = "resolve traci's own flagged findings: untraced e
 /// since chakra has no remediation command of its own).
 const CHAKRA_TRACE_GOAL: &str = "improve chakra's architecture data-flow map coverage: analyze more of the currently-untouched files and add explicit data-flow evidence so a higher fraction of the codebase is represented in the map";
 
-/// The goal handed to `traci enforce` on fract's behalf (see the
-/// `ToolId::Fract` `LEGACY_CATALOG` entry, a delegate to `traci enforce`
+/// The goal handed to `traci trace --apply` on fract's behalf (see the
+/// `ToolId::Fract` `LEGACY_CATALOG` entry, a delegate to `traci trace --apply`
 /// since fract has no remediation command of its own).
 const FRACT_TRACE_GOAL: &str = "resolve fract's flagged module entropy/cohesion warnings: reduce entropy and improve cohesion in the modules fract scored as warning or critical";
 
