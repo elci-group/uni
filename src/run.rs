@@ -944,6 +944,9 @@ fn build_command(tool: ToolId, bin: &Path, target: &Path) -> tokio::process::Com
             cmd.current_dir(target);
             cmd.args(["--json", "audit"]);
         }
+        ToolId::Scrawny => {
+            cmd.args(["analyse", "--format", "json"]).arg("--path").arg(target);
+        }
         ToolId::Tempcheq => {
             cmd.arg(target).arg("--report");
         }
@@ -954,6 +957,9 @@ fn build_command(tool: ToolId, bin: &Path, target: &Path) -> tokio::process::Com
         ToolId::Vamos => unreachable!("vamos is built by run_vamos"),
         ToolId::VivaPalestina => {
             cmd.arg("scan").arg(target).arg("--detailed");
+        }
+        ToolId::Wilder => {
+            cmd.arg("analyse").arg(target).args(["--format", "json"]);
         }
     }
     cmd
@@ -1872,6 +1878,28 @@ mod tests {
         );
         let args: Vec<_> = cmd.as_std().get_args().collect();
         assert_eq!(args, ["scan", "/project", "--detailed"]);
+    }
+
+    #[test]
+    fn scrawny_analysis_uses_analyse_json_with_path() {
+        let cmd = build_command(
+            ToolId::Scrawny,
+            Path::new("/bin/scrawny"),
+            Path::new("/project"),
+        );
+        let args: Vec<_> = cmd.as_std().get_args().collect();
+        assert_eq!(args, ["analyse", "--format", "json", "--path", "/project"]);
+    }
+
+    #[test]
+    fn wilder_analysis_uses_analyse_json() {
+        let cmd = build_command(
+            ToolId::Wilder,
+            Path::new("/bin/wilder"),
+            Path::new("/project"),
+        );
+        let args: Vec<_> = cmd.as_std().get_args().collect();
+        assert_eq!(args, ["analyse", "/project", "--format", "json"]);
     }
 
     #[test]
