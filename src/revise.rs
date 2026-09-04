@@ -151,7 +151,7 @@ pub enum RiskTier {
     /// Rewrites the contents of files already tracked in the target,
     /// deterministically — no model involved.
     RewritesSource,
-    /// Rewrites source via a model-generated patch (`traci enforce`),
+    /// Rewrites source via a model-generated patch (`traci trace --apply`),
     /// even one the delegate itself already verified against a
     /// benchmark and a complexity/diagnostic-regression budget before
     /// merging it. Requires `--confirm-source-rewrite` (it does rewrite
@@ -811,7 +811,7 @@ struct PlannedRemediation {
     /// every remediation that fixes its own findings (the common case).
     /// Different from `tool` only for a delegate: a tool with no
     /// mechanical fix of its own, routed through another tool's binary
-    /// (currently: chakra/fract findings handed to `traci enforce`, since
+    /// (currently: chakra/fract findings handed to `traci trace --apply`, since
     /// `traci` provides verified, benchmarked, model-generated patches
     /// against any goal text — see `LEGACY_CATALOG`'s chakra/fract
     /// entries).
@@ -827,6 +827,16 @@ struct PlannedRemediation {
     /// exactly what it supports by answering `remediate --format plan`,
     /// so there's nothing left to guess-probe.
     probe_token: Option<&'static str>,
+    /// Additional flag required in both preview and apply invocations
+    /// (e.g. `--goal` for `traci trace`). Probed separately so a missing
+    /// flag is reported as `Unavailable` instead of executing a broken
+    /// command.
+    required_flag: Option<&'static str>,
+    /// Flag that turns the preview command into the mutating command (e.g.
+    /// `traci trace ... --apply`). Probed separately at apply time so a
+    /// missing flag is reported as `Unavailable` instead of executing a
+    /// broken command.
+    apply_flag: Option<&'static str>,
     risk: RiskTier,
     /// Argv for a side-effect-free preview of this remediation, run with
     /// the same program/cwd. `None` when the tool has no such mode.
@@ -857,6 +867,15 @@ struct LegacyEntry {
     args: fn(&Path) -> Vec<String>,
     cwd: fn(&Path) -> Option<PathBuf>,
     probe_token: &'static str,
+    /// Additional flag required in both preview and apply invocations.
+    /// Probed separately from `probe_token` so a missing flag is reported
+    /// as `Unavailable`.
+    required_flag: Option<&'static str>,
+    /// Flag that must be present in `--help` and that turns the preview
+    /// command into the actual mutating command when `--apply` is passed.
+    /// `None` when the preview and apply invocations are the same, or when
+    /// the apply flag is bundled into `args` directly.
+    apply_flag: Option<&'static str>,
     risk: RiskTier,
     preview_args: Option<fn(&Path) -> Vec<String>>,
 }
@@ -871,6 +890,8 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
         args: |_target| vec![".".to_string(), "--propose".to_string()],
         cwd: |target| Some(target.to_path_buf()),
         probe_token: "--propose",
+        required_flag: None,
+        apply_flag: None,
         // Proposals land as new amber_<crate>_redux files, checked with
         // `cargo check` before they're reported; --propose never rewrites
         // an existing tracked file. No preview mode of its own, and none
@@ -894,6 +915,8 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
         },
         cwd: |_target| None,
         probe_token: "harden",
+        required_flag: None,
+        apply_flag: None,
         // Creates missing compliance evidence files; doesn't rewrite
         // existing ones. (Currently unavailable on the installed isopod
         // version regardless — see probe_token.)
@@ -919,6 +942,8 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
         args: |_target| vec!["remedy".to_string()],
         cwd: |target| Some(target.to_path_buf()),
         probe_token: "remedy",
+        required_flag: None,
+        apply_flag: None,
         // Only offered when has_license_file is false, i.e. there's
         // nothing there yet to overwrite: creates LICENSE/NOTICE/etc,
         // never rewrites a tracked file.
@@ -940,6 +965,8 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
         },
         cwd: |_target| None,
         probe_token: "--fix",
+        required_flag: None,
+        apply_flag: None,
         // Rewrites source files in place for high-confidence deviations —
         // the one remediation here with real blast radius. Needs
         // --confirm-source-rewrite in addition to --apply.
@@ -962,17 +989,21 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
         program: "traci",
         args: |target| {
             vec![
-                "enforce".to_string(),
+                "trace".to_string(),
                 target.display().to_string(),
                 "--goal".to_string(),
-                TRACI_ENFORCE_GOAL.to_string(),
+                TRACI_TRACE_GOAL.to_string(),
+                "--apply".to_string(),
             ]
         },
         cwd: |_target| None,
-        // `traci --help`'s own usage synopsis names the subcommand this
-        // way (`traci enforce [PATH...] --goal TEXT [OPTIONS]`).
-        probe_token: "traci enforce",
-        // A delegate, not a direct rewrite: `traci enforce`
+        // `traci --help`'s own usage synopsis names the subcommand `trace`
+        // and the required `--goal` flag (`traci trace [PATH...] --goal
+        // TEXT [--apply] [OPTIONS]`).
+        probe_token: "trace",
+        required_flag: Some("--goal"),
+        apply_flag: Some("--apply"),
+        // A delegate, not a direct rewrite: `traci trace --apply`
         // generates a patch via its own configured model provider,
         // benchmarks it (`cargo test --all-targets` by default) and
         // checks it against a complexity/diagnostic-regression budget,
@@ -981,16 +1012,16 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
         // --confirm-source-rewrite (it rewrites source) *and*
         // --confirm-ai-patch (a model wrote the patch).
         risk: RiskTier::AiGenerated,
-        // `traci enforce` without any apply flag prints its plan (goal, estimated
+        // `traci trace` without `--apply` prints its plan (goal, estimated
         // complexity, target branch) and creates nothing — confirmed
         // side-effect-free (no branch, no commit) in the local
         // development of this integration.
         preview_args: Some(|target| {
             vec![
-                "enforce".to_string(),
+                "trace".to_string(),
                 target.display().to_string(),
                 "--goal".to_string(),
-                TRACI_ENFORCE_GOAL.to_string(),
+                TRACI_TRACE_GOAL.to_string(),
             ]
         }),
     },
@@ -998,13 +1029,13 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
     // findings (architecture coverage, module entropy/cohesion) are
     // genuinely open-ended, with no single deterministic fix. Both are
     // still code-shaped, verifiable findings, so both are delegated to
-    // `traci enforce`, the same benchmarked model-generated-patch engine
+    // `traci trace --apply`, the same benchmarked model-generated-patch engine
     // traci uses on its own findings above, just pointed at a different
     // goal. isopod's unmet controls (security testing procedure, backup
     // policy, outsourced-development agreements) are deliberately *not*
     // delegated here: they're organizational/policy findings, not
     // something a code-patching engine can meaningfully address — routing
-    // them through `traci enforce` would just be a goal string it can't act
+    // them through `traci trace --apply` would just be a goal string it can't act
     // on, not a real remediation tier.
     LegacyEntry {
         tool: ToolId::Chakra,
@@ -1014,18 +1045,21 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
         program: "traci",
         args: |target| {
             vec![
-                "enforce".to_string(),
+                "trace".to_string(),
                 target.display().to_string(),
                 "--goal".to_string(),
                 CHAKRA_TRACE_GOAL.to_string(),
+                "--apply".to_string(),
             ]
         },
         cwd: |_target| None,
-        probe_token: "traci enforce",
+        probe_token: "trace",
+        required_flag: Some("--goal"),
+        apply_flag: Some("--apply"),
         risk: RiskTier::AiGenerated,
         preview_args: Some(|target| {
             vec![
-                "enforce".to_string(),
+                "trace".to_string(),
                 target.display().to_string(),
                 "--goal".to_string(),
                 CHAKRA_TRACE_GOAL.to_string(),
@@ -1040,18 +1074,21 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
         program: "traci",
         args: |target| {
             vec![
-                "enforce".to_string(),
+                "trace".to_string(),
                 target.display().to_string(),
                 "--goal".to_string(),
                 FRACT_TRACE_GOAL.to_string(),
+                "--apply".to_string(),
             ]
         },
         cwd: |_target| None,
-        probe_token: "traci enforce",
+        probe_token: "trace",
+        required_flag: Some("--goal"),
+        apply_flag: Some("--apply"),
         risk: RiskTier::AiGenerated,
         preview_args: Some(|target| {
             vec![
-                "enforce".to_string(),
+                "trace".to_string(),
                 target.display().to_string(),
                 "--goal".to_string(),
                 FRACT_TRACE_GOAL.to_string(),
@@ -1101,6 +1138,8 @@ fn legacy_plan_item(
         args: (entry.args)(target),
         cwd: (entry.cwd)(target),
         probe_token: Some(entry.probe_token),
+        required_flag: entry.required_flag,
+        apply_flag: entry.apply_flag,
         risk: entry.risk,
         preview_args: entry.preview_args.map(|f| f(target)),
         precomputed_preview: None,
@@ -1314,6 +1353,8 @@ async fn fetch_native_plan(
                 // Already self-validated by answering `plan` — no
                 // separate --help substring guess needed.
                 probe_token: None,
+                required_flag: None,
+                apply_flag: None,
                 risk: item.risk,
                 preview_args: None,
                 precomputed_preview: Some(item.summary),
@@ -2153,7 +2194,7 @@ mod tests {
         Remediation {
             tool: "traci",
             reason: "test".to_string(),
-            command: "traci enforce".to_string(),
+            command: "traci trace --apply".to_string(),
             risk: RiskTier::AiGenerated,
             outcome,
             detail: None,
@@ -2549,6 +2590,8 @@ exit 1
             args: vec![".".to_string(), "--propose".to_string()],
             cwd: Some(target.to_path_buf()),
             probe_token: Some("--propose"),
+            required_flag: None,
+            apply_flag: None,
             risk: RiskTier::NewFilesOnly,
             preview_args: None,
             precomputed_preview: None,
