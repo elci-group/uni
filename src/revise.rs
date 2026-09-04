@@ -27,7 +27,7 @@
 //!     deviations in place.
 //!   - traci, chakra, and fract are **delegates**: `binary_tool` differs
 //!     from `tool` (see `PlannedRemediation::binary_tool`). All three are
-//!     handed to `traci enforce --goal <text>`, a benchmarked,
+//!     handed to `traci trace --apply --goal <text>`, a benchmarked,
 //!     model-generated-patch engine that verifies its own patch against a
 //!     complexity/diagnostic-regression budget before merging it — traci
 //!     uses it on its own findings, chakra/fract's findings (architecture
