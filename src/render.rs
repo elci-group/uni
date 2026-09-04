@@ -87,7 +87,19 @@ impl Style {
     fn paint(self, code: Option<&str>, text: impl AsRef<str>) -> String {
         let text = text.as_ref();
         match (self.color, code) {
-            (true, Some(code)) => format!("\x1b[{code}m{text}\x1b[0m"),
+            (true, Some(code)) => {
+                let (color, attrs) = Self::parse_sgr(code);
+                let mut out = String::new();
+                if let Some(color) = &color {
+                    out.push_str(&ansi::fg(color));
+                }
+                for attr in attrs {
+                    out.push_str(&ansi::sgr(attr));
+                }
+                out.push_str(text);
+                out.push_str(ansi::reset());
+                out
+            }
             _ => text.to_string(),
         }
     }
