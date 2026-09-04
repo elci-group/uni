@@ -12,3 +12,19 @@ use crate::report::Status;
 use serde_json::Value;
 
 
+    const FIXTURE: &str = r#"{
+        "schema": "wilder.schema.v1",
+        "coverage": {
+            "analysis_percent": 27.3,
+            "complete_domains": 6,
+            "applicable_domains": 22,
+            "domains": []
+        },
+        "evidence": [{"id": "WLD-EVID-1"}, {"id": "WLD-EVID-2"}],
+        "findings": [
+            {"id": "WLD-A", "title": "Change hotspot", "severity": "MEDIUM", "confidence": "HIGH"},
+            {"id": "WLD-B", "title": "Unsafe surface", "severity": "HIGH", "confidence": "MEDIUM"},
+            {"id": "WLD-C", "title": "Oversized file", "severity": "LOW", "confidence": "HIGH"},
+            {"id": "WLD-D", "title": "Info note", "severity": "INFO", "confidence": "LOW"}
+        ]
+    }"#;
