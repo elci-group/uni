@@ -4,12 +4,16 @@ Uni runs a deterministic, concurrent analysis suite against one project and
 normalizes each application's output into a single graded report.
 
 The default suite is Amber, Bart, Chakra, Ferret hunt, Fract, Isopod, Lwoodz,
-Tempcheq, Traci, Vamos, and Viva Palestina. AMI is opt-in via `--only ami`:
+Scrawny, Tempcheq, Traci, Vamos, Viva Palestina, and Wilder. AMI is opt-in
+via `--only ami`:
 project-profile completeness is not code health, and Uni requires a JSON-capable
 AMI rather than scraping its human table. Jeenome is opt-in because it requires
 an `strace` trace. Ferret hunt prefers Ferret's `hunt` operation and supports
 builds that call it `track`; it uses an in-memory corpus, so the analysis does
-not write `ferret.db` into the target.
+not write `ferret.db` into the target. Wilder exits 2 while its analysis
+remains incomplete at the 0.3 milestone; Uni parses its JSON anyway and notes
+the coverage gap rather than failing the tool. Scrawny grades the review
+load of the working-tree diff, so a clean checkout scores 100 by construction.
 
 Each tool has a custom emoji badge, generated with
 [xpressive](https://github.com/elci-group/xpressive)'s `.xpr` vector format —
