@@ -115,6 +115,12 @@ impl Style {
     fn finding(self, tool: &ToolReport, finding: &str, index: usize) -> String {
         self.paint(finding_code(tool, finding, index), finding)
     }
+    /// A tool's metaphorical analog, dimmed and italicized so it reads as an
+    /// aside next to the tool's (accented) name rather than competing with
+    /// it.
+    fn metaphor(self, text: impl AsRef<str>) -> String {
+        self.paint(Some("2;3"), text)
+    }
 }
 
 fn tool_accent(tool: &str) -> Option<&'static str> {
