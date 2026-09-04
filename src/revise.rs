@@ -461,6 +461,33 @@ pub async fn execute(args: &ReviseArgs) -> Result<ReviseReport, String> {
                 }
             }
 
+            if let Some(flag) = planned.required_flag {
+                if !probe_capability(&bin, flag).await {
+                    eprintln!(
+                        "uni: tool={} stage=revise_probe outcome=unsupported token={flag}",
+                        planned.tool.key()
+                    );
+                    remediations.push(Remediation {
+                        tool: planned.tool.key(),
+                        reason: planned.reason,
+                        command,
+                        risk,
+                        outcome: Outcome::Unavailable,
+                        detail: Some(format!(
+                            "installed {} does not appear to support `{flag}` (checked via `{} --help`); uni's remediation command for this tool may be stale against the installed version",
+                            planned.tool.key(),
+                            planned.tool.key()
+                        )),
+                        preview: None,
+                        checkpoint: None,
+                        rolled_back: false,
+                        verification: None,
+                        duration_ms: None,
+                    });
+                    continue;
+                }
+            }
+
             let preview = if planned.precomputed_preview.is_some() {
                 planned.precomputed_preview.clone()
             } else {
@@ -513,6 +540,41 @@ pub async fn execute(args: &ReviseArgs) -> Result<ReviseReport, String> {
                     duration_ms: None,
                 });
                 continue;
+            }
+
+            // If this remediation has a separate apply flag (e.g.
+            // `traci trace ... --apply`), verify the installed binary
+            // actually advertises it before we run a command that depends
+            // on it. A missing flag is an `Unavailable` remediation, not a
+            // failed one — it means uni's command is stale against the
+            // installed tool version.
+            if args.apply {
+                if let Some(flag) = planned.apply_flag {
+                    if !probe_capability(&bin, flag).await {
+                        eprintln!(
+                            "uni: tool={} stage=revise_probe outcome=unsupported token={flag}",
+                            planned.tool.key()
+                        );
+                        remediations.push(Remediation {
+                            tool: planned.tool.key(),
+                            reason: planned.reason,
+                            command,
+                            risk,
+                            outcome: Outcome::Unavailable,
+                            detail: Some(format!(
+                                "installed {} does not appear to support `{flag}` (checked via `{} --help`); uni's remediation command for this tool may be stale against the installed version",
+                                planned.tool.key(),
+                                planned.tool.key()
+                            )),
+                            preview,
+                            checkpoint: None,
+                            rolled_back: false,
+                            verification: None,
+                            duration_ms: None,
+                        });
+                        continue;
+                    }
+                }
             }
 
             let before = diagnosis
@@ -1511,7 +1573,7 @@ async fn commit_checkpoint(target: &Path, message: &str) -> Option<String> {
             // Exit 1 with "nothing to commit" covers two legitimate
             // shapes: the remediation wrote nothing at all (e.g. amber
             // proposing 0 replacements), or it already committed its own
-            // work (a native item, or a delegate like `traci enforce`
+            // work (a native item, or a delegate like `traci trace --apply`
             // that manages its own git history end to end).
             // Either way HEAD itself is still a meaningful checkpoint to
             // report — just not one uni made itself just now.
@@ -2762,7 +2824,7 @@ exit 1
     #[tokio::test]
     #[tracing::instrument(skip_all)]
     async fn checkpoint_reports_a_tool_own_commit_it_didnt_make_itself() {
-        // Simulates a remediation (like `traci enforce`) that
+        // Simulates a remediation (like `traci trace --apply`) that
         // commits its own work directly, leaving nothing for uni's own
         // `git add -A` to stage. The checkpoint must still report the
         // resulting HEAD, not None — the change genuinely happened and is
