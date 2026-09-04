@@ -15,9 +15,9 @@ struct Style {
 impl Style {
     fn stdout() -> Self {
         Self {
-            color: io::stdout().is_terminal()
-                && std::env::var_os("NO_COLOR").is_none()
-                && !matches!(std::env::var("TERM").as_deref(), Ok("dumb")),
+            color: TermInfo::detect().supports_color(),
+        }
+    }
         }
     }
 
