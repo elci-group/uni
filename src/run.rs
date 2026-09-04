@@ -1694,6 +1694,19 @@ fn evidence_for(tool: ToolId, raw: Option<&serde_json::Value>) -> Evidence {
             confidence: None,
             observations: root.pointer("/summary/diagnostics").and_then(Value::as_u64),
         },
+        ToolId::Scrawny => Evidence {
+            coverage: None,
+            confidence: root.pointer("/metrics/cohesion").and_then(Value::as_f64),
+            observations: root.pointer("/metrics/files_changed").and_then(Value::as_u64),
+        },
+        ToolId::Wilder => {
+            let percent = root.pointer("/coverage/analysis_percent").and_then(Value::as_f64);
+            Evidence {
+                coverage: percent.map(|p| p / 100.0),
+                confidence: None,
+                observations: root.get("evidence").and_then(Value::as_array).map(|a| a.len() as u64),
+            }
+        }
         _ => no_evidence(),
     }
 }
