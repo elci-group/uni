@@ -77,7 +77,7 @@
 //! 4. `--apply` refuses to run against a dirty git worktree — scoped to
 //!    the target directory, so a monorepo with unrelated dirty siblings
 //!    doesn't block a revise it has nothing to do with — the same
-//!    precondition `traci enforce` enforces. Every path uni takes
+//!    precondition `traci trace --apply` enforces. Every path uni takes
 //!    against the target from here on (status, add, commit, checkout,
 //!    clean) is pathspec-scoped to the target for the same reason: never
 //!    touch a sibling project sharing the same repository root.
