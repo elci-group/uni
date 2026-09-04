@@ -18,7 +18,70 @@ impl Style {
             color: TermInfo::detect().supports_color(),
         }
     }
+    /// Parses one of this module's SGR code strings — always one of a bare
+    /// standard/bright number (`"33"`), a bare attribute (`"1"`, `"2"`), a
+    /// `;`-joined combination of those (`"1;36"`), a 256-color foreground
+    /// (`"38;5;147"`), a 256-color foreground plus bold (`"1;38;5;196"`), or
+    /// a truecolor foreground (`"38;2;203;166;247"`) — into the structured
+    /// color/attributes `form3::ansi` renders from. This is the same
+    /// decomposition Fract's own `report::style::parse_sgr` performs on its
+    /// glass palette, so Uni's mechanism for turning a native tool's SGR
+    /// string into terminal bytes now matches the source tool's own.
+    fn parse_sgr(code: &str) -> (Option<AnsiColor>, Vec<Attr>) {
+        const STANDARD: [Color; 8] = [
+            Color::Black,
+            Color::Red,
+            Color::Green,
+            Color::Yellow,
+            Color::Blue,
+            Color::Magenta,
+            Color::Cyan,
+            Color::White,
+        ];
+
+        let mut color = None;
+        let mut attrs = Vec::new();
+        let parts: Vec<&str> = code.split(';').collect();
+        let mut i = 0;
+        while i < parts.len() {
+            match parts[i] {
+                "1" => attrs.push(Attr::Bold),
+                "2" => attrs.push(Attr::Dim),
+                "3" => attrs.push(Attr::Italic),
+                "4" => attrs.push(Attr::Underline),
+                "38" if parts.get(i + 1) == Some(&"5") => {
+                    if let Some(n) = parts.get(i + 2).and_then(|s| s.parse().ok()) {
+                        color = Some(AnsiColor::Indexed(n));
+                    }
+                    i += 2;
+                }
+                "38" if parts.get(i + 1) == Some(&"2") => {
+                    if let (Some(r), Some(g), Some(b)) = (
+                        parts.get(i + 2).and_then(|s| s.parse().ok()),
+                        parts.get(i + 3).and_then(|s| s.parse().ok()),
+                        parts.get(i + 4).and_then(|s| s.parse().ok()),
+                    ) {
+                        color = Some(AnsiColor::Rgb(r, g, b));
+                    }
+                    i += 4;
+                }
+                n => {
+                    if let Ok(code) = n.parse::<u8>() {
+                        let (base, bright) = match code {
+                            30..=37 => (code - 30, false),
+                            90..=97 => (code - 90, true),
+                            _ => {
+                                i += 1;
+                                continue;
+                            }
+                        };
+                        color = Some(AnsiColor::Standard(STANDARD[base as usize], bright));
+                    }
+                }
+            }
+            i += 1;
         }
+        (color, attrs)
     }
 
     fn paint(self, code: Option<&str>, text: impl AsRef<str>) -> String {
