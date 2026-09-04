@@ -37,7 +37,9 @@ fn parse_pieces(input: &str) -> Result<Vec<Piece>, String> {
                 }
                 depth -= 1;
                 if depth == 0 {
-                    let start = group_start.expect("group_start must be set when depth > 0");
+                    let start = group_start.ok_or_else(|| {
+                        "internal error: group_start unset while depth > 0".to_string()
+                    })?;
                     let content = &input[start + 1..i];
                     let alternatives = split_top_level(content, ',')?;
                     let parsed: Result<Vec<Vec<Piece>>, String> =
