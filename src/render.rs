@@ -18,6 +18,7 @@ impl Style {
             color: TermInfo::detect().supports_color(),
         }
     }
+
     /// Parses one of this module's SGR code strings — always one of a bare
     /// standard/bright number (`"33"`), a bare attribute (`"1"`, `"2"`), a
     /// `;`-joined combination of those (`"1;36"`), a 256-color foreground
@@ -115,12 +116,14 @@ impl Style {
     fn finding(self, tool: &ToolReport, finding: &str, index: usize) -> String {
         self.paint(finding_code(tool, finding, index), finding)
     }
+
     /// A tool's metaphorical analog, dimmed and italicized so it reads as an
     /// aside next to the tool's (accented) name rather than competing with
     /// it.
     fn metaphor(self, text: impl AsRef<str>) -> String {
         self.paint(Some("2;3"), text)
     }
+
     /// A section heading: bold, no color.
     fn heading(self, text: impl AsRef<str>) -> String {
         self.paint(Some("1"), text)
@@ -382,23 +385,28 @@ fn grouped_findings<'a>(
 }
 
 /// Renders a compact two-column box table of `(label, count)` rows, indented
-/// to sit under a tool's finding bullets.
+/// to sit under a tool's finding bullets, via `form3::table` (square
+/// corners, one rule after the header, none between rows — the same layout
+/// this table hand-formatted before).
 fn count_table(header: &str, rows: &[(String, usize)]) -> String {
-    let label_width = rows
-        .iter()
-        .map(|(l, _)| l.chars().count())
-        .max()
-        .unwrap_or(0)
-        .max(header.chars().count());
-    let rule = "─".repeat(label_width + 2);
-    let mut out = String::new();
-    out.push_str(&format!("      ┌{rule}┬───────┐\n"));
-    out.push_str(&format!("      │ {header:<label_width$} │ COUNT │\n"));
-    out.push_str(&format!("      ├{rule}┼───────┤\n"));
-    for (label, count) in rows {
-        out.push_str(&format!("      │ {label:<label_width$} │ {count:>5} │\n"));
+    use form3::table::{CellAlignment, Table, TableStyle};
+
+    let mut table = Table::new();
+    table.set_style(TableStyle::Square);
+    table.set_header(vec![header, "COUNT"]);
+    if let Some(column) = table.column_mut(1) {
+        column.set_cell_alignment(CellAlignment::Right);
     }
-    out.push_str(&format!("      └{rule}┴───────┘\n"));
+    for (label, count) in rows {
+        table.add_row(vec![label.clone(), count.to_string()]);
+    }
+
+    let mut out = String::new();
+    for line in table.to_string().lines() {
+        out.push_str("      ");
+        out.push_str(line);
+        out.push('\n');
+    }
     out
 }
 
@@ -661,45 +669,40 @@ fn human_report_styled(report: &Report, style: Style) -> HumanReport {
         out.push('\n');
     }
 
-    // Tools table with emojis
-    out.push_str(
-        "┌─────────────────────────────────────────────────────────────────────────────────┐\n",
-    );
-    out.push_str("│ 🔧 ANALYSIS TOOLS SUMMARY\n");
-    out.push_str(
-        "├────────────┬──────────────┬───────┬─────────┬─────────────────────────────────┤\n",
-    );
-    out.push_str(&format!(
-        "│ {:10} │ {:12} │ {:5} │ {:7} │ {:31} │\n",
-        "TOOL", "STATUS", "GRADE", "SCORE", "PURPOSE"
-    ));
-    out.push_str(
-        "├────────────┼──────────────┼───────┼─────────┼─────────────────────────────────┤\n",
-    );
+    // Tools table with emojis, laid out by form3::table (ANSI-aware column
+    // widths, so each tool's native accent no longer needs manual padding).
+    out.push_str(&format!("{}\n", style.heading("🔧 ANALYSIS TOOLS SUMMARY")));
+    {
+        use form3::table::{CellAlignment, Table, TableStyle};
 
-    for t in &report.tools {
-        let status_icon = status_emoji(t.status);
-        let status_text = status_word(t.status);
-        let tool_cell = style.tool_name(t.tool, pad_right(t.tool, 10));
-        let status_cell = style.status(t, pad_right(&format!("{status_icon} {status_text}"), 12));
-        let grade_cell = style.status(t, pad_right(t.grade.unwrap_or("—"), 5));
-        let score = t
-            .score
-            .map(|s| format!("{s:.1}"))
-            .unwrap_or_else(|| "—".to_string());
-        let score_cell = style.status(t, pad_left(&score, 7));
-        out.push_str(&format!(
-            "│ {} │ {} │ {} │ {} │ {:<31} │\n",
-            tool_cell,
-            status_cell,
-            grade_cell,
-            score_cell,
-            t.purpose.chars().take(31).collect::<String>()
-        ));
+        let mut table = Table::new();
+        table.set_style(TableStyle::Square);
+        table.set_header(vec!["TOOL", "STATUS", "GRADE", "SCORE", "PURPOSE"]);
+        if let Some(column) = table.column_mut(2) {
+            column.set_cell_alignment(CellAlignment::Center);
+        }
+        if let Some(column) = table.column_mut(3) {
+            column.set_cell_alignment(CellAlignment::Right);
+        }
+
+        for t in &report.tools {
+            let status_icon = status_emoji(t.status);
+            let status_text = status_word(t.status);
+            let score = t
+                .score
+                .map(|s| format!("{s:.1}"))
+                .unwrap_or_else(|| "—".to_string());
+            table.add_row(vec![
+                style.tool_name(t.tool, t.tool),
+                style.status(t, format!("{status_icon} {status_text}")),
+                style.status(t, t.grade.unwrap_or("—")),
+                style.status(t, score),
+                t.purpose.chars().take(31).collect::<String>(),
+            ]);
+        }
+        out.push_str(&table.to_string());
     }
-    out.push_str(
-        "└────────────┴──────────────┴───────┴─────────┴─────────────────────────────────┘\n\n",
-    );
+    out.push('\n');
 
     // Detailed findings for each tool
     out.push_str("📝 DETAILED FINDINGS BY TOOL:\n");
@@ -722,10 +725,14 @@ fn human_report_styled(report: &Report, style: Style) -> HumanReport {
         }
 
         let tool_icon = status_emoji(t.status);
+        let analog = crate::tool::ToolId::from_key(t.tool)
+            .map(|id| format!(" ({})", style.metaphor(id.metaphor())))
+            .unwrap_or_default();
         out.push_str(&format!(
-            "  {} {}: {}\n",
+            "  {} {}{}: {}\n",
             style.status(t, tool_icon),
             style.tool_name(t.tool, t.tool),
+            analog,
             style.status(t, &t.summary)
         ));
 
@@ -864,15 +871,13 @@ fn percent(value: Option<f64>) -> String {
 }
 
 fn progress_bar(ratio: f64) -> String {
-    let filled = (ratio * 20.0).round() as usize;
-    let empty = 20 - filled;
-    let bar = format!(
-        "[{}{}] {:.1}%",
-        "█".repeat(filled),
-        "░".repeat(empty),
-        ratio * 100.0
-    );
-    bar
+    let filled = (ratio.clamp(0.0, 1.0) * 20.0).round() as u64;
+    let mut bar = form3::anim::ProgressBar::new(20);
+    form3::anim::ProgressStyle::Default.apply(&mut bar);
+    bar.set_bar_style('█', '░', 20);
+    bar.set_position(filled);
+    bar.set_template("[{bar}]");
+    format!("{bar} {:.1}%", ratio * 100.0)
 }
 
 /// A cohort run can cover ~100 repos, so this is deliberately a compact
@@ -979,15 +984,18 @@ mod tests {
 
     #[test]
     fn native_brand_accents_are_distinct() {
+        // form3 emits one escape sequence per color/attribute rather than a
+        // single combined SGR code, so a native accent is now a short
+        // sequence of escapes (color first, then attributes) instead of one.
         let style = Style { color: true };
-        assert_eq!(style.tool_name("bart", "bart"), "\x1b[1;34mbart\x1b[0m");
+        assert_eq!(style.tool_name("bart", "bart"), "\x1b[34m\x1b[1mbart\x1b[0m");
         assert_eq!(
             style.tool_name("chakra", "chakra"),
-            "\x1b[1;38;2;203;166;247mchakra\x1b[0m"
+            "\x1b[38;2;203;166;247m\x1b[1mchakra\x1b[0m"
         );
         assert_eq!(
             style.tool_name("fract", "fract"),
-            "\x1b[1;38;5;147mfract\x1b[0m"
+            "\x1b[38;5;147m\x1b[1mfract\x1b[0m"
         );
     }
 
@@ -999,15 +1007,15 @@ mod tests {
         let traci = tool_report("traci", Status::Warn, vec![]);
         assert_eq!(
             style.finding(&amber, "serde: security_block", 0),
-            "\x1b[1;31mserde: security_block\x1b[0m"
+            "\x1b[31m\x1b[1mserde: security_block\x1b[0m"
         );
         assert_eq!(
             style.finding(&ferret, "[Minor] large hunk", 0),
-            "\x1b[1;33m[Minor] large hunk\x1b[0m"
+            "\x1b[33m\x1b[1m[Minor] large hunk\x1b[0m"
         );
         assert_eq!(
             style.finding(&traci, "[observability/error] TRC001", 0),
-            "\x1b[1;31m[observability/error] TRC001\x1b[0m"
+            "\x1b[31m\x1b[1m[observability/error] TRC001\x1b[0m"
         );
     }
 
