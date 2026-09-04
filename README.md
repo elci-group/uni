@@ -110,6 +110,18 @@ cyan-plus-severity treatment, Fract its 256-color glass palette, and Traci its
 cyan framing with native severity colors. Tools whose own human renderer is
 plain, including Lwoodz and Vamos, remain uncolored. `NO_COLOR` disables all
 ANSI styling.
+
+All of Uni's own styling, tables, and terminal-capability detection run on
+[`form3`](https://github.com/elci-group/3form) — the same dependency-free
+ANSI/table/animation crate that Amber, Bart, Chakra, Fract, and Isopod's own
+human renderers already use, so a native accent Uni relays (Chakra's mauve,
+Fract's glass, ...) is drawn through the same primitives the source tool
+draws it with, not a reimplementation. `--technical` output also names each
+tool's own metaphorical analog next to its findings — Isopod's compliance
+crawl, Fract's glass, Chakra's mystic aura, and so on for every tool `uni`
+orchestrates — so the report speaks in each tool's own voice, not a
+flattened Uni-wide vocabulary. See `ToolId::metaphor` in `src/tool.rs`.
+
 Not-applicable and zero-observation results are ungraded; unknown Isopod
 controls reduce coverage rather than counting as failures, and compliance is
 not graded below 80% assessment coverage. A graded tool reporting `fail`
