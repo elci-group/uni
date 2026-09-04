@@ -141,6 +141,12 @@ Ferret findings reduce its 100-point score by severity: 20 for critical, 8
 for major, 1 for minor, 0.25 for informational. Critical or major findings fail
 the ferret check; lower severities only warn.
 
+Wilder findings reduce its 100-point score by severity: 25 for critical, 10
+for high, 4 for medium, 1 for low; coverage gaps are reported but not
+penalized, and its exit code 2 (analysis incomplete) is noted, not an error.
+Scrawny's score is 100 minus its normalized review load; load above 70 or
+cohesion below 0.55 fails, load above 40 or more than 4 concern types warns.
+
 ## Anti-patterns
 
 - **Treating a passing `--fail-under` exit code as sufficient** without
