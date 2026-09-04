@@ -509,10 +509,7 @@ fn overall_headline(score: Option<f64>) -> (&'static str, &'static str) {
         Some(s) if s >= 90.0 => ("Excellent — this project is in great shape", "🟢"),
         Some(s) if s >= 70.0 => ("Good — a few things worth a look", "🟡"),
         Some(s) if s >= 50.0 => ("Fair — several areas need attention", "🟠"),
-        Some(_) => (
-            "Needs attention — multiple significant issues found",
-            "🔴",
-        ),
+        Some(_) => ("Needs attention — multiple significant issues found", "🔴"),
         None => ("Not enough data to score this project yet", "❔"),
     }
 }
@@ -567,7 +564,9 @@ pub fn plain_report(report: &Report) -> HumanReport {
         ));
     }
 
-    out.push_str("Run with --technical for the detailed breakdown, or --json for machine-readable output.\n");
+    out.push_str(
+        "Run with --technical for the detailed breakdown, or --json for machine-readable output.\n",
+    );
 
     HumanReport {
         text: out,
