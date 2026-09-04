@@ -11,7 +11,7 @@ pub use crate::experiments::cli::ExperimentsArgs;
     name = "uni",
     version,
     about = "Unified analysis snapshot with separate project-health and analysis-integrity verdicts.",
-    long_about = "uni runs amber, bart, chakra, ferret hunt (`ferret hunt`, with `ferret track` compatibility), fract, isopod, lwoodz, scrawny, tempcheq, traci, vamos, viva-palestina, and wilder concurrently, then reports project findings separately from analyzer defects. AMI is opt-in via --only ami because profile completeness is not code health and requires a JSON-capable build. Jeenome is opt-in (--jeenome) because it audits an strace trace. Missing public applications are classified without mutation by default; pass --install-missing to opt into validated, serialized installation through Baby."
+    long_about = "uni runs amber, bart, catskin, chakra, ferret hunt (`ferret hunt`, with `ferret track` compatibility), fract, isopod, lwoodz, scrawny, tempcheq, traci, vamos, viva-palestina, and wilder concurrently, then reports project findings separately from analyzer defects. AMI is opt-in via --only ami because profile completeness is not code health and requires a JSON-capable build. Jeenome is opt-in (--jeenome) because it audits an strace trace. Missing public applications are classified without mutation by default; pass --install-missing to opt into validated, serialized installation through Baby."
 )]
 pub struct Cli {
     #[command(subcommand)]

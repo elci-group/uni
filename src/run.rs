@@ -929,6 +929,16 @@ fn build_command(tool: ToolId, bin: &Path, target: &Path) -> tokio::process::Com
         ToolId::Bart => {
             cmd.args(["--json", "-d", "3", "-n", "0"]).arg(target);
         }
+        ToolId::Catskin => {
+            cmd.arg("export").arg(target).args([
+                "--format",
+                "json",
+                "--max-candidates",
+                "64",
+                "--max-depth",
+                "2",
+            ]);
+        }
         ToolId::Chakra => {
             cmd.arg(target).arg("--json");
         }
@@ -1705,6 +1715,14 @@ fn evidence_for(tool: ToolId, raw: Option<&serde_json::Value>) -> Evidence {
             confidence: root.pointer("/metrics/cohesion").and_then(Value::as_f64),
             observations: root.pointer("/metrics/files_changed").and_then(Value::as_u64),
         },
+        ToolId::Catskin => Evidence {
+            coverage: None,
+            confidence: None,
+            observations: root
+                .get("candidates")
+                .and_then(Value::as_array)
+                .map(|a| a.len() as u64),
+        },
         ToolId::Wilder => {
             let percent = root.pointer("/coverage/analysis_percent").and_then(Value::as_f64);
             Evidence {
@@ -1889,6 +1907,29 @@ mod tests {
         );
         let args: Vec<_> = cmd.as_std().get_args().collect();
         assert_eq!(args, ["analyse", "--format", "json", "--path", "/project"]);
+    }
+
+    #[test]
+    fn catskin_analysis_uses_export_json_with_bounded_defaults() {
+        let cmd = build_command(
+            ToolId::Catskin,
+            Path::new("/bin/catskin"),
+            Path::new("/project"),
+        );
+        let args: Vec<_> = cmd.as_std().get_args().collect();
+        assert_eq!(
+            args,
+            [
+                "export",
+                "/project",
+                "--format",
+                "json",
+                "--max-candidates",
+                "64",
+                "--max-depth",
+                "2"
+            ]
+        );
     }
 
     #[test]

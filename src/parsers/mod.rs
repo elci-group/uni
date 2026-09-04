@@ -8,6 +8,7 @@
 mod amber;
 mod ami;
 mod bart;
+mod catskin;
 mod chakra;
 mod ferret;
 mod fract;
@@ -52,6 +53,7 @@ pub fn parse(tool: ToolId, stdout: &str, exit_code: Option<i32>) -> ParseOutcome
         ToolId::Amber => amber::parse(stdout, exit_code),
         ToolId::Ami => ami::parse(stdout, exit_code),
         ToolId::Bart => bart::parse(stdout, exit_code),
+        ToolId::Catskin => catskin::parse(stdout, exit_code),
         ToolId::Chakra => chakra::parse(stdout, exit_code),
         ToolId::Ferret => ferret::parse(stdout, exit_code),
         ToolId::Fract => fract::parse(stdout, exit_code),

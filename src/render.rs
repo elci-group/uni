@@ -144,7 +144,7 @@ fn tool_accent(tool: &str) -> Option<&'static str> {
         "jeenome" => Some("36"),
         "traci" => Some("36"),
         // These tools intentionally have no native ANSI presentation.
-        "lwoodz" | "tempcheq" | "vamos" => None,
+        "catskin" | "lwoodz" | "tempcheq" | "vamos" => None,
         _ => None,
     }
 }
@@ -453,6 +453,7 @@ fn friendly_label(tool: &'static str) -> &'static str {
         "amber" => "Dependency health",
         "ami" => "Project profile completeness",
         "bart" => "File organization",
+        "catskin" => "Code rewrite candidates",
         "chakra" => "Architecture & data flow",
         "ferret" => "Code review findings",
         "fract" => "Code structure & duplication",

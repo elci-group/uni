@@ -108,8 +108,8 @@ palette instead of imposing a Uni-wide status scheme: for example Bart keeps
 its blue/cyan depth colors, Chakra its mauve brand accent, Ferret its
 cyan-plus-severity treatment, Fract its 256-color glass palette, and Traci its
 cyan framing with native severity colors. Tools whose own human renderer is
-plain, including Lwoodz and Vamos, remain uncolored. `NO_COLOR` disables all
-ANSI styling.
+plain, including Catskin, Lwoodz, and Vamos, remain uncolored. `NO_COLOR`
+disables all ANSI styling.
 
 All of Uni's own styling, tables, and terminal-capability detection run on
 [`form3`](https://github.com/elci-group/3form) — the same dependency-free
@@ -154,6 +154,14 @@ Scrawny's score is the complement of its normalized review-load index
 above 70 or cohesion below 0.55 fails; load above 40 or more than 4 concern
 types warns. A clean working tree scores 100 by construction, since scrawny
 grades the diff, not the project.
+
+Catskin is ungraded (`score: none`), like Bart: it proposes deterministic,
+type-checked rewrites (loop -> iterator, filter-loop -> `filter().collect()`,
+if/else chain -> match) via its `export` command and reports how many
+verified equivalent rewrites it found. Having zero isn't a defect — it just
+means the current rule set found nothing applicable — so this is
+informational context, not a health signal. It's `NotApplicable` when no
+source file could be lowered into catskin's process IR at all.
 
 ## Experiments
 

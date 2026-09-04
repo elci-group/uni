@@ -23,6 +23,7 @@ pub enum ToolId {
     Amber,
     Ami,
     Bart,
+    Catskin,
     Chakra,
     Ferret,
     Fract,
@@ -39,10 +40,11 @@ pub enum ToolId {
 
 impl ToolId {
     /// Every tool, in canonical (alphabetical) order.
-    pub const ALL: [ToolId; 15] = [
+    pub const ALL: [ToolId; 16] = [
         ToolId::Amber,
         ToolId::Ami,
         ToolId::Bart,
+        ToolId::Catskin,
         ToolId::Chakra,
         ToolId::Ferret,
         ToolId::Fract,
@@ -63,6 +65,7 @@ impl ToolId {
             ToolId::Amber => "amber",
             ToolId::Ami => "ami",
             ToolId::Bart => "bart",
+            ToolId::Catskin => "catskin",
             ToolId::Chakra => "chakra",
             ToolId::Ferret => "ferret",
             ToolId::Fract => "fract",
@@ -99,6 +102,7 @@ impl ToolId {
             ToolId::Amber => "https://github.com/elci-group/amber.git",
             ToolId::Ami => "https://github.com/elci-group/ami.git",
             ToolId::Bart => "https://github.com/elci-group/bart.git",
+            ToolId::Catskin => "https://github.com/elci-group/catskin.git",
             ToolId::Chakra => "https://github.com/elci-group/chakra.git",
             ToolId::Ferret => "https://github.com/elci-group/ferret.git",
             ToolId::Fract => "https://github.com/elci-group/fract.git",
@@ -147,6 +151,7 @@ impl ToolId {
             ToolId::Amber => "the fossil: preserves what's worth keeping in resin, flags what should be let go",
             ToolId::Ami => "the scout: reads the room before the room reads you",
             ToolId::Bart => "the surveyor: maps the terrain and its heaviest patches",
+            ToolId::Catskin => "the many-skinned cat: proves which alternate rewrites of your code are truly equivalent",
             ToolId::Chakra => "the mystic aura: traces energy flowing along the system's channels",
             ToolId::Ferret => "the hunter: digs through the burrow for what's buried",
             ToolId::Fract => "the glass: shows the cracks before they shatter",
@@ -168,6 +173,7 @@ impl ToolId {
             ToolId::Amber => "dependency bloat / replaceability",
             ToolId::Ami => "project profile completeness (market-intelligence readiness)",
             ToolId::Bart => "filesystem size & hotspots (informational)",
+            ToolId::Catskin => "verified-equivalent code rewrite candidates (informational)",
             ToolId::Chakra => "data-flow / architecture map coverage",
             ToolId::Ferret => "repository-specific review findings (hunt)",
             ToolId::Fract => "module entropy, cohesion, duplication",
