@@ -1,7 +1,9 @@
 // Copyright (c) 2026 sal
 // SPDX-License-Identifier: MIT
-use std::io::{self, IsTerminal};
 use std::ops::Range;
+
+use form3::ansi::{self, AnsiColor, Attr, Color};
+use form3::term::TermInfo;
 
 use crate::report::{Execution, IntegrityStatus, Report, Status, ToolReport};
 
