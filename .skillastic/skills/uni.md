@@ -144,8 +144,11 @@ the ferret check; lower severities only warn.
 Wilder findings reduce its 100-point score by severity: 25 for critical, 10
 for high, 4 for medium, 1 for low; coverage gaps are reported but not
 penalized, and its exit code 2 (analysis incomplete) is noted, not an error.
-Scrawny's score is 100 minus its normalized review load; load above 70 or
-cohesion below 0.55 fails, load above 40 or more than 4 concern types warns.
+Scrawny is advisory and ungraded: review load above 40, cohesion below 0.55,
+or more than 4 concern types warns, never fails. Problematic findings appear
+in the report summaries' Considerations section. Neither clean nor difficult
+diffs affect the overall health score or its failure cap; malformed output
+and execution errors remain analysis defects.
 
 Catskin is informational only (score: none), like Bart — it reports
 verified-equivalent rewrite candidates (`export`'s `mutations` + `type_valid`

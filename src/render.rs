@@ -523,6 +523,22 @@ fn overall_headline(score: Option<f64>) -> (&'static str, &'static str) {
     }
 }
 
+fn append_considerations(out: &mut String, report: &Report) {
+    for tool in report.tools.iter().filter(|tool| {
+        tool.tool == "scrawny"
+            && tool.status == Status::Warn
+            && tool.execution == Execution::Succeeded
+    }) {
+        out.push_str("Considerations:\n");
+        out.push_str("  Review difficulty (Scrawny) — advisory; does not affect project health.\n");
+        out.push_str(&format!("  {}\n", tool.summary));
+        for finding in &tool.findings {
+            out.push_str(&format!("    • {finding}\n"));
+        }
+        out.push('\n');
+    }
+}
+
 /// The concise, plain-language default: what a non-technical reader needs
 /// to know (is the project healthy, what areas need a look, can the
 /// snapshot be trusted) without tool names, raw finding strings, or
@@ -550,7 +566,9 @@ pub fn plain_report(report: &Report) -> HumanReport {
 
     out.push_str("What we found, by area:\n");
     for t in &report.tools {
-        if matches!(t.status, Status::Skipped | Status::Unavailable) {
+        if matches!(t.status, Status::Skipped | Status::Unavailable)
+            || (t.tool == "scrawny" && matches!(t.status, Status::Ok | Status::Warn))
+        {
             continue;
         }
         let counts = finding_count_phrase(t)
@@ -564,6 +582,8 @@ pub fn plain_report(report: &Report) -> HumanReport {
         ));
     }
     out.push('\n');
+
+    append_considerations(&mut out, report);
 
     if report.integrity.status != IntegrityStatus::Healthy {
         out.push_str(&format!(
@@ -781,6 +801,8 @@ fn human_report_styled(report: &Report, style: Style) -> HumanReport {
             fract_section = Some(section_start..out.len());
         }
     }
+
+    append_considerations(&mut out, report);
 
     // Overall summary with progress bar
     out.push_str(
@@ -1146,6 +1168,51 @@ mod tests {
                 defects: vec![],
             },
         }
+    }
+
+    #[test]
+    fn scrawny_concerns_appear_in_both_summaries_without_health_failure() {
+        let report = minimal_report(tool_report(
+            "scrawny",
+            Status::Warn,
+            vec!["Behavioural: 900 lines across 7 changes".into()],
+        ));
+        for text in [
+            plain_report(&report).text,
+            human_report_styled(&report, Style { color: false }).text,
+        ] {
+            assert!(text.contains("Considerations:"));
+            assert!(text.contains("advisory; does not affect project health"));
+            assert!(text.contains("Behavioural: 900 lines across 7 changes"));
+        }
+        let plain = plain_report(&report).text;
+        assert!(!plain.contains("needs attention"));
+    }
+
+    #[test]
+    fn difficult_scrawny_diff_neither_lowers_nor_caps_project_health() {
+        let parsed = crate::parsers::parse(
+            crate::tool::ToolId::Scrawny,
+            r#"{"metrics":{"review_load":{"total":98},"cohesion":0.24}}"#,
+            Some(0),
+        );
+        let mut scrawny = tool_report("scrawny", parsed.status, parsed.findings);
+        scrawny.score = parsed.score;
+        let mut healthy = tool_report("fract", Status::Ok, vec![]);
+        healthy.score = Some(95.0);
+        let overall = Report::compute_overall(&[healthy, scrawny]);
+        assert_eq!(overall.score, Some(95.0));
+        assert_eq!(overall.graded_tools, 1);
+    }
+
+    #[test]
+    fn scrawny_clean_results_and_errors_are_not_considerations() {
+        for status in [Status::Ok, Status::Error] {
+            let report = minimal_report(tool_report("scrawny", status, vec![]));
+            assert!(!plain_report(&report).text.contains("Considerations:"));
+        }
+        let report = minimal_report(tool_report("scrawny", Status::Error, vec![]));
+        assert!(plain_report(&report).text.contains("couldn't complete"));
     }
 
     #[test]

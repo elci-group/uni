@@ -28,6 +28,14 @@ unweighted mean would be higher. This prevents a single critical-axis failure
 (e.g. module cohesion). The cap only lowers the score — it never raises an
 average that was already below it.
 
+Scrawny measures the current diff's review difficulty and is always ungraded
+(`score: null`). Valid results use `ok` or `warn`, never `fail`; load above 40,
+cohesion below 0.55, or more than four concern types warns. Warnings appear in
+the human summaries' **Considerations** section, with metrics and findings.
+JSON retains these in the Scrawny tool's `summary`, `findings`, `note`, and
+`raw` fields. Scrawny contributes neither to the mean nor the failure cap.
+Protocol and execution errors remain analysis defects.
+
 `status: fail` means the analyzer ran successfully and found project issues;
 it does not mean execution failed. Human reports render that state as
 `findings`. Analyzer failures are identified by `execution: failed`,

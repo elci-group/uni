@@ -1,18 +1,14 @@
 // Copyright (c) 2026 sal
 // SPDX-License-Identifier: MIT
 //! scrawny measures how review-hostile the current working-tree change is.
-//! `metrics.review_load.total` is already a normalized 0-100 index, so the
-//! score is its complement. Status thresholds mirror scrawny's own default
-//! policy (`scrawny check`): fail above 70 review load or below 0.55
-//! cohesion, warn above 40 load or more than 4 concern types. A clean tree
-//! scores 100 — it measures the diff, not the project.
-use super::{clamp_score, ParseOutcome};
+//! Review difficulty describes a pending diff, not project health. Valid
+//! results are advisory and ungraded; concerning metrics warn, never fail.
+use super::ParseOutcome;
 use crate::report::Status;
 use serde_json::Value;
 
-const FAIL_LOAD: f64 = 70.0;
 const WARN_LOAD: f64 = 40.0;
-const FAIL_COHESION: f64 = 0.55;
+const WARN_COHESION: f64 = 0.55;
 const MAX_CONCERNS: usize = 4;
 
 pub fn parse(stdout: &str, _exit_code: Option<i32>) -> ParseOutcome {
@@ -24,7 +20,10 @@ pub fn parse(stdout: &str, _exit_code: Option<i32>) -> ParseOutcome {
         }
     };
 
-    let Some(load) = root.pointer("/metrics/review_load/total").and_then(Value::as_f64) else {
+    let Some(load) = root
+        .pointer("/metrics/review_load/total")
+        .and_then(Value::as_f64)
+    else {
         return ParseOutcome {
             status: Status::Error,
             score: None,
@@ -65,15 +64,12 @@ pub fn parse(stdout: &str, _exit_code: Option<i32>) -> ParseOutcome {
         })
         .collect();
 
-    let score = clamp_score(100.0 - load);
-
-    let status = if load > FAIL_LOAD || cohesion < FAIL_COHESION {
-        Status::Fail
-    } else if load > WARN_LOAD || concerns_src.len() > MAX_CONCERNS {
-        Status::Warn
-    } else {
-        Status::Ok
-    };
+    let status =
+        if load > WARN_LOAD || cohesion < WARN_COHESION || concerns_src.len() > MAX_CONCERNS {
+            Status::Warn
+        } else {
+            Status::Ok
+        };
 
     let summary = format!(
         "review load {:.0}/100, cohesion {:.0}%, {} concern types across {files_changed} files",
@@ -84,10 +80,10 @@ pub fn parse(stdout: &str, _exit_code: Option<i32>) -> ParseOutcome {
 
     ParseOutcome {
         status,
-        score: Some(score),
+        score: None,
         summary,
         findings,
-        note: None,
+        note: Some("Advisory only: review difficulty describes the current changes, not project health; excluded from the overall score and failure cap.".to_string()),
         raw: Some(root),
     }
 }
@@ -103,25 +99,25 @@ mod tests {
     }
 
     #[test]
-    fn clean_tree_scores_perfectly() {
+    fn clean_tree_is_ok_and_ungraded() {
         let outcome = parse(&fixture(0.0, 1.0, "[]"), Some(0));
         assert_eq!(outcome.status, Status::Ok);
-        assert_eq!(outcome.score, Some(100.0));
+        assert_eq!(outcome.score, None);
         assert!(outcome.summary.contains("review load 0/100"));
     }
 
     #[test]
-    fn excessive_load_fails_with_complement_score() {
+    fn excessive_load_warns_without_a_health_score() {
         let outcome = parse(&fixture(71.0, 0.9, "[]"), Some(0));
-        assert_eq!(outcome.status, Status::Fail);
-        assert_eq!(outcome.score, Some(29.0));
+        assert_eq!(outcome.status, Status::Warn);
+        assert_eq!(outcome.score, None);
     }
 
     #[test]
-    fn low_cohesion_fails_even_at_moderate_load() {
+    fn low_cohesion_warns_without_a_health_score() {
         let outcome = parse(&fixture(30.0, 0.4, "[]"), Some(0));
-        assert_eq!(outcome.status, Status::Fail);
-        assert_eq!(outcome.score, Some(70.0));
+        assert_eq!(outcome.status, Status::Warn);
+        assert_eq!(outcome.score, None);
     }
 
     #[test]
@@ -146,7 +142,7 @@ mod tests {
 
     #[test]
     fn missing_review_load_is_ungraded() {
-        let outcome = parse(r#"{"version": "2", "metrics": {}}"# , Some(0));
+        let outcome = parse(r#"{"version": "2", "metrics": {}}"#, Some(0));
         assert_eq!(outcome.status, Status::Error);
         assert!(outcome.score.is_none());
         assert!(outcome.note.unwrap().contains("ungraded"));

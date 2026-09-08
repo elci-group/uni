@@ -12,8 +12,8 @@ an `strace` trace. Ferret hunt prefers Ferret's `hunt` operation and supports
 builds that call it `track`; it uses an in-memory corpus, so the analysis does
 not write `ferret.db` into the target. Wilder exits 2 while its analysis
 remains incomplete at the 0.3 milestone; Uni parses its JSON anyway and notes
-the coverage gap rather than failing the tool. Scrawny grades the review
-load of the working-tree diff, so a clean checkout scores 100 by construction.
+the coverage gap rather than failing the tool. Scrawny reports advisory review
+considerations about the working-tree diff and does not affect project health.
 
 Each tool has a custom emoji badge, generated with
 [xpressive](https://github.com/elci-group/xpressive)'s `.xpr` vector format —
@@ -149,11 +149,13 @@ for high, 4 for medium, 1 for low. Coverage gaps are reported in the summary
 but not penalized — an analysis gap is not a failing result — and wilder's
 exit code 2 (analysis incomplete) is noted, not treated as an error.
 
-Scrawny's score is the complement of its normalized review-load index
-(100 − review load). Status mirrors scrawny's own `check` policy: review load
-above 70 or cohesion below 0.55 fails; load above 40 or more than 4 concern
-types warns. A clean working tree scores 100 by construction, since scrawny
-grades the diff, not the project.
+Scrawny is advisory and ungraded (`score: null`): it measures review difficulty
+of the current diff, not project health. Review load above 40, cohesion below
+0.55, or more than 4 concern types produces a warning, never a project failure.
+Problematic results appear under **Considerations** in both report summaries,
+with their metrics and concern breakdown. Clean diffs are also ungraded.
+Scrawny cannot lower the overall average or activate its 73-point failure cap.
+Invalid output and execution errors still appear as analysis defects.
 
 Catskin is ungraded (`score: none`), like Bart: it proposes deterministic,
 type-checked rewrites (loop -> iterator, filter-loop -> `filter().collect()`,
