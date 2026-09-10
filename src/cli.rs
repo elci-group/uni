@@ -11,7 +11,7 @@ pub use crate::experiments::cli::ExperimentsArgs;
     name = "uni",
     version,
     about = "Unified analysis snapshot with separate project-health and analysis-integrity verdicts.",
-    long_about = "uni runs amber, bart, catskin, chakra, ferret hunt (`ferret hunt`, with `ferret track` compatibility), fract, isopod, lwoodz, scrawny, tempcheq, traci, vamos, viva-palestina, and wilder concurrently, then reports project findings separately from analyzer defects. AMI is opt-in via --only ami because profile completeness is not code health and requires a JSON-capable build. Jeenome is opt-in (--jeenome) because it audits an strace trace. Missing public applications are classified without mutation by default; pass --install-missing to opt into validated, serialized installation through Baby."
+    long_about = "uni runs amber, bart, catskin, chakra, edwardian, ferret hunt (`ferret hunt`, with `ferret track` compatibility), fract, isopod, lwoodz, scrawny, tempcheq, traci, vamos, viva-palestina, and wilder concurrently, then reports project findings separately from analyzer defects. AMI is opt-in via --only ami because profile completeness is not code health and requires a JSON-capable build. Jeenome is opt-in (--jeenome) because it audits an strace trace. Missing public applications are classified without mutation by default; pass --install-missing to opt into validated, serialized installation through Baby."
 )]
 pub struct Cli {
     #[command(subcommand)]
@@ -114,7 +114,9 @@ pub enum Command {
     /// Diagnose issues, then run each flagged tool's own fix/remediation
     /// command (amber --propose, isopod harden, lwoodz remedy,
     /// tempcheq --fix). Dry-run by default; pass --apply to actually
-    /// mutate the project.
+    /// mutate the project. Pass --upstream to propose a fix as a PR to
+    /// the target's own GitHub remote instead (currently: isopod harden
+    /// --remote).
     Revise(ReviseArgs),
 }
 
@@ -238,6 +240,33 @@ pub struct ReviseArgs {
     /// itself even without this flag.
     #[arg(long, value_enum)]
     pub fail_on: Option<RunFailLevel>,
+
+    /// Propose a remediation upstream instead of applying it to the local
+    /// working tree, for tools that support it (currently: isopod, via
+    /// `harden --remote`). Forks `target`'s own `origin` GitHub remote,
+    /// commits the fix there, and opens a PR back — for when you're
+    /// revising a project you don't have (or don't want to use) local
+    /// write access to. Remediations with no remote-hardening mode are
+    /// silently excluded from the plan rather than falling back to a
+    /// local apply, since --upstream is an explicit ask not to touch the
+    /// local tree. Requires `origin` to be a github.com remote; combine
+    /// with --apply to actually push and open the PR, same as any other
+    /// remediation here.
+    #[arg(long)]
+    pub upstream: bool,
+
+    /// After a successful --apply, run `goglz revise` once to keep
+    /// documentation aligned with the code changes just made. Off by
+    /// default: unlike everything else revise can run, this sends the
+    /// target's document content to a third-party AI API (goglz's own
+    /// configured GPT-OSS/Groq provider) and needs the same
+    /// --confirm-source-rewrite and --confirm-ai-patch as any other
+    /// model-generated rewrite. Also requires the target's own
+    /// goglz.yaml to explicitly set `anti_hunking: { enabled: false }` —
+    /// uni refuses to run goglz otherwise, since that feature exists to
+    /// hide goglz's rewrites from Ferret.
+    #[arg(long)]
+    pub sync_docs: bool,
 }
 
 #[derive(clap::ValueEnum, Clone, Copy, Debug)]

@@ -37,30 +37,48 @@ pub fn parse(stdout: &str, _exit_code: Option<i32>) -> ParseOutcome {
         .pointer("/metadata/analyzed_file_count")
         .and_then(Value::as_u64)
         .unwrap_or(0);
+    // Older reports (pre-dating this field) fall back to file_count, which
+    // reproduces their original all-files ratio rather than crashing.
+    let supported = root
+        .pointer("/metadata/supported_language_file_count")
+        .and_then(Value::as_u64)
+        .unwrap_or(file_count);
 
-    // file_count == 0 means chakra had nothing to analyze (missing metadata
-    // or a genuinely empty project), not perfect coverage. Scoring this as
-    // 100 would reward "could not analyze anything" the same as "analyzed
-    // everything" — treat it as no data instead, matching how isopod treats
-    // zero controls.
-    if file_count == 0 {
+    // file_count == 0 means chakra had nothing to walk at all (missing
+    // metadata or a genuinely empty project). supported == 0 means chakra
+    // walked a real project but none of it was in a language it implements
+    // (rust/javascript/typescript/python/go) — a documentation-only repo,
+    // say. Neither is a defect: scoring either as 100 would reward "had
+    // nothing to analyze" the same as "analyzed everything," so both are
+    // no-data, matching how isopod treats zero controls.
+    if file_count == 0 || supported == 0 {
+        let reason = if file_count == 0 {
+            "no file metadata reported"
+        } else {
+            "no files found in a language chakra implements (rust/javascript/typescript/python/go)"
+        };
         return ParseOutcome {
             status: Status::NoData,
             score: None,
-            summary: format!(
-                "{nodes} nodes, {} flows; no file metadata reported",
-                flows.len()
-            ),
+            summary: format!("{nodes} nodes, {} flows; {reason}", flows.len()),
             findings: Vec::new(),
-            note: Some(
-                "chakra reported zero analyzable files; coverage and confidence cannot be computed"
-                    .to_string(),
-            ),
+            note: Some(format!(
+                "chakra reported {reason}; analyzer completeness cannot be computed"
+            )),
             raw: Some(root),
         };
     }
 
-    let coverage = analyzed as f64 / file_count as f64;
+    // Analyzer completeness: of the files chakra recognizes as one of its
+    // implemented languages, how many it actually analyzed. This is the
+    // primary, actionable coverage figure — a low value means chakra
+    // itself missed something it should have handled.
+    let completeness = analyzed as f64 / supported as f64;
+    // All-files ratio: informational context only. A repository that's
+    // mostly documentation/config reports a low figure here even with
+    // complete analyzer completeness — it describes the repository's
+    // language mix, not a chakra defect, so it never drives status/score.
+    let all_files_ratio = analyzed as f64 / file_count as f64;
 
     let avg_confidence = if flows.is_empty() {
         1.0
@@ -72,8 +90,8 @@ pub fn parse(stdout: &str, _exit_code: Option<i32>) -> ParseOutcome {
         sum / flows.len() as f64
     };
 
-    let score = clamp_score(100.0 * (0.5 * avg_confidence + 0.5 * coverage));
-    let status = if coverage < 0.5 {
+    let score = clamp_score(100.0 * (0.5 * avg_confidence + 0.5 * completeness));
+    let status = if completeness < 0.5 {
         Status::Warn
     } else {
         Status::Ok
@@ -90,9 +108,10 @@ pub fn parse(stdout: &str, _exit_code: Option<i32>) -> ParseOutcome {
     }
 
     let summary = format!(
-        "{nodes} nodes, {} flows; coverage {:.1}% ({analyzed}/{file_count} files), confidence {:.1}%",
+        "{nodes} nodes, {} flows; analyzer completeness {:.1}% ({analyzed}/{supported} supported-language files), {:.1}% of all {file_count} files, confidence {:.1}%",
         flows.len(),
-        coverage * 100.0,
+        completeness * 100.0,
+        all_files_ratio * 100.0,
         avg_confidence * 100.0
     );
 
@@ -126,9 +145,37 @@ mod tests {
 
     #[test]
     fn partial_coverage_scores_below_full_marks() {
+        let stdout = r#"{"nodes":[{}],"flows":[{"confidence":1.0,"provenance":"static"}],"metadata":{"file_count":10,"analyzed_file_count":3,"supported_language_file_count":3}}"#;
+        let out = parse(stdout, Some(0));
+        // completeness 1.0 (3/3 supported files analyzed), confidence 1.0 => 100
+        assert!((out.score.unwrap() - 100.0).abs() < 1e-9);
+        assert_eq!(out.status, Status::Ok);
+    }
+
+    #[test]
+    fn zero_supported_language_files_is_no_data() {
+        let stdout = r#"{"nodes":[],"flows":[],"metadata":{"file_count":12,"analyzed_file_count":0,"supported_language_file_count":0}}"#;
+        let out = parse(stdout, Some(0));
+        assert_eq!(out.status, Status::NoData);
+        assert_eq!(out.score, None);
+    }
+
+    #[test]
+    fn documentation_heavy_repo_scores_on_completeness_not_all_files_ratio() {
+        // 2 of 2 supported-language files analyzed, but only 2 of 20 files
+        // overall — should score as fully complete, not as low coverage.
+        let stdout = r#"{"nodes":[{}],"flows":[],"metadata":{"file_count":20,"analyzed_file_count":2,"supported_language_file_count":2}}"#;
+        let out = parse(stdout, Some(0));
+        assert_eq!(out.status, Status::Ok);
+        assert!((out.score.unwrap() - 100.0).abs() < 1e-9);
+    }
+
+    #[test]
+    fn missing_supported_language_field_falls_back_to_file_count() {
+        // Old report, pre-dating supported_language_file_count: reproduces
+        // the original all-files-ratio behavior rather than erroring.
         let stdout = r#"{"nodes":[{}],"flows":[{"confidence":1.0,"provenance":"static"}],"metadata":{"file_count":10,"analyzed_file_count":3}}"#;
         let out = parse(stdout, Some(0));
-        // coverage 0.3, confidence 1.0 => 100*(0.5*1.0 + 0.5*0.3) = 65
         assert!((out.score.unwrap() - 65.0).abs() < 1e-9);
         assert_eq!(out.status, Status::Warn);
     }

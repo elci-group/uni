@@ -25,8 +25,10 @@ pub enum ToolId {
     Bart,
     Catskin,
     Chakra,
+    Edwardian,
     Ferret,
     Fract,
+    Goglz,
     Isopod,
     Jeenome,
     Lwoodz,
@@ -40,12 +42,23 @@ pub enum ToolId {
 
 impl ToolId {
     /// Every tool, in canonical (alphabetical) order.
-    pub const ALL: [ToolId; 16] = [
+    ///
+    /// `Goglz` is deliberately absent: every other variant here is a
+    /// read-only analyzer `uni analyze` can run concurrently and grade.
+    /// Goglz is a document-rewriting daemon that calls a third-party AI
+    /// API and mutates files in place — it has no diagnostic mode at all,
+    /// so it can't produce a `ToolReport` and must never be spawned by
+    /// `run::execute`. It's only ever invoked, opt-in, from
+    /// `revise::run_doc_sync_pass` as a post-apply step. `resolve_binary`
+    /// still works on it since that function is generic over `ToolId`,
+    /// not restricted to `ALL`.
+    pub const ALL: [ToolId; 17] = [
         ToolId::Amber,
         ToolId::Ami,
         ToolId::Bart,
         ToolId::Catskin,
         ToolId::Chakra,
+        ToolId::Edwardian,
         ToolId::Ferret,
         ToolId::Fract,
         ToolId::Isopod,
@@ -67,8 +80,10 @@ impl ToolId {
             ToolId::Bart => "bart",
             ToolId::Catskin => "catskin",
             ToolId::Chakra => "chakra",
+            ToolId::Edwardian => "edwardian",
             ToolId::Ferret => "ferret",
             ToolId::Fract => "fract",
+            ToolId::Goglz => "goglz",
             ToolId::Isopod => "isopod",
             ToolId::Jeenome => "jeenome",
             ToolId::Lwoodz => "lwoodz",
@@ -104,8 +119,14 @@ impl ToolId {
             ToolId::Bart => "https://github.com/elci-group/bart.git",
             ToolId::Catskin => "https://github.com/elci-group/catskin.git",
             ToolId::Chakra => "https://github.com/elci-group/chakra.git",
+            ToolId::Edwardian => "https://github.com/elci-group/edwardian.git",
             ToolId::Ferret => "https://github.com/elci-group/ferret.git",
             ToolId::Fract => "https://github.com/elci-group/fract.git",
+            // No auto-bootstrap: goglz calls a third-party AI API and
+            // needs its own API keys configured (`~/.goglz`) before it's
+            // safe to run at all. `uni` should never silently clone and
+            // build it the way it does the read-only analyzers.
+            ToolId::Goglz => return None,
             ToolId::Isopod => "https://github.com/elci-group/isopod.git",
             ToolId::Jeenome => "https://github.com/elci-group/jeenome.git",
             ToolId::Lwoodz => "https://github.com/elci-group/lwoodz.git",
@@ -153,8 +174,10 @@ impl ToolId {
             ToolId::Bart => "the surveyor: maps the terrain and its heaviest patches",
             ToolId::Catskin => "the many-skinned cat: proves which alternate rewrites of your code are truly equivalent",
             ToolId::Chakra => "the mystic aura: traces energy flowing along the system's channels",
+            ToolId::Edwardian => "the estate surveyor: walks a Linux-built house room by room, noting what won't stand on Windows ground",
             ToolId::Ferret => "the hunter: digs through the burrow for what's buried",
             ToolId::Fract => "the glass: shows the cracks before they shatter",
+            ToolId::Goglz => "the proofreader: rewrites the record so it still matches the truth",
             ToolId::Isopod => "the roly-poly: crawls every control, curling up tight where compliance fails",
             ToolId::Jeenome => "the detective: reconstructs what happened from the trace",
             ToolId::Lwoodz => "the woodsman: checks the timber's paperwork before it ships",
@@ -175,15 +198,19 @@ impl ToolId {
             ToolId::Bart => "filesystem size & hotspots (informational)",
             ToolId::Catskin => "verified-equivalent code rewrite candidates (informational)",
             ToolId::Chakra => "data-flow / architecture map coverage",
+            ToolId::Edwardian => "Windows release-readiness: platform-dependency findings, dimension scores, and remediation directives (analysis; revision/fork commands are opt-in, not run by `uni analyze`)",
             ToolId::Ferret => "repository-specific review findings (hunt)",
             ToolId::Fract => "module entropy, cohesion, duplication",
+            ToolId::Goglz => {
+                "post-revision documentation sync (opt-in, AI-assisted; not diagnosed or graded)"
+            }
             ToolId::Isopod => "ISO27001/27002 compliance posture",
             ToolId::Jeenome => "behavioural trace analysis (opt-in)",
             ToolId::Lwoodz => "license / SPDX compliance",
             ToolId::Scrawny => "review-hostility of current changes",
             ToolId::Tempcheq => "LLM sampling-temperature correctness",
             ToolId::Traci => "observability/telemetry completeness",
-            ToolId::Vamos => "nominal vs. validated action completion",
+            ToolId::Vamos => "terminal workflow regression coverage",
             ToolId::VivaPalestina => "ethical vendor / dependency policy compliance",
             ToolId::Wilder => "repository evidence & coverage orchestration",
         }
@@ -197,15 +224,7 @@ pub fn resolve_binary(tool: ToolId, tools_dir: &Path) -> Option<PathBuf> {
     // Prefer the explicitly selected tools directory over PATH. PATH often
     // contains an older system build whose behavior no longer matches the
     // checked-out ELCI tool (for example Fract's dependency exclusions).
-    let mut repos = vec![tools_dir.join(tool.repo_dir())];
-    // The validated-action-lifecycle tool historically shipped from a repo
-    // named `vamos`, but the local checkout that matches `uni`'s CLI contract
-    // lives at `vamos-lifecycle`. Prefer the contract-correct checkout when it
-    // exists, and still fall back to the legacy directory name.
-    if tool == ToolId::Vamos {
-        repos.push(tools_dir.join("vamos-lifecycle"));
-    }
-
+    let repos = vec![tools_dir.join(tool.repo_dir())];
     for repo in repos {
         for profile in ["release", "debug"] {
             let candidate = repo.join("target").join(profile).join(bin_name);

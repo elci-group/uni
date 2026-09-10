@@ -31,6 +31,9 @@ pub fn parse(stdout: &str, exit_code: Option<i32>) -> ParseOutcome {
         .pointer("/header_coverage/with_header")
         .and_then(Value::as_u64)
         .unwrap_or(0);
+    let sampled_of_total = root
+        .pointer("/header_coverage/sampled_of_total")
+        .and_then(Value::as_u64);
     let header_ratio = if total_files > 0 {
         with_header as f64 / total_files as f64
     } else {
@@ -83,8 +86,12 @@ pub fn parse(stdout: &str, exit_code: Option<i32>) -> ParseOutcome {
         Status::Ok
     };
 
+    let sample_note = match sampled_of_total {
+        Some(eligible) if eligible > total_files => format!(" (sampled {total_files} of {eligible} eligible)"),
+        _ => String::new(),
+    };
     let summary = format!(
-        "license={}, spdx_valid={spdx_valid}, header coverage {with_header}/{total_files}, {incompatible} incompatible / {warnings} warning issues among {total_deps} deps",
+        "license={}, spdx_valid={spdx_valid}, header coverage {with_header}/{total_files}{sample_note}, {incompatible} incompatible / {warnings} warning issues among {total_deps} deps",
         detected_license.unwrap_or("unknown")
     );
 

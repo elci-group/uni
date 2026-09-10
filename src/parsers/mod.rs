@@ -10,6 +10,7 @@ mod ami;
 mod bart;
 mod catskin;
 mod chakra;
+mod edwardian;
 mod ferret;
 mod fract;
 mod isopod;
@@ -55,8 +56,12 @@ pub fn parse(tool: ToolId, stdout: &str, exit_code: Option<i32>) -> ParseOutcome
         ToolId::Bart => bart::parse(stdout, exit_code),
         ToolId::Catskin => catskin::parse(stdout, exit_code),
         ToolId::Chakra => chakra::parse(stdout, exit_code),
+        ToolId::Edwardian => edwardian::parse(stdout, exit_code),
         ToolId::Ferret => ferret::parse(stdout, exit_code),
         ToolId::Fract => fract::parse(stdout, exit_code),
+        ToolId::Goglz => unreachable!(
+            "goglz has no diagnostic mode and is never part of ToolId::ALL, so uni analyze/run::execute never spawns it or calls parse() for it"
+        ),
         ToolId::Isopod => isopod::parse(stdout, exit_code),
         ToolId::Jeenome => jeenome::parse(stdout, exit_code),
         ToolId::Lwoodz => lwoodz::parse(stdout, exit_code),

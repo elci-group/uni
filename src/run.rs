@@ -7,6 +7,7 @@ use std::process::{Output, Stdio};
 use std::sync::Arc;
 use std::time::{Duration, Instant};
 
+use clap::Parser;
 use ingauge_gate::Admitter;
 use tracing::Instrument;
 
@@ -113,10 +114,35 @@ pub async fn execute_with_admitter(
 
         if tool == ToolId::Vamos {
             let target = target.clone();
-            let tools_dir = tools_dir.clone();
             #[rustfmt::skip]
             handles.push(tokio::spawn(
-                tag(tool, run_vamos(target, timeout, tools_dir)).instrument(tracing::info_span!("tool_run", tool = tool.key())),
+                tag(tool, run_vamos_native(target, timeout)).instrument(tracing::info_span!("tool_run", tool = tool.key())),
+            ));
+            continue;
+        }
+
+        if tool == ToolId::Amber {
+            // Pilot for migrating called tools into uni as crates: amber
+            // already ships a `[lib]` target, so it runs in-process via
+            // `run_amber_native`. Every other tool still spawns its binary.
+            let target = target.clone();
+            let tools_dir = tools_dir.clone();
+            let admitter = Arc::clone(&admitter);
+            #[rustfmt::skip]
+            handles.push(tokio::spawn(
+                tag(tool, run_amber_native(target, timeout, tools_dir, admitter, opts.install_missing)).instrument(tracing::info_span!("tool_run", tool = tool.key())),
+            ));
+            continue;
+        }
+
+        if tool == ToolId::Traci {
+            // Second crate migration (after amber): traci's analysis and
+            // JSON renderer are pure in-memory library calls, so no binary
+            // or transient file is involved at all.
+            let target = target.clone();
+            #[rustfmt::skip]
+            handles.push(tokio::spawn(
+                tag(tool, run_traci_native(target, timeout)).instrument(tracing::info_span!("tool_run", tool = tool.key())),
             ));
             continue;
         }
@@ -942,7 +968,20 @@ fn build_command(tool: ToolId, bin: &Path, target: &Path) -> tokio::process::Com
         ToolId::Chakra => {
             cmd.arg(target).arg("--json");
         }
+        ToolId::Edwardian => {
+            // `--out` is a shared scratch dir, never the analyzed repo
+            // itself: `analyse` unconditionally writes artefact files
+            // under `<out>/edwardian/`, and every other orchestrated tool
+            // here is read-only against its target.
+            cmd.args(["--path"])
+                .arg(target)
+                .args(["--target", "windows", "--format", "json", "analyse", "--out"])
+                .arg(std::env::temp_dir().join("uni-edwardian-scratch"));
+        }
         ToolId::Ferret => unreachable!("ferret is capability-probed by run_one"),
+        ToolId::Goglz => unreachable!(
+            "goglz has no diagnostic mode and is never part of ToolId::ALL; it only runs, opt-in, from revise::run_doc_sync_pass"
+        ),
         ToolId::Fract => {
             cmd.current_dir(target);
             cmd.args(["index", "--format", "json"]);
@@ -964,7 +1003,7 @@ fn build_command(tool: ToolId, bin: &Path, target: &Path) -> tokio::process::Com
             cmd.arg("check").arg(target).args(["--format", "json"]);
         }
         ToolId::Jeenome => unreachable!("jeenome is built by run_jeenome"),
-        ToolId::Vamos => unreachable!("vamos is built by run_vamos"),
+        ToolId::Vamos => unreachable!("vamos runs in-process through run_vamos_native"),
         ToolId::VivaPalestina => {
             cmd.arg("scan").arg(target).arg("--detailed");
         }
@@ -1173,6 +1212,318 @@ async fn run_one(
     }
 }
 
+/// Build the amber argv the native pilot runs.
+///
+/// Kept as a pure function so its parity with the legacy subprocess
+/// invocation (`amber <target> --format json analyze`, plus an `--output`
+/// inside the target for the transient report) is unit-tested.
+fn amber_native_argv(target: &Path, out_path: &Path) -> Vec<String> {
+    vec![
+        "amber".to_string(),
+        target.display().to_string(),
+        "--format".to_string(),
+        "json".to_string(),
+        "analyze".to_string(),
+        "--output".to_string(),
+        out_path.display().to_string(),
+    ]
+}
+
+/// Runs amber in-process through its library crate instead of spawning the
+/// `amber` binary.
+///
+/// Pilot for the crate-migration programme: amber already ships a `[lib]`
+/// target, and `amber::cli::run` is the same entry point the binary's
+/// `main` calls, so uni depends on it by path exactly like it already does
+/// for `bound-core` and `form3`. The analysis is the same code the binary
+/// runs, and the resulting JSON goes through the unchanged
+/// [`parsers::amber::parse`], so the `ToolReport` shape is identical.
+///
+/// Deliberate differences from the subprocess path:
+/// - No binary is required: a missing `amber` executable no longer makes
+///   this tool `Unavailable` (the report's `binary` is `None`).
+/// - The JSON report is written to a transient file under `<target>/.uni/`
+///   — amber's own output-path validation rejects destinations outside the
+///   analyzed project — and removed afterwards. `.uni/` is uni's own state
+///   directory (also home of the revise journal), and an empty dir is never
+///   tracked by git. If the directory cannot be created (e.g. a read-only
+///   target), uni falls back to the legacy binary path.
+/// - Amber is synchronous CPU-bound code, so it runs on a blocking thread.
+///   A thread abandoned on timeout cannot be killed the way a child process
+///   can; the timeout still reports the same `error_report`, but the worker
+///   runs on detached.
+async fn run_amber_native(
+    target: PathBuf,
+    timeout: Duration,
+    tools_dir: PathBuf,
+    admitter: Arc<Admitter>,
+    install_missing: bool,
+) -> ToolReport {
+    let state_dir = target.join(".uni");
+    if std::fs::create_dir_all(&state_dir).is_err() {
+        return run_amber_legacy(target, timeout, tools_dir, admitter, install_missing).await;
+    }
+    let out_path = state_dir.join(format!("amber-native-{}.json", std::process::id()));
+    let argv = amber_native_argv(&target, &out_path);
+    let worker_out = out_path.clone();
+    let start = Instant::now();
+    let outcome = tokio::time::timeout(
+        timeout,
+        tokio::task::spawn_blocking(move || {
+            let out_path = worker_out;
+            let cli = match amber::cli::Cli::try_parse_from(argv) {
+                Ok(cli) => cli,
+                Err(e) => {
+                    return (
+                        Err(format!("failed to parse amber argv: {e}")),
+                        String::new(),
+                    )
+                }
+            };
+            // Same manifest resolution as `amber::cli::execute`.
+            let manifest_path = if cli.path.join("Cargo.toml").exists() {
+                cli.path.join("Cargo.toml")
+            } else {
+                cli.path.clone()
+            };
+            match amber::cli::run(&cli, &manifest_path) {
+                Ok(code) => {
+                    let json = std::fs::read_to_string(&out_path).unwrap_or_default();
+                    let _ = std::fs::remove_file(&out_path);
+                    (Ok(code), json)
+                }
+                Err(e) => (Err(format!("amber analysis failed: {e}")), String::new()),
+            }
+        }),
+    )
+    .await;
+    let duration_ms = start.elapsed().as_millis();
+    // Backup cleanup in case the worker was abandoned or panicked mid-run.
+    let _ = std::fs::remove_file(&out_path);
+
+    match outcome {
+        Err(_) => error_report(
+            ToolId::Amber,
+            format!(
+                "timed out after {}s running amber as a library call (the worker thread cannot be killed like a child process and runs on detached)",
+                timeout.as_secs()
+            ),
+            None,
+            Some(duration_ms),
+        ),
+        Ok(Err(join_err)) => error_report(
+            ToolId::Amber,
+            format!("amber library task failed to join: {join_err}"),
+            None,
+            Some(duration_ms),
+        ),
+        Ok(Ok((Err(detail), _))) => error_report(ToolId::Amber, detail, None, Some(duration_ms)),
+        Ok(Ok((Ok(code), json))) => {
+            // `analyze` returns Ok(0) without writing a report when the
+            // target holds no dependencies; the legacy path surfaced that
+            // as unparseable stdout (an Error), and the empty string here
+            // takes the same branch of the unchanged parser.
+            let parsed = parsers::parse(ToolId::Amber, &json, Some(code));
+            let evidence = evidence_for(ToolId::Amber, parsed.raw.as_ref());
+            ToolReport {
+                tool: ToolId::Amber.key(),
+                purpose: ToolId::Amber.purpose(),
+                status: parsed.status,
+                availability: Availability::Installed,
+                execution: Execution::Succeeded,
+                evidence,
+                binary: None,
+                score: parsed.score,
+                grade: parsed.score.map(letter_for),
+                exit_code: Some(code),
+                duration_ms: Some(duration_ms),
+                summary: parsed.summary,
+                findings: parsed.findings,
+                note: parsed.note,
+                raw: parsed.raw,
+            }
+        }
+    }
+}
+
+/// Legacy amber path: spawn the `amber` binary exactly as uni did before
+/// the native pilot. Reached only when the native transient-report setup
+/// fails (e.g. a read-only target).
+async fn run_amber_legacy(
+    target: PathBuf,
+    timeout: Duration,
+    tools_dir: PathBuf,
+    admitter: Arc<Admitter>,
+    install_missing: bool,
+) -> ToolReport {
+    // Same resolution/install flow `execute` used for every tool before the
+    // pilot: prefer an installed binary, classify as installable unless
+    // `--install-missing` opts into the Baby-validated install.
+    if let Some(bin) = tool::resolve_binary(ToolId::Amber, &tools_dir) {
+        return run_one(ToolId::Amber, bin, target, timeout, admitter).await;
+    }
+    if !install_missing {
+        return installable_report(
+            ToolId::Amber,
+            format!(
+                "known repository {}; installation was not attempted (pass --install-missing)",
+                ToolId::Amber
+                    .repo_url()
+                    .unwrap_or("no public acquisition source")
+            ),
+        );
+    }
+    match ensure_binary(ToolId::Amber, &tools_dir).await {
+        Ok(bin) => run_one(ToolId::Amber, bin, target, timeout, admitter).await,
+        Err(reason) => {
+            tracing::error!(tool = ToolId::Amber.key(), stage = "install", error = %reason, "tool unavailable after installation attempt");
+            unavailable_report(ToolId::Amber, reason)
+        }
+    }
+}
+
+#[cfg(test)]
+mod amber_native_tests {
+    use super::amber_native_argv;
+    use clap::Parser;
+    use std::path::{Path, PathBuf};
+
+    #[test]
+    fn native_argv_matches_legacy_subprocess_invocation() {
+        let target = Path::new("/proj");
+        let out = Path::new("/proj/.uni/amber-native-1.json");
+        assert_eq!(
+            amber_native_argv(target, out),
+            vec![
+                "amber",
+                "/proj",
+                "--format",
+                "json",
+                "analyze",
+                "--output",
+                "/proj/.uni/amber-native-1.json",
+            ],
+        );
+    }
+
+    #[test]
+    fn native_argv_parses_through_ambers_own_cli() {
+        let target = Path::new("/proj");
+        let out = Path::new("/proj/.uni/amber-native-1.json");
+        let cli = amber::cli::Cli::try_parse_from(amber_native_argv(target, out))
+            .expect("pilot argv must parse with amber's own CLI");
+        assert_eq!(cli.path, PathBuf::from("/proj"));
+        assert!(matches!(
+            cli.output_format(),
+            amber::cli::OutputFormat::Json
+        ));
+        assert!(matches!(
+            cli.command,
+            Some(amber::cli::Commands::Analyze { .. })
+        ));
+    }
+}
+
+/// Runs traci in-process through its library crate instead of spawning the
+/// `traci` binary.
+///
+/// Second migration after the amber pilot, and simpler: traci's analysis
+/// ([`traci::analyze_paths`]) and JSON renderer ([`traci::render`]) are pure
+/// in-memory library calls already re-exported at the crate root, so there
+/// is no transient report file and no binary fallback. Config discovery,
+/// the analysis, and the policy exit code replicate
+/// `traci check <target> --format json` exactly; the unchanged
+/// [`parsers::traci::parse`] ignores the exit code by design (status comes
+/// from diagnostic counts), which is preserved.
+async fn run_traci_native(target: PathBuf, timeout: Duration) -> ToolReport {
+    let start = Instant::now();
+    let outcome = tokio::time::timeout(
+        timeout,
+        tokio::task::spawn_blocking(move || {
+            let paths = vec![target];
+            let (config, _) = traci::Config::discover(&paths[0])
+                .map_err(|e| format!("traci config discovery failed: {e}"))?;
+            let analysis = traci::analyze_paths(&paths, &config)
+                .map_err(|e| format!("traci analysis failed: {e}"))?;
+            let json = traci::render(&analysis, traci::Format::Json);
+            let code = if traci::fails_policy(&analysis, config.fail_on) {
+                2
+            } else {
+                0
+            };
+            Ok::<(i32, String), String>((code, json))
+        }),
+    )
+    .await;
+    let duration_ms = start.elapsed().as_millis();
+
+    match outcome {
+        Err(_) => error_report(
+            ToolId::Traci,
+            format!(
+                "timed out after {}s running traci as a library call (the worker thread cannot be killed like a child process and runs on detached)",
+                timeout.as_secs()
+            ),
+            None,
+            Some(duration_ms),
+        ),
+        Ok(Err(join_err)) => error_report(
+            ToolId::Traci,
+            format!("traci library task failed to join: {join_err}"),
+            None,
+            Some(duration_ms),
+        ),
+        Ok(Ok(Err(detail))) => error_report(ToolId::Traci, detail, None, Some(duration_ms)),
+        Ok(Ok(Ok((code, json)))) => {
+            let parsed = parsers::parse(ToolId::Traci, &json, Some(code));
+            let evidence = evidence_for(ToolId::Traci, parsed.raw.as_ref());
+            ToolReport {
+                tool: ToolId::Traci.key(),
+                purpose: ToolId::Traci.purpose(),
+                status: parsed.status,
+                availability: Availability::Installed,
+                execution: Execution::Succeeded,
+                evidence,
+                binary: None,
+                score: parsed.score,
+                grade: parsed.score.map(letter_for),
+                exit_code: Some(code),
+                duration_ms: Some(duration_ms),
+                summary: parsed.summary,
+                findings: parsed.findings,
+                note: parsed.note,
+                raw: parsed.raw,
+            }
+        }
+    }
+}
+
+#[cfg(test)]
+mod traci_native_tests {
+    use super::run_traci_native;
+    use crate::report::{Availability, Execution};
+    use std::time::Duration;
+
+    #[tokio::test]
+    async fn native_traci_reports_in_process() {
+        let dir = std::env::temp_dir().join(format!("uni-traci-native-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dir);
+        std::fs::create_dir_all(&dir).expect("fixture dir");
+        std::fs::write(
+            dir.join("main.rs"),
+            "fn main() {\n    let x: Option<u32> = None;\n    let y = x.unwrap();\n    let _ = y;\n}\n",
+        )
+        .expect("fixture source");
+        let report = run_traci_native(dir.clone(), Duration::from_secs(120)).await;
+        let _ = std::fs::remove_dir_all(&dir);
+        assert_eq!(report.tool, "traci");
+        assert_eq!(report.availability, Availability::Installed);
+        assert_eq!(report.execution, Execution::Succeeded);
+        assert!(report.raw.is_some());
+        assert!(report.summary.contains("observability diagnostics"));
+    }
+}
+
 async fn help_output(bin: &Path, args: &[&str]) -> Option<String> {
     let mut cmd = tokio::process::Command::new(bin);
     cmd.args(args).stdin(Stdio::null());
@@ -1370,86 +1721,72 @@ async fn run_jeenome(
     }
 }
 
-/// vamos has a real "not applicable yet" state that's structural, not an
-/// error: no `vamos.toml` means the project hasn't adopted action-lifecycle
-/// tracking. Checking for it up front (instead of letting `vamos stats`
-/// fail with "run vamos init first") lets that report as Skipped rather
-/// than Error — same reasoning as jeenome's precondition check.
-async fn run_vamos(target: PathBuf, timeout: Duration, tools_dir: PathBuf) -> ToolReport {
-    let manifest_path = target.join("vamos.toml");
-    if !manifest_path.is_file() {
+/// Run an adopted Vamos workflow suite through the linked library crate.
+///
+/// A project opts in by committing `.vamos/suite.toml`. The default Vamos
+/// configuration uses its isolated container backend, so analyzing an
+/// untrusted target does not execute that project's workflows on the host.
+async fn run_vamos_native(target: PathBuf, timeout: Duration) -> ToolReport {
+    let suite_path = target.join(".vamos/suite.toml");
+    if !suite_path.is_file() {
         return skipped_report(
             ToolId::Vamos,
-            "no vamos.toml in project root; vamos hasn't been adopted here yet — run `vamos init` in the target to start tracking action lifecycles".to_string(),
+            "no .vamos/suite.toml in project root; add an explicit workflow suite to enable Vamos regression checks"
+                .to_string(),
         );
     }
 
-    let bin = match tool::resolve_binary(ToolId::Vamos, &tools_dir) {
-        Some(b) => b,
-        None => {
-            return unavailable_report(
+    let start = Instant::now();
+    let outcome = tokio::time::timeout(
+        timeout,
+        tokio::task::spawn_blocking(move || {
+            vamos::runner::run_suite_file(&target, &suite_path, vamos::runner::RunConfig::default())
+                .map(|report| report.summary())
+                .map_err(|error| format!("Vamos workflow suite failed: {error:#}"))
+        }),
+    )
+    .await;
+    let duration_ms = start.elapsed().as_millis();
+
+    let summary = match outcome {
+        Err(_) => {
+            return error_report(
                 ToolId::Vamos,
-                "binary \"vamos\" not found on PATH or under the tools dir".to_string(),
+                format!(
+                    "timed out after {}s running Vamos as a library call (the worker thread cannot be killed like a child process and runs on detached)",
+                    timeout.as_secs()
+                ),
+                None,
+                Some(duration_ms),
+            )
+        }
+        Ok(Err(join_error)) => {
+            return error_report(
+                ToolId::Vamos,
+                format!("Vamos library task failed to join: {join_error}"),
+                None,
+                Some(duration_ms),
+            )
+        }
+        Ok(Ok(Err(detail))) => {
+            return error_report(ToolId::Vamos, detail, None, Some(duration_ms))
+        }
+        Ok(Ok(Ok(summary))) => summary,
+    };
+
+    let exit_code = Some(if summary.passed { 0 } else { 1 });
+    let json = match serde_json::to_string(&summary) {
+        Ok(json) => json,
+        Err(error) => {
+            return error_report(
+                ToolId::Vamos,
+                format!("failed to serialize Vamos report: {error}"),
+                exit_code,
+                Some(duration_ms),
             )
         }
     };
-
-    let mut cmd = tokio::process::Command::new(&bin);
-    cmd.arg("--manifest")
-        .arg(&manifest_path)
-        .arg("--session")
-        .arg(target.join(".vamos/session.json"))
-        .arg("stats")
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .stdin(Stdio::null());
-
-    let start = Instant::now();
-    let outcome = tokio::time::timeout(timeout, cmd.output()).await;
-    let duration_ms = start.elapsed().as_millis();
-
-    let output = match outcome {
-        Ok(Ok(o)) => o,
-        Ok(Err(e)) => {
-            eprintln!("uni: tool=vamos stage=spawn outcome=failed error={e}");
-            return error_report(
-                ToolId::Vamos,
-                format!("failed to spawn: {e}"),
-                None,
-                Some(duration_ms),
-            );
-        }
-        Err(_) => {
-            eprintln!(
-                "uni: tool=vamos stage=run outcome=timeout timeout_s={}",
-                timeout.as_secs()
-            );
-            return error_report(
-                ToolId::Vamos,
-                format!("timed out after {}s", timeout.as_secs()),
-                None,
-                Some(duration_ms),
-            );
-        }
-    };
-
-    let exit_code = output.status.code();
-    if exit_code != Some(0) {
-        let stderr = String::from_utf8_lossy(&output.stderr);
-        let snippet: String = stderr.chars().take(300).collect();
-        return error_report(
-            ToolId::Vamos,
-            format!("vamos stats exited {exit_code:?}: {snippet}"),
-            exit_code,
-            Some(duration_ms),
-        );
-    }
-
-    // Unlike the other tools, empty stdout is a legitimate result here
-    // (vamos.toml exists but no instances recorded yet) — the parser
-    // handles that itself rather than treating it as an error.
-    let stdout = String::from_utf8_lossy(&output.stdout).to_string();
-    let parsed = parsers::parse(ToolId::Vamos, &stdout, exit_code);
+    let parsed = parsers::parse(ToolId::Vamos, &json, exit_code);
     let evidence = evidence_for(ToolId::Vamos, parsed.raw.as_ref());
 
     ToolReport {
@@ -1463,7 +1800,7 @@ async fn run_vamos(target: PathBuf, timeout: Duration, tools_dir: PathBuf) -> To
             Execution::Succeeded
         },
         evidence,
-        binary: Some(bin.display().to_string()),
+        binary: None,
         score: parsed.score,
         grade: parsed.score.map(letter_for),
         exit_code,
@@ -1472,6 +1809,31 @@ async fn run_vamos(target: PathBuf, timeout: Duration, tools_dir: PathBuf) -> To
         findings: parsed.findings,
         note: parsed.note,
         raw: parsed.raw,
+    }
+}
+
+#[cfg(test)]
+mod vamos_native_tests {
+    use super::*;
+
+    #[tokio::test]
+    async fn project_without_workflow_suite_is_skipped_without_a_binary() {
+        let target = std::env::temp_dir().join(format!(
+            "uni-vamos-skip-{}-{:?}",
+            std::process::id(),
+            std::thread::current().id()
+        ));
+        let _ = std::fs::remove_dir_all(&target);
+        std::fs::create_dir_all(&target).unwrap();
+
+        let report = run_vamos_native(target.clone(), Duration::from_secs(1)).await;
+        assert_eq!(report.status, Status::Skipped);
+        assert_eq!(report.availability, Availability::NotChecked);
+        assert_eq!(report.execution, Execution::Skipped);
+        assert_eq!(report.binary, None);
+        assert!(report.note.unwrap().contains(".vamos/suite.toml"));
+
+        let _ = std::fs::remove_dir_all(target);
     }
 }
 
@@ -1695,6 +2057,32 @@ fn evidence_for(tool: ToolId, raw: Option<&serde_json::Value>) -> Evidence {
                 observations: assessed,
             }
         }
+        ToolId::Edwardian => {
+            let dimensions = root
+                .pointer("/readiness/dimensions")
+                .and_then(Value::as_array);
+            let assessed = dimensions.map(|items| {
+                items
+                    .iter()
+                    .filter(|d| d.get("finding_count").and_then(Value::as_u64).unwrap_or(0) > 0)
+                    .count() as u64
+            });
+            let total = dimensions.map(|items| items.len() as u64);
+            let coverage = total.zip(assessed).and_then(|(total, assessed)| {
+                (total > 0).then_some(assessed as f64 / total as f64)
+            });
+            Evidence {
+                coverage,
+                confidence: root
+                    .pointer("/readiness/overall")
+                    .and_then(Value::as_u64)
+                    .map(|v| v as f64 / 100.0),
+                observations: root
+                    .get("findings")
+                    .and_then(Value::as_array)
+                    .map(|a| a.len() as u64),
+            }
+        }
         ToolId::Tempcheq => Evidence {
             coverage: None,
             confidence: None,
@@ -1713,7 +2101,9 @@ fn evidence_for(tool: ToolId, raw: Option<&serde_json::Value>) -> Evidence {
         ToolId::Scrawny => Evidence {
             coverage: None,
             confidence: root.pointer("/metrics/cohesion").and_then(Value::as_f64),
-            observations: root.pointer("/metrics/files_changed").and_then(Value::as_u64),
+            observations: root
+                .pointer("/metrics/files_changed")
+                .and_then(Value::as_u64),
         },
         ToolId::Catskin => Evidence {
             coverage: None,
@@ -1724,11 +2114,16 @@ fn evidence_for(tool: ToolId, raw: Option<&serde_json::Value>) -> Evidence {
                 .map(|a| a.len() as u64),
         },
         ToolId::Wilder => {
-            let percent = root.pointer("/coverage/analysis_percent").and_then(Value::as_f64);
+            let percent = root
+                .pointer("/coverage/analysis_percent")
+                .and_then(Value::as_f64);
             Evidence {
                 coverage: percent.map(|p| p / 100.0),
                 confidence: None,
-                observations: root.get("evidence").and_then(Value::as_array).map(|a| a.len() as u64),
+                observations: root
+                    .get("evidence")
+                    .and_then(Value::as_array)
+                    .map(|a| a.len() as u64),
             }
         }
         _ => no_evidence(),
