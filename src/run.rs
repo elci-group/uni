@@ -213,6 +213,7 @@ pub async fn execute_with_admitter(
     let integrity = Report::compute_integrity(&tools, &suite);
     let mut overall: Overall = Report::compute_overall(&tools);
     overall.provisional |= integrity.status != crate::report::IntegrityStatus::Healthy;
+    let dimensions = Report::compute_dimensions(&tools);
 
     Ok(Report {
         schema: "uni.report/v3",
@@ -223,6 +224,7 @@ pub async fn execute_with_admitter(
         overall,
         suite,
         integrity,
+        dimensions,
     })
 }
 

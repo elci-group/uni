@@ -1977,6 +1977,9 @@ mod tests {
                 total_tools: 0,
                 weights: Vec::new(),
                 provisional: false,
+                coverage: None,
+                confidence: None,
+                confidence_label: "unknown",
             },
             suite: SuiteHealth {
                 required_tools: 0,
@@ -1992,6 +1995,7 @@ mod tests {
                 grade: "A+",
                 defects: Vec::new(),
             },
+            dimensions: Default::default(),
         }
     }
 

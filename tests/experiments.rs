@@ -170,6 +170,9 @@ fn dummy_report(score: f64) -> Report {
             total_tools: 1,
             weights: Vec::new(),
             provisional: false,
+            coverage: None,
+            confidence: None,
+            confidence_label: "unknown",
         },
         suite: SuiteHealth {
             required_tools: 0,
@@ -185,6 +188,7 @@ fn dummy_report(score: f64) -> Report {
             grade: "A+",
             defects: Vec::new(),
         },
+        dimensions: Default::default(),
     }
 }
 

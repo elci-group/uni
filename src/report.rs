@@ -46,6 +46,70 @@ pub struct Evidence {
     pub observations: Option<u64>,
 }
 
+/// Coverage below this fraction of the codebase means a tool's own
+/// healthy/warning/finding status can no longer stand for a repository-wide
+/// verdict (ELCI-DSEQ-EITR-001 §6-§7). Shared by `EvidenceState::from_tool`
+/// and `Report::compute_overall`'s `provisional` check so the two never
+/// disagree about what counts as "enough".
+pub const MIN_SUFFICIENT_COVERAGE: f64 = 0.8;
+
+/// The canonical nine-state evidence vocabulary from ELCI-DSEQ-EITR-001 §3.
+/// This is a *view* computed from a `ToolReport`'s existing `Status` plus
+/// `Evidence.coverage` — see `EvidenceState::from_tool` for why `Status`
+/// itself is left unrenamed.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum EvidenceState {
+    Healthy,
+    Warning,
+    Finding,
+    Unknown,
+    Inapplicable,
+    Skipped,
+    InsufficientCoverage,
+    Blocked,
+    Error,
+}
+
+impl EvidenceState {
+    /// Maps uni's existing `Status` onto the canonical nine-state
+    /// vocabulary. `Status` already carries seven of the nine states under
+    /// matching or closely-analogous names — Ok→Healthy, Warn→Warning,
+    /// Fail→Finding, Skipped→Skipped, NotApplicable→Inapplicable,
+    /// NoData→Unknown, Unavailable→Blocked (a missing/incompatible binary is
+    /// exactly a "prerequisite that prevented execution", §3.8) — and
+    /// renaming it would ripple through every parser and every `match
+    /// tool.status` in `render.rs`. `InsufficientCoverage` (§3.7) has no
+    /// `Status` analogue, so it's derived here from `Evidence.coverage`
+    /// instead, and only for tools that otherwise had a headline verdict to
+    /// give (Ok/Warn/Fail) — a Skipped/Inapplicable/Blocked/Errored tool is
+    /// that regardless of what coverage number it happens to carry.
+    pub fn from_tool(t: &ToolReport) -> Self {
+        match t.status {
+            Status::Error => Self::Error,
+            Status::Unavailable => Self::Blocked,
+            Status::Skipped => Self::Skipped,
+            Status::NotApplicable => Self::Inapplicable,
+            Status::NoData => Self::Unknown,
+            Status::Fail | Status::Warn | Status::Ok => {
+                if t
+                    .evidence
+                    .coverage
+                    .is_some_and(|c| c < MIN_SUFFICIENT_COVERAGE)
+                {
+                    Self::InsufficientCoverage
+                } else {
+                    match t.status {
+                        Status::Fail => Self::Finding,
+                        Status::Warn => Self::Warning,
+                        _ => Self::Healthy,
+                    }
+                }
+            }
+        }
+    }
+}
+
 /// Maps a 0-100 health score to a letter grade. Higher is healthier for
 /// every tool's `score` by construction (parsers normalize to that
 /// convention even when the underlying tool's own numbers point the other
@@ -68,7 +132,7 @@ pub fn letter_for(score: f64) -> &'static str {
     }
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug)]
 pub struct ToolReport {
     pub tool: &'static str,
     pub purpose: &'static str,
@@ -87,6 +151,39 @@ pub struct ToolReport {
     pub raw: Option<serde_json::Value>,
 }
 
+impl ToolReport {
+    pub fn evidence_state(&self) -> EvidenceState {
+        EvidenceState::from_tool(self)
+    }
+}
+
+/// Hand-written so `evidence_state` — computed from existing fields, not
+/// stored — can ride along in JSON without turning it into a 30th
+/// construction-site field across every parser (see `EvidenceState::from_tool`).
+impl Serialize for ToolReport {
+    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        use serde::ser::SerializeStruct;
+        let mut s = serializer.serialize_struct("ToolReport", 16)?;
+        s.serialize_field("tool", &self.tool)?;
+        s.serialize_field("purpose", &self.purpose)?;
+        s.serialize_field("status", &self.status)?;
+        s.serialize_field("availability", &self.availability)?;
+        s.serialize_field("execution", &self.execution)?;
+        s.serialize_field("evidence", &self.evidence)?;
+        s.serialize_field("evidence_state", &self.evidence_state())?;
+        s.serialize_field("binary", &self.binary)?;
+        s.serialize_field("score", &self.score)?;
+        s.serialize_field("grade", &self.grade)?;
+        s.serialize_field("exit_code", &self.exit_code)?;
+        s.serialize_field("duration_ms", &self.duration_ms)?;
+        s.serialize_field("summary", &self.summary)?;
+        s.serialize_field("findings", &self.findings)?;
+        s.serialize_field("note", &self.note)?;
+        s.serialize_field("raw", &self.raw)?;
+        s.end()
+    }
+}
+
 #[derive(Debug, Serialize)]
 pub struct Overall {
     pub score: Option<f64>,
@@ -97,6 +194,74 @@ pub struct Overall {
     /// `tools`, so weights are auditable without re-deriving them.
     pub weights: Vec<(String, f64)>,
     pub provisional: bool,
+    /// Mean `Evidence.coverage` across graded tools — §5: coverage MUST be
+    /// visible wherever this score is displayed.
+    pub coverage: Option<f64>,
+    /// Mean `Evidence.confidence` across graded tools.
+    pub confidence: Option<f64>,
+    /// §6: `assessment_confidence <= evidence_confidence × coverage_confidence`.
+    /// A human-readable band ("high"/"moderate"/"low"/"unknown") over that
+    /// product, so a caller doesn't have to re-derive the threshold logic.
+    pub confidence_label: &'static str,
+}
+
+/// One of the two independent repository-health axes from
+/// ELCI-DSEQ-EITR-001 §10 (Engineering Health / Governance Health) — a plain
+/// average of the member tools' scores, kept separate so neither axis can
+/// dilute or be diluted by the other.
+#[derive(Debug, Serialize)]
+pub struct HealthDimension {
+    pub score: Option<f64>,
+    pub grade: Option<&'static str>,
+    pub graded_tools: usize,
+    pub total_tools: usize,
+    pub tools: Vec<String>,
+}
+
+impl Default for HealthDimension {
+    fn default() -> Self {
+        HealthDimension {
+            score: None,
+            grade: None,
+            graded_tools: 0,
+            total_tools: 0,
+            tools: Vec::new(),
+        }
+    }
+}
+
+/// The third §10 axis: how much to trust the other two, independent of what
+/// they say. Deliberately not a 0-100 score — coverage/confidence and the
+/// set of tools contributing to "unknown surface" are more legible on their
+/// own than blended into one more number.
+#[derive(Debug, Serialize)]
+pub struct EvidenceDimension {
+    pub coverage: Option<f64>,
+    pub confidence: Option<f64>,
+    pub confidence_label: &'static str,
+    /// Tools whose `EvidenceState` is Unknown, InsufficientCoverage, Blocked
+    /// or Error — the part of the repository this run couldn't establish
+    /// anything about, as opposed to established-and-healthy or
+    /// established-and-a-finding.
+    pub unknown_surface: Vec<String>,
+}
+
+impl Default for EvidenceDimension {
+    fn default() -> Self {
+        EvidenceDimension {
+            coverage: None,
+            confidence: None,
+            confidence_label: "unknown",
+            unknown_surface: Vec::new(),
+        }
+    }
+}
+
+#[derive(Debug, Serialize, Default)]
+pub struct RepositoryDimensions {
+    pub engineering: HealthDimension,
+    pub governance: HealthDimension,
+    pub evidence: EvidenceDimension,
 }
 
 #[derive(Debug, Serialize)]
@@ -125,6 +290,66 @@ pub struct AnalysisIntegrity {
     pub defects: Vec<String>,
 }
 
+fn mean(values: &[f64]) -> Option<f64> {
+    if values.is_empty() {
+        None
+    } else {
+        Some(values.iter().sum::<f64>() / values.len() as f64)
+    }
+}
+
+/// §6: `assessment_confidence <= evidence_confidence × coverage_confidence`.
+/// Missing coverage or confidence is treated as non-limiting (1.0) here
+/// rather than zeroing the product — a tool that doesn't report a coverage
+/// fraction at all isn't asserting "zero coverage", it's asserting nothing,
+/// and `"unknown"` (not a fabricated "low") is how that absence surfaces.
+fn confidence_label(coverage: Option<f64>, confidence: Option<f64>) -> &'static str {
+    if coverage.is_none() && confidence.is_none() {
+        return "unknown";
+    }
+    let effective = confidence.unwrap_or(1.0) * coverage.unwrap_or(1.0);
+    if effective >= 0.8 {
+        "high"
+    } else if effective >= 0.5 {
+        "moderate"
+    } else {
+        "low"
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum HealthCategory {
+    Engineering,
+    Governance,
+}
+
+/// §10's Engineering/Governance split, by tool. This is a judgment call
+/// documented here rather than derived from anything structural:
+///
+/// - Engineering (architecture, code quality, data flow, dev stability):
+///   fract, chakra, ferret, edwardian, scrawny, catskin, tempcheq, vamos,
+///   jeenome.
+/// - Governance (licensing, security, compliance, observability, policy):
+///   lwoodz, isopod, traci, viva-palestina, amber (dependency risk/policy,
+///   not architecture — it's scored on replaceability and vendor exposure,
+///   not structure).
+/// - Deliberately in neither: ami (market intelligence, not a health axis),
+///   bart (informational filesystem size — §7.19 says it must not affect
+///   scoring), wilder (evidence orchestration *about* the other tools, not
+///   itself an engineering or governance signal). Their scores/states still
+///   appear in `tools` and feed the Evidence dimension's coverage/confidence
+///   average; they just aren't averaged into either health axis.
+fn health_category(tool_key: &str) -> Option<HealthCategory> {
+    match tool_key {
+        "fract" | "chakra" | "ferret" | "edwardian" | "scrawny" | "catskin" | "tempcheq"
+        | "vamos" | "jeenome" => Some(HealthCategory::Engineering),
+        "lwoodz" | "isopod" | "traci" | "viva-palestina" | "amber" => {
+            Some(HealthCategory::Governance)
+        }
+        _ => None,
+    }
+}
+
 #[derive(Debug, Serialize)]
 pub struct Report {
     pub schema: &'static str,
@@ -135,6 +360,9 @@ pub struct Report {
     pub overall: Overall,
     pub suite: SuiteHealth,
     pub integrity: AnalysisIntegrity,
+    /// §10: Engineering Health / Governance Health / Evidence Confidence,
+    /// computed independently of `overall` rather than as a breakdown of it.
+    pub dimensions: RepositoryDimensions,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
@@ -242,6 +470,8 @@ impl Report {
         let mut weight_total = 0.0;
         let mut weights = Vec::new();
         let mut hard_fail = false;
+        let mut coverages = Vec::new();
+        let mut confidences = Vec::new();
 
         for t in tools {
             if let Some(score) = t.score {
@@ -250,6 +480,12 @@ impl Report {
                 weight_total += 1.0;
                 if matches!(t.status, Status::Fail) {
                     hard_fail = true;
+                }
+                if let Some(c) = t.evidence.coverage {
+                    coverages.push(c);
+                }
+                if let Some(c) = t.evidence.confidence {
+                    confidences.push(c);
                 }
             }
         }
@@ -263,6 +499,10 @@ impl Report {
             score = score.map(|s| s.min(Self::HARD_FAIL_CAP));
         }
 
+        let coverage = mean(&coverages);
+        let confidence = mean(&confidences);
+        let confidence_label = confidence_label(coverage, confidence);
+
         Overall {
             score,
             grade: score.map(letter_for),
@@ -273,8 +513,64 @@ impl Report {
                 matches!(
                     t.status,
                     Status::Error | Status::Unavailable | Status::NoData
-                ) || t.evidence.coverage.is_some_and(|coverage| coverage < 0.8)
+                ) || t
+                    .evidence
+                    .coverage
+                    .is_some_and(|coverage| coverage < MIN_SUFFICIENT_COVERAGE)
             }),
+            coverage,
+            confidence,
+            confidence_label,
+        }
+    }
+
+    /// §10's three-dimension split: Engineering Health and Governance Health
+    /// are computed independently (so neither can dilute the other the way a
+    /// single flat average does), and Evidence Confidence is the same
+    /// coverage/confidence math as `Overall`, applied across every tool
+    /// rather than just the graded ones.
+    pub fn compute_dimensions(tools: &[ToolReport]) -> RepositoryDimensions {
+        let build = |category: HealthCategory| {
+            let members: Vec<&ToolReport> = tools
+                .iter()
+                .filter(|t| health_category(t.tool) == Some(category))
+                .collect();
+            let graded: Vec<f64> = members.iter().filter_map(|t| t.score).collect();
+            let score = mean(&graded);
+            HealthDimension {
+                score,
+                grade: score.map(letter_for),
+                graded_tools: graded.len(),
+                total_tools: members.len(),
+                tools: members.iter().map(|t| t.tool.to_string()).collect(),
+            }
+        };
+
+        let coverage = mean(&tools.iter().filter_map(|t| t.evidence.coverage).collect::<Vec<_>>());
+        let confidence = mean(&tools.iter().filter_map(|t| t.evidence.confidence).collect::<Vec<_>>());
+        let unknown_surface = tools
+            .iter()
+            .filter(|t| {
+                matches!(
+                    t.evidence_state(),
+                    EvidenceState::Unknown
+                        | EvidenceState::InsufficientCoverage
+                        | EvidenceState::Blocked
+                        | EvidenceState::Error
+                )
+            })
+            .map(|t| t.tool.to_string())
+            .collect();
+
+        RepositoryDimensions {
+            engineering: build(HealthCategory::Engineering),
+            governance: build(HealthCategory::Governance),
+            evidence: EvidenceDimension {
+                coverage,
+                confidence,
+                confidence_label: confidence_label(coverage, confidence),
+                unknown_surface,
+            },
         }
     }
 
@@ -517,5 +813,143 @@ mod tests {
         assert_eq!(rollup.graded_count, 0);
         assert_eq!(rollup.mean_score, None);
         assert!(rollup.worst.is_empty());
+    }
+
+    // -- ELCI-DSEQ-EITR-001 §3: canonical evidence-state mapping ------------
+
+    fn tool_with_status(status: Status, coverage: Option<f64>) -> ToolReport {
+        let mut t = tool_report("x", Some(90.0));
+        t.status = status;
+        t.evidence.coverage = coverage;
+        t
+    }
+
+    #[test]
+    fn evidence_state_maps_every_status_to_its_canonical_analogue() {
+        assert_eq!(
+            tool_with_status(Status::Ok, Some(1.0)).evidence_state(),
+            EvidenceState::Healthy
+        );
+        assert_eq!(
+            tool_with_status(Status::Warn, Some(1.0)).evidence_state(),
+            EvidenceState::Warning
+        );
+        assert_eq!(
+            tool_with_status(Status::Fail, Some(1.0)).evidence_state(),
+            EvidenceState::Finding
+        );
+        assert_eq!(
+            tool_with_status(Status::NoData, Some(1.0)).evidence_state(),
+            EvidenceState::Unknown
+        );
+        assert_eq!(
+            tool_with_status(Status::NotApplicable, Some(1.0)).evidence_state(),
+            EvidenceState::Inapplicable
+        );
+        assert_eq!(
+            tool_with_status(Status::Skipped, Some(1.0)).evidence_state(),
+            EvidenceState::Skipped
+        );
+        assert_eq!(
+            tool_with_status(Status::Unavailable, Some(1.0)).evidence_state(),
+            EvidenceState::Blocked
+        );
+        assert_eq!(
+            tool_with_status(Status::Error, Some(1.0)).evidence_state(),
+            EvidenceState::Error
+        );
+    }
+
+    #[test]
+    fn low_coverage_overrides_a_healthy_or_warning_status_to_insufficient_coverage() {
+        assert_eq!(
+            tool_with_status(Status::Ok, Some(0.35)).evidence_state(),
+            EvidenceState::InsufficientCoverage
+        );
+        assert_eq!(
+            tool_with_status(Status::Warn, Some(0.79)).evidence_state(),
+            EvidenceState::InsufficientCoverage
+        );
+    }
+
+    #[test]
+    fn a_skipped_or_blocked_tool_ignores_its_coverage_number() {
+        // A tool that never ran doesn't get reclassified by whatever stale
+        // or zeroed coverage value happens to be sitting in `evidence`.
+        assert_eq!(
+            tool_with_status(Status::Skipped, Some(0.0)).evidence_state(),
+            EvidenceState::Skipped
+        );
+        assert_eq!(
+            tool_with_status(Status::Unavailable, Some(0.0)).evidence_state(),
+            EvidenceState::Blocked
+        );
+    }
+
+    #[test]
+    fn missing_coverage_never_manufactures_insufficient_coverage() {
+        // No coverage figure reported at all is not the same claim as "low
+        // coverage" — it must not downgrade an otherwise-healthy verdict.
+        assert_eq!(
+            tool_with_status(Status::Ok, None).evidence_state(),
+            EvidenceState::Healthy
+        );
+    }
+
+    // -- §6: coverage-gated confidence ceiling on Overall --------------------
+
+    #[test]
+    fn overall_exposes_mean_coverage_and_confidence_across_graded_tools() {
+        let mut a = tool_report("fract", Some(90.0));
+        a.evidence.coverage = Some(0.6);
+        a.evidence.confidence = Some(0.9);
+        let mut b = tool_report("chakra", Some(80.0));
+        b.evidence.coverage = Some(1.0);
+        b.evidence.confidence = Some(0.7);
+        let overall = Report::compute_overall(&[a, b]);
+        assert!((overall.coverage.unwrap() - 0.8).abs() < 1e-9);
+        assert!((overall.confidence.unwrap() - 0.8).abs() < 1e-9);
+        // effective = 0.8 * 0.8 = 0.64 -> "moderate"
+        assert_eq!(overall.confidence_label, "moderate");
+    }
+
+    #[test]
+    fn overall_confidence_label_is_unknown_with_no_evidence_at_all() {
+        let mut t = tool_report("bart", Some(100.0));
+        t.evidence.coverage = None;
+        t.evidence.confidence = None;
+        let overall = Report::compute_overall(&[t]);
+        assert_eq!(overall.confidence_label, "unknown");
+    }
+
+    // -- §10: three-dimension split -------------------------------------
+
+    #[test]
+    fn dimensions_average_engineering_and_governance_independently() {
+        let tools = vec![
+            tool_report("fract", Some(100.0)),   // engineering
+            tool_report("chakra", Some(80.0)),   // engineering
+            tool_report("lwoodz", Some(40.0)),   // governance
+            tool_report("ami", Some(100.0)),     // neither
+        ];
+        let dims = Report::compute_dimensions(&tools);
+        assert!((dims.engineering.score.unwrap() - 90.0).abs() < 1e-9);
+        assert_eq!(dims.engineering.graded_tools, 2);
+        assert!((dims.governance.score.unwrap() - 40.0).abs() < 1e-9);
+        assert_eq!(dims.governance.graded_tools, 1);
+    }
+
+    #[test]
+    fn dimensions_unknown_surface_collects_non_healthy_evidence_states() {
+        let mut blocked = tool_report("ami", None);
+        blocked.status = Status::Unavailable;
+        let mut insufficient = tool_report("fract", Some(90.0));
+        insufficient.evidence.coverage = Some(0.2);
+        let healthy = tool_report("chakra", Some(90.0));
+        let dims = Report::compute_dimensions(&[blocked, insufficient, healthy]);
+        assert_eq!(dims.evidence.unknown_surface.len(), 2);
+        assert!(dims.evidence.unknown_surface.contains(&"ami".to_string()));
+        assert!(dims.evidence.unknown_surface.contains(&"fract".to_string()));
+        assert!(!dims.evidence.unknown_surface.contains(&"chakra".to_string()));
     }
 }

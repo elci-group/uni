@@ -1152,6 +1152,9 @@ mod tests {
                 total_tools: 1,
                 weights: vec![],
                 provisional: false,
+                coverage: None,
+                confidence: None,
+                confidence_label: "unknown",
             },
             suite: crate::report::SuiteHealth {
                 required_tools: 1,
@@ -1167,6 +1170,7 @@ mod tests {
                 grade: "A+",
                 defects: vec![],
             },
+            dimensions: Default::default(),
         }
     }
 
