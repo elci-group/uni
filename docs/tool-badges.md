@@ -24,7 +24,7 @@ text can't display a rendered image — so nothing here changes what running
 | ![fract](emoji/fract.png) | **fract** | module entropy, cohesion, duplication |
 | ![isopod](emoji/isopod.png) | **isopod** | ISO27001/27002 compliance posture |
 | ![jeenome](emoji/jeenome.png) | **jeenome** | behavioural trace analysis (opt-in) |
-| ![lwoodz](emoji/lwoodz.png) | **lwoodz** | license / SPDX compliance |
+| ![lwoodz](emoji/lwoodz.png) | **lwoodz** | license / SPDX compliance, open-source vs open-standard, service terms-of-use |
 | ![tempcheq](emoji/tempcheq.png) | **tempcheq** | LLM sampling-temperature correctness |
 | ![traci](emoji/traci.png) | **traci** | observability/telemetry completeness |
 | ![vamos](emoji/vamos.png) | **vamos** | nominal vs. validated action completion |

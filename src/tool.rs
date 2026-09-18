@@ -206,7 +206,7 @@ impl ToolId {
             }
             ToolId::Isopod => "ISO27001/27002 compliance posture",
             ToolId::Jeenome => "behavioural trace analysis (opt-in)",
-            ToolId::Lwoodz => "license / SPDX compliance",
+            ToolId::Lwoodz => "license / SPDX compliance, open-source vs open-standard, service terms-of-use",
             ToolId::Scrawny => "review-hostility of current changes",
             ToolId::Tempcheq => "LLM sampling-temperature correctness",
             ToolId::Traci => "observability/telemetry completeness",
