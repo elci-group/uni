@@ -20,6 +20,14 @@ from its valid-result rate and lists compatibility, availability, and execution
 defects. `overall.provisional` is true whenever integrity is not `healthy` or
 when project evidence is materially incomplete.
 
+The canonical `overall.score` and `overall.grade` are withheld when analysis
+integrity is not healthy, mean analyzer coverage is below 70%, or mean
+confidence is below 75%. Missing coverage or confidence also withholds the
+grade because the run cannot establish that it meets the evidence floor.
+Tool-level scores and findings remain available for investigation, while the
+overall result reports `score: null` and `grade: null` until the run is
+gradeable.
+
 `overall.score` is the unweighted mean of every graded tool's score, with one
 exception: if any graded tool reports `status: fail`, the overall score is
 capped at 73.0 (the bottom of the letter-grade "C" band) even when the

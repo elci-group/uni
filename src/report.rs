@@ -53,6 +53,12 @@ pub struct Evidence {
 /// disagree about what counts as "enough".
 pub const MIN_SUFFICIENT_COVERAGE: f64 = 0.8;
 
+/// A repository-wide grade is only canonical when the run has broad enough
+/// validated evidence. Missing dimensions fail closed: an unknown coverage or
+/// confidence value cannot establish gradeability.
+pub const MIN_GRADEABLE_COVERAGE: f64 = 0.70;
+pub const MIN_GRADEABLE_CONFIDENCE: f64 = 0.75;
+
 /// The canonical nine-state evidence vocabulary from ELCI-DSEQ-EITR-001 §3.
 /// This is a *view* computed from a `ToolReport`'s existing `Status` plus
 /// `Evidence.coverage` — see `EvidenceState::from_tool` for why `Status`
@@ -92,8 +98,7 @@ impl EvidenceState {
             Status::NotApplicable => Self::Inapplicable,
             Status::NoData => Self::Unknown,
             Status::Fail | Status::Warn | Status::Ok => {
-                if t
-                    .evidence
+                if t.evidence
                     .coverage
                     .is_some_and(|c| c < MIN_SUFFICIENT_COVERAGE)
                 {
@@ -264,7 +269,7 @@ pub struct RepositoryDimensions {
     pub evidence: EvidenceDimension,
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Clone, Serialize)]
 pub struct SuiteHealth {
     pub required_tools: usize,
     pub available_tools: usize,
@@ -288,6 +293,18 @@ pub struct AnalysisIntegrity {
     pub score: f64,
     pub grade: &'static str,
     pub defects: Vec<String>,
+}
+
+/// A numeric repository score is withheld unless the analysis itself is
+/// healthy and both evidence dimensions meet the minimum reporting floor.
+pub fn is_gradeable(suite: &SuiteHealth, integrity: &AnalysisIntegrity) -> bool {
+    integrity.status == IntegrityStatus::Healthy
+        && suite
+            .analysis_coverage
+            .is_some_and(|coverage| coverage >= MIN_GRADEABLE_COVERAGE)
+        && suite
+            .confidence
+            .is_some_and(|confidence| confidence >= MIN_GRADEABLE_CONFIDENCE)
 }
 
 fn mean(values: &[f64]) -> Option<f64> {
@@ -546,8 +563,18 @@ impl Report {
             }
         };
 
-        let coverage = mean(&tools.iter().filter_map(|t| t.evidence.coverage).collect::<Vec<_>>());
-        let confidence = mean(&tools.iter().filter_map(|t| t.evidence.confidence).collect::<Vec<_>>());
+        let coverage = mean(
+            &tools
+                .iter()
+                .filter_map(|t| t.evidence.coverage)
+                .collect::<Vec<_>>(),
+        );
+        let confidence = mean(
+            &tools
+                .iter()
+                .filter_map(|t| t.evidence.confidence)
+                .collect::<Vec<_>>(),
+        );
         let unknown_surface = tools
             .iter()
             .filter(|t| {
@@ -741,6 +768,43 @@ mod tests {
     }
 
     #[test]
+    fn canonical_grade_requires_healthy_integrity_and_evidence_thresholds() {
+        let suite = SuiteHealth {
+            required_tools: 4,
+            available_tools: 4,
+            executed_tools: 4,
+            valid_results: 4,
+            analysis_coverage: Some(0.70),
+            confidence: Some(0.75),
+        };
+        let healthy = AnalysisIntegrity {
+            status: IntegrityStatus::Healthy,
+            score: 100.0,
+            grade: "A+",
+            defects: vec![],
+        };
+        assert!(is_gradeable(&suite, &healthy));
+
+        let low_coverage = SuiteHealth {
+            analysis_coverage: Some(0.699),
+            ..suite.clone()
+        };
+        assert!(!is_gradeable(&low_coverage, &healthy));
+
+        let unknown_confidence = SuiteHealth {
+            confidence: None,
+            ..suite
+        };
+        assert!(!is_gradeable(&unknown_confidence, &healthy));
+
+        let degraded = AnalysisIntegrity {
+            status: IntegrityStatus::Degraded,
+            ..healthy
+        };
+        assert!(!is_gradeable(&suite, &degraded));
+    }
+
+    #[test]
     fn low_evidence_coverage_marks_project_health_provisional() {
         let mut report = tool_report("isopod", None);
         report.evidence.coverage = Some(0.35);
@@ -927,10 +991,10 @@ mod tests {
     #[test]
     fn dimensions_average_engineering_and_governance_independently() {
         let tools = vec![
-            tool_report("fract", Some(100.0)),   // engineering
-            tool_report("chakra", Some(80.0)),   // engineering
-            tool_report("lwoodz", Some(40.0)),   // governance
-            tool_report("ami", Some(100.0)),     // neither
+            tool_report("fract", Some(100.0)), // engineering
+            tool_report("chakra", Some(80.0)), // engineering
+            tool_report("lwoodz", Some(40.0)), // governance
+            tool_report("ami", Some(100.0)),   // neither
         ];
         let dims = Report::compute_dimensions(&tools);
         assert!((dims.engineering.score.unwrap() - 90.0).abs() < 1e-9);
@@ -950,6 +1014,9 @@ mod tests {
         assert_eq!(dims.evidence.unknown_surface.len(), 2);
         assert!(dims.evidence.unknown_surface.contains(&"ami".to_string()));
         assert!(dims.evidence.unknown_surface.contains(&"fract".to_string()));
-        assert!(!dims.evidence.unknown_surface.contains(&"chakra".to_string()));
+        assert!(!dims
+            .evidence
+            .unknown_surface
+            .contains(&"chakra".to_string()));
     }
 }

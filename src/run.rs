@@ -213,6 +213,11 @@ pub async fn execute_with_admitter(
     let integrity = Report::compute_integrity(&tools, &suite);
     let mut overall: Overall = Report::compute_overall(&tools);
     overall.provisional |= integrity.status != crate::report::IntegrityStatus::Healthy;
+    if !crate::report::is_gradeable(&suite, &integrity) {
+        overall.score = None;
+        overall.grade = None;
+        overall.provisional = true;
+    }
     let dimensions = Report::compute_dimensions(&tools);
 
     Ok(Report {
