@@ -88,9 +88,7 @@ pub fn parse(stdout: &str, _exit_code: Option<i32>) -> ParseOutcome {
         .unwrap_or(0);
 
     let mut ranked = findings_src.clone();
-    ranked.sort_by_key(|f| {
-        severity_rank(f.get("severity").and_then(Value::as_str).unwrap_or(""))
-    });
+    ranked.sort_by_key(|f| severity_rank(f.get("severity").and_then(Value::as_str).unwrap_or("")));
 
     let findings = ranked
         .iter()
@@ -149,7 +147,9 @@ mod tests {
         let out = parse(FIXTURE, Some(0));
         assert_eq!(out.score, Some(62.0));
         assert_eq!(out.status, Status::Warn);
-        assert!(out.summary.contains("Windows readiness 62/100 (CONDITIONAL)"));
+        assert!(out
+            .summary
+            .contains("Windows readiness 62/100 (CONDITIONAL)"));
         assert!(out.summary.contains("1/2 dimension(s) below 50"));
         assert_eq!(out.findings.len(), 2);
         assert!(out.findings[0].contains("EDW-001 [major/filesystem]"));

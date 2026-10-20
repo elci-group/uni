@@ -30,3 +30,7 @@ uni --fail-under 80 .
 See `.skillastic/skills/uni.md` (`skillastic show uni`) for the full skill:
 when to reach for `uni` vs. a single constituent tool, `--only`/`--skip`,
 `--json`/`--out`, and `uni revise` for remediation.
+
+## TempCheq
+
+- Submit every artifact containing LLM inference calls to tempcheq before delivery: run `tempcheq <path>` on the workspace that produced the artifact, review the temperature audit, and include the findings with the artifact (`tempcheq --report` for JSON output, `tempcheq report <path>` for Markdown/HTML report files).

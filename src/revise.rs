@@ -19,7 +19,12 @@
 //!     dependencies. Always non-destructive (writes only to new
 //!     `amber_<crate>_redux` files, never touches `Cargo.toml` or source).
 //!   - isopod `harden --apply` — creates missing compliance evidence
-//!     files.
+//!     files. With `--upstream` (`ReviseArgs::upstream`), plans
+//!     `harden --remote <owner>/<repo>` instead (`LegacyEntry::remote`):
+//!     forks `target`'s own GitHub `origin` remote, adds the missing
+//!     evidence there, and opens a PR, rather than writing into the local
+//!     target tree at all — for revising a project without local write
+//!     access. See `resolve_github_remote` and `RemoteMode`.
 //!   - lwoodz `remedy` — writes a missing `LICENSE`/`NOTICE`/etc. Only
 //!     offered when the diagnosis shows no license file at all; it has no
 //!     fix for header coverage or compatibility warnings.
@@ -350,13 +355,10 @@ pub struct ReviseReport {
 #[tracing::instrument(skip_all)]
 pub async fn execute(args: &ReviseArgs) -> Result<ReviseReport, String> {
     let opts = args.analyze_options();
-    let target = std::fs::canonicalize(&opts.target)
-        .map_err(|e| format!("target path {:?} is not accessible: {e}", opts.target))?;
     let tools_dir = args
         .tools_dir
         .clone()
         .unwrap_or_else(tool::default_tools_dir);
-    initialize_vamos_if_missing(&target, &tools_dir, Duration::from_secs(args.timeout)).await?;
 
     let diagnosis = run::execute(&opts).await?;
     let target = PathBuf::from(&diagnosis.target);
@@ -372,7 +374,22 @@ pub async fn execute(args: &ReviseArgs) -> Result<ReviseReport, String> {
 
     let timeout = Duration::from_secs(args.timeout);
 
-    let plan = build_plan(&diagnosis, &target, wants);
+    let upstream = if args.upstream {
+        match resolve_github_remote(&target).await {
+            Some(owner_repo) => Some(owner_repo),
+            None => {
+                eprintln!(
+                    "uni: stage=revise_preflight outcome=warning reason=upstream_requested_but_no_github_remote target={}",
+                    target.display()
+                );
+                None
+            }
+        }
+    } else {
+        None
+    };
+
+    let plan = build_plan(&diagnosis, &target, wants, upstream.as_ref());
 
     if args.apply && !plan.is_empty() {
         // Check worktree status for warnings (not blocking anymore)
@@ -435,7 +452,7 @@ pub async fn execute(args: &ReviseArgs) -> Result<ReviseReport, String> {
             let risk = planned.risk;
 
             if let Some(token) = planned.probe_token {
-                if !probe_capability(&bin, token).await {
+                if !probe_capability(&bin, &planned.probe_prefix, token).await {
                     eprintln!(
                         "uni: tool={} stage=revise_probe outcome=unsupported token={token}",
                         planned.tool.key()
@@ -462,7 +479,7 @@ pub async fn execute(args: &ReviseArgs) -> Result<ReviseReport, String> {
             }
 
             if let Some(flag) = planned.required_flag {
-                if !probe_capability(&bin, flag).await {
+                if !probe_capability(&bin, &planned.probe_prefix, flag).await {
                     eprintln!(
                         "uni: tool={} stage=revise_probe outcome=unsupported token={flag}",
                         planned.tool.key()
@@ -550,7 +567,7 @@ pub async fn execute(args: &ReviseArgs) -> Result<ReviseReport, String> {
             // installed tool version.
             if args.apply {
                 if let Some(flag) = planned.apply_flag {
-                    if !probe_capability(&bin, flag).await {
+                    if !probe_capability(&bin, &planned.probe_prefix, flag).await {
                         eprintln!(
                             "uni: tool={} stage=revise_probe outcome=unsupported token={flag}",
                             planned.tool.key()
@@ -668,6 +685,27 @@ pub async fn execute(args: &ReviseArgs) -> Result<ReviseReport, String> {
         }
     }
 
+    // goglz's doc-sync pass isn't triggered by any single tool's finding —
+    // it's a blanket "the code just changed, make sure the docs still
+    // agree" step — so it doesn't live in LEGACY_CATALOG/build_plan above.
+    // In apply mode it only runs once something was actually mutated;
+    // in plan mode, once something in `remediations` shows there would be.
+    if args.sync_docs {
+        let trigger = if args.apply {
+            applied_anything
+        } else {
+            !remediations.is_empty()
+        };
+        if trigger {
+            if let Some(doc_sync) = run_doc_sync_pass(&target, &tools_dir, args, timeout).await {
+                if matches!(doc_sync.outcome, Outcome::Applied) {
+                    applied_anything = true;
+                }
+                remediations.push(doc_sync);
+            }
+        }
+    }
+
     // Build Kaptaind plan and transaction for durability
     if args.apply && !remediations.is_empty() {
         match build_kaptaind_plan(&diagnosis, &target, &remediations).await {
@@ -722,63 +760,248 @@ pub async fn execute(args: &ReviseArgs) -> Result<ReviseReport, String> {
     })
 }
 
-/// `revise` is the adoption path for action-lifecycle tracking. Initialize
-/// Vamos before the diagnostic pass so a newly created manifest is included
-/// in the same report. Ordinary `uni`/`uni analyze` runs remain read-only and
-/// continue to report a missing manifest as skipped.
+/// Refuses to let `uni` invoke `goglz revise` unless the target's own
+/// `goglz.yaml` explicitly disables goglz's anti-hunking post-processor.
+/// That feature exists (per goglz's own `src/anti_hunk/mod.rs`) to split
+/// up large rewrites so Ferret — a sibling analyzer in this same fleet —
+/// doesn't flag them as a large hunk. Wiring that into `uni` unmodified
+/// would mean shipping a step whose job is hiding what it did from
+/// another tool in `uni`'s own report, which defeats the point of the
+/// report. `goglz` itself defaults `anti_hunking.enabled` to `true`
+/// (`AntiHunkingConfig::default`), so a missing file or one that omits
+/// the key is exactly as unsafe as one that sets it `true` explicitly —
+/// only an explicit `false` clears this check.
 #[tracing::instrument(skip_all)]
-async fn initialize_vamos_if_missing(
-    target: &Path,
-    tools_dir: &Path,
-    timeout: Duration,
-) -> Result<(), String> {
-    if target.join("vamos.toml").is_file() {
-        return Ok(());
+fn check_anti_hunking_disabled(target: &Path) -> Result<(), String> {
+    #[derive(serde::Deserialize)]
+    struct Doc {
+        #[serde(default)]
+        anti_hunking: AntiHunking,
+    }
+    struct AntiHunking {
+        enabled: bool,
+    }
+    impl Default for AntiHunking {
+        fn default() -> Self {
+            Self { enabled: true }
+        }
+    }
+    impl<'de> serde::Deserialize<'de> for AntiHunking {
+        fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+        where
+            D: serde::Deserializer<'de>,
+        {
+            #[derive(serde::Deserialize)]
+            struct Raw {
+                #[serde(default = "default_true")]
+                enabled: bool,
+            }
+            fn default_true() -> bool {
+                true
+            }
+            Raw::deserialize(deserializer).map(|r| AntiHunking { enabled: r.enabled })
+        }
     }
 
-    let bin = tool::resolve_binary(ToolId::Vamos, tools_dir).ok_or_else(|| {
-        "cannot initialize missing vamos.toml: binary \"vamos\" not found on PATH or under the tools dir"
-            .to_string()
+    let path = target.join("goglz.yaml");
+    let content = std::fs::read_to_string(&path).map_err(|_| {
+        format!(
+            "{} not found; uni will not run goglz until the target sets `anti_hunking: {{ enabled: false }}` there — goglz's anti-hunking exists to hide its rewrites from Ferret, which uni will not do to its own report",
+            path.display()
+        )
     })?;
+
+    let doc: Doc = serde_yaml::from_str(&content)
+        .map_err(|e| format!("failed to parse {}: {e}", path.display()))?;
+
+    if doc.anti_hunking.enabled {
+        return Err(format!(
+            "{} has anti_hunking.enabled = true (or omits it, which defaults to true); set `anti_hunking: {{ enabled: false }}` before uni will run goglz — its anti-hunking exists to hide rewrites from Ferret, which uni will not do to its own report",
+            path.display()
+        ));
+    }
+
+    Ok(())
+}
+
+/// After `uni revise` has (or would) mutate the target's code, keep
+/// documentation aligned with the revised state by running `goglz
+/// revise` once against the target. Unlike every entry in
+/// `LEGACY_CATALOG`, this isn't triggered by any one tool's Warn/Fail
+/// finding — it's a blanket pass closing the code/doc gap `uni revise`
+/// itself just opened (or would open) — so it's called directly from
+/// `execute` rather than through `build_plan`.
+///
+/// Gated behind `--sync-docs`: this is the only remediation `uni` runs
+/// that sends the target's document content to a third-party AI API
+/// (goglz's own configured GPT-OSS/Groq provider), so it must never fire
+/// just because an existing `--apply --confirm-source-rewrite
+/// --confirm-ai-patch` CI invocation happens to exist. Risk-tiered
+/// `AiGenerated` like traci/chakra/fract: needs both confirmation flags.
+/// See `check_anti_hunking_disabled` for the other precondition.
+#[tracing::instrument(skip_all)]
+async fn run_doc_sync_pass(
+    target: &Path,
+    tools_dir: &Path,
+    args: &ReviseArgs,
+    timeout: Duration,
+) -> Option<Remediation> {
+    let reason = "keep documentation aligned with the code uni revise just changed".to_string();
+    let command = format!("(cd {}; goglz revise --directory .)", target.display());
+    let risk = RiskTier::AiGenerated;
+
+    let bin = match tool::resolve_binary(ToolId::Goglz, tools_dir) {
+        Some(b) => b,
+        None => {
+            return Some(Remediation {
+                tool: "goglz",
+                reason,
+                command,
+                risk,
+                outcome: Outcome::Unavailable,
+                detail: Some("binary \"goglz\" not found".to_string()),
+                preview: None,
+                checkpoint: None,
+                rolled_back: false,
+                verification: None,
+                duration_ms: None,
+            });
+        }
+    };
+
+    if let Err(detail) = check_anti_hunking_disabled(target) {
+        return Some(Remediation {
+            tool: "goglz",
+            reason,
+            command,
+            risk,
+            outcome: Outcome::Unavailable,
+            detail: Some(detail),
+            preview: None,
+            checkpoint: None,
+            rolled_back: false,
+            verification: None,
+            duration_ms: None,
+        });
+    }
+
+    if !probe_capability(&bin, &[], "revise").await {
+        return Some(Remediation {
+            tool: "goglz",
+            reason,
+            command,
+            risk,
+            outcome: Outcome::Unavailable,
+            detail: Some(
+                "installed goglz does not appear to support `revise` (checked via `goglz --help`); uni's remediation command for this tool may be stale against the installed version"
+                    .to_string(),
+            ),
+            preview: None,
+            checkpoint: None,
+            rolled_back: false,
+            verification: None,
+            duration_ms: None,
+        });
+    }
+
+    if !args.apply {
+        return Some(Remediation {
+            tool: "goglz",
+            reason,
+            command,
+            risk,
+            outcome: Outcome::Planned,
+            detail: None,
+            preview: None,
+            checkpoint: None,
+            rolled_back: false,
+            verification: None,
+            duration_ms: None,
+        });
+    }
+
+    let missing_flags =
+        missing_confirmation_flags(risk, args.confirm_source_rewrite, args.confirm_ai_patch);
+    if !missing_flags.is_empty() {
+        return Some(Remediation {
+            tool: "goglz",
+            reason,
+            command,
+            risk,
+            outcome: Outcome::RequiresConfirmation,
+            detail: Some(format!(
+                "this remediation is risk-tiered {}; rerun with --apply {} to actually run it",
+                risk_word(risk),
+                missing_flags.join(" ")
+            )),
+            preview: None,
+            checkpoint: None,
+            rolled_back: false,
+            verification: None,
+            duration_ms: None,
+        });
+    }
+
     let mut cmd = tokio::process::Command::new(&bin);
-    cmd.arg("init")
+    cmd.args(["revise", "--directory", "."])
         .current_dir(target)
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .stdin(Stdio::null());
 
-    match tokio::time::timeout(timeout, cmd.output()).await {
-        Ok(Ok(output)) if output.status.success() => {
-            if target.join("vamos.toml").is_file() {
-                Ok(())
-            } else {
-                tracing::error!(target = %target.display(), "vamos init succeeded without creating a manifest");
-                Err(format!(
-                    "`vamos init` exited successfully but did not create {}",
-                    target.join("vamos.toml").display()
-                ))
-            }
-        }
-        Ok(Ok(output)) => {
-            tracing::error!(exit_code = ?output.status.code(), "vamos init failed");
-            Err(format!(
-                "`vamos init` exited {:?}: {}",
+    let start = Instant::now();
+    let outcome = tokio::time::timeout(timeout, cmd.output()).await;
+    let duration_ms = Some(start.elapsed().as_millis());
+
+    let (result, detail) = match outcome {
+        Ok(Ok(output)) if output.status.success() => (Outcome::Applied, tail(&output.stdout)),
+        Ok(Ok(output)) => (
+            Outcome::Failed,
+            Some(format!(
+                "exit {:?}: {}",
                 output.status.code(),
-                String::from_utf8_lossy(&output.stderr).trim()
-            ))
-        }
+                tail(&output.stderr).unwrap_or_default()
+            )),
+        ),
         Ok(Err(e)) => {
-            tracing::error!(error = %e, "failed to spawn vamos init");
-            Err(format!("failed to spawn `vamos init`: {e}"))
+            eprintln!("uni: tool=goglz stage=revise_spawn outcome=failed error={e}");
+            (Outcome::Failed, Some(format!("failed to spawn: {e}")))
         }
         Err(_) => {
-            tracing::error!(timeout_s = timeout.as_secs(), "vamos init timed out");
-            Err(format!(
-                "`vamos init` timed out after {}s",
+            eprintln!(
+                "uni: tool=goglz stage=revise_run outcome=timeout timeout_s={}",
                 timeout.as_secs()
-            ))
+            );
+            (
+                Outcome::Failed,
+                Some(format!("timed out after {}s", timeout.as_secs())),
+            )
         }
+    };
+
+    let mut checkpoint = None;
+    let mut rolled_back = false;
+    if result == Outcome::Applied {
+        checkpoint = commit_checkpoint(target, "uni revise: sync documentation via goglz").await;
+    } else {
+        eprintln!("uni: tool=goglz stage=revise_rollback outcome=started");
+        rollback(target).await;
+        rolled_back = true;
     }
+
+    Some(Remediation {
+        tool: "goglz",
+        reason,
+        command,
+        risk,
+        outcome: result,
+        detail,
+        preview: None,
+        checkpoint,
+        rolled_back,
+        verification: None,
+        duration_ms,
+    })
 }
 
 /// Build a Kaptaind RemediationPlan from a revise analysis.
@@ -882,6 +1105,14 @@ struct PlannedRemediation {
     program: &'static str,
     args: Vec<String>,
     cwd: Option<PathBuf>,
+    /// Argv to run before `--help` when probing `probe_token`/
+    /// `required_flag`/`apply_flag` (`probe_capability` appends `--help`
+    /// itself). Empty for a top-level flag or subcommand name (e.g.
+    /// `--propose`, `trace`); set to a subcommand (e.g. `["harden"]`) when
+    /// the token being checked only appears in that subcommand's own
+    /// `--help` — `--remote` shows up in `isopod harden --help`, not
+    /// `isopod --help`.
+    probe_prefix: Vec<String>,
     /// Subcommand or flag that the installed binary's own `--help` output
     /// must mention for this remediation to be trustworthy, checked by
     /// `probe_capability` before anything runs. `None` for a
@@ -940,6 +1171,30 @@ struct LegacyEntry {
     apply_flag: Option<&'static str>,
     risk: RiskTier,
     preview_args: Option<fn(&Path) -> Vec<String>>,
+    /// Remote-hardening mode for `--upstream` (see `ReviseArgs::upstream`):
+    /// propose this fix as a PR against the target's own GitHub remote
+    /// instead of applying it locally. `None` for every tool without one
+    /// — currently everything except isopod.
+    remote: Option<RemoteMode>,
+}
+
+/// How a `LegacyEntry` proposes its fix upstream (fork, commit, PR) rather
+/// than applying it to the local target tree. See `ReviseArgs::upstream`.
+struct RemoteMode {
+    /// Argv to run before `--help` when probing `probe_token` — empty for
+    /// a top-level flag, or the owning subcommand when the token only
+    /// appears in its own `--help` (`isopod harden --help` mentions
+    /// `--remote`; `isopod --help` doesn't).
+    probe_prefix: &'static [&'static str],
+    probe_token: &'static str,
+    /// Builds the remote-hardening argv from the target's own `origin`
+    /// remote, resolved to `(owner, repo)`.
+    args: fn(&str, &str) -> Vec<String>,
+    /// Never `RewritesSource`/`AiGenerated` in practice so far: a
+    /// remote-hardening PR only ever adds new files in the fork, never
+    /// rewrites anything, local or remote. Still explicit per entry
+    /// rather than assumed, in case a future one differs.
+    risk: RiskTier,
 }
 
 static LEGACY_CATALOG: &[LegacyEntry] = &[
@@ -960,6 +1215,7 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
         // is needed for something this safe.
         risk: RiskTier::NewFilesOnly,
         preview_args: None,
+        remote: None,
     },
     LegacyEntry {
         tool: ToolId::Isopod,
@@ -980,10 +1236,27 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
         required_flag: None,
         apply_flag: None,
         // Creates missing compliance evidence files; doesn't rewrite
-        // existing ones. (Currently unavailable on the installed isopod
-        // version regardless — see probe_token.)
+        // existing ones.
         risk: RiskTier::NewFilesOnly,
         preview_args: None,
+        // `isopod harden --remote <owner>/<repo>` forks the target's own
+        // GitHub remote, adds a traci.toml + CI workflow establishing
+        // ISO27001-A.8.15/A.8.16 evidence, and opens a PR — for
+        // `--upstream` when you don't have (or don't want to use) local
+        // write access to the target. `--remote` only appears in `isopod
+        // harden --help`, hence the `harden` probe_prefix.
+        remote: Some(RemoteMode {
+            probe_prefix: &["harden"],
+            probe_token: "--remote",
+            args: |owner, repo| {
+                vec![
+                    "harden".to_string(),
+                    "--remote".to_string(),
+                    format!("{owner}/{repo}"),
+                ]
+            },
+            risk: RiskTier::NewFilesOnly,
+        }),
     },
     LegacyEntry {
         tool: ToolId::Lwoodz,
@@ -1011,6 +1284,7 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
         // never rewrites a tracked file.
         risk: RiskTier::NewFilesOnly,
         preview_args: Some(|_target| vec!["remedy".to_string(), "--dry-run".to_string()]),
+        remote: None,
     },
     LegacyEntry {
         tool: ToolId::Tempcheq,
@@ -1042,6 +1316,7 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
                 "--report".to_string(),
             ]
         }),
+        remote: None,
     },
     LegacyEntry {
         tool: ToolId::Traci,
@@ -1086,6 +1361,7 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
                 TRACI_TRACE_GOAL.to_string(),
             ]
         }),
+        remote: None,
     },
     // chakra and fract have no remediation command of their own — their
     // findings (architecture coverage, module entropy/cohesion) are
@@ -1127,6 +1403,7 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
                 CHAKRA_TRACE_GOAL.to_string(),
             ]
         }),
+        remote: None,
     },
     LegacyEntry {
         tool: ToolId::Fract,
@@ -1156,6 +1433,7 @@ static LEGACY_CATALOG: &[LegacyEntry] = &[
                 FRACT_TRACE_GOAL.to_string(),
             ]
         }),
+        remote: None,
     },
 ];
 
@@ -1181,6 +1459,7 @@ fn legacy_plan_item(
     entry: &LegacyEntry,
     diagnosis: &Report,
     target: &Path,
+    upstream: Option<&(String, String)>,
 ) -> Option<PlannedRemediation> {
     let t = diagnosis
         .tools
@@ -1192,6 +1471,34 @@ fn legacy_plan_item(
     if !(entry.applicable)(t) {
         return None;
     }
+
+    // `--upstream` was requested: only tools with a remote-hardening mode
+    // are candidates at all, and only once the target's own git remote
+    // resolved to an owner/repo. Anything else is silently excluded —
+    // same convention `applicable` already uses — rather than falling
+    // back to a local apply the caller explicitly asked to avoid.
+    if let Some((owner, repo)) = upstream {
+        let remote = entry.remote.as_ref()?;
+        return Some(PlannedRemediation {
+            tool: entry.tool,
+            binary_tool: entry.delegate.unwrap_or(entry.tool),
+            reason: format!(
+                "{} (proposing upstream to {owner}/{repo} instead of applying locally)",
+                (entry.reason)(t)
+            ),
+            program: entry.program,
+            args: (remote.args)(owner, repo),
+            cwd: None,
+            probe_prefix: remote.probe_prefix.iter().map(|s| s.to_string()).collect(),
+            probe_token: Some(remote.probe_token),
+            required_flag: None,
+            apply_flag: None,
+            risk: remote.risk,
+            preview_args: None,
+            precomputed_preview: None,
+        });
+    }
+
     Some(PlannedRemediation {
         tool: entry.tool,
         binary_tool: entry.delegate.unwrap_or(entry.tool),
@@ -1199,6 +1506,7 @@ fn legacy_plan_item(
         program: entry.program,
         args: (entry.args)(target),
         cwd: (entry.cwd)(target),
+        probe_prefix: Vec::new(),
         probe_token: Some(entry.probe_token),
         required_flag: entry.required_flag,
         apply_flag: entry.apply_flag,
@@ -1218,11 +1526,12 @@ fn build_plan(
     diagnosis: &Report,
     target: &Path,
     wants: impl Fn(&str) -> bool,
+    upstream: Option<&(String, String)>,
 ) -> Vec<PlannedRemediation> {
     LEGACY_CATALOG
         .iter()
         .filter(|entry| wants(entry.tool.key()))
-        .filter_map(|entry| legacy_plan_item(entry, diagnosis, target))
+        .filter_map(|entry| legacy_plan_item(entry, diagnosis, target, upstream))
         .collect()
 }
 
@@ -1265,9 +1574,10 @@ fn supports_token(help_text: &str, token: &str) -> bool {
 /// covers flag-based remediations (amber `--propose`, lwoodz `remedy`,
 /// tempcheq `--fix`) and not just isopod's subcommand.
 #[tracing::instrument(skip_all)]
-async fn probe_capability(bin: &Path, token: &str) -> bool {
+async fn probe_capability(bin: &Path, prefix: &[String], token: &str) -> bool {
     let mut cmd = tokio::process::Command::new(bin);
-    cmd.arg("--help")
+    cmd.args(prefix)
+        .arg("--help")
         .stdout(Stdio::piped())
         .stderr(Stdio::null())
         .stdin(Stdio::null());
@@ -1412,6 +1722,7 @@ async fn fetch_native_plan(
                     target_str.clone(),
                 ],
                 cwd: None,
+                probe_prefix: Vec::new(),
                 // Already self-validated by answering `plan` — no
                 // separate --help substring guess needed.
                 probe_token: None,
@@ -1474,6 +1785,38 @@ const UNI_STATE_DIR: &str = ".uni";
 /// same as the layout this was developed against): unrelated dirty
 /// changes elsewhere in the repo must never block, or be touched by, a
 /// revise of one project within it.
+/// Resolves `target`'s own `origin` remote to `(owner, repo)` when it
+/// points at github.com (https or ssh form), for `--upstream`
+/// (`ReviseArgs::upstream`) to fork and PR against. `None` for any other
+/// host, a missing remote, or a target that isn't a git repository at
+/// all — `execute` treats that as "no remote-hardening candidates" rather
+/// than an error, since `--upstream` without a resolvable GitHub remote
+/// simply has nothing to propose anything to.
+#[tracing::instrument(skip_all)]
+async fn resolve_github_remote(target: &Path) -> Option<(String, String)> {
+    let output = tokio::process::Command::new("git")
+        .arg("-C")
+        .arg(target)
+        .args(["remote", "get-url", "origin"])
+        .stdout(Stdio::piped())
+        .stderr(Stdio::null())
+        .stdin(Stdio::null())
+        .output()
+        .await
+        .ok()?;
+    if !output.status.success() {
+        return None;
+    }
+    let url = String::from_utf8_lossy(&output.stdout).trim().to_string();
+    let rest = url
+        .strip_prefix("git@github.com:")
+        .or_else(|| url.strip_prefix("https://github.com/"))
+        .or_else(|| url.strip_prefix("ssh://git@github.com/"))?;
+    let rest = rest.strip_suffix(".git").unwrap_or(rest);
+    let (owner, repo) = rest.split_once('/')?;
+    Some((owner.to_string(), repo.to_string()))
+}
+
 #[tracing::instrument(skip_all)]
 async fn check_worktree(target: &Path) -> WorktreeStatus {
     let mut cmd = tokio::process::Command::new("git");
@@ -1731,17 +2074,29 @@ async fn verify_remediation(
     })
 }
 
-#[tracing::instrument(skip_all)]
+/// [`human`]'s output plus the byte range of its remediation list — the
+/// flagship section for `uni revise`, the same role Fract's section plays
+/// in `uni analyze`'s report — so `animation::present_text` can wave-reveal
+/// it. `None` when there was nothing to remediate (nothing to animate).
+pub struct ReviseHumanReport {
+    pub text: String,
+    pub remediations_section: Option<std::ops::Range<usize>>,
+}
+
 pub fn human(report: &ReviseReport) -> String {
+    human_report(report).text
+}
+
+#[tracing::instrument(skip_all)]
+pub fn human_report(report: &ReviseReport) -> ReviseHumanReport {
+    let style = crate::render::Style::stdout();
     let mut out = String::new();
 
     // Header with styling
     out.push_str(
         "╔═══════════════════════════════════════════════════════════════════════════════╗\n",
     );
-    out.push_str(&format!(
-        "║ 🔧 UNI REVISE — Automated Remediation Engine  \n"
-    ));
+    out.push_str("║ 🔧 UNI REVISE — Automated Remediation Engine  \n");
     out.push_str(
         "╠═══════════════════════════════════════════════════════════════════════════════╣\n",
     );
@@ -1749,9 +2104,9 @@ pub fn human(report: &ReviseReport) -> String {
     out.push_str(&format!(
         "║ 🎯 Mode: {:<62}\n",
         if report.apply {
-            "🚀 APPLY (live remediation active)"
+            style.warn("🚀 APPLY (live remediation active)")
         } else {
-            "🏁 DRY-RUN (pass --apply to execute)"
+            style.dim("🏁 DRY-RUN (pass --apply to execute)")
         }
     ));
     out.push_str(
@@ -1759,14 +2114,18 @@ pub fn human(report: &ReviseReport) -> String {
     );
 
     if report.remediations.is_empty() {
-        out.push_str(
-            "✨ No remediations needed — every tool with remediation support is clean!\n\n",
-        );
+        out.push_str(&format!(
+            "{}\n\n",
+            style.ok("✨ No remediations needed — every tool with remediation support is clean!")
+        ));
         out.push_str(&format!(
             "🎊 Final Outcome: {}\n",
-            run_outcome_emoji_word(report.outcome)
+            run_outcome_emoji_word(style, report.outcome)
         ));
-        return out;
+        return ReviseHumanReport {
+            text: out,
+            remediations_section: None,
+        };
     }
 
     out.push_str(&format!(
@@ -1777,6 +2136,8 @@ pub fn human(report: &ReviseReport) -> String {
         "═══════════════════════════════════════════════════════════════════════════════════\n\n",
     );
 
+    let section_start = out.len();
+
     for (idx, r) in report.remediations.iter().enumerate() {
         let outcome_emoji = outcome_emoji(r.outcome);
         let risk_emoji = risk_emoji(r.risk);
@@ -1786,22 +2147,22 @@ pub fn human(report: &ReviseReport) -> String {
             outcome_emoji,
             idx + 1,
             r.tool,
-            outcome_word(r.outcome),
+            outcome_color(style, r.outcome),
             risk_emoji,
-            risk_word(r.risk)
+            style.dim(risk_word(r.risk))
         ));
 
         out.push_str(&format!("     📌 Reason: {}\n", r.reason));
-        out.push_str(&format!("     💻 Command: {}\n", r.command));
+        out.push_str(&format!("     💻 Command: {}\n", style.accent(&r.command)));
 
         if let Some(detail) = &r.detail {
-            out.push_str(&format!("     ℹ️  Detail: {}\n", detail));
+            out.push_str(&format!("     ℹ️  Detail: {}\n", style.dim(detail)));
         }
 
         if let Some(preview) = &r.preview {
-            out.push_str(&format!("     👁️  Preview:\n"));
+            out.push_str("     👁️  Preview:\n");
             for line in preview.lines() {
-                out.push_str(&format!("        {}\n", line));
+                out.push_str(&format!("        {}\n", style.dim(line)));
             }
         }
 
@@ -1810,7 +2171,10 @@ pub fn human(report: &ReviseReport) -> String {
         }
 
         if r.rolled_back {
-            out.push_str("     ⏮️  Rolled back: yes (due to failure or verification issue)\n");
+            out.push_str(&format!(
+                "     ⏮️  Rolled back: {}\n",
+                style.warn("yes (due to failure or verification issue)")
+            ));
         }
 
         if let Some(v) = &r.verification {
@@ -1826,11 +2190,13 @@ pub fn human(report: &ReviseReport) -> String {
                 v.after_score
                     .map(|s| format!("{:.1}", s))
                     .unwrap_or_default(),
-                verify_word(v.result)
+                verify_color(style, v.result)
             ));
         }
         out.push('\n');
     }
+
+    let remediations_section = Some(section_start..out.len());
 
     if let Some(post) = &report.post {
         out.push_str(
@@ -1849,25 +2215,28 @@ pub fn human(report: &ReviseReport) -> String {
     );
     out.push_str(&format!(
         "🎯 FINAL OUTCOME: {}\n",
-        run_outcome_emoji_word(report.outcome)
+        run_outcome_emoji_word(style, report.outcome)
     ));
 
-    out
+    ReviseHumanReport {
+        text: out,
+        remediations_section,
+    }
 }
 
 #[tracing::instrument(skip_all)]
-fn run_outcome_emoji_word(o: RunOutcome) -> String {
+fn run_outcome_emoji_word(style: crate::render::Style, o: RunOutcome) -> String {
     match o {
-        RunOutcome::Clean => "✨ Clean — nothing to revise".to_string(),
-        RunOutcome::Planned => "📋 Planned — dry run found remediations to apply".to_string(),
+        RunOutcome::Clean => style.ok("✨ Clean — nothing to revise"),
+        RunOutcome::Planned => style.dim("📋 Planned — dry run found remediations to apply"),
         RunOutcome::FixedCleanly => {
-            "🎉 Fixed Cleanly — all remediations applied successfully!".to_string()
+            style.ok("🎉 Fixed Cleanly — all remediations applied successfully!")
         }
         RunOutcome::Partial => {
-            "⚠️  Partial — some remediations applied, see details above".to_string()
+            style.warn("⚠️  Partial — some remediations applied, see details above")
         }
         RunOutcome::Regressed => {
-            "🔴 Regressed — some remediations failed or worsened the situation".to_string()
+            style.fail("🔴 Regressed — some remediations failed or worsened the situation")
         }
     }
 }
@@ -1891,6 +2260,20 @@ fn outcome_word(o: Outcome) -> &'static str {
         Outcome::Applied => "applied",
         Outcome::Failed => "failed",
         Outcome::Unavailable => "unavailable",
+    }
+}
+
+/// `outcome_word`, colored by severity: green once actually applied,
+/// yellow for a gate that just needs a flag, red for a real failure, dim
+/// for an unresolved plan/unavailable tool.
+#[tracing::instrument(skip_all)]
+fn outcome_color(style: crate::render::Style, o: Outcome) -> String {
+    let word = outcome_word(o);
+    match o {
+        Outcome::Applied => style.ok(word),
+        Outcome::RequiresConfirmation => style.warn(word),
+        Outcome::Failed => style.fail(word),
+        Outcome::Planned | Outcome::Unavailable => style.dim(word),
     }
 }
 
@@ -1929,6 +2312,19 @@ fn verify_word(v: VerifyResult) -> &'static str {
         VerifyResult::Improved => "improved",
         VerifyResult::Unchanged => "unchanged",
         VerifyResult::Regressed => "regressed",
+    }
+}
+
+/// `verify_word`, colored the same way `classify_run` weighs it: green for
+/// an outright fix, dim for a step in the right direction or no change,
+/// red for the one result that flips the whole run to `Regressed`.
+#[tracing::instrument(skip_all)]
+fn verify_color(style: crate::render::Style, v: VerifyResult) -> String {
+    let word = verify_word(v);
+    match v {
+        VerifyResult::Fixed => style.ok(word),
+        VerifyResult::Improved | VerifyResult::Unchanged => style.dim(word),
+        VerifyResult::Regressed => style.fail(word),
     }
 }
 
@@ -1999,6 +2395,63 @@ mod tests {
         }
     }
 
+    fn dummy_remediation(outcome: Outcome) -> Remediation {
+        Remediation {
+            tool: "isopod",
+            reason: "test reason".to_string(),
+            command: "isopod harden --apply".to_string(),
+            risk: RiskTier::NewFilesOnly,
+            outcome,
+            detail: None,
+            preview: None,
+            checkpoint: None,
+            rolled_back: false,
+            verification: None,
+            duration_ms: Some(1),
+        }
+    }
+
+    #[test]
+    #[tracing::instrument(skip_all)]
+    fn human_report_reveal_section_spans_the_remediation_list() {
+        let report = ReviseReport {
+            schema: "uni.revise/v1",
+            target: "/proj".to_string(),
+            apply: false,
+            diagnosis: diagnosis(vec![]),
+            remediations: vec![dummy_remediation(Outcome::Planned)],
+            outcome: RunOutcome::Planned,
+            post: None,
+        };
+        let rendered = human_report(&report);
+        let section = rendered
+            .remediations_section
+            .clone()
+            .expect("a non-empty plan should have a remediations section");
+        let body = &rendered.text[section];
+        assert!(body.contains("isopod"));
+        assert!(body.contains("test reason"));
+        // The plain (non-animated) accessor must still contain everything.
+        assert_eq!(human(&report), rendered.text);
+    }
+
+    #[test]
+    #[tracing::instrument(skip_all)]
+    fn human_report_with_no_remediations_has_no_reveal_section() {
+        let report = ReviseReport {
+            schema: "uni.revise/v1",
+            target: "/proj".to_string(),
+            apply: false,
+            diagnosis: diagnosis(vec![]),
+            remediations: Vec::new(),
+            outcome: RunOutcome::Clean,
+            post: None,
+        };
+        let rendered = human_report(&report);
+        assert!(rendered.remediations_section.is_none());
+        assert!(rendered.text.contains("No remediations needed"));
+    }
+
     #[tracing::instrument(skip_all)]
     fn allow_all(_: &str) -> bool {
         true
@@ -2008,7 +2461,7 @@ mod tests {
     #[tracing::instrument(skip_all)]
     fn plans_amber_when_flagged() {
         let d = diagnosis(vec![tool_report("amber", Status::Warn, None)]);
-        let plan = build_plan(&d, Path::new("/proj"), allow_all);
+        let plan = build_plan(&d, Path::new("/proj"), allow_all, None);
         assert_eq!(plan.len(), 1);
         assert_eq!(plan[0].program, "amber");
         assert_eq!(plan[0].probe_token, Some("--propose"));
@@ -2031,7 +2484,7 @@ mod tests {
             ),
             tool_report("tempcheq", Status::Warn, None),
         ]);
-        let plan = build_plan(&d, Path::new("/proj"), allow_all);
+        let plan = build_plan(&d, Path::new("/proj"), allow_all, None);
         assert_eq!(plan.len(), 4);
         for p in &plan {
             let expected = if p.program == "tempcheq" {
@@ -2056,7 +2509,7 @@ mod tests {
             ),
             tool_report("tempcheq", Status::Warn, None),
         ]);
-        let plan = build_plan(&d, Path::new("/proj"), allow_all);
+        let plan = build_plan(&d, Path::new("/proj"), allow_all, None);
         let has_preview = |program: &str| {
             plan.iter()
                 .find(|p| p.program == program)
@@ -2074,7 +2527,7 @@ mod tests {
     #[tracing::instrument(skip_all)]
     fn skips_amber_when_not_flagged() {
         let d = diagnosis(vec![tool_report("amber", Status::Ok, None)]);
-        let plan = build_plan(&d, Path::new("/proj"), allow_all);
+        let plan = build_plan(&d, Path::new("/proj"), allow_all, None);
         assert!(plan.is_empty());
     }
 
@@ -2085,7 +2538,7 @@ mod tests {
             tool_report("isopod", Status::Fail, None),
             tool_report("tempcheq", Status::Warn, None),
         ]);
-        let plan = build_plan(&d, Path::new("/proj"), allow_all);
+        let plan = build_plan(&d, Path::new("/proj"), allow_all, None);
         assert_eq!(plan.len(), 2);
         assert!(plan
             .iter()
@@ -2097,10 +2550,115 @@ mod tests {
 
     #[test]
     #[tracing::instrument(skip_all)]
+    fn upstream_plans_isopod_harden_remote_with_the_resolved_owner_repo() {
+        let d = diagnosis(vec![tool_report("isopod", Status::Fail, None)]);
+        let owner_repo = ("acme".to_string(), "widgets".to_string());
+        let plan = build_plan(&d, Path::new("/proj"), allow_all, Some(&owner_repo));
+        assert_eq!(plan.len(), 1);
+        let item = &plan[0];
+        assert_eq!(item.program, "isopod");
+        assert_eq!(
+            item.args,
+            vec![
+                "harden".to_string(),
+                "--remote".to_string(),
+                "acme/widgets".to_string()
+            ]
+        );
+        // Never touches the local target: no cwd, and no --base pointed
+        // at it — this mutates a fork elsewhere, not `/proj`.
+        assert!(item.cwd.is_none());
+        // `--remote` only appears in `isopod harden --help`, not the
+        // top-level `isopod --help` `probe_token` alone would check.
+        assert_eq!(item.probe_prefix, vec!["harden".to_string()]);
+        assert_eq!(item.probe_token, Some("--remote"));
+        assert!(item.reason.contains("acme/widgets"));
+    }
+
+    #[test]
+    #[tracing::instrument(skip_all)]
+    fn upstream_excludes_tools_with_no_remote_hardening_mode() {
+        // amber and tempcheq have no RemoteMode entry — --upstream must
+        // silently exclude them rather than falling back to a local apply
+        // the caller explicitly asked to avoid.
+        let d = diagnosis(vec![
+            tool_report("amber", Status::Warn, None),
+            tool_report("tempcheq", Status::Warn, None),
+            tool_report("isopod", Status::Fail, None),
+        ]);
+        let owner_repo = ("acme".to_string(), "widgets".to_string());
+        let plan = build_plan(&d, Path::new("/proj"), allow_all, Some(&owner_repo));
+        assert_eq!(plan.len(), 1);
+        assert_eq!(plan[0].program, "isopod");
+    }
+
+    #[tokio::test]
+    #[tracing::instrument(skip_all)]
+    async fn resolve_github_remote_parses_ssh_and_https_origin_urls() {
+        for (url, expected) in [
+            ("git@github.com:acme/widgets.git", ("acme", "widgets")),
+            ("https://github.com/acme/widgets.git", ("acme", "widgets")),
+            ("https://github.com/acme/widgets", ("acme", "widgets")),
+        ] {
+            let dir = unique_temp_dir("gh-remote");
+            tokio::process::Command::new("git")
+                .args(["init", "-q"])
+                .current_dir(&dir)
+                .status()
+                .await
+                .unwrap();
+            tokio::process::Command::new("git")
+                .args(["remote", "add", "origin", url])
+                .current_dir(&dir)
+                .status()
+                .await
+                .unwrap();
+            let resolved = resolve_github_remote(&dir).await;
+            assert_eq!(
+                resolved,
+                Some((expected.0.to_string(), expected.1.to_string())),
+                "failed for {url}"
+            );
+        }
+    }
+
+    #[tokio::test]
+    #[tracing::instrument(skip_all)]
+    async fn resolve_github_remote_is_none_for_a_non_github_remote() {
+        let dir = unique_temp_dir("non-gh-remote");
+        tokio::process::Command::new("git")
+            .args(["init", "-q"])
+            .current_dir(&dir)
+            .status()
+            .await
+            .unwrap();
+        tokio::process::Command::new("git")
+            .args([
+                "remote",
+                "add",
+                "origin",
+                "https://gitlab.com/acme/widgets.git",
+            ])
+            .current_dir(&dir)
+            .status()
+            .await
+            .unwrap();
+        assert_eq!(resolve_github_remote(&dir).await, None);
+    }
+
+    #[tokio::test]
+    #[tracing::instrument(skip_all)]
+    async fn resolve_github_remote_is_none_outside_any_git_repo() {
+        let dir = unique_temp_dir("no-repo");
+        assert_eq!(resolve_github_remote(&dir).await, None);
+    }
+
+    #[test]
+    #[tracing::instrument(skip_all)]
     fn lwoodz_only_planned_when_license_file_missing() {
         let raw = serde_json::json!({"has_license_file": false});
         let d = diagnosis(vec![tool_report("lwoodz", Status::Fail, Some(raw))]);
-        let plan = build_plan(&d, Path::new("/proj"), allow_all);
+        let plan = build_plan(&d, Path::new("/proj"), allow_all, None);
         assert_eq!(plan.len(), 1);
         assert_eq!(plan[0].probe_token, Some("remedy"));
         assert_eq!(plan[0].args, ["remedy"]);
@@ -2116,7 +2674,7 @@ mod tests {
     fn lwoodz_not_planned_when_license_file_present() {
         let raw = serde_json::json!({"has_license_file": true});
         let d = diagnosis(vec![tool_report("lwoodz", Status::Fail, Some(raw))]);
-        let plan = build_plan(&d, Path::new("/proj"), allow_all);
+        let plan = build_plan(&d, Path::new("/proj"), allow_all, None);
         assert!(plan.is_empty());
     }
 
@@ -2127,7 +2685,7 @@ mod tests {
         // evidence about the license file must not be treated as "the
         // license file is definitely missing".
         let d = diagnosis(vec![tool_report("lwoodz", Status::Fail, None)]);
-        let plan = build_plan(&d, Path::new("/proj"), allow_all);
+        let plan = build_plan(&d, Path::new("/proj"), allow_all, None);
         assert!(plan.is_empty());
     }
 
@@ -2138,7 +2696,7 @@ mod tests {
             tool_report("amber", Status::Warn, None),
             tool_report("tempcheq", Status::Warn, None),
         ]);
-        let plan = build_plan(&d, Path::new("/proj"), |k| k == "tempcheq");
+        let plan = build_plan(&d, Path::new("/proj"), |k| k == "tempcheq", None);
         assert_eq!(plan.len(), 1);
         assert_eq!(plan[0].program, "tempcheq");
     }
@@ -2150,7 +2708,7 @@ mod tests {
             tool_report("amber", Status::Warn, None),
             tool_report("tempcheq", Status::Warn, None),
         ]);
-        let plan = build_plan(&d, Path::new("/proj"), |k| k != "amber");
+        let plan = build_plan(&d, Path::new("/proj"), |k| k != "amber", None);
         assert_eq!(plan.len(), 1);
         assert_eq!(plan[0].program, "tempcheq");
     }
@@ -2163,7 +2721,7 @@ mod tests {
             tool_report("bart", Status::Ok, None),
             tool_report("isopod", Status::Ok, None),
         ]);
-        let plan = build_plan(&d, Path::new("/proj"), allow_all);
+        let plan = build_plan(&d, Path::new("/proj"), allow_all, None);
         assert!(plan.is_empty());
     }
 
@@ -2174,7 +2732,7 @@ mod tests {
             tool_report("chakra", Status::Warn, None),
             tool_report("fract", Status::Warn, None),
         ]);
-        let plan = build_plan(&d, Path::new("/proj"), allow_all);
+        let plan = build_plan(&d, Path::new("/proj"), allow_all, None);
         assert_eq!(plan.len(), 2);
 
         let chakra = plan.iter().find(|p| p.tool.key() == "chakra").unwrap();
@@ -2197,7 +2755,7 @@ mod tests {
     #[tracing::instrument(skip_all)]
     fn non_delegate_entries_resolve_their_own_binary() {
         let d = diagnosis(vec![tool_report("amber", Status::Warn, None)]);
-        let plan = build_plan(&d, Path::new("/proj"), allow_all);
+        let plan = build_plan(&d, Path::new("/proj"), allow_all, None);
         assert_eq!(plan[0].tool.key(), "amber");
         assert_eq!(plan[0].binary_tool.key(), "amber");
     }
@@ -2206,7 +2764,7 @@ mod tests {
     #[tracing::instrument(skip_all)]
     fn plans_traci_when_flagged_and_risk_tiers_it_as_ai_generated() {
         let d = diagnosis(vec![tool_report("traci", Status::Fail, None)]);
-        let plan = build_plan(&d, Path::new("/proj"), allow_all);
+        let plan = build_plan(&d, Path::new("/proj"), allow_all, None);
         assert_eq!(plan.len(), 1);
         assert_eq!(plan[0].program, "traci");
         assert_eq!(plan[0].probe_token, Some("trace"));
@@ -2500,56 +3058,6 @@ mod tests {
         dir
     }
 
-    #[tokio::test]
-    #[tracing::instrument(skip_all)]
-    async fn vamos_initialization_is_a_noop_when_manifest_exists() {
-        let target = unique_temp_dir("vamos-existing");
-        std::fs::write(target.join("vamos.toml"), "# existing\n").unwrap();
-        let missing_tools_dir = target.join("tools-with-no-vamos");
-
-        initialize_vamos_if_missing(&target, &missing_tools_dir, Duration::from_secs(1))
-            .await
-            .expect("an existing manifest must not require a vamos binary");
-
-        assert_eq!(
-            std::fs::read_to_string(target.join("vamos.toml")).unwrap(),
-            "# existing\n"
-        );
-        let _ = std::fs::remove_dir_all(&target);
-    }
-
-    #[cfg(unix)]
-    #[tokio::test]
-    #[tracing::instrument(skip_all)]
-    async fn vamos_initialization_runs_init_in_the_target() {
-        use std::os::unix::fs::PermissionsExt;
-
-        let root = unique_temp_dir("vamos-init");
-        let target = root.join("project");
-        let bin_dir = root.join("tools/vamos/target/release");
-        std::fs::create_dir_all(&target).unwrap();
-        std::fs::create_dir_all(&bin_dir).unwrap();
-        let bin = bin_dir.join("vamos");
-        std::fs::write(
-            &bin,
-            "#!/bin/sh\n[ \"$1\" = \"--help\" ] && exit 0\nprintf '%s\\n' \"$*\" > vamos-invocation.txt\nprintf '# initialized\\n' > vamos.toml\n",
-        )
-        .unwrap();
-        std::fs::set_permissions(&bin, std::fs::Permissions::from_mode(0o755)).unwrap();
-        wait_until_executable(&bin);
-
-        initialize_vamos_if_missing(&target, &root.join("tools"), Duration::from_secs(5))
-            .await
-            .expect("vamos init should succeed");
-
-        assert!(target.join("vamos.toml").is_file());
-        assert_eq!(
-            std::fs::read_to_string(target.join("vamos-invocation.txt")).unwrap(),
-            "init\n"
-        );
-        let _ = std::fs::remove_dir_all(&root);
-    }
-
     /// A minimal real implementation of `uni.remediate/v1`
     /// (docs/remediation-protocol.md), written as a POSIX shell script —
     /// no fake data structures standing in for the protocol, an actual
@@ -2661,6 +3169,7 @@ exit 1
             program: "amber",
             args: vec![".".to_string(), "--propose".to_string()],
             cwd: Some(target.to_path_buf()),
+            probe_prefix: Vec::new(),
             probe_token: Some("--propose"),
             required_flag: None,
             apply_flag: None,
@@ -3074,5 +3583,211 @@ esac
         assert!(dir.join("NOTICE-FAKE").is_file());
 
         let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    #[test]
+    #[tracing::instrument(skip_all)]
+    fn anti_hunking_check_blocks_when_goglz_yaml_is_missing() {
+        let dir = unique_temp_dir("anti-hunk-missing");
+        let err = check_anti_hunking_disabled(&dir).unwrap_err();
+        assert!(err.contains("goglz.yaml"));
+        assert!(err.contains("anti_hunking"));
+        let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    #[test]
+    #[tracing::instrument(skip_all)]
+    fn anti_hunking_check_blocks_when_key_is_absent() {
+        let dir = unique_temp_dir("anti-hunk-absent");
+        std::fs::write(dir.join("goglz.yaml"), "purpose: test\n").unwrap();
+        assert!(check_anti_hunking_disabled(&dir).is_err());
+        let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    #[test]
+    #[tracing::instrument(skip_all)]
+    fn anti_hunking_check_blocks_when_explicitly_enabled() {
+        let dir = unique_temp_dir("anti-hunk-true");
+        std::fs::write(dir.join("goglz.yaml"), "anti_hunking:\n  enabled: true\n").unwrap();
+        assert!(check_anti_hunking_disabled(&dir).is_err());
+        let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    #[test]
+    #[tracing::instrument(skip_all)]
+    fn anti_hunking_check_allows_when_explicitly_disabled() {
+        let dir = unique_temp_dir("anti-hunk-false");
+        std::fs::write(dir.join("goglz.yaml"), "anti_hunking:\n  enabled: false\n").unwrap();
+        assert!(check_anti_hunking_disabled(&dir).is_ok());
+        let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    #[tracing::instrument(skip_all)]
+    fn revise_args(target: &Path) -> ReviseArgs {
+        ReviseArgs {
+            target: target.to_path_buf(),
+            apply: false,
+            only: Vec::new(),
+            skip: Vec::new(),
+            timeout: 5,
+            tools_dir: None,
+            json: false,
+            confirm_source_rewrite: false,
+            confirm_ai_patch: false,
+            fail_on: None,
+            upstream: false,
+            sync_docs: true,
+        }
+    }
+
+    /// Plants a fake `goglz` binary under `tools_dir/goglz/target/release`
+    /// so `tool::resolve_binary` finds it ahead of anything actually
+    /// installed on the machine running the test — the same fixture shape
+    /// `vamos_initialization_runs_init_in_the_target` uses. `--help`
+    /// advertises `revise` (so `probe_capability` accepts it); invoking
+    /// `revise` writes a marker file and exits with `revise_exit`.
+    #[cfg(unix)]
+    #[tracing::instrument(skip_all)]
+    fn fake_goglz(tools_dir: &Path, revise_exit: u8) -> PathBuf {
+        use std::os::unix::fs::PermissionsExt;
+
+        let bin_dir = tools_dir.join("goglz/target/release");
+        std::fs::create_dir_all(&bin_dir).unwrap();
+        let bin = bin_dir.join("goglz");
+        std::fs::write(
+            &bin,
+            format!(
+                "#!/bin/sh\n[ \"$1\" = \"--help\" ] && {{ echo 'goglz: revise, start, stop, status, init-config'; exit 0; }}\n[ \"$1\" = \"revise\" ] && {{ echo 'doc change' > synced.txt; exit {revise_exit}; }}\nexit 1\n"
+            ),
+        )
+        .unwrap();
+        std::fs::set_permissions(&bin, std::fs::Permissions::from_mode(0o755)).unwrap();
+        wait_until_executable(&bin);
+        bin
+    }
+
+    #[cfg(unix)]
+    #[tokio::test]
+    #[tracing::instrument(skip_all)]
+    async fn doc_sync_pass_is_unavailable_when_anti_hunking_is_not_disabled() {
+        let dir = unique_temp_dir("doc-sync-anti-hunk");
+        let tools_dir = dir.join("tools");
+        fake_goglz(&tools_dir, 0);
+        // No goglz.yaml in the target at all -> anti-hunking defaults on.
+
+        let mut args = revise_args(&dir);
+        args.apply = true;
+        args.confirm_source_rewrite = true;
+        args.confirm_ai_patch = true;
+
+        let result = run_doc_sync_pass(&dir, &tools_dir, &args, Duration::from_secs(5))
+            .await
+            .expect("a blocked precondition still reports a remediation entry");
+        assert_eq!(result.outcome, Outcome::Unavailable);
+        assert!(result.detail.unwrap().contains("anti_hunking"));
+
+        let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    #[cfg(unix)]
+    #[tokio::test]
+    #[tracing::instrument(skip_all)]
+    async fn doc_sync_pass_is_planned_in_dry_run() {
+        let dir = unique_temp_dir("doc-sync-dry-run");
+        let tools_dir = dir.join("tools");
+        fake_goglz(&tools_dir, 0);
+        std::fs::write(dir.join("goglz.yaml"), "anti_hunking:\n  enabled: false\n").unwrap();
+
+        let args = revise_args(&dir); // apply: false by default
+
+        let result = run_doc_sync_pass(&dir, &tools_dir, &args, Duration::from_secs(5))
+            .await
+            .expect("dry run should still report the planned remediation");
+        assert_eq!(result.outcome, Outcome::Planned);
+        assert_eq!(result.risk, RiskTier::AiGenerated);
+
+        let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    #[cfg(unix)]
+    #[tokio::test]
+    #[tracing::instrument(skip_all)]
+    async fn doc_sync_pass_requires_confirmation_flags_when_applying() {
+        let dir = unique_temp_dir("doc-sync-confirm");
+        let tools_dir = dir.join("tools");
+        fake_goglz(&tools_dir, 0);
+        std::fs::write(dir.join("goglz.yaml"), "anti_hunking:\n  enabled: false\n").unwrap();
+
+        let mut args = revise_args(&dir);
+        args.apply = true;
+        // confirm_source_rewrite/confirm_ai_patch left false.
+
+        let result = run_doc_sync_pass(&dir, &tools_dir, &args, Duration::from_secs(5))
+            .await
+            .expect("missing confirmation should still report the remediation");
+        assert_eq!(result.outcome, Outcome::RequiresConfirmation);
+        let detail = result.detail.unwrap();
+        assert!(detail.contains("--confirm-source-rewrite"));
+        assert!(detail.contains("--confirm-ai-patch"));
+
+        let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    #[cfg(unix)]
+    #[tokio::test]
+    #[tracing::instrument(skip_all)]
+    async fn doc_sync_pass_applies_and_checkpoints_on_success() {
+        let (outer, target) = nested_repo_fixture("doc-sync-apply").await;
+        let tools_dir = outer.join("tools");
+        fake_goglz(&tools_dir, 0);
+        std::fs::write(
+            target.join("goglz.yaml"),
+            "anti_hunking:\n  enabled: false\n",
+        )
+        .unwrap();
+
+        let mut args = revise_args(&target);
+        args.apply = true;
+        args.confirm_source_rewrite = true;
+        args.confirm_ai_patch = true;
+
+        let result = run_doc_sync_pass(&target, &tools_dir, &args, Duration::from_secs(5))
+            .await
+            .expect("a successful run reports a remediation entry");
+        assert_eq!(result.outcome, Outcome::Applied);
+        assert!(!result.rolled_back);
+        assert!(result.checkpoint.is_some());
+        assert!(target.join("synced.txt").is_file());
+
+        let _ = std::fs::remove_dir_all(&outer);
+    }
+
+    #[cfg(unix)]
+    #[tokio::test]
+    #[tracing::instrument(skip_all)]
+    async fn doc_sync_pass_rolls_back_on_failure() {
+        let (outer, target) = nested_repo_fixture("doc-sync-rollback").await;
+        let tools_dir = outer.join("tools");
+        fake_goglz(&tools_dir, 1); // exits non-zero after writing synced.txt
+        std::fs::write(
+            target.join("goglz.yaml"),
+            "anti_hunking:\n  enabled: false\n",
+        )
+        .unwrap();
+
+        let mut args = revise_args(&target);
+        args.apply = true;
+        args.confirm_source_rewrite = true;
+        args.confirm_ai_patch = true;
+
+        let result = run_doc_sync_pass(&target, &tools_dir, &args, Duration::from_secs(5))
+            .await
+            .expect("a failed run still reports a remediation entry");
+        assert_eq!(result.outcome, Outcome::Failed);
+        assert!(result.rolled_back);
+        // The rollback must discard the partial write the failed run made.
+        assert!(!target.join("synced.txt").is_file());
+
+        let _ = std::fs::remove_dir_all(&outer);
     }
 }

@@ -1,0 +1,5 @@
+prospect_name,prospect_url,prospect_type,confidence,contact_channel,list_type,added_at
+vox-hash,https://github.com/VoxDroid/vox-hash,Repository,0.1909803,"{""channel_type"":""GitHub"",""value"":""https://github.com/VoxDroid"",""verified"":true}",OpenSource,2026-09-05T09:47:16.331899735Z
+rust-cli-task-manager,https://github.com/ingfranciscastillo/rust-cli-task-manager,Repository,0.16,"{""channel_type"":""GitHub"",""value"":""https://github.com/ingfranciscastillo"",""verified"":true}",OpenSource,2026-09-05T09:47:16.331900445Z
+Tracker,https://github.com/ROXYTINA/Tracker,Repository,0.16,"{""channel_type"":""GitHub"",""value"":""https://github.com/ROXYTINA"",""verified"":true}",OpenSource,2026-09-05T09:47:16.331900677Z
+dlog,https://github.com/cengels/dlog,Repository,0.1209691,"{""channel_type"":""GitHub"",""value"":""https://github.com/cengels"",""verified"":true}",OpenSource,2026-09-05T09:47:16.331900860Z

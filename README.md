@@ -64,15 +64,38 @@ rather than firing every repo's full tool suite at once. Every repo's full
 `summary.json` rollup; the human and `--json` output is a compact one-line-
 per-repo table, not the full per-tool detail a single-project run prints.
 
-`uni revise` initializes Vamos with `vamos init` when the target has no
-`vamos.toml`, then includes Vamos in its diagnostic pass. Lwoodz analysis uses
+`uni` runs Vamos only when the target contains an explicit
+`.vamos/suite.toml`; otherwise the workflow check is reported as skipped.
+`uni revise` does not invent project-specific workflows. Lwoodz analysis uses
 the current `lwoodz --json audit` contract or the probed legacy equivalent; a flagged missing license is previewed and repaired with
 `lwoodz remedy` (`--apply` is still required for the repair itself).
+
+### Documentation sync (`--sync-docs`, opt-in)
+
+`uni revise --apply` can leave a project's documentation out of date with the
+code it just changed. Passing `--sync-docs` runs `goglz revise` once at the
+end of a successful apply (or shows the plan in a dry run) to bring docs back
+in line with the revised code. Goglz is not part of the diagnosed/graded
+suite above — it has no analysis mode, so it's never spawned by `uni
+analyze` and contributes nothing to the report's score.
+
+This is off by default and, unlike every other remediation `uni revise` can
+run, is risk-tiered `ai_generated`: goglz sends the target's document
+content to a third-party AI API (its own configured GPT-OSS/Groq provider),
+so it needs the usual `--confirm-source-rewrite` and `--confirm-ai-patch` in
+addition to `--apply --sync-docs`. Uni also refuses to run it at all unless
+the target's own `goglz.yaml` explicitly sets `anti_hunking: { enabled:
+false }`: goglz's anti-hunking post-processor exists to keep its rewrites
+from being flagged by Ferret as a large hunk, and running that unmodified
+through Uni would mean hiding one tool's changes from another tool in the
+same report.
 
 ## Missing applications
 
 Missing applications are classified as known/installable without mutating the
-filesystem. Pass `--install-missing` to opt into installation. Uni then clones
+filesystem. Pass `--install-missing` to opt into installation. Amber,
+Traci, and Vamos are exceptions: all run in-process as library crates and
+never need installation. Uni then clones
 the known repository if necessary, requires Baby to validate a versioned
 installation recipe before executing it, serializes installations, preserves
 complete logs under `<tools-dir>/.uni/install-logs/`, and verifies the expected

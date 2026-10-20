@@ -91,7 +91,11 @@ async fn run_cohort(cohort_opts: cli::CohortOptions, base: AnalyzeOptions, json:
             }
         }
     } else {
-        print!("{}", render::human_cohort_report(&report));
+        let rendered = render::human_cohort_report_with_reveal(&report);
+        if let Err(e) = animation::present_text(&rendered.text, rendered.repo_table_section).await {
+            eprintln!("uni: failed to write human report: {e}");
+            std::process::exit(2);
+        }
     }
 }
 
@@ -172,7 +176,12 @@ async fn run_revise(args: cli::ReviseArgs) {
         };
         println!("{json_text}");
     } else {
-        print!("{}", revise::human(&report));
+        let rendered = revise::human_report(&report);
+        if let Err(e) = animation::present_text(&rendered.text, rendered.remediations_section).await
+        {
+            eprintln!("uni: failed to write human report: {e}");
+            std::process::exit(2);
+        }
     }
 
     let any_failed = report
@@ -203,14 +212,7 @@ async fn run_experiments(args: cli::ExperimentsArgs) {
     if args.list {
         match experiments::list(&args).await {
             Ok(candidates) => {
-                if candidates.is_empty() {
-                    println!("No candidate branches discovered.");
-                } else {
-                    println!("{:<50} {:<15}", "BRANCH", "SOURCE");
-                    for c in candidates {
-                        println!("{:<50} {:<15}", c.name, c.source.display_label());
-                    }
-                }
+                print!("{}", experiments::render::human_candidate_list(&candidates));
             }
             Err(e) => {
                 eprintln!("uni: experiments: {e}");
@@ -249,7 +251,11 @@ async fn run_experiments(args: cli::ExperimentsArgs) {
     if json {
         println!("{json_text}");
     } else {
-        print!("{}", experiments::render(&report));
+        let rendered = experiments::render::human_report_with_reveal(&report);
+        if let Err(e) = animation::present_text(&rendered.text, rendered.summary_section).await {
+            eprintln!("uni: failed to write human report: {e}");
+            std::process::exit(2);
+        }
     }
 
     // Policy gates.

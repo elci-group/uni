@@ -1,160 +1,102 @@
 // Copyright (c) 2026 sal
 // SPDX-License-Identifier: MIT
-//! vamos has no `--json` output either; `stats` prints one fixed-format
-//! line per action: `NAME  triggered=N  nominal=N  validated=N
-//! avg_structural_confidence=F`. It also has a real "not applicable yet"
-//! state that isn't an error: a project simply hasn't adopted vamos
-//! tracking (no `vamos.toml`), or has adopted it but has no recorded
-//! instances. Both are handled by [`crate::run::run_vamos`] before this
-//! parser ever sees stdout — empty stdout here means "no instances", not
-//! "something broke."
-//!
-//! vamos's whole point is telling nominal actions (triggered, never
-//! progressed) apart from validated ones (completion predicate actually
-//! holds). The score is exactly that ratio, aggregated across every
-//! action in the session — it only means anything once a project has
-//! been recording real usage through `vamos trigger`/`step`/`fact`.
+//! Parse Vamos's stable workflow-suite summary into Uni's normalized report.
+
 use super::{clamp_score, ParseOutcome};
 use crate::report::Status;
+use serde::Deserialize;
+
+#[derive(Debug, Deserialize)]
+struct VamosReport {
+    passed: bool,
+    tasks: Vec<VamosTask>,
+}
+
+#[derive(Debug, Deserialize)]
+struct VamosTask {
+    task_name: String,
+    evaluations: Vec<VamosEvaluation>,
+}
+
+#[derive(Debug, Deserialize)]
+struct VamosEvaluation {
+    evaluator: String,
+    passed: bool,
+    message: String,
+}
 
 pub fn parse(stdout: &str, _exit_code: Option<i32>) -> ParseOutcome {
-    let mut rows = Vec::new();
-    for line in stdout.lines() {
-        if let Some(row) = parse_row(line) {
-            rows.push(row);
-        }
-    }
+    let raw: serde_json::Value = match serde_json::from_str(stdout) {
+        Ok(value) => value,
+        Err(error) => return ParseOutcome::json_error(error, stdout),
+    };
+    let report: VamosReport = match serde_json::from_value(raw.clone()) {
+        Ok(report) => report,
+        Err(error) => return ParseOutcome::json_error(error, stdout),
+    };
 
-    if rows.is_empty() {
+    let evaluation_count = report
+        .tasks
+        .iter()
+        .map(|task| task.evaluations.len())
+        .sum::<usize>();
+    if evaluation_count == 0 {
         return ParseOutcome {
             status: Status::Warn,
             score: None,
-            summary: "no action instances recorded yet".to_string(),
+            summary: format!(
+                "{} workflow(s) ran but produced no evaluations",
+                report.tasks.len()
+            ),
             findings: Vec::new(),
-            note: Some(
-                "vamos.toml is present but no instances have been triggered yet; run `vamos trigger`/`step`/`fact` against real usage to start scoring completion"
-                    .to_string(),
-            ),
-            raw: None,
+            note: Some("Vamos cannot grade a suite without evaluator results".to_string()),
+            raw: Some(raw),
         };
     }
 
-    let total_triggered: u64 = rows.iter().map(|r| r.triggered).sum();
-    let total_nominal: u64 = rows.iter().map(|r| r.nominal).sum();
-    let total_validated: u64 = rows.iter().map(|r| r.validated).sum();
-
-    // Rows exist (an action is defined) but none has ever fired: same "no
-    // real usage yet" situation as no rows at all. Without this guard,
-    // total_triggered == 0 divides by zero, and the resulting NaN survives
-    // clamp_score (per f64::clamp's documented NaN passthrough) to become a
-    // score that serializes as JSON `null` while letter_for(NaN) still
-    // reports grade "F" — an internally inconsistent report.
-    if total_triggered == 0 {
-        let findings: Vec<String> = rows
-            .iter()
-            .take(5)
-            .map(|r| format!("{}: defined but never triggered", r.action))
-            .collect();
-        return ParseOutcome {
-            status: Status::Warn,
-            score: None,
-            summary: format!("{} action(s) defined, none triggered yet", rows.len()),
-            findings,
-            note: Some(
-                "vamos.toml is present but no instances have been triggered yet; run `vamos trigger`/`step`/`fact` against real usage to start scoring completion"
-                    .to_string(),
-            ),
-            raw: None,
-        };
-    }
-
-    let validated_ratio = total_validated as f64 / total_triggered as f64;
-    let nominal_ratio = total_nominal as f64 / total_triggered as f64;
-    let score = clamp_score(100.0 * validated_ratio - 20.0 * nominal_ratio);
-
-    let status = if score >= 70.0 {
+    let passed_count = report
+        .tasks
+        .iter()
+        .flat_map(|task| &task.evaluations)
+        .filter(|evaluation| evaluation.passed)
+        .count();
+    let failed_count = evaluation_count - passed_count;
+    let score = clamp_score(100.0 * passed_count as f64 / evaluation_count as f64);
+    let status = if report.passed && failed_count == 0 {
         Status::Ok
-    } else if score >= 40.0 {
+    } else if score >= 70.0 {
         Status::Warn
     } else {
         Status::Fail
     };
 
-    let action_count = rows.len();
-    let summary = format!(
-        "{action_count} actions, {total_triggered} instances: {total_validated} validated, {total_nominal} nominal (never progressed)"
-    );
-
-    let mut findings: Vec<String> = rows
+    let mut findings = report
+        .tasks
         .iter()
-        .map(|r| {
-            format!(
-                "{}: triggered={} nominal={} validated={} avg_confidence={:.2}",
-                r.action, r.triggered, r.nominal, r.validated, r.avg_structural_confidence
-            )
+        .flat_map(|task| {
+            task.evaluations
+                .iter()
+                .filter(|evaluation| !evaluation.passed)
+                .map(|evaluation| {
+                    format!(
+                        "{} / {}: {}",
+                        task.task_name, evaluation.evaluator, evaluation.message
+                    )
+                })
         })
-        .collect();
-    findings.truncate(5);
+        .collect::<Vec<_>>();
+    findings.truncate(10);
 
     ParseOutcome {
         status,
         score: Some(score),
-        summary,
+        summary: format!(
+            "{} workflow(s), {passed_count}/{evaluation_count} evaluations passed",
+            report.tasks.len()
+        ),
         findings,
         note: None,
-        raw: None,
-    }
-}
-
-struct Row {
-    action: String,
-    triggered: u64,
-    nominal: u64,
-    validated: u64,
-    avg_structural_confidence: f64,
-}
-
-fn parse_row(line: &str) -> Option<Row> {
-    let triggered_idx = line.find("triggered=")?;
-    let action = line[..triggered_idx].trim().to_string();
-    if action.is_empty() {
-        return None;
-    }
-    Some(Row {
-        action,
-        triggered: parse_after(line, "triggered=")?,
-        nominal: parse_after(line, "nominal=")?,
-        validated: parse_after(line, "validated=")?,
-        avg_structural_confidence: parse_float_after(line, "avg_structural_confidence=")?,
-    })
-}
-
-fn parse_after(line: &str, marker: &str) -> Option<u64> {
-    let idx = line.find(marker)?;
-    let rest = &line[idx + marker.len()..];
-    let digits: String = rest.chars().take_while(|c| c.is_ascii_digit()).collect();
-    match digits.parse() {
-        Ok(n) => Some(n),
-        Err(e) => {
-            tracing::trace!(marker, digits, error = %e, "marker had no parseable integer");
-            None
-        }
-    }
-}
-
-fn parse_float_after(line: &str, marker: &str) -> Option<f64> {
-    let idx = line.find(marker)?;
-    let rest = &line[idx + marker.len()..];
-    let digits: String = rest
-        .chars()
-        .take_while(|c| c.is_ascii_digit() || *c == '.')
-        .collect();
-    match digits.parse() {
-        Ok(n) => Some(n),
-        Err(e) => {
-            tracing::trace!(marker, digits, error = %e, "marker had no parseable float");
-            None
-        }
+        raw: Some(raw),
     }
 }
 
@@ -163,48 +105,66 @@ mod tests {
     use super::*;
 
     #[test]
-    fn no_instances_is_ungraded_not_zero() {
-        let out = parse("", Some(0));
-        assert_eq!(out.score, None);
-        assert_eq!(out.status, Status::Warn);
-    }
+    fn passing_workflows_score_one_hundred() {
+        let out = parse(
+            r#"{
+                "passed": true,
+                "tasks": [{
+                    "task_name": "opens-menu",
+                    "evaluations": [{
+                        "evaluator": "deterministic",
+                        "passed": true,
+                        "message": "all assertions passed"
+                    }]
+                }]
+            }"#,
+            Some(0),
+        );
 
-    #[test]
-    fn zero_triggered_rows_are_ungraded_not_nan() {
-        let stdout = "deploy triggered=0 nominal=0 validated=0 avg_structural_confidence=0.00\n";
-        let out = parse(stdout, Some(0));
-        assert_eq!(out.score, None);
-        assert_eq!(out.status, Status::Warn);
-        assert!(out.findings[0].contains("deploy"));
-    }
-
-    #[test]
-    fn mixed_actions_aggregate_correctly() {
-        let stdout = "create_file    triggered=3    nominal=2    validated=1    avg_structural_confidence=0.33\n\
-delete         triggered=1    nominal=0    validated=1    avg_structural_confidence=1.00\n";
-        let out = parse(stdout, Some(0));
-        // total_triggered=4, total_validated=2, total_nominal=2
-        // score = 100*(2/4) - 20*(2/4) = 50 - 10 = 40
-        assert!((out.score.unwrap() - 40.0).abs() < 1e-9);
-        assert_eq!(out.status, Status::Warn);
-        assert_eq!(out.findings.len(), 2);
-    }
-
-    #[test]
-    fn all_validated_no_nominal_is_ok() {
-        let stdout = "deploy triggered=2 nominal=0 validated=2 avg_structural_confidence=1.00\n";
-        let out = parse(stdout, Some(0));
-        assert_eq!(out.score, Some(100.0));
         assert_eq!(out.status, Status::Ok);
+        assert_eq!(out.score, Some(100.0));
+        assert!(out.findings.is_empty());
+        assert!(out.raw.is_some());
     }
 
     #[test]
-    fn all_nominal_is_fail() {
-        let stdout =
-            "create_file triggered=5 nominal=5 validated=0 avg_structural_confidence=0.00\n";
-        let out = parse(stdout, Some(0));
-        // score = 100*0 - 20*1 = -20 -> clamped to 0
-        assert_eq!(out.score, Some(0.0));
+    fn failed_evaluations_become_findings() {
+        let out = parse(
+            r#"{
+                "passed": false,
+                "tasks": [{
+                    "task_name": "navigate-menu",
+                    "evaluations": [
+                        {"evaluator": "exit", "passed": true, "message": "exit code matched"},
+                        {"evaluator": "screen", "passed": false, "message": "missing Goodbye"}
+                    ]
+                }]
+            }"#,
+            Some(1),
+        );
+
         assert_eq!(out.status, Status::Fail);
+        assert_eq!(out.score, Some(50.0));
+        assert_eq!(
+            out.findings,
+            vec!["navigate-menu / screen: missing Goodbye"]
+        );
+    }
+
+    #[test]
+    fn empty_evaluations_are_ungraded() {
+        let out = parse(
+            r#"{"passed":true,"tasks":[{"task_name":"empty","evaluations":[]}]}"#,
+            Some(0),
+        );
+        assert_eq!(out.status, Status::Warn);
+        assert_eq!(out.score, None);
+    }
+
+    #[test]
+    fn malformed_json_is_an_error() {
+        let out = parse("not json", Some(1));
+        assert_eq!(out.status, Status::Error);
+        assert_eq!(out.score, None);
     }
 }

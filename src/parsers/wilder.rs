@@ -69,9 +69,13 @@ pub fn parse(stdout: &str, exit_code: Option<i32>) -> ParseOutcome {
         })
         .collect();
 
-    let score = clamp_score(100.0 - 25.0 * critical as f64 - 10.0 * high as f64
-        - 4.0 * medium as f64
-        - 1.0 * low as f64);
+    let score = clamp_score(
+        100.0
+            - 25.0 * critical as f64
+            - 10.0 * high as f64
+            - 4.0 * medium as f64
+            - 1.0 * low as f64,
+    );
 
     let status = if critical > 0 {
         Status::Fail

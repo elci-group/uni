@@ -7,13 +7,20 @@ use form3::term::TermInfo;
 
 use crate::report::{Execution, IntegrityStatus, Report, Status, ToolReport};
 
+/// Shared by every human-readable renderer in the crate — `revise::human`,
+/// `experiments::render`, and `human_cohort_report` reuse this instead of
+/// each inventing their own color detection, so a status reads the same
+/// color everywhere: green=ok/applied, yellow=warn/needs-attention,
+/// red=fail/regressed, dim=skipped/unknown. Report-specific accents
+/// (`tool_accent`, `finding_code`, ...) stay private to this module —
+/// only the generic core is shared.
 #[derive(Clone, Copy)]
-struct Style {
+pub(crate) struct Style {
     color: bool,
 }
 
 impl Style {
-    fn stdout() -> Self {
+    pub(crate) fn stdout() -> Self {
         Self {
             color: TermInfo::detect().supports_color(),
         }
@@ -85,7 +92,7 @@ impl Style {
         (color, attrs)
     }
 
-    fn paint(self, code: Option<&str>, text: impl AsRef<str>) -> String {
+    pub(crate) fn paint(self, code: Option<&str>, text: impl AsRef<str>) -> String {
         let text = text.as_ref();
         match (self.color, code) {
             (true, Some(code)) => {
@@ -125,8 +132,34 @@ impl Style {
     }
 
     /// A section heading: bold, no color.
-    fn heading(self, text: impl AsRef<str>) -> String {
+    pub(crate) fn heading(self, text: impl AsRef<str>) -> String {
         self.paint(Some("1"), text)
+    }
+
+    /// Semantic status colors shared by every renderer in the crate — the
+    /// same green/yellow/red/dim palette `tool_status_code`'s generic
+    /// fallback arm uses for a plain tool status, generalized for
+    /// non-tool statuses (a remediation outcome, an experiment verdict, a
+    /// cohort repo's integrity) that want the same meaning without a
+    /// `ToolReport` to key off of.
+    pub(crate) fn ok(self, text: impl AsRef<str>) -> String {
+        self.paint(Some("1;32"), text)
+    }
+
+    pub(crate) fn warn(self, text: impl AsRef<str>) -> String {
+        self.paint(Some("1;33"), text)
+    }
+
+    pub(crate) fn fail(self, text: impl AsRef<str>) -> String {
+        self.paint(Some("1;31"), text)
+    }
+
+    pub(crate) fn dim(self, text: impl AsRef<str>) -> String {
+        self.paint(Some("2"), text)
+    }
+
+    pub(crate) fn accent(self, text: impl AsRef<str>) -> String {
+        self.paint(Some("1;36"), text)
     }
 }
 
@@ -462,7 +495,7 @@ fn friendly_label(tool: &'static str) -> &'static str {
         "lwoodz" => "License compliance",
         "tempcheq" => "AI response consistency",
         "traci" => "Monitoring & observability",
-        "vamos" => "Task completion accuracy",
+        "vamos" => "Terminal workflow regressions",
         "viva-palestina" => "Vendor & dependency ethics",
         other => other,
     }
@@ -903,22 +936,76 @@ fn progress_bar(ratio: f64) -> String {
     format!("{bar} {:.1}%", ratio * 100.0)
 }
 
+/// [`human_cohort_report`]'s text plus the byte range of the per-repo
+/// table — the flagship section for `uni --cohort`, the same role Fract's
+/// section plays in `uni analyze`'s report — so `animation::present_text`
+/// can wave-reveal it. `None` when no repo was locally available to grade.
+pub struct CohortHumanReport {
+    pub text: String,
+    pub repo_table_section: Option<Range<usize>>,
+}
+
+/// A grade's first letter, colored the same way a passing/failing tool
+/// status is elsewhere: A green, B/C dim (fine but not exceptional), D/F
+/// red — "—" (ungraded) stays uncolored.
+fn grade_color(style: Style, grade: &str) -> String {
+    match grade.chars().next() {
+        Some('A') => style.ok(grade),
+        Some('B') | Some('C') => style.dim(grade),
+        Some('D') | Some('F') => style.fail(grade),
+        _ => grade.to_string(),
+    }
+}
+
+fn integrity_color(style: Style, status: IntegrityStatus) -> String {
+    let word = format!("{} {}", integrity_emoji(status), integrity_word(status));
+    match status {
+        IntegrityStatus::Healthy => style.ok(word),
+        IntegrityStatus::Degraded => style.warn(word),
+        IntegrityStatus::Failed => style.fail(word),
+    }
+}
+
 /// A cohort run can cover ~100 repos, so this is deliberately a compact
 /// one-line-per-repo table rather than the full per-tool detail block
 /// `human_report` renders for a single project — that detail lives in each
 /// repo's own JSON file under `--cohort-out` instead.
 pub fn human_cohort_report(report: &crate::report::CohortReport) -> String {
+    human_cohort_report_with_reveal(report).text
+}
+
+pub fn human_cohort_report_with_reveal(report: &crate::report::CohortReport) -> CohortHumanReport {
     use crate::report::CohortRepoStatus;
 
+    let style = Style::stdout();
     let mut out = String::new();
+    out.push_str(
+        "╔═══════════════════════════════════════════════════════════════════════════════╗\n",
+    );
     out.push_str(&format!(
-        "uni cohort — {} ({} discovered, {} locally available)\n",
+        "║ 🛰️  UNI COHORT — {} ({} discovered, {} locally available)\n",
         report.org, report.discovered, report.locally_available
     ));
     out.push_str(&format!(
-        "batch size {}, {}s between cycles\n\n",
+        "║ batch size {}, {}s between cycles\n",
         report.cycle.batch_size, report.cycle.cycle_seconds
     ));
+    out.push_str(
+        "╚═══════════════════════════════════════════════════════════════════════════════╝\n\n",
+    );
+
+    if report.repos.is_empty() {
+        out.push_str(&format!(
+            "{}\n",
+            style.dim("No repos locally available to grade.")
+        ));
+        return CohortHumanReport {
+            text: out,
+            repo_table_section: None,
+        };
+    }
+
+    let table_start = out.len();
 
     let name_width = report
         .repos
@@ -928,11 +1015,14 @@ pub fn human_cohort_report(report: &crate::report::CohortReport) -> String {
         .unwrap_or(4)
         .max(4);
     out.push_str(&format!(
-        "{}  {}  {}  {}\n",
-        pad_right("REPO", name_width),
-        pad_right("GRADE", 5),
-        pad_left("SCORE", 6),
-        "INTEGRITY"
+        "{}\n",
+        style.heading(format!(
+            "{}  {}  {}  {}",
+            pad_right("REPO", name_width),
+            pad_right("GRADE", 5),
+            pad_left("SCORE", 6),
+            "INTEGRITY"
+        ))
     ));
 
     for repo in &report.repos {
@@ -941,18 +1031,20 @@ pub fn human_cohort_report(report: &crate::report::CohortReport) -> String {
             _ => ("—".to_string(), "—".to_string()),
         };
         let integrity = match (repo.status, repo.integrity_status) {
-            (CohortRepoStatus::NotLocallyAvailable, _) => "not locally available".to_string(),
-            (_, Some(status)) => format!("{} {}", integrity_emoji(status), integrity_word(status)),
+            (CohortRepoStatus::NotLocallyAvailable, _) => style.dim("not locally available"),
+            (_, Some(status)) => integrity_color(style, status),
             (_, None) => "—".to_string(),
         };
         out.push_str(&format!(
             "{}  {}  {}  {}\n",
             pad_right(&repo.repo, name_width),
-            pad_right(&grade, 5),
+            grade_color(style, &pad_right(&grade, 5)),
             pad_left(&score, 6),
             integrity
         ));
     }
+
+    let repo_table_section = Some(table_start..out.len());
 
     out.push_str(&format!(
         "\n{} graded, mean score {}\n",
@@ -964,22 +1056,31 @@ pub fn human_cohort_report(report: &crate::report::CohortReport) -> String {
             .unwrap_or_else(|| "N/A".to_string())
     ));
     if !report.rollup.worst.is_empty() {
-        out.push_str(&format!("worst: {}\n", report.rollup.worst.join(", ")));
+        out.push_str(&format!(
+            "{}\n",
+            style.warn(format!("worst: {}", report.rollup.worst.join(", ")))
+        ));
     }
     if !report.rollup.integrity_failures.is_empty() {
         out.push_str(&format!(
-            "integrity issues: {}\n",
-            report.rollup.integrity_failures.join(", ")
+            "{}\n",
+            style.fail(format!(
+                "integrity issues: {}",
+                report.rollup.integrity_failures.join(", ")
+            ))
         ));
     }
 
-    out
+    CohortHumanReport {
+        text: out,
+        repo_table_section,
+    }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::report::{Availability, Evidence};
+    use crate::report::{Availability, CohortRepoStatus, Evidence};
 
     fn tool_report(tool: &'static str, status: Status, findings: Vec<String>) -> ToolReport {
         ToolReport {
@@ -1005,13 +1106,99 @@ mod tests {
         }
     }
 
+    fn cohort_repo(
+        repo: &str,
+        status: CohortRepoStatus,
+        grade: Option<&'static str>,
+        score: Option<f64>,
+        integrity: Option<IntegrityStatus>,
+    ) -> crate::report::CohortRepoEntry {
+        crate::report::CohortRepoEntry {
+            repo: repo.to_string(),
+            path: None,
+            report_file: None,
+            status,
+            overall_score: score,
+            overall_grade: grade,
+            integrity_status: integrity,
+        }
+    }
+
+    #[test]
+    fn cohort_report_reveal_section_spans_the_repo_table() {
+        let repos = vec![
+            cohort_repo(
+                "uni",
+                CohortRepoStatus::Graded,
+                Some("A"),
+                Some(93.0),
+                Some(IntegrityStatus::Healthy),
+            ),
+            cohort_repo(
+                "isopod",
+                CohortRepoStatus::NotLocallyAvailable,
+                None,
+                None,
+                None,
+            ),
+        ];
+        let report = crate::report::CohortReport {
+            schema: "uni.cohort/v1",
+            org: "elci-group".to_string(),
+            generated_at: "now".to_string(),
+            discovered: 2,
+            locally_available: 1,
+            cycle: crate::report::CohortCycle {
+                batch_size: 4,
+                cycle_seconds: 30,
+            },
+            rollup: crate::report::CohortRollup::compute(&repos),
+            repos,
+        };
+
+        let rendered = human_cohort_report_with_reveal(&report);
+        let section = rendered
+            .repo_table_section
+            .clone()
+            .expect("non-empty cohort should have a repo table section");
+        let body = &rendered.text[section];
+        assert!(body.contains("uni"));
+        assert!(body.contains("isopod"));
+        assert!(body.contains("not locally available"));
+        // The plain (non-animated) accessor must still contain everything.
+        assert_eq!(human_cohort_report(&report), rendered.text);
+    }
+
+    #[test]
+    fn cohort_report_with_no_repos_has_no_reveal_section() {
+        let report = crate::report::CohortReport {
+            schema: "uni.cohort/v1",
+            org: "elci-group".to_string(),
+            generated_at: "now".to_string(),
+            discovered: 0,
+            locally_available: 0,
+            cycle: crate::report::CohortCycle {
+                batch_size: 4,
+                cycle_seconds: 30,
+            },
+            rollup: crate::report::CohortRollup::compute(&[]),
+            repos: Vec::new(),
+        };
+        let rendered = human_cohort_report_with_reveal(&report);
+        assert!(rendered.repo_table_section.is_none());
+        assert!(rendered.text.contains("No repos locally available"));
+    }
+
     #[test]
     fn native_brand_accents_are_distinct() {
         // form3 emits one escape sequence per color/attribute rather than a
         // single combined SGR code, so a native accent is now a short
         // sequence of escapes (color first, then attributes) instead of one.
         let style = Style { color: true };
-        assert_eq!(style.tool_name("bart", "bart"), "\x1b[34m\x1b[1mbart\x1b[0m");
+        assert_eq!(
+            style.tool_name("bart", "bart"),
+            "\x1b[34m\x1b[1mbart\x1b[0m"
+        );
         assert_eq!(
             style.tool_name("chakra", "chakra"),
             "\x1b[38;2;203;166;247m\x1b[1mchakra\x1b[0m"

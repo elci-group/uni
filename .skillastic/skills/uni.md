@@ -84,6 +84,8 @@ Common options (analyze / bare form):
 
 revise-only:
   --apply                 actually run each tool's fix command (default: dry-run)
+  --sync-docs              opt-in: run goglz revise once after --apply to keep
+                           docs aligned with the code changes just made
 ```
 
 ## Agent workflows
@@ -127,6 +129,33 @@ Each underlying fix command keeps its own safety defaults (e.g. `amber
 `--apply`, `tempcheq --fix` needs `--yes`) — `uni
 revise --apply` only unlocks uni's own dry-run gate, not each tool's.
 
+### Documentation sync (`--sync-docs`, opt-in)
+
+`uni revise --apply` can change code without touching the docs that
+describe it. `--sync-docs` runs `goglz revise` once at the end of a
+successful apply (or shows up as `Planned` in a dry run) to close that gap:
+
+```bash
+uni revise --apply --confirm-source-rewrite --confirm-ai-patch --sync-docs .
+```
+
+Goglz is **not** part of the analyzed/graded suite — it has no diagnostic
+mode, is never part of `ToolId::ALL`, and `uni analyze`/`uni` never spawns
+it. It only ever runs as this one opt-in post-apply step in `uni revise`.
+
+It's risk-tiered `ai_generated` like the traci/chakra/fract delegates: it
+needs `--confirm-source-rewrite` and `--confirm-ai-patch` in addition to
+`--apply --sync-docs`, because it sends the target's document content to a
+third-party AI API (goglz's own configured GPT-OSS/Groq provider) and
+rewrites tracked files with the result. `uni` also refuses to run it at all
+unless the target's own `goglz.yaml` explicitly sets `anti_hunking: {
+enabled: false }` — goglz's anti-hunking post-processor exists specifically
+to keep its rewrites from being flagged by Ferret as a large hunk, and
+running that unmodified would mean one tool in this suite hiding its
+changes from another. A missing/unmet precondition reports `Unavailable`
+with a detail explaining exactly what to fix, the same as a stale
+subcommand on any other tool.
+
 ### Missing applications
 
 If a selected tool isn't installed, uni clones
@@ -166,6 +195,11 @@ verification), which is not a health defect signal either way. It's
   API key, and isn't part of the default suite for a reason.
 - **Re-running the full suite for a single-tool question** — use `--only`
   instead of paying for every constituent tool's runtime.
+- **Adding `--sync-docs` to an existing CI `uni revise --apply` invocation
+  without thinking about it** — unlike every other remediation, it calls a
+  third-party AI API with the target's document content and needs its own
+  API keys configured for goglz; it's opt-in for that reason, not an
+  oversight.
 
 ## Safety
 
@@ -180,3 +214,7 @@ verification), which is not a health defect signal either way. It's
 - Telemetry for clone/install stages goes to stderr only (tool name, stage,
   outcome, exit code, elapsed ms) — uni does not persist or transmit it, and
   stdout JSON stays clean.
+- Goglz (`--sync-docs`) is excluded from auto-install: uni will never clone
+  or build it the way it does the read-only analyzers, since it needs its
+  own AI API keys configured before it's safe to run at all. It must
+  already be installed and on `PATH`/`--tools-dir`/`~/.local/bin`.

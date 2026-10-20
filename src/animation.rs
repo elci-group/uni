@@ -1,11 +1,17 @@
 // Copyright (c) 2026 sal
 // SPDX-License-Identifier: MIT
-//! Terminal animation for Fract's section in the unified human report.
+//! Terminal animation for one "hero" section of a rendered human report —
+//! originally just Fract's section in `uni analyze`'s report, now the same
+//! deterministic wave reveal shared by every subcommand with a flagship
+//! table or section worth drawing attention to (`uni analyze`'s Fract
+//! section, `uni revise`'s remediation list, `uni experiments`'s ranking
+//! table, `uni --cohort`'s repo table).
 //!
-//! This mirrors Fract's deterministic wave reveal. The last frame is always
-//! the original section, and non-interactive or automation output stays static.
+//! The last frame is always the original section, and non-interactive or
+//! automation output stays static.
 
 use std::io::{self, IsTerminal, Write as _};
+use std::ops::Range;
 use std::time::Duration;
 
 use crate::render::HumanReport;
@@ -21,17 +27,31 @@ enum Token {
     Char(char),
 }
 
+/// Wave-reveals `report.fract_section` of `uni analyze`'s output. Thin
+/// wrapper over [`present_text`] kept for its existing call site and
+/// `HumanReport`'s existing shape.
 pub async fn present(report: &HumanReport) -> io::Result<()> {
-    let Some(section) = report.fract_section.clone().filter(|_| animation_enabled()) else {
-        return write_static(&report.text);
+    present_text(&report.text, report.fract_section.clone()).await
+}
+
+/// Wave-reveals `reveal` (byte range into `full_text`) before settling on
+/// the plain, final render — or writes `full_text` straight out, unanimated,
+/// when `reveal` is `None`, motion is disabled (piped output, `NO_COLOR`,
+/// a dumb terminal, or `CI`), or the section is too small/empty to animate.
+/// Every subcommand's human renderer picks its own `reveal` range the same
+/// way `render::technical_report` picks Fract's: record `out.len()` before
+/// writing the section, then again after.
+pub async fn present_text(full_text: &str, reveal: Option<Range<usize>>) -> io::Result<()> {
+    let Some(section) = reveal.filter(|_| animation_enabled()) else {
+        return write_static(full_text);
     };
 
-    let prefix = &report.text[..section.start];
-    let body = &report.text[section.clone()];
-    let suffix = &report.text[section.end..];
+    let prefix = &full_text[..section.start];
+    let body = &full_text[section.clone()];
+    let suffix = &full_text[section.end..];
     let frames = wave_frames(body, MAX_FRAMES);
     if frames.len() == 1 {
-        return write_static(&report.text);
+        return write_static(full_text);
     }
 
     let mut stdout = io::stdout().lock();
