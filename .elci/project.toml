@@ -1,0 +1,32 @@
+# ELCI project manifest — ELCI-RGCA-001 §5
+# Provisional (Phase 1 machine draft). Human review required for Tier-S/A.
+schema_version = "1.0"
+
+[project]
+id = "uni"
+name = "uni"
+descriptor = "Uni runs a deterministic, concurrent analysis suite against one project and normalizes each output into a single graded report. It orchestrates the elci-group tool suite (Amber, Bart, Fract, Tempcheq, Traci, Vamos and more), with JSON output and cohort mode across a GitHub org."
+status = "active"
+maturity = "alpha"
+class = "developer-tool"
+
+[ownership]
+organisation = "elci-group"
+maintainer = "ELCI Group"
+
+[architecture]
+independent_boundary = true
+boundary_reason = "Provisional Phase 1 classification (tier B); pending §17 rationalisation review."
+parent = []
+capabilities = []
+consumers = []
+
+[authority]
+human_write_authority = true
+agent_write_authority = false
+autonomous_operation = false
+
+[lifecycle]
+introduced = "2026"
+supersedes = []
+superseded_by = []
